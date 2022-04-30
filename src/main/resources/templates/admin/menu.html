@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')"></head>
+<body>
+<nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
+<!--Contenidos-->
+<div class="container justify-content-center">
+    <!--Primera fila-->
+    <div class="row row-cols-md-3 py-4">
+        <!--boton1-->
+        <div class="column">
+            <button class="btn btn-redtele" style="width: 360px; height: 160px;">
+                <div class="row py-2">
+                    <div class="col-md-2 align-content-center">
+                        <i class="fas fa-edit"
+                           style="font-size: 40px">
+                        </i>
+                    </div>
+                    <div class="col-md-10" style="font-size: 25px">
+                        Gestión de sedes
+                    </div>
+                </div>
+            </button>
+        </div>
+        <!--boton2-->
+        <div class="column">
+            <button class="btn btn-redtele" style="width: 360px; height: 160px;">
+                <div class="row py-2">
+                    <div class="col-md-2 align-content-center">
+                        <i class="fas fa-edit py-3"
+                           style="font-size: 40px">
+                        </i>
+                    </div>
+                    <div class="col-md-10" style="font-size: 25px">
+                        Gestión de operadores
+                    </div>
+                </div>
+            </button>
+        </div>
+        <!--boton3-->
+        <div class="column">
+            <button class="btn btn-redtele" style="width: 360px; height: 160px;">
+                <div class="row py-2">
+                    <div class="col-md-2 align-content-center">
+                        <i class="fas fa-edit py-4"
+                           style="font-size: 40px">
+                        </i>
+                    </div>
+                    <div class="col-md-10" style="font-size: 25px">
+                        Gestión de actores y directores
+                    </div>
+                </div>
+            </button>
+        </div>
+    </div>
+    <!--Segunda fila-->
+    <div class="container">
+        <div style="margin: 0;position: absolute;left: 50% ;-ms-transform: translateX(-50%);transform: translateX(-50%);" >
+        <button class="btn btn-redtele" style="width: 540px; height: 160px;">
+            <div class="row py-2">
+                <div class="col-md-2 align-content-center">
+                    <i class="fas fa-users py-4"
+                       style="font-size: 40px">
+                    </i>
+                </div>
+                <div class="col-md-10 py-4" style="font-size: 25px">
+                    Listado de clientes
+                </div>
+            </div>
+        </button>
+        </div>
+    </div>
+
+
+</div>
+
+
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+</body>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+</html>

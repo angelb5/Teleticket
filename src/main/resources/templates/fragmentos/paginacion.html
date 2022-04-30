@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body>
+<!--Paginacion-->
+<nav th:fragment="paginacion (rutabusqueda, actual, última)" aria-label="..." class="py-2 justify-content-center">
+    <div style="text-align: -webkit-center;">
+        <ul class="pagination shadow-1-soft rounded-2" style="width: fit-content;">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item " aria-current="page">
+                <a class="page-link" href="#">
+                    2 <span class="visually-hidden">(current)</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">3</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+</body>
+</html>

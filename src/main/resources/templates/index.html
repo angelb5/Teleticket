@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Teleticket')"></head>
+<body>
+<nav th:replace="fragmentos/navbar.html :: navbar('Todo')"></nav>
+<!--Contenidos-->
+<div class="container" >
+
+    <div class="py-3">
+        <!-- Carousel wrapper -->
+        <div id="carouselBasicExample" class="carousel slide carousel-fade" data-mdb-ride="carousel">
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+                <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="3" aria-label="Slide 4"></button>
+            </div>
+
+            <!-- Inner -->
+            <div class="carousel-inner">
+                <!-- Single item -->
+                <div class="carousel-item active">
+                    <img src="img/slide1.jpg" class="d-block w-100" alt="Slide1"/>
+                </div>
+
+                <!-- Single item -->
+                <div class="carousel-item">
+                    <img src="img/slide2.jpg" class="d-block w-100" alt="Slide2"/>
+                </div>
+
+                <!-- Single item -->
+                <div class="carousel-item">
+                    <img src="img/slide3.jpg" class="d-block w-100" alt="Slide3"/>
+                </div>
+
+                <!-- Single item -->
+                <div class="carousel-item">
+                    <img src="img/slide4.jpg" class="d-block w-100" alt="Slide4"/>
+                </div>
+            </div>
+            <!-- Inner -->
+
+            <!-- Controls -->
+            <button class="carousel-control-prev" type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <!-- Carousel wrapper -->
+    </div>
+
+    <!-- Obras destacadas -->
+
+    <div class="title-24">
+        <i class="fas fa-solid fa-star text-redtele"></i>
+        Obras destacadas
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-4 g-4 py-3">
+        <!--Card 1-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                    <span class="card-tele-star">
+                        <i class="fas fa-star"></i>
+                    </span>
+                    <div class="card-tele-img">
+                        <img src="img/yerbatero.jpg"  alt="Yerbatero"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">Yerbateros</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 45.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 2-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                      <span class="card-tele-star">
+                          <i class="fas fa-star"></i>
+                      </span>
+                    <div class="card-tele-img">
+                        <img src="img/tumadre.jpg"  alt="Tu madre, la concho"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">Tu madre, la concho</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 55.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 3-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                      <span class="card-tele-star">
+                          <i class="fas fa-star"></i>
+                      </span>
+                    <div class="card-tele-img">
+                        <img src="img/te.jpg"  alt="Te de tías"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">Te de tías</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 40.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 4-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                      <span class="card-tele-star">
+                          <i class="fas fa-star"></i>
+                      </span>
+                    <div class="card-tele-img">
+                        <img src="img/pordonde.jpg"  alt="Por donde salgo"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">¿Por dónde salgo?</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 41.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 5-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                      <span class="card-tele-star">
+                          <i class="fas fa-star"></i>
+                      </span>
+                    <div class="card-tele-img">
+                        <img src="img/ornitorrinco.jpg"  alt="El Ornitorrinco"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">El Ornitorrinco</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 35.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 6-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                      <span class="card-tele-star">
+                          <i class="fas fa-star"></i>
+                      </span>
+                    <div class="card-tele-img">
+                        <img src="img/monstruos.jpeg"  alt="Los monstruos"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">Los monstruos</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 35.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 7-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                      <span class="card-tele-star">
+                          <i class="fas fa-star"></i>
+                      </span>
+                    <div class="card-tele-img">
+                        <img src="img/lola.jpg"  alt="Lola"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">Lola</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 50.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 8-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                      <span class="card-tele-star">
+                          <i class="fas fa-star"></i>
+                      </span>
+                    <div class="card-tele-img">
+                        <img src="img/monjas.jpg"  alt="Las Monjas"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">Las Monjas</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 50.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 9-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                      <span class="card-tele-star">
+                          <i class="fas fa-star"></i>
+                      </span>
+                    <div class="card-tele-img">
+                        <img src="img/lasangre.jpg"  alt="La sangre es mujer"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">La sangre es mujer</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 50.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 10-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                      <span class="card-tele-star">
+                          <i class="fas fa-star"></i>
+                      </span>
+                    <div class="card-tele-img">
+                        <img src="img/japan.jpg"  alt="Japan el musical"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">Japan el musical</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 50.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 11-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                      <span class="card-tele-star">
+                          <i class="fas fa-star"></i>
+                      </span>
+                    <div class="card-tele-img">
+                        <img src="img/chimoc.jpg"  alt="Chimoc en la playa"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">Chimoc en la playa</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 60.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 12-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                      <span class="card-tele-star">
+                          <i class="fas fa-star"></i>
+                      </span>
+                    <div class="card-tele-img">
+                        <img src="img/cero.jpg"  alt="Cero en conducta"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">Cero en conducta</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 33.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Banners exploracion-->
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 py-5">
+        <div class="col">
+            <div class="card bg-dark text-white">
+                <a href="#">
+                    <img src="img/sedesbanner.jpg" class="card-img" alt="Exlora sedes"/>
+                </a>
+
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-dark text-white">
+                <a href="#">
+                    <img src="img/teatrobanner.jpg" class="card-img" alt="Lo mejor del teatro"/>
+                </a>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-dark text-white">
+                <a href="#">
+                    <img src="img/personasbanner.jpg" class="card-img" alt="Descubre actores"/>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!--Decubre obras-->
+    <div class="title-24">
+        Descubre obras
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-4 g-4 py-3">
+        <!--Card 1-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                    <div class="card-tele-img">
+                        <img src="img/antesde.jpg"  alt="Antes de decirte adiós"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">Antes de decirte adiós</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 35.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 2-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                    <div class="card-tele-img">
+                        <img src="img/agua.png"  alt="Agua"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">Agua</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 65.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 3-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                    <div class="card-tele-img">
+                        <img src="img/viernes.jpg"  alt="Viernes sangriento"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">Viernes sangriento</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 30.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 4-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                    <div class="card-tele-img">
+                        <img src="img/conmimama.jpg"  alt="Con mi mamá no te metas"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">Con mi mamá no te metas</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 40.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 5-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                    <div class="card-tele-img">
+                        <img src="img/noquiero.jpg"  alt="No quiero olvidar"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">No quiero olvidar</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 38.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 6-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                    <div class="card-tele-img">
+                        <img src="img/quienesson.jpg"  alt="¿Quienes son?"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">¿Quienes son?</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 30.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 7-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                    <div class="card-tele-img">
+                        <img src="img/juan.jpg"  alt="Juan está muerto"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">Juan está muerto</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 54.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+
+        <!--Card 8-->
+        <div class="col">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                    <div class="card-tele-img">
+                        <img src="img/mashermoso.jpg"  alt="El más hermoso y más triste paisaje del mundo"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title">El más hermoso y más triste paisaje del mundo</div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer">
+                    <div class="d-flex align-items-end">
+                        <span>Desde&nbsp;&nbsp;</span>
+                        <span class="fw-bold fs-14">S/ 45.00</span>
+                    </div>
+
+                    <button class="btn btn-redtele">Comprar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center fw-bold pt-2 pb-5">
+    <a href="#" class="link-sub">
+        Ver más obras
+        <i class="ms-1 fa-solid fa-angle-right"></i>
+    </a>
+</div>
+<!--Fin de contenidos-->
+
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+<!-- End your project here-->
+</body>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+</html>

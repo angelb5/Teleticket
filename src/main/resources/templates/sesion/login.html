@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<h<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Iniciar Sesión')"></head>
+<nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
+<body>
+<div class="container py-5" style="display:flex;justify-content:center;align-items:center;">
+    <div class="p-4 bg-dark text-white rounded-7" style="width: 48% !important;">
+        <form autocomplete="off" th:action="@{/processLogin}" method="post">
+            <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+            <div class=" title-24 mb-3 text-white text-center">
+                <img th:src="@{/img/logo-teleticket.png}" height="60" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
+            </div>
+            <div class="title-24 mb-3 text-white text-center ">Inicio de Sesión</div>
+            <div style="text-align: center">
+
+                <div class=" text-center mb-4 align-items-center d-flex" style="min-width: 200px;">
+                    <div  style="padding-left: 90px; padding-right: 90px" class="w-100" >
+                        <div class="form-outline form-white mb-4">
+                            <div class="form-outline form-white mb-4">
+                                <input type="email" name="correo" id="correo" class="form-control" />
+                                <label class="form-label" for="correo">Correo</label>
+                            </div>
+
+                            <div class="form-outline form-white mb-4">
+                                <input type="password" name="contrasena" id="contrasena" class="form-control" />
+                                <label class="form-label" for="contrasena">Contraseña</label>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col">
+                                <!-- Simple link -->
+                                <a style="color: red" href="#!">¿Olvidaste tu contraseña?</a>
+                            </div>
+                        </div>
+                        <!--Submit button-->
+                        <button type="submit" class="btn btn-light mb-4" >Ingresa</button>
+                        <!-- Register buttons -->
+                        <div class="text-center" style="border-top-color: white; border-top: 2px solid white; padding-top: 20px">
+                            <div class="row">
+                                <div class="col">
+                                    <p>¿Aún no tienes cuenta? </p>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-danger mb-4" >Regístrate</button>
+                                </div>
+                            </div>
+                            <p>o regístrate con:</p>
+                            <button type="button" class="btn btn-danger btn-floating mx-1">
+                                <i class="fab fa-google"></i>
+                            </button>
+                        </div>
+                        <div th:if="${param.error}" class="text-redtele p-2">
+                            Acceso denegado
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+</body>
+
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+</html>
