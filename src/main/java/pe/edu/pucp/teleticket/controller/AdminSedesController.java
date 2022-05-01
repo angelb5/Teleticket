@@ -11,4 +11,9 @@ public class AdminSedesController {
     public String listarSedes(){
         return "admin/sedes/lista";
     }
+
+    @GetMapping("/gestion")
+    public String gestionSede(){
+        return "admin/sedes/gestionsede";
+    }
 }

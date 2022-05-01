@@ -26,8 +26,18 @@ public class OperadorObrasController {
     @Autowired
     GeneroRepository generoRepository;
 
+    @GetMapping({"/","","/lista"})
+    public String listarObras(){
+        return "operador/obras/lista";
+    }
+
+    @GetMapping("/gestion")
+    public String gestionObra(){
+        return "operador/obras/gestionobra";
+    }
+
     @GetMapping("/nueva")
-    public String nuevoProductoFrm(Model model, @ModelAttribute("obra") Obra obra) {
+    public String nuevaObra(Model model, @ModelAttribute("obra") Obra obra) {
         List<Persona> personaList = personaRepository.findAllByEstadoEquals("Disponible");
         List<Genero> generoList = generoRepository.findAll();
         model.addAttribute("personaList", personaList);
