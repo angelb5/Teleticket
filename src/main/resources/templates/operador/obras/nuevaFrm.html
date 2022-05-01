@@ -4,6 +4,8 @@
 <head>
     <script th:src="@{/selectize/js/standalone/selectize.js}"></script>
     <link th:href="@{/selectize/css/selectize.bootstrap5.css}" rel="stylesheet">
+    <!--Dropify-->
+    <link rel="stylesheet" th:href="@{/dropify/css/dropify.css}"/>
 </head>
 <body class="bg-lightgrey">
 <nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
@@ -93,7 +95,15 @@
                                     <label class="form-check-label" >M18</label>
                                 </div>
                             </div>
-
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Foto</label>
+                            <script>
+                                $(function() {
+                                    $('.dropify').dropify();
+                                });
+                            </script>
+                            <input  type="file" class="dropify" />
                         </div>
                     </div>
                 </div>
@@ -105,4 +115,5 @@
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
 </body>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script type="text/javascript"  th:src="@{/dropify/js/dropify.js}"></script>
 </html>
