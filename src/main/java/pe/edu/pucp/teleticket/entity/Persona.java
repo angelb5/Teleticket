@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Persona {
     @Id
     @Column(name = "idpersonas", nullable = false)
-    private Integer id;
+    private int id;
 
     @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;

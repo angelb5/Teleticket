@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,12 +24,21 @@ public class Obra {
     private String restricciones;
 
     @Column(name = "duracion", nullable = false)
-    private Integer duracion;
+    private int duracion;
 
     @Column(name = "resumen", nullable = false, length = 600)
     private String resumen;
 
     @Column(name = "destacado", nullable = false)
-    private Integer destacado;
+    private int destacado;
+
+    @ManyToMany
+    @JoinTable(name = "obrasgenero",
+            joinColumns = @JoinColumn(name = "idobras"),
+            inverseJoinColumns = @JoinColumn(name = "idgenero"))
+    private Set<Genero> generos = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idobras")
+    private Set<Fotosobra> fotosobra = new LinkedHashSet<>();
 
 }
