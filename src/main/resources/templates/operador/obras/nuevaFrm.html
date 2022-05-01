@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')"></head>
+<body class="bg-lightgrey">
+<nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
+<div class="container py-3">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="card-title text-redtele fs-22">
+                    Nueva obra
+                </div>
+            </div>
+            <form method="post" th:action="@{'/admin/sedes/guardar'}" th:object="${obra}">
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre de la obra</label>
+                            <input th:field="*{titulo}" type="text" class="form-control"/>
+                            <div class="text-danger" th:if="${#fields.hasErrors('titulo')}"
+                                 th:errors="*{titulo}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <label>Descripción</label>
+                            <textarea th:field="*{resumen}" type="text" class="form-control"
+                                      th:classappend="${#fields.hasErrors('resumen')?'is-invalid':''}"></textarea>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('resumen')}"
+                                 th:errors="*{resumen}"></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+</body>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+</html>
