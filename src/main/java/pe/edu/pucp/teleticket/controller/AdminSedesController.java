@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pe.edu.pucp.teleticket.entity.Sala;
 import pe.edu.pucp.teleticket.entity.Sede;
 import pe.edu.pucp.teleticket.repository.SalaRepository;
 import pe.edu.pucp.teleticket.repository.SedeRepository;
@@ -56,14 +57,16 @@ public class AdminSedesController {
 
         int pagina = pag.isEmpty()? 1 : pag.get();
         pagina = pagina<1? 1 : pagina;
-        int paginas = (int) Math.ceil((float)salaRepository.countAllByIdsedes(id)/salasPaginas);
+        Sede sede = new Sede();
+        sede.setId(id);
+        int paginas = (int) Math.ceil((float)salaRepository.countAllBySede(sede)/salasPaginas);
         pagina = pagina>paginas? paginas : pagina;
         Pageable lista= PageRequest.of(pagina-1, salasPaginas);
 
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
         model.addAttribute("sede",optionalSede.get());
-        model.addAttribute("salas", salaRepository.findAllByIdsedes(id,lista));
+        model.addAttribute("salas", salaRepository.findAllBySede(sede,lista));
         return "/admin/sedes/gestionsede";
     }
 
