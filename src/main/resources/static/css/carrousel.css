@@ -32,7 +32,16 @@ body,html{
 
  .container-borrar {
      position: relative;
-     width: 95%;
+     height: 180px;
+     width: 320px;
+     margin-left: 10px;
+     margin-right: 10px;
+ }
+
+ .container-borrar img{
+     object-fit: cover;
+     width: 100%;
+     height: 100%;
  }
 
 .image-borrar {
