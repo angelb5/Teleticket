@@ -93,6 +93,50 @@
     </div>
 </div>
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
+<!-- Modal -->
+<div th:if="${funcionesConflictoList != null}" class="modal top fade" id="modalConflictos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" >Ha ocurrido un conflicto </h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    La función creada presenta un conflicto con el siguiente horario
+                </div>
+                <div class="mb-3" th:each="funcion : ${funcionesConflictoList}">
+                    <div>
+                        <span>Obra:&nbsp</span>
+                        <span class="fw-bold" th:text="${funcion.obra.titulo}"></span>
+                    </div>
+                    <div>
+                        <span>Inicio:&nbsp</span>
+                        <span class="fw-bold" th:text="${funcion.inicio}"></span>
+                    </div>
+                    <div>
+                        <span>Fin:&nbsp</span>
+                        <span class="fw-bold" th:text="${funcion.fin}"></span>
+                    </div>
+                    <div>
+                        <span>Sala:&nbsp</span>
+                        <span class="fw-bold" th:text="| ${funcion.sala.numero} - ${funcion.sala.sede.nombre}|"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script type="text/javascript" th:if="${funcionesConflictoList != null}">
+    $(window).on('load', function() {
+        $('#modalConflictos').modal('show');
+    });
+</script>
 </html>

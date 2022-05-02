@@ -53,10 +53,11 @@ public class OperadorFuncionesController {
     public String registaraFuncion(@ModelAttribute("funcion") @Valid Funcion funcion, BindingResult bindingResult,
                                    RedirectAttributes attr, Model model){
         int idobra = funcion.getObra().getId();
-        if(idobra==0 || obraRepository.findById(idobra).isEmpty() ) {
+        Optional<Obra> optionalObra = obraRepository.findById(idobra);
+        List<Sede> sedeList = sedeRepository.findAll();
+        if(idobra==0 || optionalObra.isEmpty() ) {
             return "redirect:/operador/";
         }else if(bindingResult.hasErrors()){
-            List<Sede> sedeList = sedeRepository.findAll();
             model.addAttribute("sedeList", sedeList);
             return "operador/funciones/nuevaFrm";
         }else{
@@ -70,7 +71,7 @@ public class OperadorFuncionesController {
             }
 
             LocalDate minDate = LocalDate.now().plusDays(1);
-            LocalDate maxDate = LocalDate.now().plusMonths(3);
+            LocalDate maxDate = LocalDate.now().plusMonths(4);
             boolean fechaError = funcion.getFecha().isAfter(maxDate) || funcion.getFecha().isBefore(minDate);
             if(fechaError){
                 FieldError fFechaerror = new FieldError("fecha", "fecha", "La fecha debe estar entre " +minDate+" y "+maxDate);
@@ -92,12 +93,21 @@ public class OperadorFuncionesController {
             }
 
             if(horaError || fechaError || aforoError || salaError){
-                List<Sede> sedeList = sedeRepository.findAll();
                 model.addAttribute("sedeList", sedeList);
                 return "operador/funciones/nuevaFrm";
             }else{
-                funcionRepository.save(funcion);
-                return "redirect:/operador/obras/gestion?id" + funcion.getObra().getId();
+                LocalTime fin = funcion.getInicio().plusMinutes(optionalObra.get().getDuracion());
+                List<Funcion> funcionesConflictoList = funcionRepository.findFuncionesEnConflicto(funcion.getFecha(),funcion.getInicio(),fin,funcion.getObra().getId(), funcion.getSala().getId());
+                if(funcionesConflictoList.size()>0){
+                    model.addAttribute("funcionesConflictoList", funcionesConflictoList);
+                    model.addAttribute("sedeList", sedeList);
+                    return "operador/funciones/nuevaFrm";
+                }else{
+                    funcion.setEstado("Activa");
+                    funcionRepository.save(funcion);
+                    return "redirect:/operador/obras/gestion?id" + funcion.getObra().getId();
+                }
+
             }
         }
     }
