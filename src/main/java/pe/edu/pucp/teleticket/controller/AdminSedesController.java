@@ -36,7 +36,13 @@ public class AdminSedesController {
         pagina = pagina<1? 1 : pagina;
         int paginas = (int) Math.ceil((float)sedeRepository.count()/sedesPaginas);
         pagina = pagina>paginas? paginas : pagina;
-        Pageable lista= PageRequest.of(pagina-1, sedesPaginas);
+        Pageable lista;
+        if(pagina==0){
+            lista= PageRequest.of(0, sedesPaginas);
+        } else {
+            lista= PageRequest.of(pagina-1, sedesPaginas);
+
+        }
         List<Sede> listaSedes = sedeRepository.findAllByOrderByIdAsc(lista);
         model.addAttribute("listaSedes",listaSedes);
         model.addAttribute("pag", pagina);
@@ -61,7 +67,13 @@ public class AdminSedesController {
         sede.setId(id);
         int paginas = (int) Math.ceil((float)salaRepository.countAllBySede(sede)/salasPaginas);
         pagina = pagina>paginas? paginas : pagina;
-        Pageable lista= PageRequest.of(pagina-1, salasPaginas);
+        Pageable lista;
+        if(pagina==0){
+            lista= PageRequest.of(0, salasPaginas);
+        } else {
+            lista= PageRequest.of(pagina-1, salasPaginas);
+
+        }
 
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
