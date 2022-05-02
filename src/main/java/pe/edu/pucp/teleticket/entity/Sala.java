@@ -18,7 +18,7 @@ public class Sala {
     @JoinColumn(name = "idsedes", nullable = false)
     private Sede sede;
 
-    @Column(name = "numero", nullable = false, length = 5)
+    @Column(name = "numero", nullable = false, length = 20)
     private String numero;
 
     @Column(name = "aforo", nullable = false)
