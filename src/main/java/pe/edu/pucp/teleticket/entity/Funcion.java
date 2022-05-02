@@ -5,6 +5,10 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -18,18 +22,22 @@ public class Funcion {
     @Column(name = "idfunciones", nullable = false)
     private int id;
 
+    @NotNull(message = "Obra no puede estar vacía")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idobras", nullable = false)
     private Obra obra;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idsalas", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idsalas")
+    @NotNull(message = "Sala no puede estar vacía")
     private Sala sala;
 
+    @NotNull(message = "Fecha no puede estar vacía")
     @Column(name = "fecha", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fecha;
 
+    @NotNull(message = "La hora de inicio no puede estar vacía")
     @Column(name = "inicio", nullable = false)
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime inicio;
@@ -38,14 +46,19 @@ public class Funcion {
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime fin;
 
-    @Column(name = "costo", nullable = false, length = 45)
-    private String costo;
+    @Min(value=10, message = "Valor mínimo 10.00")
+    @Max(value = 500, message = "Valor máximo 500.00")
+    @Column(name = "costo")
+    private float costo;
 
-    @Column(name = "stock", nullable = false, length = 45)
-    private String stock;
+    @Min(value=10, message = "Valor mínimo 10")
+    @Column(name = "stock")
+    private int stock;
 
+    @Min(value=1, message = "Valor mínimo 1")
+    @Max(value = 10, message = "Valor máximo 10")
     @Column(name = "maxreservas", nullable = false)
-    private Integer maxreservas;
+    private int maxreservas;
 
     @Lob
     @Column(name = "estado", nullable = false)
