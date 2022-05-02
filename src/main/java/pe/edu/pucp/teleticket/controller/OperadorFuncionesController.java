@@ -105,7 +105,8 @@ public class OperadorFuncionesController {
                 }else{
                     funcion.setEstado("Activa");
                     funcionRepository.save(funcion);
-                    return "redirect:/operador/obras/gestion?id" + funcion.getObra().getId();
+
+                    return "redirect:/operador/obras/gestion/" + funcion.getObra().getId();
                 }
 
             }

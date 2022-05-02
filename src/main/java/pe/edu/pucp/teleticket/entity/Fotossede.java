@@ -21,11 +21,4 @@ public class Fotossede {
 
     @Column(name = "idsedes", nullable = false)
     private int idsedes;
-
-    @Column(name = "nombre", nullable = false, length = 45)
-    private String nombre;
-
-    @Column(name = "contenido", nullable = false, length = 45)
-    private String contenido;
-
 }

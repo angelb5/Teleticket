@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import pe.edu.pucp.teleticket.entity.Fotossede;
 import pe.edu.pucp.teleticket.repository.FotoSedeRepository;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Optional;
 
 @Controller
@@ -20,25 +23,16 @@ public class SedesFotosController {
     FotoSedeRepository fotoSedeRepository;
 
     @GetMapping("/image/sede/{id}")
-    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id){
+    public void mostrarImagen(@PathVariable("id") int id, HttpServletResponse response) throws ServletException, IOException {
         Optional<Fotossede> optionalFotossede = fotoSedeRepository.findById(id);
         if(optionalFotossede.isPresent()){
             Fotossede fotosede =  optionalFotossede.get();
 
             byte[] imagenComoBytes = fotosede.getFoto();
 
-            HttpHeaders httpHeaders= new HttpHeaders();
-            httpHeaders.setContentType(
-                    MediaType.parseMediaType(fotosede.getContenido())
-            );
-
-            return new ResponseEntity<>(
-                    imagenComoBytes,
-                    httpHeaders,
-                    HttpStatus.OK
-            );
-        } else {
-            return  null;
+            response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+            response.getOutputStream().write(imagenComoBytes);
+            response.getOutputStream().close();
         }
     }
 }

@@ -64,7 +64,7 @@
         <!-- Imágenes -->
         <div style="position: relative; ">
             <div id="wrap" class="carousel">
-                <a href="#" class="hb" th:each="fotoid : ${fotos}">
+                <div href="#" class="hb" th:each="fotoid : ${fotos}">
                     <div class="container-borrar">
                         <img th:src="@{|/image/sede/${fotoid}|}"
                              class="image-borrar" style="width:100%">
@@ -72,7 +72,7 @@
                             <div class="text-borrar">Eliminar</div>
                         </div>
                     </div>
-                </a>
+                </div>
 
 
             </div>
