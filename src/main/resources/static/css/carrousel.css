@@ -3,27 +3,19 @@ a {color:inherit;text-decoration:none;}
 
 body,html{
     overflow-x: hidden;
-    font-size:16px;
-    font-family: 'Montserrat', sans-serif;
 }
 
 #wrap{
-    left:0; top:0;
-    width:150%;
+    position: static;
+    width:100%;
     height:100%;
     display:flex;
     align-items:stretch;
     margin:0 25%;
+    overflow-x: visible;
+
 }
-.hb {
-    position:relative;
-    width:25%;
-    z-index:1;
-    display:flex;
-    align-items:center;
-    z-index:2;
-    trasnform:scale(.97);
-}
+
 .c{
     position:relative;
     display:block;
@@ -32,48 +24,10 @@ body,html{
 .c img {
     position:relative;
     display:block;
-    width:100%;
-    height:auto;
+    height:200px;
     z-index:2;
 }
-.txt {
-    position:absolute;
-    top:100%; left:10%;
-    width:80%;
-    opacity:0;
-    padding:1em 0 0 1em;
-    border-left:1px solid;
-    z-index:1;
-    transform:scaleY(1) translateY(-50px);
-    transition:transform .2s, opacity .5s;
-}
-h1 {
-    font-size:1.2em;
-    font-weight:700;
-    text-transform:uppercase;
-}
-.hb:hover .txt {
-    opacity:1;
-    transform:scaleY(1) translateY(0);
-}
 
-
-.hb:hover + .fullBg {opacity:1;transform:scale(1.02);}
-.credits {
-    position:fixed;
-    bottom:0;right:0;
-    padding:1.5em;
-    font-size:.8em;
-    text-align:right;
-    font-style:italic;
-    opacity:.8;
-    transition:opacity ;
-    z-index:3;
-}
-.credits:hover {
-    text-decoration:underline;
-    opacity:1;
-}
 
 
  .container-borrar {
@@ -86,7 +40,7 @@ h1 {
     display: block;
     width: 100%;
     height: 100%;
-    transition: .5s ease;
+    transition: all 1s ease;
     backface-visibility: hidden;
 }
 
@@ -102,7 +56,12 @@ h1 {
 }
 
 .container-borrar:hover .image-borrar {
-    opacity: 0.5;
+    -webkit-filter: brightness(50%);
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    transition: all 1s ease;
 }
 
 .container-borrar:hover .middle-borrar {

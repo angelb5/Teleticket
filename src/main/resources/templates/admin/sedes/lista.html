@@ -13,41 +13,43 @@
 
     <div class="row row-cols-1 row-cols-md-2 g-4 py-3">
         <!--Card 1-->
-        <div class="col">
+        <div class="col" th:each="sede : ${listaSedes}">
             <div class="card h-100 position-relative">
                 <div class="row h-100">
 
                     <div class="col-md-6 pe-0">
                         <a class="text-dark" href="#"></a>
-                            <img src="../img/sanborja.jpg" alt="Sede San Borja" class="img-fluid rounded-start img-cover"/>
+                            <img src="https://wallpaperaccess.com/full/1561985.jpg" alt="Sede San Borja" class="img-fluid rounded-start img-cover"/>
                         </a>
                     </div>
 
                     <div class="col-md-6 p-3 pe-4">
                         <a class="text-dark" href="#">
-                            <div class="fw-bold mb-2 fs-14 card-tele-title">Sede San Borja</div>
-                            <div class="mb-2 card-tele-subtitle">
+                            <div class="fw-bold mb-2 fs-14 card-tele-title" th:text="${sede.nombre}">Sede San Borja</div>
+                            <div class="mb-2 card-tele-subtitle" th:text="${sede.direccion}">
                                     Av. Javier Prado Este 2225, San Borja 15021
                             </div>
-                            <div>
+                            <div th:text="${'('+sede.latitud+', '+sede.longitud+')'}">
                                 (-12.087349, -77.002893)
                             </div>
-                            <div class="mb-2 fw-bold text-end">
+                            <div class="mb-2 fw-bold text-end" th:text="${sede.estado}">
                                 Activa
                             </div>
                         </a>
 
                         <div class="text-end">
-                            <button class="btn btn-redtele">Editar</button>
-                            <button class="btn btn-redtele">Ver más</button>
+                            <a class="btn btn-redtele" th:href="@{'/admin/sedes/gestion/'+ ${sede.id}}">Ver más</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
+
     </div>
 
-    <nav th:replace="fragmentos/paginacion :: paginacion('ruta',1,3)"></nav>
+    <nav th:replace="fragmentos/paginacion :: paginacion('/admin/sedes',${pag},${paginas})"></nav>
 </div>
     <!--Fin de contenidos-->
 

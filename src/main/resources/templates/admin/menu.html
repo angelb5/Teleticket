@@ -3,13 +3,18 @@
 <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')"></head>
 <body>
 <nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
+    <style>
+        .btn-redtele {
+            width: auto; height: 160px; align-content: center ; display: flex;flex-wrap: wrap;justify-content: center;
+        }
+    </style>
 <!--Contenidos-->
 <div class="container justify-content-center">
     <!--Primera fila-->
     <div class="row row-cols-md-3 py-4">
         <!--boton1-->
         <div class="column">
-            <button class="btn btn-redtele" style="width: 360px; height: 160px;">
+            <a class="btn btn-redtele" th:href="@{'/admin/sedes/'}" >
                 <div class="row py-2">
                     <div class="col-md-2 align-content-center">
                         <i class="fas fa-edit"
@@ -20,11 +25,11 @@
                         Gestión de sedes
                     </div>
                 </div>
-            </button>
+            </a>
         </div>
         <!--boton2-->
         <div class="column">
-            <button class="btn btn-redtele" style="width: 360px; height: 160px;">
+            <a class="btn btn-redtele" th:href="@{'/admin/operadores/'}">
                 <div class="row py-2">
                     <div class="col-md-2 align-content-center">
                         <i class="fas fa-edit py-3"
@@ -35,11 +40,11 @@
                         Gestión de operadores
                     </div>
                 </div>
-            </button>
+            </a>
         </div>
         <!--boton3-->
         <div class="column">
-            <button class="btn btn-redtele" style="width: 360px; height: 160px;">
+            <a class="btn btn-redtele" th:href="@{'/admin/personas/'}">
                 <div class="row py-2">
                     <div class="col-md-2 align-content-center">
                         <i class="fas fa-edit py-4"
@@ -50,13 +55,13 @@
                         Gestión de actores y directores
                     </div>
                 </div>
-            </button>
+            </a>
         </div>
     </div>
     <!--Segunda fila-->
     <div class="container">
         <div style="margin: 0;position: absolute;left: 50% ;-ms-transform: translateX(-50%);transform: translateX(-50%);" >
-        <button class="btn btn-redtele" style="width: 540px; height: 160px;">
+        <a class="btn btn-redtele" th:href="@{'/admin/clientes/'}" style="width: 600px" >
             <div class="row py-2">
                 <div class="col-md-2 align-content-center">
                     <i class="fas fa-users py-4"
@@ -67,7 +72,7 @@
                     Listado de clientes
                 </div>
             </div>
-        </button>
+        </a>
         </div>
     </div>
 

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')"></head>
+    <head>
+        <script th:src="@{/selectize/js/standalone/selectize.js}"></script>
+        <link th:href="@{/selectize/css/selectize.bootstrap5.css}" rel="stylesheet">
+        <!--Dropify-->
+        <link rel="stylesheet" th:href="@{/dropify/css/dropify.css}"/>
+    </head>
+    <body class="bg-lightgrey">
+        <nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
+        <div class="container py-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="card-title text-redtele fs-22">
+                            Nueva obra
+                        </div>
+                    </div>
+                    <form method="post" th:action="@{'/admin/sedes/guardar'}" >
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre de la obra</label>
+                                    <input  type="text" class="form-control"/>
+                                    <div class="text-danger"
+                                        ></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Descripción</label>
+                                    <textarea  type="text" class="form-control"
+                                              ></textarea>
+                                    <div class="invalid-feedback"
+                                         ></div>
+                                </div>
+                                <div class="control-group mb-3">
+                                    <label for="directores" class="form-label">Directores </label>
+                                    <select class="demo-default" name="directores" id="directores" multiple>
+                                        <option value="">Selecciona directores</option>
+                                        <option
+
+                                               ></option>
+                                    </select>
+                                </div>
+                                <script>
+                                    $('#directores').selectize();
+                                </script>
+                                <div class="control-group mb-3">
+                                    <label for="actores" class="form-label">Actores </label>
+                                    <select class="demo-default" name="directores" id="actores" multiple>
+                                        <option value="">Selecciona actores</option>
+                                        <option
+
+                                                ></option>
+                                    </select>
+                                </div>
+                                <script>
+                                    $('#actores').selectize();
+                                </script>
+                                <div class="control-group mb-3">
+                                    <label for="generos" class="form-label">Géneros </label>
+                                    <select class="demo-default" name="generos" id="generos" multiple>
+                                        <option value="">Selecciona generos</option>
+                                        <option
+
+                                                ></option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label class="form-label">Duración</label>
+                                    <input type="text" class="form-control"/>
+                                    <div class="text-danger"
+                                         ></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Restricción</label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="form-check d-flex align-items-center me-3">
+                                            <input class="form-check-input" type="radio" value="APT" />
+                                            <label class="form-check-label" >APT</label>
+                                        </div>
+
+                                        <div class="form-check d-flex align-items-center me-3">
+                                            <input class="form-check-input" type="radio"value="M13" />
+                                            <label class="form-check-label" >M13</label>
+                                        </div>
+
+                                        <div class="form-check d-flex align-items-center me-3">
+                                            <input class="form-check-input" type="radio" value="M18" />
+                                            <label class="form-check-label" >M18</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Foto</label>
+                                    <script>
+                                        $(function() {
+                                            $('.dropify').dropify();
+                                        });
+                                    </script>
+                                    <input  type="file" class="dropify" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <footer th:replace="fragmentos/footer.html :: footer"></footer>
+    </body>
+    <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+    <script type="text/javascript"  th:src="@{/dropify/js/dropify.js}"></script>
+</html>

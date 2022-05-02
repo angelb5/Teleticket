@@ -3,13 +3,13 @@ package pe.edu.pucp.teleticket.repository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pe.edu.pucp.teleticket.entity.Sede;
-
+import pe.edu.pucp.teleticket.Sala;
 
 import java.util.List;
 
 @Repository
-public interface SedeRepository extends JpaRepository<Sede, Integer> {
+public interface SalaRepository extends JpaRepository<Sala,Integer> {
+    List<Sala> findAllByIdsedes(Integer Idsedes,Pageable pageable);
 
-    List<Sede> findAllByOrderByIdAsc(Pageable pageable);
+    long countAllByIdsedes(Integer Idsedes);
 }

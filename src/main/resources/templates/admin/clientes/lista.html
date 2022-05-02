@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')">
+        <link rel="stylesheet" th:href="@{'/css/tables.css'}"/>
+    </head>
+    <body>
+        <nav th:replace="fragmentos/navbar.html :: navbar('personas')"></nav>
+
+<!--Contenidos-->
+<div class="container py-2 ">
+
+    <div class="title-22 py-4">
+        Listado de clientes
+    </div>
+    <!-- Small button groups (default and split) -->
+
+    <div class="btn-group dropstart" style="text-align: right; float: right">
+        <button class="btn btn-redtele btn-sm dropdown-toggle" type="button" data-mdb-toggle="dropdown"
+                aria-expanded="false">
+            Filtros
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Perfil editado recientemente</a></li>
+            <li><a class="dropdown-item" href="#">Cuentas con historial de compras</a></li>
+            <li><a class="dropdown-item" href="#">Cuentas con historial de críticas</a></li>
+            <li><a class="dropdown-item" href="#">Cuentas sin historial</a></li>
+            <li>
+                <hr class="dropdown-divider"/>
+            </li>
+            <li><a class="dropdown-item" href="#">Limpiar filtro</a></li>
+        </ul>
+    </div>
+    <br>
+    <table class="hover content-table">
+        <thead class="bg-light">
+        <tr class="bg-dark" style="font-size: 14px">
+            <th class="text-white fw-bold">Nombre</th>
+            <th class="text-white fw-bold">Apellidos</th>
+            <th class="text-white fw-bold">Edad</th>
+            <th class="text-white fw-bold">Correo</th>
+            <th class="text-white fw-bold">Teléfono</th>
+        </tr>
+        </thead>
+        <tbody style="font-size: 12px">
+        <tr th:each="cliente : ${listaClientes}">
+            <td class="fw-bold" th:text="${cliente.nombre}">
+                Alejandro david
+            </td>
+            <td th:text="${cliente.apellido}">
+                Rosales Milagros
+            </td>
+            <td th:text="${cliente.nacimiento}">
+                28
+            </td>
+            <td th:text="${cliente.correo}">
+                Alejandro@correo.es
+            </td>
+            <td th:text="${cliente.celular}">
+                981239289
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+    <!--Paginacion-->
+    <nav th:replace="fragmentos/paginacion :: paginacion('/admin/clientes',${pag},${paginas})"></nav>
+
+</div>
+
+
+</div>
+
+
+<!--Footer-->
+        <footer th:replace="fragmentos/footer.html :: footer"></footer>
+</div>
+<!--Fin de contenidos-->
+<!-- Modal -->
+
+<!-- End your project here-->
+
+
+<!-- MDB -->
+<script type="text/javascript" src="../js/mdb.min.js"></script>
+<!-- Custom scripts -->
+
+
+</script>
+</body>
+</html>

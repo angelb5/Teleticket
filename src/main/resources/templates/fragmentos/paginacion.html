@@ -4,27 +4,19 @@
 </head>
 <body>
 <!--Paginacion-->
-<nav th:fragment="paginacion (rutabusqueda, actual, última)" aria-label="..." class="py-2 justify-content-center">
+<nav th:fragment="paginacion (rutabusqueda, actual, ultima)" aria-label="..." class="py-2 justify-content-center" th:if="${ultima>1}">
     <div style="text-align: -webkit-center;">
         <ul class="pagination shadow-1-soft rounded-2" style="width: fit-content;">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" aria-label="Previous">
+            <li class="page-item" th:unless="${actual<6}">
+                <a class="page-link" th:href="@{${rutabusqueda} + '?pag=1'}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            <li class="page-item active">
-                <a class="page-link" href="#">1</a>
-            </li>
-            <li class="page-item " aria-current="page">
-                <a class="page-link" href="#">
-                    2 <span class="visually-hidden">(current)</span>
-                </a>
+            <li th:each="i: ${#numbers.sequence( ((actual - 4)<1? 1 : (actual - 4)) , ((actual + 4)>ultima? ultima  : (actual + 4)))}" th:class="${  i== actual? 'page-item active' : 'page-item'}">
+                <a class="page-link"  th:href="@{${rutabusqueda} + '?pag='+ ${i}}" th:text="${i}">1</a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="#">3</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
+                <a class="page-link" th:unless="${actual> (ultima - 5)}" th:href="@{${rutabusqueda} + '?pag='+ ${ultima}}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
