@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface FotoSedeRepository extends JpaRepository<Fotossede, Integer> {
 
-    @Query(value = "select idfotossedes from fotosssedes where idsedes=?1",nativeQuery = true)
+    @Query(value = "select idfotossedes from fotossedes where idsedes=?1",nativeQuery = true)
     List<Integer> findAllIdByIdSedes(Integer idSede);
 }

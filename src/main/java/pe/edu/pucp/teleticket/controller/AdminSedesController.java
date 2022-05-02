@@ -78,7 +78,7 @@ public class AdminSedesController {
 
         }
 
-
+        model.addAttribute("fotos", fotoSedeRepository.findAllIdByIdSedes(id));
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
         model.addAttribute("sede",optionalSede.get());
