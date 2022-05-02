@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')"></head>
+<head>
+    <script th:src="@{/selectize/js/standalone/selectize.js}"></script>
+    <link th:href="@{/selectize/css/selectize.bootstrap5.css}" rel="stylesheet">
+</head>
+<body class="bg-lightgrey">
+<nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
+<div class="container py-3">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="card-title text-redtele fs-22">
+                    Nueva función
+                </div>
+            </div>
+            <form method="post" th:action="@{'/admin/sedes/guardar'}" th:object="${funcion}">
+                <input hidden th:field="*{obra}">
+                <div class="row">
+                    <div class="col">
+                        <div class="control-group mb-3">
+                            <label for="sala" class="form-label">Sala</label>
+                            <select class="demo-default" name="sala" id="sala">
+                                <option value="">Selecciona una sala</option>
+                                <optgroup th:each="sede : ${sedeList}" th:label="${sede.nombre}">
+                                    <option th:each="sala : ${sede.salas}"
+                                            th:text="${sala.numero}"
+                                            th:value="${sala.id}"></option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <script>
+                            $('#sala').selectize({
+                                sortField: 'text'
+                            });
+                        </script>
+                        <div class="mb-3">
+                            <label class="form-label">Fecha</label>
+                            <input th:field="*{fecha}" type="date" class="form-control"/>
+                            <div class="text-danger" th:if="${#fields.hasErrors('fecha')}"
+                                 th:errors="*{fecha}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Hora de inicio</label>
+                            <input th:field="*{inicio}" type="time" class="form-control"/>
+                            <div class="text-danger" th:if="${#fields.hasErrors('inicio')}"
+                                 th:errors="*{inicio}"></div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Costo por ticket</label>
+                            <input th:field="*{costo}" type="text" class="form-control"/>
+                            <div class="text-danger" th:if="${#fields.hasErrors('costo')}"
+                                 th:errors="*{costo}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Límite de compra</label>
+                            <input th:field="*{maxreservas}" type="text" class="form-control"/>
+                            <div class="text-danger" th:if="${#fields.hasErrors('maxreservas')}"
+                                 th:errors="*{maxreservas}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Aforo</label>
+                            <input th:field="*{stock}" type="text" class="form-control"/>
+                            <div class="text-danger" th:if="${#fields.hasErrors('stock')}"
+                                 th:errors="*{stock}"></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+</body>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+</html>
