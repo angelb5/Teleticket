@@ -20,7 +20,7 @@
                 <div class="row mb-3">
                     <div class="col control-group">
                         <label class="form-label">Sala</label>
-                        <select class="demo-default" th:field="*{sala.id}"
+                        <select class="demo-default" th:field="*{sala}"
                                 th:classappend="${#fields.hasErrors('sala')?'is-invalid':''}">
                             <option value="0">Selecciona una sala</option>
                             <optgroup th:each="sede : ${sedeList}" th:label="${sede.nombre}">
@@ -34,7 +34,7 @@
                              th:errors="*{sala}"></div>
                     </div>
                     <script>
-                        $("select[name*='sala.id']").selectize({
+                        $("select[name*='sala']").selectize({
                             sortField: 'text'
                         });
                     </script>

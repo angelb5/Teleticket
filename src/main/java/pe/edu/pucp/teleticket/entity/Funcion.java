@@ -23,11 +23,11 @@ public class Funcion {
     private int id;
 
     @NotNull(message = "Obra no puede estar vacía")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "idobras", nullable = false)
     private Obra obra;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "idsalas")
     @NotNull(message = "Sala no puede estar vacía")
     private Sala sala;

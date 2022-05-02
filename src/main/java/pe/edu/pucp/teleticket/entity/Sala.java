@@ -14,7 +14,7 @@ public class Sala {
     @Column(name = "idsalas", nullable = false)
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "idsedes", nullable = false)
     private Sede sede;
 

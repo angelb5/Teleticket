@@ -30,6 +30,7 @@ public class OperadorFuncionesController {
     ObraRepository obraRepository;
     @Autowired
     SedeRepository sedeRepository;
+
     @Autowired
     SalaRepository salaRepository;
     @Autowired
@@ -60,7 +61,6 @@ public class OperadorFuncionesController {
             return "operador/funciones/nuevaFrm";
         }else{
             System.out.println(funcion.getSala().getId());
-            Optional<Sala> optionalSala = salaRepository.findById(1);
             LocalTime minTime = LocalTime.parse( "11:00:00" );
             LocalTime maxTime = LocalTime.parse( "23:00:00" );
             boolean horaError = funcion.getInicio().isAfter(maxTime) || funcion.getInicio().isBefore(minTime);
@@ -73,33 +73,32 @@ public class OperadorFuncionesController {
             LocalDate maxDate = LocalDate.now().plusMonths(3);
             boolean fechaError = funcion.getFecha().isAfter(maxDate) || funcion.getFecha().isBefore(minDate);
             if(fechaError){
-                FieldError fFechaerror = new FieldError("fecha", "fecha", "La hora de inicio debe estar entre 11:00 y 23:00");
+                FieldError fFechaerror = new FieldError("fecha", "fecha", "La fecha debe estar entre " +minDate+" y "+maxDate);
                 bindingResult.addError(fFechaerror);
             }
 
+            Optional<Sala> optionalSala = salaRepository.findById(funcion.getSala().getId());
+            boolean salaError = optionalSala.map(sala -> sala.getEstado().equals("No disponible")).orElse(true);
+            boolean aforoError = false;
+            if(salaError){
+                FieldError fSalaError = new FieldError("sala", "sala", "Debe eligir una sala válida");
+                bindingResult.addError(fSalaError);
+            }else{
+                aforoError = funcion.getStock() > optionalSala.get().getAforo();
+                if(aforoError){
+                    FieldError fAforoError = new FieldError("stock", "stock", "El aforo de la función no puede ser mayor que el aforo de la sala");
+                    bindingResult.addError(fAforoError);
+                }
+            }
 
-//            boolean salaError = optionalSala.map(sala -> sala.getEstado().equals("No disponible")).orElse(true);
-//            boolean aforoError = false;
-//            if(salaError){
-//                FieldError fSalaError = new FieldError("sala", "sala", "Debe eligir una sala válida");
-//                bindingResult.addError(fSalaError);
-//            }else{
-//                aforoError = funcion.getStock() > optionalSala.get().getAforo();
-//                if(aforoError){
-//                    FieldError fAforoError = new FieldError("stock", "stock", "El aforo de la función no puede ser mayor que el aforo de la sala");
-//                    bindingResult.addError(fAforoError);
-//                }
-//            }
-
-//            if(horaError || fechaError || aforoError || salaError){
-//                List<Sede> sedeList = sedeRepository.findAll();
-//                model.addAttribute("sedeList", sedeList);
-//                return "operador/funciones/nuevaFrm";
-//            }else{
-//                funcionRepository.save(funcion);
-//                return "redirect:/operador/obras/gestion?id" + funcion.getObra().getId();
-//            }
-            return "redirect:/operador/obras/gestion?id" + funcion.getObra().getId();
+            if(horaError || fechaError || aforoError || salaError){
+                List<Sede> sedeList = sedeRepository.findAll();
+                model.addAttribute("sedeList", sedeList);
+                return "operador/funciones/nuevaFrm";
+            }else{
+                funcionRepository.save(funcion);
+                return "redirect:/operador/obras/gestion?id" + funcion.getObra().getId();
+            }
         }
     }
 }
