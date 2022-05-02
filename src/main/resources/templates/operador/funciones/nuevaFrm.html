@@ -25,6 +25,7 @@
                                 <option value="">Selecciona una sala</option>
                                 <optgroup th:each="sede : ${sedeList}" th:label="${sede.nombre}">
                                     <option th:each="sala : ${sede.salas}"
+                                            th:if="${sala.estado == 'Disponible'}"
                                             th:text="${sala.numero}"
                                             th:value="${sala.id}"></option>
                                 </optgroup>
