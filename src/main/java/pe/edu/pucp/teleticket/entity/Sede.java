@@ -2,16 +2,23 @@ package pe.edu.pucp.teleticket.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import pe.edu.pucp.teleticket.repository.FotoSedeRepository;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "sedes")
+
 public class Sede {
+
+
+
     @Id
     @Column(name = "idsedes", nullable = false)
     private int id;
@@ -34,5 +41,9 @@ public class Sede {
 
     @OneToMany(mappedBy = "sede")
     private Set<Sala> salas = new LinkedHashSet<>();
+
+    @Column(name = "fotoprincipal", nullable = true)
+    private Integer fotoprincipal;
+
 
 }

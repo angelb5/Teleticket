@@ -64,60 +64,16 @@
         <!-- Imágenes -->
         <div style="position: relative; ">
             <div id="wrap" class="carousel">
-                <a href="#" class="hb">
+                <a href="#" class="hb" th:each="fotoid : ${sede.listaFotosSede()}">
                     <div class="container-borrar">
-                        <img src="http://comofuncionaque.com/wp-content/uploads/2015/10/edificio-naciones-unidas1.jpg"
+                        <img th:src="@{|/image/sede/${fotoid}|}"
                              class="image-borrar" style="width:100%">
                         <div class="middle-borrar">
                             <div class="text-borrar">Eliminar</div>
                         </div>
                     </div>
                 </a>
-                <a href="#" class="hb">
-                    <div class="container-borrar">
-                        <img src="http://comofuncionaque.com/wp-content/uploads/2015/10/edificio-naciones-unidas1.jpg"
-                             class="image-borrar" style="width:100%">
-                        <div class="middle-borrar">
-                            <div class="text-borrar">Eliminar</div>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="hb">
-                    <div class="container-borrar">
-                        <img src="http://comofuncionaque.com/wp-content/uploads/2015/10/edificio-naciones-unidas1.jpg"
-                             class="image-borrar" style="width:100%">
-                        <div class="middle-borrar">
-                            <div class="text-borrar">Eliminar</div>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="hb">
-                    <div class="container-borrar">
-                        <img src="http://comofuncionaque.com/wp-content/uploads/2015/10/edificio-naciones-unidas1.jpg"
-                             class="image-borrar" style="width:100%">
-                        <div class="middle-borrar">
-                            <div class="text-borrar">Eliminar</div>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="hb">
-                    <div class="container-borrar">
-                        <img src="http://comofuncionaque.com/wp-content/uploads/2015/10/edificio-naciones-unidas1.jpg"
-                             class="image-borrar" style="width:100%">
-                        <div class="middle-borrar">
-                            <div class="text-borrar">Eliminar</div>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="hb">
-                    <div class="container-borrar">
-                        <img src="http://comofuncionaque.com/wp-content/uploads/2015/10/edificio-naciones-unidas1.jpg"
-                             class="image-borrar" style="width:100%">
-                        <div class="middle-borrar">
-                            <div class="text-borrar">Eliminar</div>
-                        </div>
-                    </div>
-                </a>
+
 
             </div>
         </div>

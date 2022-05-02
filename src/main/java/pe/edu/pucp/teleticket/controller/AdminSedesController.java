@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pe.edu.pucp.teleticket.entity.Sala;
 import pe.edu.pucp.teleticket.entity.Sede;
+import pe.edu.pucp.teleticket.repository.FotoSedeRepository;
 import pe.edu.pucp.teleticket.repository.SalaRepository;
 import pe.edu.pucp.teleticket.repository.SedeRepository;
 
@@ -29,6 +30,8 @@ public class AdminSedesController {
     SedeRepository sedeRepository;
     @Autowired
     SalaRepository salaRepository;
+    @Autowired
+    FotoSedeRepository fotoSedeRepository;
 
     @GetMapping({"/","","/lista"})
     public String listarSedes(Model model, @RequestParam("pag") Optional<Integer> pag){
@@ -74,6 +77,7 @@ public class AdminSedesController {
             lista= PageRequest.of(pagina-1, salasPaginas);
 
         }
+
 
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);

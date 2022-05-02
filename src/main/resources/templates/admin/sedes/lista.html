@@ -19,7 +19,7 @@
 
                     <div class="col-md-6 pe-0">
                         <a class="text-dark" href="#"></a>
-                            <img src="https://wallpaperaccess.com/full/1561985.jpg" alt="Sede San Borja" class="img-fluid rounded-start img-cover"/>
+                            <img th:src="@{'/image/sede/'+${sede.fotoprincipal==null? 0 : sede.fotoprincipal}}" alt="Sede" class="img-fluid rounded-start img-cover"/>
                         </a>
                     </div>
 
