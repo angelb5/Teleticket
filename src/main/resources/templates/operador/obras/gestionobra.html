@@ -2,10 +2,36 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')"></head>
 <head>
-    <!--Dropify-->
     <link rel="stylesheet" th:href="@{/dropify/css/dropify.css}"/>
+    <!--Table-->
+    <link rel="stylesheet" th:href="@{/css/tables.css}">
+    <!--Carrousel-->
+    <link rel="stylesheet" th:href="@{/css/carrousel.css}">
 </head>
 <body class="bg-lightgrey">
+<script>
+    $(document).ready(function () {
+        var docWidth = $('body').width(),
+            $wrap = $('#wrap'),
+            $images = $('#wrap .hb'),
+            slidesWidth = $wrap.width();
+
+        $(window).on('resize', function () {
+            docWidth = $('body').width();
+            slidesWidth = $wrap.width();
+        })
+
+        $(document).mousemove(function (e) {
+            var mouseX = e.pageX,
+                offset = mouseX / docWidth * slidesWidth - mouseX / 2;
+
+            $images.css({
+                '-webkit-transform': 'translate3d(' + -offset + 'px,0,0)',
+                'transform': 'translate3d(' + -offset + 'px,0,0)'
+            });
+        });
+    })
+</script>
 <script>
     $(function() {
         $('.dropify').dropify();
@@ -13,298 +39,295 @@
 </script>
 <nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
 <!-- Headers obra -->
-<div class="container py-2 ">
-    <div class="row row-cols-2 row-cols-md-2 g-2 py-1">
-        <div class="row row-cols-1 row-cols-md-1 g-1 py-2">
-            <div class="title-30 py-6">Antes de decirte adiós</div>
-            <div class="px-2">
-                <button type="button" class="btn btn-danger" data-mdb-color="dark">APT</button>
-                <button type="button" class="btn btn-outline-danger" data-mdb-color="dark">90 min</button>
-            </div>
+<div class="container py-3">
+    <div class="row mb-3">
+        <div class="text-start col-lg-9">
+            <div class="title-30 py-6" th:text="${obra.titulo}"></div>
         </div>
-        <div class="row row-cols-2 row-cols-md-2 g-2 py-2 justify-content-end">
-            <div></div>
-            <button class="btn btn-redtele" style="height:50px;width:150px">Editar obra</button>
-            <div></div>
-            <button class="btn btn-redtele" style="height:50px;width:150px">Añadir a destacados</button>
+        <div class="d-flex align-items-center justify-content-end col-lg-3">
+            <a class="btn rounded-7 btn-redtele btn-sm h-100" type="button"
+               th:href="@{'/admin/sedes/obras/editar?id=' +${obra.id}+}">
+                <div class="row h-100">
+                    <div class="col-3 h-100 d-flex align-items-center"><i  class="fas fa-solid fa-masks-theater fs-24"></i>
+                    </div>
+                    <div class="col-9 h-100 d-flex align-items-center justify-content-center">Editar Obra</div>
+                </div>
+            </a>
         </div>
     </div>
-    <h5><b>Director:</b></h5>
-    <h5>Director 1</h5>
-    <h5><b>Reparto:</b></h5>
-    <h5>Actor 1, Actriz 1, Actor 2</h5>
-</div>
-
-<!-- Imágenes -->
-<div class="container py-2">
-    <div class="row row-cols-3 row-cols-md-3 g-3 py-3">
-        <div class="title-30 py-6">Imágenes</div>
-        <div></div>
-        <div class="px-7">
-            <button class="btn btn-redtele" style="height:50px;width:150px">Añadir imagen</button>
+    <div class="row mb-5">
+        <div class="fs-16" >
+            <span>Dirección:&nbsp;</span>
+            <span th:each="director, info : ${directores}">
+                <span  class="fw-bold" th:text="${director.nombre}"></span>
+                <span class="fw-bold"  th:unless="${info.index +1 == directores.size()}" th:text="', '"></span>
+            </span>
         </div>
-        <div>
-        <input type="file" class="dropify"  data-default-file="../img/sanborja2.jpg"/>
+        <div class="fs-16" >
+            <span>Reparto:&nbsp;</span>
+            <span th:each="actor, info : ${actores}">
+                <span  class="fw-bold" th:text="${actor.nombre}"></span>
+                <span class="fw-bold"  th:unless="${info.index +1 == actores.size()}" th:text="', '"></span>
+            </span>
         </div>
-        <div>
-            <input  type="file" class="dropify"  data-default-file="../img/sanborja2.jpg"/>
-        </div>
-        <div>
-            <input  type="file" class="dropify"  data-default-file="../img/sanborja2.jpg"/>
-        </div>
-
     </div>
-</div>
 
-<!-- Tabla con info de funciones -->
-<div class="container py-2">
-    <div class="title-26 py-6">
-        Lista de funciones
-        <br>
-        <div style="float: right; margin-top: 15px" class="row-cols-3">
-            <button class="btn btn-redtele btn-sm" type="button"
-                    style="height: 45px; width: 140px;margin-bottom: 10px">
-                <div class="row">
-                    <div class="col-3"><i class="far fa-calendar-plus col"
-                                          style="font-size: 24px;margin-top: 5px"></i></div>
-                    <div class="col-9"><p class="text-white fw-bold col">Nueva Funcion</p></div>
-                </div>
-            </button>
+    <div class="row mb-3">
+        <div class="text-start col-lg-9">
+            <div class="title-26 py-6">Imágenes</div>
         </div>
-        <div class="row" style="font-size: 15px; text-align: right">
-            <div class="col-md-4"></div>
-            <div class="col-md-2">
-                Año&nbsp;&nbsp;
-            </div>
-            <div class="col-md-3">
-                Mes&nbsp;&nbsp;
-            </div>
-            <div class="col-md-3">
-                Sede&nbsp;&nbsp;
-            </div>
+        <div class="d-flex align-items-center justify-content-end col-lg-3">
+            <a class="btn btn-redtele btn-sm h-100 rounded-7" type="button"
+               data-mdb-toggle="modal" data-mdb-target="#anadirModal">
+                <div class="row h-100">
+                    <div class="col-3 h-100 d-flex align-items-center"><i  class="fa fa-solid fa-images fs-24"></i>
+                    </div>
+                    <div class="col-9 h-100 d-flex align-items-center justify-content-center">Añadir imagen</div>
+                </div>
+            </a>
         </div>
-        <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-2">
-                <div class="input-group">
-                    <select class="form-select fs-13" aria-label="Default select example">
-                        <option value="1">Todo</option>
-                        <option value="2">2018</option>
-                        <option value="3">2019</option>
-                        <option value="3">2020</option>
-                        <option value="3">2021</option>
-                        <option value="3">2022</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="input-group">
-                    <select class="form-select fs-13" aria-label="Default select example">
-                        <option value="1">Todo</option>
-                        <option value="2">Enero</option>
-                        <option value="3">Febrero</option>
-                        <option value="3">Agosto</option>
-                        <option value="3">Septiembre</option>
-                        <option value="3">Octubre</option>
-                        <option value="3">Noviembre</option>
-                        <option value="3">Diciembre</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="input-group">
-                    <select class="form-select fs-13" aria-label="Default select example">
-                        <option value="1">Todo</option>
-                        <option value="2">Miraflores</option>
-                        <option value="3">Pueblo Libre</option>
-                    </select>
+    </div>
+    <!-- Imágenes -->
+    <div class="mb-5 overflow-hidden" style="position: relative; ">
+        <div id="wrap" class="carousel">
+            <div href="#" class="hb" th:each="fotoid : ${fotos}">
+                <div class="container-borrar">
+                    <img th:src="@{|/image/obra/${fotoid}|}"
+                         class="image-borrar" style="width:100%">
+                    <div th:unless="${fotoid == obra.fotoprincipal}" class="middle-borrar col">
+                        <button class="btn btn-dark mb-3" th:attr="data-fotoid=${fotoid}, data-src='/image/obra/'+${fotoid}"
+                                th:id="'e'+ ${fotoid}" onclick="setEliminarModal(id)">
+                            Eliminar
+                        </button>
+                        <button class="btn btn-redtele"  th:attr="data-fotoid=${fotoid}, data-src='/image/obra/'+${fotoid}"
+                                th:id="'f'+ ${fotoid}" onclick="setPrincipalModal(id)">
+                            <i class="fa-solid fa-bookmark"></i> Principal
+                        </button>
+                    </div>
+                    <div th:if="${fotoid == obra.fotoprincipal}" class="middle-borrar col text-white fs-14">
+                        <i class="fa-solid fa-bookmark"></i> Foto principal
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <table class="table hover-light align-middle mb-0  round-border text-center">
+
+    <div class="row mb-3">
+        <div class="text-start col-lg-9">
+            <div class="title-26 py-6">Funciones</div>
+        </div>
+        <div class="d-flex align-items-center justify-content-end col-lg-3">
+            <a class="btn btn-redtele btn-sm h-100 rounded-7" type="button"
+               th:href="@{'/operador/funciones/nueva?idobra='+ ${obra.id}}">
+                <div class="row h-100">
+                    <div class="col-3 h-100 d-flex align-items-center"><i  class="fa fa-couch col fs-24"></i>
+                    </div>
+                    <div class="col-9 h-100 d-flex align-items-center justify-content-center">Nueva Función</div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="row fs-14 text-end" >
+        <div class="col-md-4"></div>
+        <div class="col-md-2">
+            Año&nbsp;&nbsp;
+        </div>
+        <div class="col-md-3">
+            Mes&nbsp;&nbsp;
+        </div>
+        <div class="col-md-3">
+            Sede&nbsp;&nbsp;
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-2">
+            <div class="input-group">
+                <select class="form-select fs-13" aria-label="Default select example">
+                    <option value="1">Todo</option>
+                    <option value="2">2018</option>
+                    <option value="3">2019</option>
+                    <option value="3">2020</option>
+                    <option value="3">2021</option>
+                    <option value="3">2022</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="input-group">
+                <select class="form-select fs-13" aria-label="Default select example">
+                    <option value="1">Todo</option>
+                    <option value="2">Enero</option>
+                    <option value="3">Febrero</option>
+                    <option value="3">Agosto</option>
+                    <option value="3">Septiembre</option>
+                    <option value="3">Octubre</option>
+                    <option value="3">Noviembre</option>
+                    <option value="3">Diciembre</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="input-group">
+                <select class="form-select fs-13" aria-label="Default select example">
+                    <option value="1">Todo</option>
+                    <option value="2">Miraflores</option>
+                    <option value="3">Pueblo Libre</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <table class="table hover-light align-middle mb-0  round-border text-center" th:unless="${paginas==0}"
+            th:classappend="${paginas<=1?'mb-4': ''}">
         <thead class="bg-light">
-            <tr class="bg-dark">
-                <th class="text-white fw-bold">Sede</th>
-                <th class="text-white fw-bold">Fecha</th>
-                <th class="text-white fw-bold">Hora</th>
-                <th class="text-white fw-bold ">Asistencia(%)</th>
-                <th class="text-white fw-bold">Estado</th>
-                <th class="text-white fw-bold">Acciones</th>
-            </tr>
+        <tr class="bg-dark">
+            <th class="text-white fw-bold">Sala</th>
+            <th class="text-white fw-bold">Sede</th>
+            <th class="text-white fw-bold">Fecha</th>
+            <th class="text-white fw-bold">Hora</th>
+            <th class="text-white fw-bold">Estado</th>
+            <th class="text-white fw-bold">Acciones</th>
+        </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>
-                    Miraflores
-                </td>
-                <td>
-                    27/11/2022
-                </td>
-                <td>
-                    16:30
-                </td>
-                <td style="text-align: center;">
-                    76
-                </td>
-                <td>
-                    <span class="badge badge-success rounded-pill d-inline"
-                          style="font-size: 13px">Vigente</span>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-outline-primary fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Editar
-                    </button>
-                    <button hidden type="button" class="btn btn-outline-danger fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Eliminar
-                    </button>
-                    <button type="button" style="width: 130px;margin-top: 10px"
-                            class="btn btn-outline-success fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Reporte xsl
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Miraflores
-                </td>
-                <td>
-                    25/11/2022
-                </td>
-                <td>
-                    14:30
-                </td>
-                <td style="text-align: center;">
-                    <span class="badge badge-secondary rounded-pill d-inline" style="font-size: 13px">No publicada</span>
-                </td>
-                <td>
-                    <span class="badge badge-danger rounded-pill d-inline"
-                          style="font-size: 13px">Cancelada</span>
-                </td>
-                <td>
-                    <button hidden type="button" class="btn btn-outline-primary fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Editar
-                    </button>
-                    <button hidden type="button" class="btn btn-outline-danger fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Eliminar
-                    </button>
-                    <button hidden type="button" style="width: 140px;margin-top: 10px"
-                            class="btn btn-outline-success fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Reporte xsl
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Pueblo Libre
-                </td>
-                <td>
-                    24/11/2022
-                </td>
-                <td>
-                    17:30
-                </td>
-                <td style="text-align: center;">
-                    56
-                </td>
-                <td>
-                    <span class="badge badge-success rounded-pill d-inline"
-                          style="font-size: 13px">Vigente</span>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-outline-primary fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Editar
-                    </button>
-                    <button hidden type="button" class="btn btn-outline-danger fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Eliminar
-                    </button>
-                    <button type="button" style="width: 140px;margin-top: 10px"
-                            class="btn btn-outline-success fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Reporte xsl
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Pueblo Libre
-                </td>
-                <td>
-                    24/11/2022
-                </td>
-                <td>
-                    09:30
-                </td>
-                <td style="text-align: center;">
-                    70
-                </td>
-                <td>
-                    <span class="badge badge-info rounded-pill d-inline"
-                          style="font-size: 13px">Realizada</span>
-                </td>
-                <td>
-                    <button hidden type="button" class="btn btn-outline-primary fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Editar
-                    </button>
-                    <button hidden type="button" class="btn btn-outline-danger fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Eliminar
-                    </button>
-                    <button type="button" style="width: 140px;margin-top: 0px"
-                            class="btn btn-outline-success fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Reporte xsl
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Pueblo Libre
-                </td>
-                <td>
-                    23/11/2022
-                </td>
-                <td>
-                    15:30
-                </td>
-                <td style="text-align: center;">
-                    67
-                </td>
-                <td>
-                    <span class="badge badge-info rounded-pill d-inline"
-                          style="font-size: 13px">Realizada</span>
-                </td>
-                <td>
-                    <button hidden type="button" class="btn btn-outline-primary fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Editar
-                    </button>
-                    <button hidden type="button" class="btn btn-outline-danger fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Eliminar
-                    </button>
-                    <button type="button" style="width: 140px;margin-top: 0px"
-                            class="btn btn-outline-success fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Reporte xsl
-                    </button>
-                </td>
-            </tr>
+        <tr th:each=" funcion : ${funciones}">
+            <td th:text="${funcion.sala.numero}"></td>
+            <td th:text="${funcion.sala.sede.nombre}"></td>
+            <td th:text="${funcion.fecha}"></td>
+            <td th:text="${funcion.inicio}"></td>
+            <td>
+                <span th:if="${funcion.getEstadoRVC() == 'Vigente'}" class="badge badge-success rounded-pill d-inline fs-13">Vigente</span>
+                <span th:if="${funcion.getEstadoRVC() == 'Cancelada'}" class="badge badge-danger rounded-pill d-inline fs-13">Cancelada</span>
+                <span th:if="${funcion.getEstadoRVC() == 'Realizada'}" class="badge badge-info rounded-pill d-inline fs-13">Realizada</span>
+            </td>
+            <td>
+                <button type="button" class="btn btn-outline-primary fw-bold btn-sm btn-rounded"
+                        data-mdb-ripple-color="dark">Editar</button>
+                <button hidden type="button" class="btn btn-outline-danger fw-bold btn-sm btn-rounded"
+                        data-mdb-ripple-color="dark">Eliminar</button>
+                <button type="button" style="width: 130px;margin-top: 10px"
+                        class="btn btn-outline-success fw-bold btn-sm btn-rounded"
+                        data-mdb-ripple-color="dark">
+                    Reporte xsl
+                </button>
+            </td>
+        </tr>
         </tbody>
     </table>
-    <nav th:replace="fragmentos/paginacion :: paginacion('ruta',1,3)"></nav>
+    <nav th:replace="fragmentos/paginacion :: paginacion(${'/operador/obras/gestion/' + obra.id},${pag},${paginas})"></nav>
+
 </div>
+
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
+<!-- Modal Añadir Imagen -->
+<div class="modal top fade" id="anadirModal" tabindex="-1" aria-labelledby="anadirModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <form method="post" th:action="@{/}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Añadir imagen</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <script>
+                        $(function() {
+                            $('.dropify').dropify();
+                        });
+                    </script>
+                    <input  type="file" name="file" class="dropify" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
+                        Cerrar
+                    </button>
+                    <button type="submit" class="btn btn-redtele">Subir</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Eliminar Imagen -->
+<div class="modal top fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <form method="post" th:action="@{/}">
+            <input type="hidden" name="fotoid" id="fotoidEliminar" value="0">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarModalLabel">Eliminar imagen</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        ¿Está seguro que desea eliminar la imagen?
+                    </div>
+                    <div class="fw-bold mb-3">
+                        Este acto es irreversible
+                    </div>
+                    <div class="w-100 d-flex justify-content-center my-2">
+                        <div class="confirmacion-borrar">
+                            <img id="imagenABorrar">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-redtele">Eliminar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Principal Imagen -->
+<div class="modal top fade" id="principalModal" tabindex="-1" aria-labelledby="principalModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <form method="post" th:action="@{/}">
+            <input type="hidden" name="fotoid" id="fotoidPrincipal" value="0">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="principalModalLabel">Elegir imagen principal</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        ¿Desea elegir esta imagen como la principal?
+                    </div>
+                    <div class="w-100 d-flex justify-content-center my-2">
+                        <div class="confirmacion-borrar">
+                            <img id="imagenAPrincipal">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-redtele">Confirmar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script th:src="@{/dropify/js/dropify.js}"></script>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script type="text/javascript">
+    function setEliminarModal(id){
+        var button = document.getElementById(id);
+        fotoid = button.getAttribute("data-fotoid");
+        src = button.getAttribute("data-src");
+        $('#fotoidEliminar').val(fotoid);
+        $('#eliminarModal img').attr('src',src);
+        $('#eliminarModal').modal('toggle');
+    }
+
+    function setPrincipalModal(id){
+        var button = document.getElementById(id);
+        fotoid = button.getAttribute("data-fotoid");
+        src = button.getAttribute("data-src");
+        $('#fotoidPrincipal').val(fotoid);
+        $('#principalModal img').attr('src',src);
+        $('#principalModal').modal('toggle');
+    }
+</script>
 </body>
 </html>

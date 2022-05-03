@@ -64,4 +64,16 @@ public class Funcion {
     @Column(name = "estado", nullable = false)
     private String estado;
 
+    public String getEstadoRVC(){
+        if (!this.getEstado().equals("Cancelada")){
+            if (this.getFecha().isAfter(LocalDate.now())){
+                return "Vigente";
+            }else{
+                return "Realizada";
+            }
+        }else{
+            return "Cancelada";
+        }
+    }
+
 }
