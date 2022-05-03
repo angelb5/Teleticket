@@ -3,6 +3,7 @@
     <head th:insert="fragmentos/cabecera.html :: cabecera( titulo = 'Gestión Sede')">
     </head>
     <head>
+        <link rel="stylesheet" th:href="@{/dropify/css/dropify.css}"/>
         <!--Table-->
         <link rel="stylesheet" th:href="@{/css/tables.css}">
         <!--Carrousel-->
@@ -38,61 +39,92 @@
         <nav th:replace="fragmentos/navbar.html :: navbar('Sedes')"></nav>
 
         <!-- Headers sede-->
-        <div class="container py-2 ">
-            <div class="col" >
-                <a class="btn btn-redtele btn-sm" type="button"
-                   style="height:50px;width:130px; float: right; margin-left: 120px;margin-top: 25px"
-                   th:href="@{'/admin/sedes/gestion/' +${sede.id}+'/editar'}">
-                    <div class="row">
-                        <div class="col-3"><i  class="fas fa-building" style="font-size: 24px; margin-top: 5px"></i>
+        <div class="container py-3">
+            <div class="row mb-3">
+                <div class="text-start col-lg-9">
+                    <div class="title-30 py-6" th:text="${sede.nombre}">Sede A</div>
+                </div>
+                <div class="d-flex align-items-center justify-content-end col-lg-3">
+                    <a class="btn rounded-7 btn-redtele btn-sm h-100" type="button"
+                       th:href="@{'/admin/sedes/gestion/' +${sede.id}+'/editar'}">
+                        <div class="row h-100">
+                            <div class="col-3 h-100 d-flex align-items-center"><i  class="fas fa-building fs-24"></i>
+                            </div>
+                            <div class="col-9 h-100 d-flex align-items-center justify-content-center">Editar Sede</div>
                         </div>
-                        <div class="col-9"><p class="text-white fw-bold col">Editar Sede</p></div>
-                    </div>
-                </a>
+                    </a>
+                </div>
             </div>
-            <div class="container py-1">
-                <div class="title-30 py-6" th:text="${sede.nombre}">Sede A</div>
-            </div>
-            <div style="margin-left: 14px">
-                <h6 th:text="${'Dirección: ' + sede.direccion}">Dirección: Av. Universitaria 1801</h6>
-                <h6 th:text="${'Ubicación: ' + sede.latitud + ' , ' + sede.longitud}">Ubicación: Coordenadas</h6>
-                <h6 th:text="${'Estado: ' + sede.estado}">Estado: Activo</h6>
+            <div class="row mb-5">
+                <div class="fs-16" >
+                    <span>Dirección:&nbsp;</span>
+                    <span class="fw-bold" th:text="${sede.direccion}"></span>
+                </div>
+                <div class="fs-16" >
+                    <span>Ubicación:&nbsp;</span>
+                    <span class="fw-bold" th:text="${sede.latitud + ' , ' + sede.longitud}"></span>
+                </div>
+                <div class="fs-16" >
+                    <span>Estado:&nbsp;</span>
+                    <span class="fw-bold" th:text="${sede.estado}"></span>
+                </div>
             </div>
 
-        </div>
-
+            <div class="row mb-3">
+                <div class="text-start col-lg-9">
+                    <div class="title-26 py-6">Imágenes</div>
+                </div>
+                <div class="d-flex align-items-center justify-content-end col-lg-3">
+                    <a class="btn btn-redtele btn-sm h-100 rounded-7" type="button"
+                       data-mdb-toggle="modal" data-mdb-target="#anadirModal">
+                        <div class="row h-100">
+                            <div class="col-3 h-100 d-flex align-items-center"><i  class="fa fa-solid fa-images fs-24"></i>
+                            </div>
+                            <div class="col-9 h-100 d-flex align-items-center justify-content-center">Añadir imagen</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
         <!-- Imágenes -->
-        <div style="position: relative; ">
+        <div class="mb-5 overflow-hidden" style="position: relative; ">
             <div id="wrap" class="carousel">
                 <div href="#" class="hb" th:each="fotoid : ${fotos}">
                     <div class="container-borrar">
                         <img th:src="@{|/image/sede/${fotoid}|}"
                              class="image-borrar" style="width:100%">
-                        <div class="middle-borrar">
-                            <div class="text-borrar">Eliminar</div>
+                        <div th:unless="${fotoid == sede.fotoprincipal}" class="middle-borrar col">
+                            <button class="btn btn-dark mb-3" th:attr="data-fotoid=${fotoid}, data-src='/image/sede/'+${fotoid}"
+                                    th:id="'e'+ ${fotoid}" onclick="setEliminarModal(id)">
+                                Eliminar
+                            </button>
+                            <button class="btn btn-redtele"  th:attr="data-fotoid=${fotoid}, data-src='/image/sede/'+${fotoid}"
+                                    th:id="'f'+ ${fotoid}" onclick="setPrincipalModal(id)">
+                                <i class="fa-solid fa-bookmark"></i> Principal
+                            </button>
+                        </div>
+                        <div th:if="${fotoid == sede.fotoprincipal}" class="middle-borrar col text-white fs-14">
+                            <i class="fa-solid fa-bookmark"></i> Foto principal
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
 
-
-        <!-- Tabla con info de Salas -->
-
-        <div class="container py-2">
-            <div class="title-26 py-6">Salas</div>
-            <div style="float: right">
-                <a class="btn btn-redtele btn-sm" type="button"
-                   th:href="@{'/admin/sedes/gestion/'+ ${sede.id} +'/nuevasala'}"
-                   style="height: 45px; width: 140px;margin-bottom: 10px">
-                    <div class="row">
-                        <div class="col-3"><i class="fa fa-couch col" style="font-size: 24px;margin-top: 5px"></i></div>
-                        <div class="col-9"><p class="text-white fw-bold col">Nueva Sala</p></div>
+        <div class="row mb-3">
+            <div class="text-start col-lg-9">
+                <div class="title-26 py-6">Salas</div>
+            </div>
+            <div class="d-flex align-items-center justify-content-end col-lg-3">
+                <a class="btn btn-redtele btn-sm h-100 rounded-7" type="button"
+                   th:href="@{'/admin/sedes/gestion/'+ ${sede.id} +'/nuevasala'}">
+                    <div class="row h-100">
+                        <div class="col-3 h-100 d-flex align-items-center"><i  class="fa fa-couch col fs-24"></i>
+                        </div>
+                        <div class="col-9 h-100 d-flex align-items-center justify-content-center">Nueva Sala</div>
                     </div>
                 </a>
             </div>
+        </div>
             <table class="table content-table table-hover text-center" th:unless="${paginas==0}">
                 <thead>
                     <tr class="bg-black ">
@@ -118,9 +150,119 @@
             </table>
             <nav th:replace="fragmentos/paginacion :: paginacion(${'/admin/sedes/gestion/' + sede.id},${pag},${paginas})"></nav>
         </div>
-        <script th:src="@{../static/dropify/js/dropify.js}"></script>
+        <footer th:replace="fragmentos/footer.html :: footer"></footer>
+
+        <!-- Modal Añadir Imagen -->
+        <div class="modal top fade" id="anadirModal" tabindex="-1" aria-labelledby="anadirModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+            <div class="modal-dialog  ">
+                <form method="post" th:action="@{/}">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Añadir imagen</h5>
+                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <script>
+                                $(function() {
+                                    $('.dropify').dropify();
+                                });
+                            </script>
+                            <input  type="file" name="file" class="dropify" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
+                                Cerrar
+                            </button>
+                            <button type="submit" class="btn btn-redtele">Subir</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Eliminar Imagen -->
+        <div class="modal top fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+            <div class="modal-dialog  ">
+                <form method="post" th:action="@{/}">
+                    <input type="hidden" name="fotoid" id="fotoidEliminar" value="0">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="eliminarModalLabel">Eliminar imagen</h5>
+                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                ¿Está seguro que desea eliminar la imagen?
+                            </div>
+                            <div class="fw-bold mb-3">
+                                Este acto es irreversible
+                            </div>
+                            <div class="w-100 d-flex justify-content-center my-2">
+                                <div class="confirmacion-borrar">
+                                    <img id="imagenABorrar">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-redtele">Eliminar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Principal Imagen -->
+        <div class="modal top fade" id="principalModal" tabindex="-1" aria-labelledby="principalModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+            <div class="modal-dialog  ">
+                <form method="post" th:action="@{/}">
+                    <input type="hidden" name="fotoid" id="fotoidPrincipal" value="0">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="principalModalLabel">Elegir imagen principal</h5>
+                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                ¿Desea elegir esta imagen como la principal?
+                            </div>
+                            <div class="w-100 d-flex justify-content-center my-2">
+                                <div class="confirmacion-borrar">
+                                    <img id="imagenAPrincipal">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-redtele">Confirmar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
 
     </body>
-    <footer th:replace="fragmentos/footer.html :: footer"></footer>
+    <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+    <script type="text/javascript"  th:src="@{/dropify/js/dropify.js}"></script>
+    <script type="text/javascript">
+        function setEliminarModal(id){
+            var button = document.getElementById(id);
+            fotoid = button.getAttribute("data-fotoid");
+            src = button.getAttribute("data-src");
+            $('#fotoidEliminar').val(fotoid);
+            $('#eliminarModal img').attr('src',src);
+            $('#eliminarModal').modal('toggle');
+        }
 
+        function setPrincipalModal(id){
+            var button = document.getElementById(id);
+            fotoid = button.getAttribute("data-fotoid");
+            src = button.getAttribute("data-src");
+            $('#fotoidPrincipal').val(fotoid);
+            $('#principalModal img').attr('src',src);
+            $('#principalModal').modal('toggle');
+        }
+
+    </script>
 </html>
