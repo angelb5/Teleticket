@@ -200,6 +200,10 @@ public class OperadorFuncionesController {
         Funcion funcion = optionalFuncion.get();
         funcion.setEstado("Cancelada");
         funcionRepository.save(funcion);
+
+        //PENDIENTE
+        //Al momento de cancelar una función se deben cancelar las compras asociadas
+
         attr.addFlashAttribute("msg", "La función ha sido cancelada");
         return "redirect:/operador/obras/gestion/" + funcion.getObra().getId();
     }

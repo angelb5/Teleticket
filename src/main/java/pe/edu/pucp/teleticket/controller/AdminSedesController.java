@@ -6,13 +6,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pe.edu.pucp.teleticket.entity.Fotossede;
+import pe.edu.pucp.teleticket.entity.Funcion;
 import pe.edu.pucp.teleticket.entity.Sala;
 import pe.edu.pucp.teleticket.entity.Sede;
 import pe.edu.pucp.teleticket.repository.FotoSedeRepository;
+import pe.edu.pucp.teleticket.repository.FuncionRepository;
 import pe.edu.pucp.teleticket.repository.SalaRepository;
 import pe.edu.pucp.teleticket.repository.SedeRepository;
 
@@ -28,7 +31,8 @@ public class AdminSedesController {
     private final int sedesPaginas = 6;
     private final int salasPaginas = 5;
 
-
+    @Autowired
+    FuncionRepository funcionRepository;
     @Autowired
     SedeRepository sedeRepository;
     @Autowired
@@ -197,7 +201,7 @@ public class AdminSedesController {
     }
 
     @PostMapping("/gestion/sala/guardar")
-    public String guardarSala(@ModelAttribute("sala") @Valid Sala sala, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String guardarSala(@ModelAttribute("sala") @Valid Sala sala, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
 
         if (bindingResult.hasErrors()) {
             return "/admin/sedes/salas/form";
@@ -207,6 +211,22 @@ public class AdminSedesController {
         if (sala.getId() == 0) {
             msg = "Sala creada exitosamente";
         } else {
+            Optional<Sala> optionalSala = salaRepository.findById(sala.getId());
+            if(optionalSala.isEmpty()){return "redirect:/admin/sedes";}
+            List<Funcion> funcionesVigentes = funcionRepository.getVigentesByIdsalas(sala.getId());
+            if (funcionesVigentes.size()>0){
+                if (sala.getEstado().equals("No disponible")){
+                    model.addAttribute("funcionesVigentes",funcionesVigentes);
+                    return "/admin/sedes/salas/form";
+                }else{
+                    long maxStockByIdsala = funcionRepository.getMaxStockByIdsala(sala.getId());
+                    if(maxStockByIdsala>sala.getAforo()){
+                        FieldError fAforoError = new FieldError("aforo", "aforo", "El aforo de la sala no puede ser menor que "+ maxStockByIdsala + " ya que hay una función asociada");
+                        bindingResult.addError(fAforoError);
+                        return "/admin/sedes/salas/form";
+                    }
+                }
+            }
             msg = "Sala editada exitosamente";
         }
         redirectAttributes.addFlashAttribute("msg", msg);

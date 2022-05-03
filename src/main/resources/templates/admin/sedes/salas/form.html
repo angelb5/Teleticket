@@ -35,7 +35,7 @@
                                          th:errors="*{aforo}"></div>
                                 </div>
 
-                                <div class="mb-3">
+                                <div th:if="${sala.id != 0}" class="mb-3">
                                     <label class="form-label">Estado</label>
                                     <div class="d-flex align-items-center">
                                         <div class="form-check d-flex align-items-center me-3">
@@ -52,6 +52,8 @@
                                          th:errors="*{estado}"></div>
                                 </div>
 
+                                <input th:if="${sala.id == 0}" hidden name="estado" value="Disponible">
+
                                 <div class="mb-3">
                                     <button class="btn btn-redtele" type="submit" th:text="${sala.id==0? 'Crear' : 'Actualizar'}"></button>
                                     <a class="btn btn-dark text-white" th:href="@{|/admin/sedes/gestion/${sala.sede==null? idSede : sala.sede.id}|}">Cancelar</a>
@@ -67,7 +69,53 @@
             </div>
         </div>
         <footer th:replace="fragmentos/footer.html :: footer"></footer>
+
+        <!-- Modal confilctos -->
+        <div th:if="${funcionesVigentes != null}" class="modal top fade" id="modalConflictos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+            <div class="modal-dialog  ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel" >La sala no puede cambiar su estado </h5>
+                        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            La sala tiene asociadas las siguientes funciones vigentes
+                        </div>
+                        <div class="mb-3" th:each="funcion : ${funcionesVigentes}">
+                            <div>
+                                <span>Obra:&nbsp</span>
+                                <span class="fw-bold" th:text="${funcion.obra.titulo}"></span>
+                            </div>
+                            <div>
+                                <span>Inicio:&nbsp</span>
+                                <span class="fw-bold" th:text="${funcion.inicio}"></span>
+                            </div>
+                            <div>
+                                <span>Fin:&nbsp</span>
+                                <span class="fw-bold" th:text="${funcion.fin}"></span>
+                            </div>
+                            <div>
+                                <span>Sala:&nbsp</span>
+                                <span class="fw-bold" th:text="| ${funcion.sala.numero} - ${funcion.sala.sede.nombre}|"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </body>
     <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
     <script type="text/javascript"  th:src="@{/dropify/js/dropify.js}"></script>
+    <script type="text/javascript" th:if="${funcionesVigentes != null}">
+        $(window).on('load', function() {
+            $('#modalConflictos').modal('show');
+        });
+    </script>
 </html>
