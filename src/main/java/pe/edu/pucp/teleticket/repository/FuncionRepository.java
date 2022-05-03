@@ -45,4 +45,14 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
             value = "SELECT max(stock) FROM funciones where idsalas = :idsalas and estado = 'Activa' and fecha > DATE(now())")
     public long getMaxStockByIdsala(int idsalas);
 
+
+    @Query(nativeQuery = true,
+            value = "select * from funciones f " +
+                    "inner join salas s on f.idsalas = s.idsalas " +
+                    "inner join sedes se on s.idsedes = se.idsedes " +
+                    "where se.idsedes = :idsedes and " +
+                    "f.estado = 'Activa' " +
+                    "and f.fecha > DATE(now());")
+    public List<Funcion> getVigentesByIdsedes(int idsedes);
+
 }

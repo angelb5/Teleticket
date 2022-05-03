@@ -121,8 +121,16 @@ public class AdminSedesController {
 
     @PostMapping("/actualizar")
     public String actualizarSede(@ModelAttribute("sede") @Valid Sede sede, BindingResult bindingResult, Model model) {
+        Optional<Sede> optionalSede = sedeRepository.findById(sede.getId());
+        if(optionalSede.isEmpty()){return "redirect:/admin/sedes";}
         if (bindingResult.hasErrors()) {
             return "admin/sedes/form";
+        }else{
+            List<Funcion> funcionesVigentes = funcionRepository.getVigentesByIdsedes(sede.getId());
+            if(funcionesVigentes.size()>0 && !sede.getEstado().equals("Disponible")){
+                model.addAttribute("funcionesVigentes",funcionesVigentes);
+                return "/admin/sedes/form";
+            }
         }
         sedeRepository.save(sede);
         return "redirect:/admin/sedes/gestion/" + sede.getId();
