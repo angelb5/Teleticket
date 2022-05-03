@@ -11,14 +11,14 @@ import javax.persistence.*;
 @Table(name = "fotosobras")
 public class Fotosobra {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idfotos", nullable = false)
     private Integer id;
 
     @Column(name = "foto", nullable = false)
     private byte[] foto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idobras")
-    private Obra idobras;
+    @Column(name = "idobras")
+    private int idobras;
 
 }

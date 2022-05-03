@@ -38,7 +38,7 @@ public class Obra {
             inverseJoinColumns = @JoinColumn(name = "idgenero"))
     private Set<Genero> generos = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idobras")
-    private Set<Fotosobra> fotosobra = new LinkedHashSet<>();
+    @Column(name = "fotoprincipal", nullable = true)
+    private Integer fotoprincipal;
 
 }
