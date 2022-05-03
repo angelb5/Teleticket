@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')"></head>
+<body>
+<nav th:replace="fragmentos/navbar.html :: navbar('Sedes')"></nav>
+    <!--Contenidos-->
+
+<div class="container py-3" >
+    <!-- Lista sedes -->
+    <div class="row mb-3">
+        <div class="text-start col-lg-9">
+            <div class="title-24 py-6">Lista de obras</div>
+        </div>
+        <div class="d-flex align-items-center justify-content-end col-lg-3">
+            <a class="btn rounded-7 btn-redtele btn-sm h-100" type="button"
+               th:href="@{'/operador/obras/nueva'}">
+                <div class="row h-100">
+                    <div class="col-3 h-100 d-flex align-items-center"><i  class="fas fa-solid fa-masks-theater fs-24"></i>
+                    </div>
+                    <div class="col-9 h-100 d-flex align-items-center justify-content-center">Nueva Obra</div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-4 g-4 py-3">
+        <!--Card 1-->
+        <div class="col" th:each="obra : ${listaObras}">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" href="#">
+                    <div class="card-tele-img">
+                        <img th:src="@{'/image/obra/'+${obra.fotoprincipal}}" alt="Obra">
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title" th:text="${obra.titulo}"></div>
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer justify-content-end">
+                    <a th:href="@{'/operador/obras/gestion/'+ ${obra.id}}" class="btn btn-redtele">Ver más</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav th:replace="fragmentos/paginacion :: paginacion('/admin/sedes',${pag},${paginas})"></nav>
+</div>
+    <!--Fin de contenidos-->
+
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+    <!-- End your project here-->
+    
+    
+
+<!-- Custom scripts -->
+<script type="text/javascript">
+
+</script>
+</body>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+</html>

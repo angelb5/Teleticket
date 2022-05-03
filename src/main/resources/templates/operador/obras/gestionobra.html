@@ -46,11 +46,27 @@
         </div>
         <div class="d-flex align-items-center justify-content-end col-lg-3">
             <a class="btn rounded-7 btn-redtele btn-sm h-100" type="button"
-               th:href="@{'/admin/sedes/obras/editar?id=' +${obra.id}+}">
+               th:href="@{'/operador/obras/editar?id=' +${obra.id}+}">
                 <div class="row h-100">
                     <div class="col-3 h-100 d-flex align-items-center"><i  class="fas fa-solid fa-masks-theater fs-24"></i>
                     </div>
                     <div class="col-9 h-100 d-flex align-items-center justify-content-center">Editar Obra</div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="text-start col-lg-9">
+            <div class="pill-redtele fs-13 me-2" th:text="${obra.restricciones}"></div>
+            <div class="pill-white fs-13 me-2" th:text="${obra.duracion} + 'min'"></div>
+        </div>
+        <div class="d-flex align-items-center justify-content-end col-lg-3">
+            <a class="btn rounded-7 btn-redtele btn-sm h-100" type="button"
+               th:href="@{'/'}">
+                <div class="row h-100">
+                    <div class="col-3 h-100 d-flex align-items-center"><i  class="fas fa-solid fa-star fs-24"></i>
+                    </div>
+                    <div class="col-9 h-100 d-flex align-items-center justify-content-center">Destacados</div>
                 </div>
             </a>
         </div>
@@ -201,11 +217,9 @@
                 <span th:if="${funcion.getEstadoRVC() == 'Realizada'}" class="badge badge-info rounded-pill d-inline fs-13">Realizada</span>
             </td>
             <td>
-                <button type="button" class="btn btn-outline-primary fw-bold btn-sm btn-rounded"
-                        data-mdb-ripple-color="dark">Editar</button>
-                <button hidden type="button" class="btn btn-outline-danger fw-bold btn-sm btn-rounded"
-                        data-mdb-ripple-color="dark">Eliminar</button>
-                <button type="button" style="width: 130px;margin-top: 10px"
+                <a th:unless="${funcion.getEstadoRVC() == 'Cancelada' or funcion.getEstadoRVC() == 'Realizada'}" type="button" class="btn btn-redtele btn-sm btn-rounded" th:href="@{'/operador/funciones/editar?idfuncion=' + ${funcion.id}}"
+                        data-mdb-ripple-color="dark">Editar</a>
+                <button th:unless="${funcion.getEstadoRVC() == 'Cancelada'}" type="button" style="width: 130px;margin-top: 10px"
                         class="btn btn-outline-success fw-bold btn-sm btn-rounded"
                         data-mdb-ripple-color="dark">
                     Reporte xsl
@@ -308,6 +322,28 @@
     </div>
 </div>
 
+<!-- Modal msg -->
+<div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">
+                        <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
+                    </div>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class=" w-100 d-flex justify-content-center mb-3 text-success">
+                        <i class="fa-solid fa-circle-check" style="font-size: 50px"></i>
+                    </div>
+                    <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+
 <script th:src="@{/dropify/js/dropify.js}"></script>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <script type="text/javascript">
@@ -328,6 +364,11 @@
         $('#principalModal img').attr('src',src);
         $('#principalModal').modal('toggle');
     }
+</script>
+<script type="text/javascript" th:if="${msg != null}">
+    $(window).on('load', function() {
+        $('#msgModal').modal('show');
+    });
 </script>
 </body>
 </html>

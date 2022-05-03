@@ -15,37 +15,17 @@
                     Nueva función
                 </div>
             </div>
-            <form method="post" th:action="@{'/operador/funciones/registrar'}" th:object="${funcion}">
-                <input hidden th:field="*{obra}">
+            <form id="guardarForm" method="post" th:action="@{'/operador/funciones/guardar'}" th:object="${funcion}">
+                <input hidden th:field="*{id}">
                 <div class="row mb-3">
-                    <div class="col control-group">
-                        <label class="form-label">Sala</label>
-                        <select class="demo-default" th:field="*{sala}"
-                                th:classappend="${#fields.hasErrors('sala')?'is-invalid':''}">
-                            <option value="0">Selecciona una sala</option>
-                            <optgroup th:each="sede : ${sedeList}" th:label="${sede.nombre}">
-                                <option th:each="sala : ${sede.salas}"
-                                        th:if="${sala.estado == 'Disponible'}"
-                                        th:text="${sala.numero}"
-                                        th:value="${sala.id}"></option>
-                            </optgroup>
-                        </select>
-                        <div class="text-danger mt-3" th:if="${#fields.hasErrors('sala')}"
-                             th:errors="*{sala}"></div>
+                    <div class="col" >
+                        <span>Sala&nbsp;</span>
+                        <span class="fw-bold" th:text="${funcion.sala.numero}+' - '+${funcion.sala.sede.nombre}"></span>
                     </div>
-                    <script>
-                        $("select[name*='sala']").selectize({
-                            sortField: 'text'
-                        });
-                    </script>
                     <div class="col">
-                        <label class="form-label">Aforo</label>
-                        <input th:field="*{stock}" type="text" class="form-control"
-                               th:classappend="${#fields.hasErrors('stock')?'is-invalid':''}"/>
-                        <div class="text-danger" th:if="${#fields.hasErrors('stock')}"
-                             th:errors="*{stock}"></div>
+                        <span>Aforo&nbsp;</span>
+                        <span class="fw-bold" th:text="${funcion.stock}"    ></span>
                     </div>
-
                 </div>
                 <div class="row mb-3">
                     <div class="col">
@@ -79,22 +59,27 @@
                              th:errors="*{costo}"></div>
                     </div>
                 </div>
-                <div class="row mt-5 mb-3">
-                    <div>
-                        <button class="btn btn-redtele" type="submit">
-                            Registrar
-                        </button>
-                        <a class="btn btn-dark" th:href="@{'/operador/obras/gestion/' + ${funcion.obra.id}}">
-                            Cancelar
-                        </a>
-                    </div>
-                </div>
             </form>
+            <div class="row mt-5 mb-3">
+                <div class="col">
+                    <button class="btn btn-redtele" type="submit" form="guardarForm">
+                        Guardar
+                    </button>
+                    <a class="btn btn-dark" th:href="@{'/operador/obras/gestion/' + ${funcion.obra.id}}">
+                        Cancelar
+                    </a>
+                </div>
+                <div class="col text-end">
+                    <button class="btn btn-redtele" type="button" data-mdb-toggle="modal" data-mdb-target="#cancelarModal">
+                        Cancelar función
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
-<!-- Modal -->
+<!-- Modal confilctos -->
 <div th:if="${funcionesConflictoList != null}" class="modal top fade" id="modalConflictos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
     <div class="modal-dialog  ">
         <div class="modal-content">
@@ -133,6 +118,35 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Cancelar Funcion -->
+<div class="modal top fade" id="cancelarModal" tabindex="-1" aria-labelledby="cancelarModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog ">
+        <form method="post" th:action="@{'/operador/funciones/cancelar'}" th:object="${funcion}">
+            <input type="hidden" th:field="*{id}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelarModalLabel">Cancelar función</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        ¿Está seguro que desea cancelar la función?
+                    </div>
+                    <div class="fw-bold mb-3">
+                        Esta acción es irreversible
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-redtele">Cancelar función</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 </body>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <script type="text/javascript" th:if="${funcionesConflictoList != null}">

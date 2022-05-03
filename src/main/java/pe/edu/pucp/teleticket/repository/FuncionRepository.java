@@ -24,8 +24,17 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
                     " CAST( :fin AS time) between inicio and fin )")
     public List<Funcion> findFuncionesEnConflicto(LocalDate fecha, LocalTime inicio, LocalTime fin, int idobras, int idsalas);
 
+    @Query(nativeQuery = true,
+            value = "select distinct * from funciones " +
+                    "where fecha = :fecha and estado = 'Activa' and " +
+                    "( idobras = :idobras or idsalas= :idsalas ) and " +
+                    "( CAST(:inicio  AS time) between inicio and fin or " +
+                    " CAST( :fin AS time) between inicio and fin ) and "+
+                    " idfunciones <> :idfuncion")
+    public List<Funcion> findFuncionesEnConflictoId(LocalDate fecha, LocalTime inicio, LocalTime fin, int idobras, int idsalas, int idfuncion);
+
     public long countAllByObra(Obra obra);
 
-    List<Funcion> findAllByObra(Obra obra, Pageable pageable);
+    List<Funcion> findAllByObraOrderByFechaAsc(Obra obra, Pageable pageable);
 
 }

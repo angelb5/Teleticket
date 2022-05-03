@@ -17,6 +17,7 @@ import java.util.Optional;
 @RequestMapping("/operador/obras")
 public class OperadorObrasController {
 
+    private final int obrasPaginas = 6;
     private final int funcionesPaginas = 5;
 
     @Autowired
@@ -31,7 +32,22 @@ public class OperadorObrasController {
     FotoObraRepository fotoObraRepository;
 
     @GetMapping({"/","","/lista"})
-    public String listarObras(){
+    public String listarObras(Model model, @RequestParam("pag") Optional<Integer> pag){
+        int pagina = pag.isEmpty()? 1 : pag.get();
+        pagina = pagina<1? 1 : pagina;
+        int paginas = (int) Math.ceil((float)obraRepository.count()/obrasPaginas);
+        pagina = pagina>paginas? paginas : pagina;
+        Pageable lista;
+        if(pagina==0){
+            lista= PageRequest.of(0, obrasPaginas);
+        } else {
+            lista= PageRequest.of(pagina-1, obrasPaginas);
+
+        }
+        List<Obra> listaObras = obraRepository.findAllByOrderByIdAsc(lista);
+        model.addAttribute("listaObras",listaObras);
+        model.addAttribute("pag", pagina);
+        model.addAttribute("paginas", paginas);
         return "operador/obras/lista";
     }
 
@@ -59,7 +75,7 @@ public class OperadorObrasController {
             lista= PageRequest.of(pagina-1, funcionesPaginas);
         }
 
-        List<Funcion> funcionList = funcionRepository.findAllByObra(obra,lista);
+        List<Funcion> funcionList = funcionRepository.findAllByObraOrderByFechaAsc(obra,lista);
 
 
         List<Persona> directores = personaRepository.findDirectoresByIdObra(id);
