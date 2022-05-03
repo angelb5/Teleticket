@@ -17,7 +17,7 @@ import java.util.Optional;
 @RequestMapping("/operador/obras")
 public class OperadorObrasController {
 
-    private final int obrasPaginas = 6;
+    private final int obrasPaginas = 8;
     private final int funcionesPaginas = 5;
 
     @Autowired
