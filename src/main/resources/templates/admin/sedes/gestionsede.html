@@ -167,7 +167,7 @@
                                     $('.dropify').dropify();
                                 });
                             </script>
-                            <input  type="file" name="foto" class="dropify" />
+                            <input  type="file" name="foto" id="foto" class="dropify" data-max-file-size-preview="5M"/>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
@@ -279,7 +279,12 @@
                     </div>
                     <div class="modal-body">
                         <div class=" w-100 d-flex justify-content-center mb-3 text-success">
-                            <i class="fa-solid fa-circle-check" style="font-size: 50px"></i>
+                            <i class="fa-solid fa-circle-check" style="font-size: 50px" th:class="${error==null? 'fa-solid fa-circle-check': 'fa-solid fa-circle-xmark'  }"></i>
+                            <style th:unless="${error==null}">
+                                .fa-circle-xmark{
+                                    color: #d10000;
+                                }
+                            </style>
                         </div>
                         <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
                         </div>
@@ -314,5 +319,15 @@
         $(window).on('load', function() {
             $('#msgModal').modal('show');
         });
+    </script>
+    <script>
+        var uploadField = document.getElementById("foto");
+
+        uploadField.onchange = function() {
+            if(this.files[0].size > 5248000){
+                alert("El archivo es muy grande!");
+                this.value = "";
+            };
+        };
     </script>
 </html>

@@ -93,7 +93,7 @@
                                             $('.dropify').dropify();
                                         });
                                     </script>
-                                    <input type="file" class="dropify" data-height="293" name="foto" id="foto"/>
+                                    <input type="file" class="dropify" data-height="293" name="foto" id="foto" data-max-file-size-preview="5M"/>
                                     <div class="text-danger mt-3" th:text="${msg}"></div>
                                 </div>
                             </div>
@@ -151,6 +151,16 @@
     </body>
     <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
     <script type="text/javascript" th:src="@{/dropify/js/dropify.js}"></script>
+    <script>
+        var uploadField = document.getElementById("foto");
+
+        uploadField.onchange = function() {
+            if(this.files[0].size > 5248000){
+                alert("El archivo es muy grande!");
+                this.value = "";
+            };
+        };
+    </script>
     <script type="text/javascript" th:if="${funcionesVigentes != null}">
         $(window).on('load', function() {
             $('#modalConflictos').modal('show');

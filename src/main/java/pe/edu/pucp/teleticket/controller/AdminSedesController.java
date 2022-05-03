@@ -21,7 +21,10 @@ import pe.edu.pucp.teleticket.repository.SedeRepository;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Controller
@@ -30,6 +33,14 @@ public class AdminSedesController {
 
     private final int sedesPaginas = 6;
     private final int salasPaginas = 5;
+    private final List<String> formatos= Arrays.asList("media/png","media/jpeg", "image/jpeg", "image/png");
+
+    private boolean verificarFoto(MultipartFile file){
+        if(formatos.contains(file.getContentType().toLowerCase(Locale.ROOT))){
+            return true;
+        }
+        return false;
+    }
 
     @Autowired
     FuncionRepository funcionRepository;
@@ -89,6 +100,10 @@ public class AdminSedesController {
     public String guardarSede(@ModelAttribute("sede") @Valid Sede sede, BindingResult bindingResult, @RequestParam("foto") MultipartFile foto, Model model) {
         if (foto.isEmpty()) {
             model.addAttribute("msg", "Debe subir un archivo");
+            return "admin/sedes/form";
+        }
+        if (!verificarFoto(foto)) {
+            model.addAttribute("msg", "Debe subir una imagen, no se acepta otros archivos");
             return "admin/sedes/form";
         }
         String fotoNombre = foto.getOriginalFilename();
@@ -280,7 +295,7 @@ public class AdminSedesController {
         }
         Fotossede fotossede = optionalFotossede.get();
         Optional<Sede> optionalSede = sedeRepository.findById(fotossede.getIdsedes());
-        if (optionalSede.isEmpty() || (optionalSede.get().getFotoprincipal() == fotoid)) {
+        if (optionalSede.isEmpty() || optionalSede.get().getFotoprincipal()==null||(optionalSede.get().getFotoprincipal() == fotoid)) {
             return "redirect:/admin/sedes";
         }
 
@@ -304,17 +319,26 @@ public class AdminSedesController {
         long cantidad= fotoSedeRepository.findAllIdByIdSedes(sedeId).size();
         if(cantidad>3){
             return "redirect:/admin/sedes/gestion/" + sedeId;
-
         }
         if (foto.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error",1);
             redirectAttributes.addFlashAttribute("msg", "Debe subir un archivo");
             return "redirect:/admin/sedes/gestion/" + sedeId;
         }
+        if (!verificarFoto(foto)) {
+            redirectAttributes.addFlashAttribute("error",1);
+            redirectAttributes.addFlashAttribute("msg", "Debe subir una imagen, no se acepta otros archivos");
+            return "redirect:/admin/sedes/gestion/" + sedeId;
+        }
         String fotoNombre = foto.getOriginalFilename();
+
         if (fotoNombre.contains("..")) {
+            redirectAttributes.addFlashAttribute("error",1);
             redirectAttributes.addFlashAttribute("msg", "No se permiten '..' en el archivo");
             return "redirect:/admin/sedes/gestion/" + sedeId;
         }
+
+
 
         Fotossede fotossede = new Fotossede();
         try {
@@ -322,10 +346,11 @@ public class AdminSedesController {
             fotossede.setIdsedes(sedeId);
         } catch (IOException e){
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("msg", "Hubo un error al cargar el archivp");
+            redirectAttributes.addFlashAttribute("error",1);
+            redirectAttributes.addFlashAttribute("msg", "Hubo un error al cargar el archivo");
             return "redirect:/admin/sedes/gestion/" + sedeId;
         }
-        redirectAttributes.addFlashAttribute("msg","Se ha guardado la imagen exitosamente");
+        redirectAttributes.addFlashAttribute("msg","Se ha guardado la imagen exitosamente" + foto.getContentType());
         fotoSedeRepository.save(fotossede);
 
         return "redirect:/admin/sedes/gestion/" + sedeId;
