@@ -243,7 +243,7 @@ public class AdminSedesController {
     }
 
     @PostMapping("/gestion/{idSedeString}/imagenprincipal")
-    public String imagenPrincipal(@PathVariable("idSedeString") String idSedeString, @RequestParam("fotoid") String fotoidString) {
+    public String imagenPrincipal(@PathVariable("idSedeString") String idSedeString, @RequestParam("fotoid") String fotoidString, RedirectAttributes redirectAttributes) {
         int sedeId;
         int fotoid;
         try {
@@ -262,11 +262,12 @@ public class AdminSedesController {
         Sede sede = optionalSede.get();
         sede.setFotoprincipal(fotoid);
         sedeRepository.save(sede);
+        redirectAttributes.addFlashAttribute("msg", "Se ha cambiado la imagen principal exitosamente");
         return "redirect:/admin/sedes/gestion/" + sedeId;
     }
 
     @PostMapping("/gestion/imagenborrar")
-    public String borrarImagen(@RequestParam("fotoid") String fotoidString) {
+    public String borrarImagen(@RequestParam("fotoid") String fotoidString, RedirectAttributes redirectAttributes) {
         int fotoid;
         try {
             fotoid = Integer.parseInt(fotoidString);
@@ -283,8 +284,8 @@ public class AdminSedesController {
             return "redirect:/admin/sedes";
         }
 
-
         fotoSedeRepository.deleteById(fotoid);
+        redirectAttributes.addFlashAttribute("msg","Se ha borrado la imagen exitosamente");
         return "redirect:/admin/sedes/gestion/" + optionalFotossede.get().getIdsedes();
     }
 
@@ -324,8 +325,8 @@ public class AdminSedesController {
             redirectAttributes.addFlashAttribute("msg", "Hubo un error al cargar el archivp");
             return "redirect:/admin/sedes/gestion/" + sedeId;
         }
+        redirectAttributes.addFlashAttribute("msg","Se ha guardado la imagen exitosamente");
         fotoSedeRepository.save(fotossede);
-
 
         return "redirect:/admin/sedes/gestion/" + sedeId;
     }
