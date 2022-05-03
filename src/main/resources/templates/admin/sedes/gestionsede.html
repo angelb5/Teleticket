@@ -80,7 +80,7 @@
                         <div class="row h-100">
                             <div class="col-3 h-100 d-flex align-items-center"><i  class="fa fa-solid fa-images fs-24"></i>
                             </div>
-                            <div class="col-9 h-100 d-flex align-items-center justify-content-center">Añadir imagen</div>
+                            <div class="col-9 h-100 d-flex align-items-center justify-content-center" >Añadir imagen</div>
                         </div>
                     </a>
                 </div>
@@ -153,9 +153,9 @@
         <footer th:replace="fragmentos/footer.html :: footer"></footer>
 
         <!-- Modal Añadir Imagen -->
-        <div class="modal top fade" id="anadirModal" tabindex="-1" aria-labelledby="anadirModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+        <div class="modal top fade" id="anadirModal" tabindex="-1" aria-labelledby="anadirModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true" th:if="${fotos.size()<4}">
             <div class="modal-dialog  ">
-                <form method="post" th:action="@{/}">
+                <form method="post" th:action="@{|/admin/sedes/gestion/${sede.id}/agregarimagen|}" enctype="multipart/form-data">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Añadir imagen</h5>
@@ -167,7 +167,7 @@
                                     $('.dropify').dropify();
                                 });
                             </script>
-                            <input  type="file" name="file" class="dropify" />
+                            <input  type="file" name="foto" class="dropify" />
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
@@ -180,10 +180,36 @@
             </div>
         </div>
 
+        <!-- Modal Añadir Imagen LIMITE-->
+        <div class="modal top fade" id="anadirModal" tabindex="-1" aria-labelledby="anadirModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true" th:unless="${fotos.size()<4}">
+            <div class="modal-dialog  ">
+                <form>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Limite de Imagenes</h5>
+                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <h6>Teleticket tiene como restricción que cada sede tenga como máximo 4 imagenes</h6>
+                            </div>
+                            <div class="fw-bold mb-3">
+                                Disculpe las molestias
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-redtele" data-mdb-dismiss="modal">De acuerdo</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <!-- Modal Eliminar Imagen -->
         <div class="modal top fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
             <div class="modal-dialog  ">
-                <form method="post" th:action="@{/}">
+                <form method="post" th:action="@{|/admin/sedes/gestion/imagenborrar|}">
                     <input type="hidden" name="fotoid" id="fotoidEliminar" value="0">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -215,7 +241,7 @@
         <!-- Modal Principal Imagen -->
         <div class="modal top fade" id="principalModal" tabindex="-1" aria-labelledby="principalModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
             <div class="modal-dialog  ">
-                <form method="post" th:action="@{/}">
+                <form method="post"  th:action="@{|/admin/sedes/gestion/${sede.id}/imagenprincipal|}">
                     <input type="hidden" name="fotoid" id="fotoidPrincipal" value="0">
                     <div class="modal-content">
                         <div class="modal-header">
