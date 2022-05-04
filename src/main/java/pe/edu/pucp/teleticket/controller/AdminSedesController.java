@@ -115,6 +115,7 @@ public class AdminSedesController {
             return "admin/sedes/form";
         }
         Fotossede fotosede = new Fotossede();
+        sede.setEstado("Disponible");
         Sede sedeCreada = sedeRepository.save(sede);
         try {
             fotosede.setFoto(foto.getBytes());
