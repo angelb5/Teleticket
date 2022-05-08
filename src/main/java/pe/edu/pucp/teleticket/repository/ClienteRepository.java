@@ -13,7 +13,10 @@ import java.util.List;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
+
     public Cliente findByCorreo(String correo);
+
+    public Cliente findByDni(String dni);
 
     List<Cliente> findAllByOrderByIdAsc(Pageable pageable);
 

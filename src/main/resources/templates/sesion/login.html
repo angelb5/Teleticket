@@ -1,26 +1,11 @@
 <!DOCTYPE html>
-<h<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Iniciar Sesión')">
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Material Design for Bootstrap</title>
-    <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/b101dc44ce.js" crossorigin="anonymous"></script>
-    <!--JQUery-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- MDB -->
-    <link rel="stylesheet" href="../static/css/mdb.min.css" />
-
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Login')"></head>
+<head>
 <nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
 <body>
-<div class="container py-5" style="display:flex;justify-content:center;align-items:center;">
-    <div class="p-4 bg-dark text-white rounded-7" style="width: 48% !important;">
+<div class="container py-5 d-flex justify-content-center align-items-center">
+    <div class="p-4 bg-dark text-white rounded-7 w-50" >
         <form autocomplete="off" th:action="@{/processLogin}" method="post">
             <!-- Stack the columns on mobile by making one full-width and the other half-width -->
             <div class=" title-24 mb-3 text-white text-center">
@@ -58,7 +43,7 @@
                                     <p>¿Aún no tienes cuenta? </p>
                                 </div>
                                 <div class="col">
-                                    <button class="btn btn-danger mb-4" >Regístrate</button>
+                                    <a th:href="@{/registro}" class="btn btn-danger mb-4" >Regístrate</a>
                                 </div>
                             </div>
                             <p>o regístrate con:</p>
