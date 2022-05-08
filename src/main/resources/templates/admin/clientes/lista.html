@@ -47,10 +47,10 @@
                         <td class="fw-bold" th:text="${cliente.nombre}">
                             Alejandro david
                         </td>
-                        <td th:text="${cliente.apellido}">
+                        <td class="fw-bold"  th:text="${cliente.apellido}">
                             Rosales Milagros
                         </td>
-                        <td th:text="${cliente.nacimiento}">
+                        <td th:text="${cliente.edad}">
                             28
                         </td>
                         <td th:text="${cliente.correo}">
@@ -64,7 +64,7 @@
                 </tbody>
             </table>
             <!--Paginacion-->
-            <nav th:replace="fragmentos/paginacion :: paginacion('/admin/clientes',${pag},${paginas})"></nav>
+            <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
 
         </div>
 

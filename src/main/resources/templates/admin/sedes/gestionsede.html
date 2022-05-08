@@ -148,7 +148,7 @@
                     </tr>
                 </tbody>
             </table>
-            <nav th:replace="fragmentos/paginacion :: paginacion(${'/admin/sedes/gestion/' + sede.id},${pag},${paginas})"></nav>
+            <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
         </div>
         <footer th:replace="fragmentos/footer.html :: footer"></footer>
 

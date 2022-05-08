@@ -68,6 +68,7 @@ public class AdminSedesController {
         model.addAttribute("listaSedes", listaSedes);
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
+        model.addAttribute("ruta", "/admin/sedes?");
         return "admin/sedes/lista";
     }
 
@@ -185,6 +186,7 @@ public class AdminSedesController {
         model.addAttribute("paginas", paginas);
         model.addAttribute("sede", optionalSede.get());
         model.addAttribute("salas", salaRepository.findAllBySede(sede, lista));
+        model.addAttribute("ruta", "/admin/sedes/gestion/" + sede.getId() + "?");
         return "/admin/sedes/gestionsede";
     }
 
