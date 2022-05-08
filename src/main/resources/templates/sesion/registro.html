@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Registro')"></head>
+<head>
+    <nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
+<body>
+<div class="container py-5 d-flex justify-content-center align-items-center">
+    <div class="py-4 px-5 bg-dark text-white rounded-7 w-50" >
+        <form autocomplete="off" th:action="@{/registrar}" method="post" th:object="${cliente}">
+            <input th:field="*{id}" type="hidden"/>
+            <div class="title-24 mb-3 text-white text-center">
+                <img th:src="@{/img/logo-teleticket.png}" height="60" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
+            </div>
+            <div class="title-24 mb-4 text-white text-center ">Regístrate y empieza a disfrutar del teatro</div>
+            <div>
+                <div class="mb-4 align-items-center d-flex" style="min-width: 500px;">
+                    <div class="w-100" >
+                        <div class="form-outline form-white mb-4">
+                            <div class="row row-cols-md-2 mb-4">
+                                <div class="col" >
+                                    <div class="form-outline form-white">
+                                        <input th:field="*{nombre}" type="text" id="nombre" class="form-control"
+                                               th:classappend="${#fields.hasErrors('nombre')?'is-invalid':''}"/>
+                                        <label class="form-label" for="nombre">Nombre</label>
+                                    </div>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('nombre')}"
+                                         th:errors="*{nombre}"></div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-outline form-white">
+                                        <input th:field="*{apellido}" type="text" id="apellido" class="form-control"
+                                               th:classappend="${#fields.hasErrors('apellido')?'is-invalid':''}"/>
+                                        <label class="form-label" for="apellido">Apellido</label>
+                                    </div>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('apellido')}"
+                                         th:errors="*{apellido}"></div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <div class="form-outline form-white">
+                                        <input th:field="*{dni}" type="text" id="dni" class="form-control"
+                                               th:classappend="${#fields.hasErrors('dni')?'is-invalid':''}"/>
+                                        <label class="form-label" for="apellido">DNI</label>
+                                    </div>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('dni')}"
+                                         th:errors="*{dni}"></div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-outline form-white">
+                                        <input th:field="*{celular}" type="text" id="celular" class="form-control"
+                                               th:classappend="${#fields.hasErrors('celular')?'is-invalid':''}"/>
+                                        <label class="form-label" for="celular">Celular</label>
+                                    </div>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('celular')}"
+                                         th:errors="*{celular}"></div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <div class="form-outline form-white">
+                                        <input th:field="*{direccion}" type="text" id="direccion" class="form-control"
+                                               th:classappend="${#fields.hasErrors('direccion')?'is-invalid':''}"/>
+                                        <label class="form-label" for="direccion">Dirección</label>
+                                    </div>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('direccion')}"
+                                         th:errors="*{direccion}"></div>
+                                </div>
+
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <div class="form-outline form-white">
+                                        <input th:field="*{nacimiento}" type="date" id="nacimiento" class="form-control"
+                                               th:classappend="${#fields.hasErrors('nacimiento')?'is-invalid':''}"/>
+                                        <label class="form-label" for="nacimiento">Fecha de nacimiento</label>
+                                    </div>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('nacimiento')}"
+                                         th:errors="*{nacimiento}"></div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <div class="form-outline form-white">
+                                        <input th:field="*{correo}" type="text" id="correo" class="form-control"
+                                               th:classappend="${#fields.hasErrors('correo')?'is-invalid':''}"/>
+                                        <label class="form-label" for="correo">Correo</label>
+                                    </div>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('correo')}"
+                                         th:errors="*{correo}"></div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <div class="form-outline form-white">
+                                        <input name="contrasena" type="password" id="contrasena" class="form-control"
+                                               th:classappend="${#fields.hasErrors('global')?'is-invalid':''}"/>
+                                        <label class="form-label" for="contrasena">Contraseña</label>
+                                    </div>
+                                    <div class="text-danger" th:each="err : ${#fields.errors('global')}"
+                                         th:text="${err}" th:unless="${err.contains('coinciden')}"></div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <div class="form-outline form-white">
+                                        <input name="confcontrasena" type="password" id="confcontrasena" class="form-control"
+                                               th:classappend="${#fields.hasErrors('global')?'is-invalid':''}"/>
+                                        <label class="form-label" for="confcontrasena">Confirmar contraseña</label>
+                                    </div>
+                                    <div class="text-danger" th:each="err : ${#fields.errors('global')}"
+                                         th:text="${err}" th:if="${err.contains('coinciden')}"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Submit button-->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-light mb-4" >Registrar</button>
+                        </div>
+
+                        <!-- Register buttons -->
+                        <div class="text-center" style="border-top-color: white; border-top: 2px solid white; padding-top: 20px">
+                            <div class="row">
+                                <div class="col">
+                                    <p>¿Ya tienes una cuenta? </p>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-danger mb-4" >Ingresa</button>
+                                </div>
+                            </div>
+                            <p>o regístrate con:</p>
+                            <button type="button" class="btn btn-danger btn-floating mx-1">
+                                <i class="fab fa-google"></i>
+                            </button>
+                        </div>
+                        <div th:if="${param.error}" class="text-redtele p-2">
+                            Acceso denegado
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+</body>
+
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+</html>

@@ -15211,6 +15211,12 @@ i.flag-zw:before {
   background-color: hsla(0, 0%, 100%, .45)
 }
 
+.form-outline.form-white input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  margin: 0px;
+  margin-right: 20px !important;
+}
+
 .select-input.form-control[readonly]:not([disabled]) {
   background-color: transparent
 }
