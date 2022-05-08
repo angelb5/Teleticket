@@ -31,106 +31,27 @@
         </tr>
         </thead>
         <tbody style="font-size: 12px">
-        <tr>
-            <td class="fw-bold">
+        <tr th:each="operador, i : ${operadores}">
+            <td class="fw-bold" th:text="${i.index+1}">
                 1
             </td>
-            <td>
+            <td th:text="${operador.nombre}">
                 Julio Joaquín Elías
             </td>
-            <td>
+            <td th:text="${operador.correo}">
                 JJelias@teleticket.pe
             </td>
             <td>
-                <button type="button" class="btn btn-outline-danger fw-bold btn-sm btn-rounded" data-mdb-ripple-color="dark">
+                <a type="button" class="btn btn-outline-danger fw-bold btn-sm btn-rounded" data-mdb-ripple-color="dark"
+                th:href="@{|/admin/operadores/borrar?id=${operador.id}|}">
                     Eliminar
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td class="fw-bold">
-                2
-            </td>
-            <td>
-                Armando Guerrero Baustista
-            </td>
-            <td>
-                AGbautista@teleticket.pe
-            </td>
-            <td>
-                <button type="button" class="btn btn-outline-danger fw-bold btn-sm btn-rounded" data-mdb-ripple-color="dark">
-                    Eliminar
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td class="fw-bold">
-                3
-            </td>
-            <td>
-                Orlando Emanuel Quiñones
-            </td>
-            <td>
-                OEquinones@teleticket.pe
-            </td>
-            <td>
-                <button type="button" class="btn btn-outline-danger fw-bold btn-sm btn-rounded" data-mdb-ripple-color="dark">
-                    Eliminar
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td class="fw-bold">
-                4
-            </td>
-            <td>
-                Michael Jackson Heee
-            </td>
-            <td>
-                MJheee@teleticket.pe
-            </td>
-            <td>
-                <button type="button" class="btn btn-outline-danger fw-bold btn-sm btn-rounded" data-mdb-ripple-color="dark">
-                    Eliminar
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td class="fw-bold">
-                5
-            </td>
-            <td>
-                Pedro Alberto Jesús Días
-            </td>
-            <td>
-                PAJdias@teleticket.pe
-            </td>
-            <td>
-                <button type="button" class="btn btn-outline-danger fw-bold btn-sm btn-rounded" data-mdb-ripple-color="dark">
-                    Eliminar
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td class="fw-bold">
-                6
-            </td>
-            <td>
-                Robert Roberto Francisco
-            </td>
-            <td>
-                RRfrancisco@teleticket.pe
-            </td>
-            <td>
-                <button type="button" class="btn btn-outline-danger fw-bold btn-sm btn-rounded" data-mdb-ripple-color="dark">
-                    Eliminar
-                </button>
+                </a>
             </td>
         </tr>
         </tbody>
     </table>
     <!--Paginacion-->
-    <nav th:replace="fragmentos/paginacion :: paginacion('ruta',1,3)"></nav>
+    <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
 
 </div>
 
