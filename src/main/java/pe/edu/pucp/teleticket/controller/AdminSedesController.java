@@ -351,7 +351,7 @@ public class AdminSedesController {
             redirectAttributes.addFlashAttribute("msg", "Hubo un error al cargar el archivo");
             return "redirect:/admin/sedes/gestion/" + sedeId;
         }
-        redirectAttributes.addFlashAttribute("msg","Se ha guardado la imagen exitosamente" + foto.getContentType());
+        redirectAttributes.addFlashAttribute("msg","Se ha guardado la imagen exitosamente");
         fotoSedeRepository.save(fotossede);
 
         return "redirect:/admin/sedes/gestion/" + sedeId;

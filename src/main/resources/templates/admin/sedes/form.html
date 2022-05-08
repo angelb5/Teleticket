@@ -53,6 +53,7 @@
                                         <label class="form-check-label" >Clausurada</label>
                                     </div>
                                 </div>
+                                <input hidden th:if="${sede.id==0}" id="estado" name="estado" value="Disponible">
                                 <div class="text-danger mt-3" th:if="${#fields.hasErrors('estado')}"
                                      th:errors="*{estado}"></div>
                                 <div class="control-group mb-3 row">
