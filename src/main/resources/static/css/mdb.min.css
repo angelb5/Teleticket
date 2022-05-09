@@ -19704,3 +19704,15 @@ a{
   width: 100%;
   object-fit: cover;
 }
+
+#search_concept{
+  text-transform: capitalize;
+}
+
+
+.input-group:focus {
+  border: 0;
+}
+.input-group input:focus {
+  border: 0;
+}

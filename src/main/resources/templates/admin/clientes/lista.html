@@ -4,7 +4,7 @@
         <link rel="stylesheet" th:href="@{'/css/tables.css'}"/>
     </head>
     <body>
-        <nav th:replace="fragmentos/navbar.html :: navbar('personas')"></nav>
+        <nav th:replace="fragmentos/navbar.html :: navbar('clientes')"></nav>
 
         <!--Contenidos-->
         <div class="container py-2 ">
@@ -75,17 +75,8 @@
         <!--Footer-->
         <footer th:replace="fragmentos/footer.html :: footer"></footer>
         </div>
-        <!--Fin de contenidos-->
-        <!-- Modal -->
 
-        <!-- End your project here-->
-
-
-        <!-- MDB -->
-        <script type="text/javascript" src="../js/mdb.min.js"></script>
+        <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
         <!-- Custom scripts -->
-
-
-        </script>
     </body>
 </html>
