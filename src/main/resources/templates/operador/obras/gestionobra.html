@@ -155,44 +155,49 @@
             Sede&nbsp;&nbsp;
         </div>
     </div>
+    <form method="get" th:action="@{|/operador/obras/gestion/${obra.id}|}">
     <div class="row">
-        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <button class="btn btn-redtele" type="submit" >Buscar</button>
+        </div>
+
         <div class="col-md-2">
             <div class="input-group">
-                <select class="form-select fs-13" aria-label="Default select example">
-                    <option value="1">Todo</option>
-                    <option value="2">2018</option>
-                    <option value="3">2019</option>
-                    <option value="3">2020</option>
-                    <option value="3">2021</option>
-                    <option value="3">2022</option>
+                <select class="form-select fs-13" aria-label="Default select example" name="ano" id="ano">
+                    <option value="0" selected>Todo</option>
+                    <option th:each="i: ${#numbers.sequence( menorAno, 2022)}" th:value="${i}" th:text="${i}" th:selected="${ano==i}" >2018</option>
                 </select>
             </div>
         </div>
         <div class="col-md-3">
             <div class="input-group">
-                <select class="form-select fs-13" aria-label="Default select example">
-                    <option value="1">Todo</option>
-                    <option value="2">Enero</option>
-                    <option value="3">Febrero</option>
-                    <option value="3">Agosto</option>
-                    <option value="3">Septiembre</option>
-                    <option value="3">Octubre</option>
-                    <option value="3">Noviembre</option>
-                    <option value="3">Diciembre</option>
+                <select class="form-select fs-13" aria-label="Default select example" name="mes" id="mes">
+                    <option value="0" th:selected="${mes==0}">Todo</option>
+                    <option value="1" th:selected="${mes==1}">Enero</option>
+                    <option value="2" th:selected="${mes==2}">Febrero</option>
+                    <option value="3" th:selected="${mes==3}">Marzo</option>
+                    <option value="4" th:selected="${mes==4}">Abril</option>
+                    <option value="5" th:selected="${mes==5}">Mayo</option>
+                    <option value="6" th:selected="${mes==6}">Junio</option>
+                    <option value="7" th:selected="${mes==7}">Julio</option>
+                    <option value="8" th:selected="${mes==8}">Agosto</option>
+                    <option value="9" th:selected="${mes==9}">Septiembre</option>
+                    <option value="10" th:selected="${mes==10}">Octubre</option>
+                    <option value="11" th:selected="${mes==11}">Noviembre</option>
+                    <option value="12" th:selected="${mes==12}">Diciembre</option>
                 </select>
             </div>
         </div>
         <div class="col-md-3">
             <div class="input-group">
-                <select class="form-select fs-13" aria-label="Default select example">
-                    <option value="1">Todo</option>
-                    <option value="2">Miraflores</option>
-                    <option value="3">Pueblo Libre</option>
+                <select class="form-select fs-13" aria-label="Default select example" name="sede" id="sede">
+                    <option  value="0">Todo</option>
+                    <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.id}" th:selected="${sedeId==sede.id}">Miraflores</option>
                 </select>
             </div>
         </div>
     </div>
+    </form>
     <table class="table hover-light align-middle mb-0  round-border text-center" th:unless="${paginas==0}"
             th:classappend="${paginas<=1?'mb-4': ''}">
         <thead class="bg-light">

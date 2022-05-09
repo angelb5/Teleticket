@@ -44,6 +44,8 @@ public class OperadorObrasController {
     @Autowired
     FotoObraRepository fotoObraRepository;
 
+    @Autowired
+    SedeRepository sedeRepository;
     @GetMapping({"/","","/lista"})
     public String listarObras(Model model, @RequestParam("pag") Optional<Integer> pag, @RequestParam("busqueda") Optional<String> optionalBusqueda){
         String busqueda = optionalBusqueda.isPresent()? optionalBusqueda.get().trim() : "";
@@ -60,43 +62,99 @@ public class OperadorObrasController {
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
         model.addAttribute("ruta", ruta);
+
         return "operador/obras/lista";
     }
 
     @GetMapping("/gestion/{idPath}")
-    public String gestionSede(Model model, @PathVariable("idPath") String idPath, @RequestParam("pag") Optional<Integer> pag){
+    public String gestionSede(Model model, @PathVariable("idPath") String idPath, @RequestParam("pag") Optional<Integer> pag,
+                              @RequestParam("ano") Optional<String> anoString, @RequestParam("mes") Optional<String> mesString,
+                              @RequestParam("sede") Optional<String> sedeString){
         int id=0;
+        int ano=0;
+        int mes=0;
+        int sede=0;
         try{
             id= Integer.parseInt(idPath);
+            ano=Integer.parseInt(anoString.isPresent()? anoString.get(): "0");
+            mes=Integer.parseInt(mesString.isPresent()? mesString.get(): "0");
+            sede=Integer.parseInt(sedeString.isPresent()? sedeString.get(): "0");
         } catch (Exception e){
             return "redirect:/operador/obras";
         }
         Optional<Obra> optionalObra =obraRepository.findById(id);
         if(optionalObra.isEmpty()){return "redirect:/operador/obras";}
-
         int pagina = pag.isEmpty()? 1 : pag.get();
         pagina = pagina<1? 1 : pagina;
-        Obra obra = new Obra();
-        obra.setId(id);
-        int paginas = (int) Math.ceil((float)funcionRepository.countAllByObra(obra)/funcionesPaginas);
-        pagina = pagina>paginas? paginas : pagina;
+        int paginas =0;
         Pageable lista;
-        if(pagina==0){
-            lista= PageRequest.of(0, funcionesPaginas);
-        } else {
-            lista= PageRequest.of(pagina-1, funcionesPaginas);
+        String ruta ="/operador/obras/gestion/"+id+"?";
+        List<SedeFiltro> listaSedes= obraRepository.listarSedesSegunObra(id);
+        List<Funcion> funcionList = new ArrayList<>();
+        if((ano==0) && (sede==0)) {
+            Obra obra = new Obra();
+            obra.setId(id);
+            paginas = (int) Math.ceil((float) funcionRepository.countAllByObra(obra) / funcionesPaginas);
+            paginas= paginas==0? 1: paginas;
+            pagina = pagina > paginas ? paginas : pagina;
+            lista = PageRequest.of(pagina-1,funcionesPaginas);
+            funcionList = funcionRepository.findAllByObraOrderByFechaAsc(obra, lista);
+        } else if ((ano==0) && (sede!=0)) {
+            paginas = (int) Math.ceil((float) funcionRepository.contarListaFuncionesPorSede(sede,id) / funcionesPaginas);
+            paginas= paginas==0? 1: paginas;
+            pagina = pagina > paginas ? paginas : pagina;
+            lista = PageRequest.of(pagina-1,funcionesPaginas);
+            funcionList = funcionRepository.listaFuncionesPorSede(sede,id,lista);
+            ruta+= "ano="+ano+"&mes="+mes+"&sede="+sede+"&";
+        } else if ((ano!=0) && (mes==0) && (sede==0)) {
+            paginas = (int) Math.ceil((float) funcionRepository.contarListaFuncionesPorAno(ano,id) / funcionesPaginas);
+            paginas= paginas==0? 1: paginas;
+            pagina = pagina > paginas ? paginas : pagina;
+            lista = PageRequest.of(pagina-1,funcionesPaginas);
+            funcionList = funcionRepository.listaFuncionesPorAno(ano,id,lista);
+            ruta+= "ano="+ano+"&mes="+mes+"&sede="+sede+"&";
+        } else if ((ano!=0) && (mes!=0) && (sede==0)) {
+            paginas = (int) Math.ceil((float) funcionRepository.contarListaFuncionesPorAnoyMes(ano,mes,id) / funcionesPaginas);
+            paginas= paginas==0? 1: paginas;
+            pagina = pagina > paginas ? paginas : pagina;
+            lista = PageRequest.of(pagina-1,funcionesPaginas);
+            funcionList = funcionRepository.listaFuncionesPorAnoyMes(ano,mes,id,lista);
+            ruta+= "ano="+ano+"&mes="+mes+"&sede="+sede+"&";
+        } else if ((ano!=0) && (mes!=0) && (sede!=0)) {
+            paginas = (int) Math.ceil((float) funcionRepository.contarListaFuncionesPorAnoyMesySede(ano,mes,sede,id) / funcionesPaginas);
+            paginas= paginas==0? 1: paginas;
+            pagina = pagina > paginas ? paginas : pagina;
+            lista = PageRequest.of(pagina-1,funcionesPaginas);
+            funcionList = funcionRepository.listaFuncionesPorAnoyMesySede(ano,mes,sede,id,lista);
+            ruta+= "ano="+ano+"&mes="+mes+"&sede="+sede+"&";
+        } else if ((ano!=0) && (mes==0) && (sede!=0)) {
+            paginas = (int) Math.ceil((float) funcionRepository.contarListaFuncionesPorAnoySede(ano,sede,id) / funcionesPaginas);
+            paginas= paginas==0? 1: paginas;
+            pagina = pagina > paginas ? paginas : pagina;
+            lista = PageRequest.of(pagina-1,funcionesPaginas);
+            funcionList = funcionRepository.listaFuncionesPorAnoySede(ano,sede,id,lista);
+            ruta+= "ano="+ano+"&mes="+mes+"&sede="+sede+"&";
         }
 
-        List<Funcion> funcionList = funcionRepository.findAllByObraOrderByFechaAsc(obra,lista);
 
+        Optional<Integer> optionalMenorAno = obraRepository.obtenerPrimerAnoFuncion(id);
+        Integer menorAno = optionalMenorAno.isEmpty()? 2022:optionalMenorAno.get();
+        model.addAttribute("menorAno", menorAno);
+
+        model.addAttribute("ano", ano);
+        model.addAttribute("mes", mes);
+        model.addAttribute("sedeId", sede);
+
+        model.addAttribute("listaSedes",listaSedes);
         model.addAttribute("fotos", fotoObraRepository.findAllIdByIdObras(id));
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
         model.addAttribute("obra",optionalObra.get());
         model.addAttribute("funciones", funcionList);
-        model.addAttribute("ruta", "/operador/obras/gestion/"+id+"?");
+        model.addAttribute("ruta", ruta);
         return "/operador/obras/gestionobra";
     }
+
 
     @GetMapping("/nueva")
     public String nuevaObra(Model model, @ModelAttribute("obra") Obra obra) {
