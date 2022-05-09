@@ -10,6 +10,7 @@ import pe.edu.pucp.teleticket.entity.*;
 import pe.edu.pucp.teleticket.repository.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,22 +33,21 @@ public class OperadorObrasController {
     FotoObraRepository fotoObraRepository;
 
     @GetMapping({"/","","/lista"})
-    public String listarObras(Model model, @RequestParam("pag") Optional<Integer> pag){
+    public String listarObras(Model model, @RequestParam("pag") Optional<Integer> pag, @RequestParam("busqueda") Optional<String> optionalBusqueda){
+        String busqueda = optionalBusqueda.isPresent()? optionalBusqueda.get().trim() : "";
+        String ruta =  busqueda.isBlank()? "/operador/obras?" : "operador/obras?busqueda=" +busqueda +"&";
+
         int pagina = pag.isEmpty()? 1 : pag.get();
         pagina = pagina<1? 1 : pagina;
-        int paginas = (int) Math.ceil((float)obraRepository.count()/obrasPaginas);
+        int paginas = (int) Math.ceil((float)obraRepository.contarListaObrasBusqueda(busqueda)/obrasPaginas);
         pagina = pagina>paginas? paginas : pagina;
-        Pageable lista;
-        if(pagina==0){
-            lista= PageRequest.of(0, obrasPaginas);
-        } else {
-            lista= PageRequest.of(pagina-1, obrasPaginas);
+        Pageable lista = PageRequest.of(pagina-1, obrasPaginas);
+        List<Obra> listaObras = obraRepository.listarObrasBusqueda(busqueda, lista);
 
-        }
-        List<Obra> listaObras = obraRepository.findAllByOrderByIdAsc(lista);
         model.addAttribute("listaObras",listaObras);
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
+        model.addAttribute("ruta", ruta);
         return "operador/obras/lista";
     }
 
@@ -76,8 +76,6 @@ public class OperadorObrasController {
         }
 
         List<Funcion> funcionList = funcionRepository.findAllByObraOrderByFechaAsc(obra,lista);
-
-
         List<Persona> directores = personaRepository.findDirectoresByIdObra(id);
         List<Persona> actores = personaRepository.findActoresByIdObra(id);
 
@@ -99,9 +97,5 @@ public class OperadorObrasController {
         model.addAttribute("generoList", generoList);
         return "operador/obras/nuevaFrm";
     }
-
-
-
-
 
 }

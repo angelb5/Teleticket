@@ -25,8 +25,9 @@ public class AdminOperadoresController {
 
 
     @GetMapping({"/","","/lista"})
-    public String listarSedes(@ModelAttribute("nombreOperador") String nombreOperador, Model model,
+    public String listarSedes(@RequestParam("busqueda") Optional<String> optionalBusqueda, Model model,
                               @RequestParam("pag") Optional<String> pagString){
+        String busqueda = optionalBusqueda.isPresent()? optionalBusqueda.get().trim(): "";
         int pagina;
         try {
             if (pagString.isEmpty() || pagString.get().isEmpty()) {
@@ -34,18 +35,19 @@ public class AdminOperadoresController {
             } else {
                 pagina = Integer.parseInt(pagString.get());
             }
-            if(nombreOperador==null){
-                nombreOperador="";
-            }
         } catch (Exception e) {
             return "redirect:/admin/clientes";
         }
+
+
         pagina = pagina < 1 ? 1 : pagina;
-        int paginas = (int) Math.ceil((float) operadorRepository.contarListaOperadores(nombreOperador.toLowerCase()) / operadoresPaginas);
+        int paginas = (int) Math.ceil((float) operadorRepository.contarListaOperadores(busqueda.toLowerCase()) / operadoresPaginas);
+        paginas = paginas==0? 1 : paginas;
         pagina = pagina > paginas ? paginas : pagina;
+
         Pageable lista = PageRequest.of(pagina - 1, operadoresPaginas);
 
-        model.addAttribute("operadores", operadorRepository.listarOperadores(nombreOperador.toLowerCase(), lista));
+        model.addAttribute("operadores", operadorRepository.listarOperadores(busqueda.toLowerCase(), lista));
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
         model.addAttribute("ruta", "/admin/operadores?");

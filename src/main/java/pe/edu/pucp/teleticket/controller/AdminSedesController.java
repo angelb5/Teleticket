@@ -52,10 +52,13 @@ public class AdminSedesController {
     FotoSedeRepository fotoSedeRepository;
 
     @GetMapping({"/", "", "/lista"})
-    public String listarSedes(Model model, @RequestParam("pag") Optional<Integer> pag) {
+    public String listarSedes(Model model, @RequestParam("pag") Optional<Integer> pag,
+                              @RequestParam("busqueda") Optional<String> optionalBusqueda) {
+        String busqueda = optionalBusqueda.isPresent()? optionalBusqueda.get().trim() : "";
+        String ruta = busqueda.isBlank()? "/admin/sedes?" : "/admin/sedes?busqueda=" +busqueda +"&";
         int pagina = pag.isEmpty() ? 1 : pag.get();
         pagina = pagina < 1 ? 1 : pagina;
-        int paginas = (int) Math.ceil((float) sedeRepository.count() / sedesPaginas);
+        int paginas = (int) Math.ceil((float) sedeRepository.contarListarSedesBusqueda(busqueda) / sedesPaginas);
         pagina = pagina > paginas ? paginas : pagina;
         Pageable lista;
         if (pagina == 0) {
@@ -64,11 +67,11 @@ public class AdminSedesController {
             lista = PageRequest.of(pagina - 1, sedesPaginas);
 
         }
-        List<Sede> listaSedes = sedeRepository.findAllByOrderByIdAsc(lista);
+        List<Sede> listaSedes = sedeRepository.listarSedesBusqueda(busqueda, lista);
         model.addAttribute("listaSedes", listaSedes);
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
-        model.addAttribute("ruta", "/admin/sedes?");
+        model.addAttribute("ruta", ruta);
         return "admin/sedes/lista";
     }
 

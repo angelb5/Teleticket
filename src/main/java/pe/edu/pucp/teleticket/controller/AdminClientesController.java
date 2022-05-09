@@ -37,7 +37,8 @@ public class AdminClientesController {
             return "redirect:/admin/clientes";
         }
         pagina = pagina < 1 ? 1 : pagina;
-        int paginas = (int) Math.ceil((float) clienteRepository.count() / clientePaginas);
+        int paginas = (int) Math.ceil((float) clienteRepository.contarListarClientes(busqueda.toLowerCase()) / clientePaginas);
+        paginas = paginas==0? 1 : paginas;
         pagina = pagina > paginas ? paginas : pagina;
 
         String rutaPaginado = "/admin/clientes";
@@ -74,25 +75,42 @@ public class AdminClientesController {
             return "redirect:/admin/clientes";
         }
         pagina = pagina < 1 ? 1 : pagina;
-        int paginas = (int) Math.ceil((float) clienteRepository.count() / clientePaginas);
-        pagina = pagina > paginas ? paginas : pagina;
-        Pageable lista = PageRequest.of(pagina - 1, clientePaginas);
+        int paginas;
+        Pageable lista;
         List<ClienteListado> listaClientes = new ArrayList<>();
         String rutaPaginado= "/admin/clientes/";
 
         switch (filtro.get()) {
             case "concompras":
                 rutaPaginado+= "concompras";
+
+                paginas = (int) Math.ceil((float) clienteRepository.contarClientesConCompras(busqueda) / clientePaginas);
+                paginas = paginas==0? 1 : paginas;
+                pagina = pagina > paginas ? paginas : pagina;
+                lista = PageRequest.of(pagina - 1, clientePaginas);
+
                 listaClientes = clienteRepository.listarClientesConCompras(busqueda, lista);
                 model.addAttribute("filtro", "Con compras");
                 break;
             case "concriticas":
                 rutaPaginado+= "concriticas";
+
+                paginas = (int) Math.ceil((float) clienteRepository.contarClientesConCriticas(busqueda) / clientePaginas);
+                paginas = paginas==0? 1 : paginas;
+                pagina = pagina > paginas ? paginas : pagina;
+                lista = PageRequest.of(pagina - 1, clientePaginas);
+
                 listaClientes = clienteRepository.listarClientesConCriticas(busqueda, lista);
                 model.addAttribute("filtro", "Con críticas");
                 break;
             case "sinhistorial":
                 rutaPaginado+= "sinhistorial";
+
+                paginas = (int) Math.ceil((float) clienteRepository.contarClientesSinHistorial(busqueda) / clientePaginas);
+                paginas = paginas==0? 1 : paginas;
+                pagina = pagina > paginas ? paginas : pagina;
+                lista = PageRequest.of(pagina - 1, clientePaginas);
+
                 model.addAttribute("ruta", "/admin/clientes/sinhistorial?");
                 listaClientes = clienteRepository.listarClientesSinHistorial(busqueda, lista);
                 model.addAttribute("filtro", "Sin historial");
