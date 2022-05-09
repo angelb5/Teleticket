@@ -20,6 +20,10 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
     @Query(nativeQuery = true, value = "select count(*) from obras o where lower(o.titulo) like %?1% order by o.titulo asc")
     public long contarListaObrasBusqueda(String nombre);
 
+    @Query(nativeQuery = true, value = "select count(*)  from funciones f where datediff(f.fecha, now())>0 and f.idobras=?1")
+    public long funcionesVigentes(Integer idObra);
 
+    @Query(nativeQuery = true, value = "select count(*) from obras  where destacado = 1")
+    public int obrasDestacadas();
 
 }
