@@ -15,16 +15,10 @@ public interface PersonaRepository extends JpaRepository<Persona,Integer> {
     public List<Persona> findAllByEstadoEquals(String estado);
 
     @Query(nativeQuery = true,
-            value = "select * from personas p\n" +
-                    "inner join personal pl on p.idpersonas=pl.idpersonas\n" +
-                    "inner join obras o on o.idobras = pl.idobras\n" +
-                    "where pl.rol = 'Actuacion' and o.idobras = ?1")
+            value = "select * from personas p inner join actores a on p.idpersonas = a.idpersona where idobra = ?1")
     public List<Persona> findActoresByIdObra(int idobras);
 
     @Query(nativeQuery = true,
-            value = "select * from personas p\n" +
-                    "inner join personal pl on p.idpersonas=pl.idpersonas\n" +
-                    "inner join obras o on o.idobras = pl.idobras\n" +
-                    "where pl.rol = 'Direccion' and o.idobras = ?1")
+            value = "select * from personas p inner join directores d on p.idpersonas = d.idpersona where idobra = ?1")
     public List<Persona> findDirectoresByIdObra(int idobras);
 }

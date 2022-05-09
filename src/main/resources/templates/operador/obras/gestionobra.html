@@ -46,7 +46,7 @@
         </div>
         <div class="d-flex align-items-center justify-content-end col-lg-3">
             <a class="btn rounded-7 btn-redtele btn-sm h-100" type="button"
-               th:href="@{'/operador/obras/editar?id=' +${obra.id}+}">
+               th:href="@{'/operador/obras/gestion/'+${obra.id}+ '/editar'}">
                 <div class="row h-100">
                     <div class="col-3 h-100 d-flex align-items-center"><i  class="fas fa-solid fa-masks-theater fs-24"></i>
                     </div>
@@ -74,16 +74,16 @@
     <div class="row mb-5">
         <div class="fs-16" >
             <span>Dirección:&nbsp;</span>
-            <span th:each="director, info : ${directores}">
+            <span th:each="director, info : ${obra.directores}">
                 <span  class="fw-bold" th:text="${director.nombre}"></span>
-                <span class="fw-bold"  th:unless="${info.index +1 == directores.size()}" th:text="', '"></span>
+                <span class="fw-bold"  th:unless="${info.index +1 == obra.directores.size()}" th:text="', '"></span>
             </span>
         </div>
         <div class="fs-16" >
             <span>Reparto:&nbsp;</span>
-            <span th:each="actor, info : ${actores}">
+            <span th:each="actor, info : ${obra.actores}">
                 <span  class="fw-bold" th:text="${actor.nombre}"></span>
-                <span class="fw-bold"  th:unless="${info.index +1 == actores.size()}" th:text="', '"></span>
+                <span class="fw-bold"  th:unless="${info.index +1 == obra.actores.size()}" th:text="', '"></span>
             </span>
         </div>
     </div>
@@ -228,15 +228,15 @@
         </tr>
         </tbody>
     </table>
-    <nav th:replace="fragmentos/paginacion :: paginacion(${'/operador/obras/gestion/' + obra.id},${pag},${paginas})"></nav>
+    <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
 
 </div>
 
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
 <!-- Modal Añadir Imagen -->
-<div class="modal top fade" id="anadirModal" tabindex="-1" aria-labelledby="anadirModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+<div class="modal top fade" id="anadirModal" tabindex="-1" aria-labelledby="anadirModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true" th:if="${fotos.size()<4}">
     <div class="modal-dialog  ">
-        <form method="post" th:action="@{/}">
+        <form method="post" th:action="@{|/operador/obras/gestion/${obra.id}/agregarimagen|}" enctype="multipart/form-data">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Añadir imagen</h5>
@@ -248,7 +248,7 @@
                             $('.dropify').dropify();
                         });
                     </script>
-                    <input  type="file" name="file" class="dropify" />
+                    <input  type="file" name="foto" id="foto" class="dropify" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
@@ -260,11 +260,35 @@
         </form>
     </div>
 </div>
-
+    <!-- Modal Añadir Imagen LIMITE-->
+    <div class="modal top fade" id="anadirModal" tabindex="-1" aria-labelledby="anadirModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true" th:unless="${fotos.size()<4}">
+        <div class="modal-dialog  ">
+            <form>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Limite de Imagenes</h5>
+                        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <h6>Teleticket tiene como restricción que cada obra tenga como máximo 4 imagenes</h6>
+                        </div>
+                        <div class="fw-bold mb-3">
+                            Disculpe las molestias
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-redtele" data-mdb-dismiss="modal">De acuerdo</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 <!-- Modal Eliminar Imagen -->
 <div class="modal top fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
     <div class="modal-dialog  ">
-        <form method="post" th:action="@{/}">
+        <form method="post" th:action="@{|/operador/obras/gestion/imagenborrar|}">
             <input type="hidden" name="fotoid" id="fotoidEliminar" value="0">
             <div class="modal-content">
                 <div class="modal-header">
@@ -296,7 +320,7 @@
 <!-- Modal Principal Imagen -->
 <div class="modal top fade" id="principalModal" tabindex="-1" aria-labelledby="principalModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
     <div class="modal-dialog  ">
-        <form method="post" th:action="@{/}">
+        <form method="post" th:action="@{|/operador/obras/gestion/${obra.id}/imagenprincipal|}">
             <input type="hidden" name="fotoid" id="fotoidPrincipal" value="0">
             <div class="modal-content">
                 <div class="modal-header">
@@ -334,7 +358,12 @@
                 </div>
                 <div class="modal-body">
                     <div class=" w-100 d-flex justify-content-center mb-3 text-success">
-                        <i class="fa-solid fa-circle-check" style="font-size: 50px"></i>
+                        <i class="fa-solid fa-circle-check" style="font-size: 50px" th:class="${error==null? 'fa-solid fa-circle-check': 'fa-solid fa-circle-xmark'  }"></i>
+                        <style th:unless="${error==null}">
+                            .fa-circle-xmark{
+                                color: #d10000;
+                            }
+                        </style>
                     </div>
                     <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
                     </div>
@@ -370,5 +399,15 @@
         $('#msgModal').modal('show');
     });
 </script>
+    <script>
+        var uploadField = document.getElementById("foto");
+
+        uploadField.onchange = function() {
+            if(this.files[0].size > 5248000){
+                alert("El archivo es muy grande!");
+                this.value = "";
+            };
+        };
+    </script>
 </body>
 </html>

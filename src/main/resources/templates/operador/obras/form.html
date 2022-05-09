@@ -13,16 +13,18 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="card-title text-redtele fs-22">
+                <div class="card-title text-redtele fs-22" th:text="${obra.id==0?'Nueva obra':'Editar obra'}">
                     Nueva obra
                 </div>
             </div>
-            <form method="post" th:action="@{'/admin/sedes/guardar'}" th:object="${obra}">
+            <form method="post" th:action="@{'/operador/obras/'+ ${obra.id==0? 'guardar':'actualizar'}}" th:object="${obra}" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col">
                         <div class="mb-3">
+                            <input hidden th:field="*{id}">
                             <label class="form-label">Nombre de la obra</label>
-                            <input th:field="*{titulo}" type="text" class="form-control"/>
+                            <input th:field="*{titulo}" type="text" class="form-control"
+                                   th:classappend="${#fields.hasErrors('titulo')?'is-invalid':''}"/>
                             <div class="text-danger" th:if="${#fields.hasErrors('titulo')}"
                                  th:errors="*{titulo}"></div>
                         </div>
@@ -30,50 +32,65 @@
                             <label class="form-label">Descripción</label>
                             <textarea th:field="*{resumen}" type="text" class="form-control"
                                       th:classappend="${#fields.hasErrors('resumen')?'is-invalid':''}"></textarea>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('resumen')}"
+                            <div class="text-danger" th:if="${#fields.hasErrors('resumen')}"
                                  th:errors="*{resumen}"></div>
                         </div>
                         <div class="control-group mb-3">
                             <label for="directores" class="form-label">Directores </label>
-                            <select class="demo-default" name="directores" id="directores" multiple>
+                            <select class="demo-default" name="directores" id="directores" th:field="*{directores}"
+                                    th:classappend="${#fields.hasErrors('directores')?'is-invalid':''}" multiple>
                                 <option value="">Selecciona directores</option>
                                 <option th:each="director : ${personaList}"
                                         th:text="${director.nombre}"
                                         th:value="${director.id}"></option>
                             </select>
+                            <div class="text-danger" th:if="${#fields.hasErrors('directores')}"
+                                 th:errors="*{directores}"></div>
                         </div>
                         <script>
                             $('#directores').selectize();
                         </script>
                         <div class="control-group mb-3">
                             <label for="actores" class="form-label">Actores </label>
-                            <select class="demo-default" name="directores" id="actores" multiple>
+                            <select class="demo-default" name="actores" id="actores" th:field="*{actores}"
+                                    th:classappend="${#fields.hasErrors('actores')?'is-invalid':''}" multiple>
                                 <option value="">Selecciona actores</option>
                                 <option th:each="actor : ${personaList}"
                                         th:text="${actor.nombre}"
                                         th:value="${actor.id}"></option>
                             </select>
+                            <div class="text-danger" th:if="${#fields.hasErrors('actores')}"
+                                 th:errors="*{actores}"></div>
                         </div>
                         <script>
                             $('#actores').selectize();
                         </script>
                         <div class="control-group mb-3">
                             <label for="generos" class="form-label">Géneros </label>
-                            <select class="demo-default" name="generos" id="generos" multiple>
+                            <select class="demo-default" name="generos" id="generos" th:field="*{generos}"
+                                    th:classappend="${#fields.hasErrors('generos')?'is-invalid':''}" multiple>
                                 <option value="">Selecciona generos</option>
                                 <option th:each="genero : ${generoList}"
                                         th:text="${genero.nombre}"
                                         th:value="${genero.id}"></option>
                             </select>
+                            <div class="text-danger" th:if="${#fields.hasErrors('generos')}"
+                                 th:errors="*{generos}"></div>
                         </div>
                         <script>
                             $('#generos').selectize();
                         </script>
+                        <div class="mb-3" style="margin-top: 15px">
+                            <button class="btn btn-redtele" type="submit"> Guardar</button>
+                            <a class="btn btn-dark text-white" th:href="@{|/operador/obras|}" th:if="${obra.id==0}">Cancelar</a>
+                            <a class="btn btn-dark text-white" th:href="@{|/operador/obras/gestion/${obra.id}|}" th:unless="${obra.id==0}">Cancelar</a>
+                        </div>
                     </div>
                     <div class="col">
                         <div class="mb-3">
                             <label class="form-label">Duración</label>
-                            <input th:field="*{duracion}" type="text" class="form-control"/>
+                            <input th:field="*{duracion}" type="text" class="form-control"
+                                   th:classappend="${#fields.hasErrors('duracion')?'is-invalid':''}"/>
                             <div class="text-danger" th:if="${#fields.hasErrors('duracion')}"
                                  th:errors="*{duracion}"></div>
                         </div>
@@ -94,17 +111,26 @@
                                     <input class="form-check-input" type="radio" th:field="*{restricciones}" value="M18" />
                                     <label class="form-check-label" >M18</label>
                                 </div>
+                                <div class="text-danger" th:if="${#fields.hasErrors('restricciones')}"
+                                     th:errors="*{restricciones}"></div>
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" th:if="${obra.id==0}">
                             <label class="form-label">Foto</label>
                             <script>
                                 $(function() {
                                     $('.dropify').dropify();
                                 });
                             </script>
-                            <input  type="file" class="dropify" />
+                            <input  type="file" class="dropify" name="foto" id="foto"/>
+                            <div class="text-danger" th:text="${msg}"></div>
                         </div>
+                        <div class="mb-3" th:unless="${obra.id==0}">
+                            <label class="form-label">Foto Principal</label><br>
+                            <input hidden th:field="*{fotoprincipal}">
+                            <img th:src="@{|/image/obra/${obra.fotoprincipal}|}" style="width: 600px; height: 300px">
+                        </div>
+
                     </div>
                 </div>
             </form>

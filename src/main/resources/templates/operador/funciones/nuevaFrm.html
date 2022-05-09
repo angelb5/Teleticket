@@ -22,7 +22,7 @@
                         <label class="form-label">Sala</label>
                         <select class="demo-default" th:field="*{sala}"
                                 th:classappend="${#fields.hasErrors('sala')?'is-invalid':''}">
-                            <option value="0">Selecciona una sala</option>
+                            <option value="" hidden>Selecciona una sala</option>
                             <optgroup th:each="sede : ${sedeList}" th:label="${sede.nombre}">
                                 <option th:each="sala : ${sede.salas}"
                                         th:if="${sala.estado == 'Disponible'}"

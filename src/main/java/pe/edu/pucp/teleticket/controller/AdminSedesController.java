@@ -95,8 +95,7 @@ public class AdminSedesController {
         if (optionalSede.isEmpty()) {
             return "redirect:/admin/sedes";
         }
-        sede = optionalSede.get();
-        model.addAttribute("sede", sede);
+        model.addAttribute("sede", optionalSede.get());
         return "admin/sedes/form";
     }
 
@@ -128,13 +127,11 @@ public class AdminSedesController {
         } catch (IOException e) {
             e.printStackTrace();
             model.addAttribute("msg", "Ocurrió un error al subir el archivo");
+            sedeRepository.deleteById(sedeCreada.getId());
             return "admin/sedes/form";
         }
-        sede.setFotoprincipal(fotosede.getId());
-        sedeRepository.save(sede);
-
-
-        sede.setFotoprincipal(fotosede.getId());
+        sedeCreada.setFotoprincipal(fotosede.getId());
+        sedeRepository.save(sedeCreada);
 
         return "redirect:/admin/sedes/gestion/" + sede.getId();
     }
@@ -223,8 +220,7 @@ public class AdminSedesController {
         if (optionalSala.isEmpty()) {
             return "redirect:/admin/sedes";
         }
-        sala = optionalSala.get();
-        model.addAttribute("sala", sala);
+        model.addAttribute("sala", optionalSala.get());
         model.addAttribute("idSede", sala.getSede().getId());
         return "/admin/sedes/salas/form";
     }
