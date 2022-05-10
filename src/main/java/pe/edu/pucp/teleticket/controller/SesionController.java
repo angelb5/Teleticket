@@ -4,6 +4,7 @@ package pe.edu.pucp.teleticket.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,13 +19,12 @@ import pe.edu.pucp.teleticket.entity.*;
 import pe.edu.pucp.teleticket.repository.AdminRepository;
 import pe.edu.pucp.teleticket.repository.ClienteRepository;
 import pe.edu.pucp.teleticket.repository.OperadorRepository;
+import pe.edu.pucp.teleticket.service.EmailService;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,6 +39,9 @@ public class SesionController {
 
     @Autowired
     ClienteRepository clienteRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/login")
     public String loginForm(){
@@ -92,7 +95,7 @@ public class SesionController {
     public String guardarFuncion(@ModelAttribute("cliente") @Valid Cliente cliente,  BindingResult bindingResult,
                                  @RequestParam("contrasena") String contrasena,
                                  @RequestParam("confcontrasena") String confcontrasena,
-                                 RedirectAttributes attr, Model model){
+                                 RedirectAttributes attr, Model model, HttpSession session){
         boolean contrasenaHasErrors = false;
         boolean correoHasErrors = false;
         boolean dniHasErrors = false;
@@ -145,7 +148,19 @@ public class SesionController {
         if(bindingResult.hasErrors() || contrasenaHasErrors || correoHasErrors || dniHasErrors || nacimientoHasErrors){
             return "/sesion/registro";
         }else{
-            return "redirect:/sesion/login";
+            cliente.setNombre(cliente.getNombre().trim());
+            cliente.setApellido(cliente.getApellido().trim());
+            cliente.setDireccion(cliente.getDireccion().trim());
+            contrasena = new BCryptPasswordEncoder().encode(contrasena);
+            clienteRepository.registrarUsuario(cliente.getDni(), cliente.getNombre(),cliente.getApellido(),cliente.getCorreo(), contrasena, cliente.getCelular(), cliente.getNacimiento(), cliente.getDireccion());
+            try {
+                emailService.correoBienvenida(cliente);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            attr.addFlashAttribute("msg", "¡Te has registrado exitosamente!");
+            return "redirect:/";
         }
     }
+
 }

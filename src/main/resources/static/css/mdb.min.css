@@ -2859,10 +2859,6 @@ textarea.form-control-lg {
   min-width: 0
 }
 
-.input-group>.form-control:focus,
-.input-group>.form-select:focus {
-  z-index: 3
-}
 
 .input-group .btn {
   position: relative;
@@ -4132,7 +4128,7 @@ fieldset:disabled .btn {
 
 .dropdown-divider {
   height: 0;
-  margin: .5rem 0;
+  margin: 0;
   overflow: hidden;
   border-top: 1px solid rgba(0, 0, 0, .15)
 }
@@ -15491,9 +15487,9 @@ i.flag-zw:before {
 
 .input-group>.form-control:focus {
   transition: all .2s linear;
-  border-color: #1266f1;
+  border: 0 !important;
   outline: 0;
-  box-shadow: inset 0 0 0 1px #1266f1
+  box-shadow: 0 !important;
 }
 
 .input-group-text {
@@ -19265,7 +19261,7 @@ a{
 
 .username{
   width: auto;
-  max-width: 80px;
+  max-width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
 

@@ -1,14 +1,16 @@
 package pe.edu.pucp.teleticket.repository;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import pe.edu.pucp.teleticket.entity.Cliente;
 
 import org.springframework.data.domain.Pageable;
-import pe.edu.pucp.teleticket.entity.ClienteListado;
+import pe.edu.pucp.teleticket.dto.ClienteListado;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -19,6 +21,13 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
     public Cliente findByDni(String dni);
 
     List<Cliente> findAllByOrderByIdAsc(Pageable pageable);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "INSERT IGNORE INTO clientes (`dni`, `nombre`, `apellido`, `correo`, `contrasena`, `celular`, `nacimiento`, `direccion`) " +
+            "VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8) "
+    )
+    void registrarUsuario(String dni, String nombre, String apellido, String correo, String contrasena, String celular, LocalDate nacimiento, String direccion);
 
     @Query(nativeQuery = true, value = "select c.nombre as 'nombre', c.apellido as 'apellido', DATE_FORMAT(FROM_DAYS(DATEDIFF(now(),c.nacimiento)), '%Y')+0 as 'edad',\n" +
             "       c.correo as 'correo', c.celular as 'celular'  from clientes c\n" +

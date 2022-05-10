@@ -1,4 +1,4 @@
-package pe.edu.pucp.teleticket.entity;
+package pe.edu.pucp.teleticket.dto;
 
 public interface ClienteListado {
     String getNombre();

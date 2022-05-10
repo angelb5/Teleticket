@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.pucp.teleticket.entity.Cliente;
-import pe.edu.pucp.teleticket.entity.ClienteListado;
+import pe.edu.pucp.teleticket.dto.ClienteListado;
 import pe.edu.pucp.teleticket.repository.ClienteRepository;
 
 import java.util.ArrayList;

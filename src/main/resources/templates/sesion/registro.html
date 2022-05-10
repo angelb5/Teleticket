@@ -154,4 +154,12 @@
 </body>
 
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('button[type="submit"]').click(function() {
+            $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ' +
+                '  Cargando...')
+        });
+    });
+</script>
 </html>

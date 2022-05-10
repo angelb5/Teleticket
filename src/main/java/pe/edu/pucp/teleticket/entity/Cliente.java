@@ -26,11 +26,13 @@ public class Cliente implements Serializable {
 
     @NotBlank(message = "Este campo no puede estar vacío")
     @Size(max = 60,message = "El nombre debe tener como máximo 60 caracteres")
+    @Pattern(regexp="^([a-zA-ZÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ \\\\s])+$",message = "El nombre solo puede contener letras")
     @Column(name = "nombre", nullable = false, length = 60)
     private String nombre;
 
     @NotBlank(message = "Este campo no puede estar vacío")
     @Size(max = 60,message = "El apellido debe tener como máximo 60 caracteres")
+    @Pattern(regexp="^([a-zA-ZÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ \\\\s])+$",message = "El apellido solo puede contener letras")
     @Column(name = "apellido", nullable = false, length = 60)
     private String apellido;
 
