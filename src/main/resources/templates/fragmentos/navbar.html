@@ -85,7 +85,7 @@
             <!-- Right elements -->
             <ul class="navbar-nav flex-row">
                 <!--Carrito-->
-                <li sec:authorize="hasAuthority('cliente')" class="nav-item me-3 me-lg-1 mx-2">
+                <li th:if="${session.rol=='cliente'}" class="nav-item me-3 me-lg-1 mx-2">
                     <a class="nav-link" href="#">
                         <i class="fas fa-solid fa-cart-shopping fa-lg"></i>
 
@@ -93,14 +93,14 @@
                     </a>
                 </li>
                 <!--Mis tickets-->
-                <li sec:authorize="hasAuthority('cliente')" class="nav-item mx-2">
+                <li th:if="${session.rol=='cliente'}" class="nav-item mx-2">
                     <a class="nav-link" href="#">
                         <i class="fa-solid fa-ticket mx-1"></i>
                         Mis tickets
                     </a>
                 </li>
                 <!--Usuario-->
-                <li sec:authorize="isAuthenticated()" class="nav-item dropdown me-3 me-lg-1 mx-2">
+                <li th:if="${session.usuario!=null}" class="nav-item dropdown me-3 me-lg-1 mx-2">
                     <a  class="nav-link d-sm-flex align-items-sm-center dropdown-toggle hidden-arrow"
                        href="#" id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
                         <img th:src="@{/img/default-profile.png}" class="rounded-circle"  height="22" alt="admin" loading="lazy"/>
@@ -108,12 +108,12 @@
                             Usuario
                         </strong>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end"
+                    <ul class="dropdown-menu dropdown-menu-end overflow-hidden"
                         aria-labelledby="navbarDropdownMenuLink">
-                        <li sec:authorize="hasAnyAuthority('cliente')">
+                        <li th:if="${session.rol == 'cliente'}">
                             <a class="dropdown-item" href="#">Editar información</a>
                         </li>
-                        <li sec:authorize="hasAnyAuthority('cliente')">
+                        <li th:if="${session.rol == 'cliente'}">
                             <hr class="dropdown-divider m-0" />
                         </li>
                         <li>
@@ -131,6 +131,30 @@
                             Iniciar sesión
                         </strong>
                     </a>
+                </li>
+                <!--Google-->
+                <li th:if="${session.proveedor!=null and session.usuario==null}"   class="nav-item dropdown me-3 me-lg-1 mx-2">
+                    <a  class="nav-link d-sm-flex align-items-sm-center dropdown-toggle hidden-arrow"
+                        href="#" id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+                        <img th:src="@{/img/default-profile.png}" class="rounded-circle"  height="22" alt="admin" loading="lazy"/>
+                        <strong class="d-none d-sm-block ms-1 username" th:text="${session.proveedor}" style="max-width: 200px">
+                            Usuario
+                        </strong>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end overflow-hidden"
+                        aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item" th:href="@{/oauth2/completaregistro}">Completar registro</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider m-0" />
+                        </li>
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <a onclick="this.parentNode.submit()" class="dropdown-item text-redtele" style="cursor:pointer;">Cerrar sesión</a>
+                            </form>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>

@@ -3,13 +3,13 @@ package pe.edu.pucp.teleticket.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pe.edu.pucp.teleticket.dto.SedeFiltro;
 import pe.edu.pucp.teleticket.entity.*;
 import pe.edu.pucp.teleticket.repository.*;
 

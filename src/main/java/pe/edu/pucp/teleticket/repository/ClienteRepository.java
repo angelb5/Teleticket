@@ -3,6 +3,7 @@ package pe.edu.pucp.teleticket.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.pucp.teleticket.entity.Cliente;
@@ -28,6 +29,11 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
             "VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8) "
     )
     void registrarUsuario(String dni, String nombre, String apellido, String correo, String contrasena, String celular, LocalDate nacimiento, String direccion);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Cliente c SET c.foto = :foto where c.id = :id")
+    void updateFoto(@Param("foto") byte[] foto, @Param("id") int id);
 
     @Query(nativeQuery = true, value = "select c.nombre as 'nombre', c.apellido as 'apellido', DATE_FORMAT(FROM_DAYS(DATEDIFF(now(),c.nacimiento)), '%Y')+0 as 'edad',\n" +
             "       c.correo as 'correo', c.celular as 'celular'  from clientes c\n" +

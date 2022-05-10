@@ -11,7 +11,10 @@
             <div class="title-24 mb-3 text-white text-center">
                 <img th:src="@{/img/logo-teleticket.png}" height="60" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
             </div>
-            <div class="title-24 mb-4 text-white text-center ">Regístrate y empieza a disfrutar del teatro</div>
+
+            <div th:unless="${session.proveedor!=null}" class="title-24 mb-4 text-white text-center ">Regístrate y empieza a disfrutar del teatro</div>
+            <div th:if="${session.proveedor!=null}" class="title-24 mb-4 text-white text-center ">Completa el registro y empieza a disfrutar del teatro</div>
+
             <div>
                 <div class="mb-4 align-items-center d-flex" style="min-width: 500px;">
                     <div class="w-100" >

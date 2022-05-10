@@ -4,12 +4,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import pe.edu.pucp.teleticket.entity.Funcion;
 import pe.edu.pucp.teleticket.entity.Obra;
-import pe.edu.pucp.teleticket.entity.Sede;
-import pe.edu.pucp.teleticket.entity.SedeFiltro;
+import pe.edu.pucp.teleticket.dto.SedeFiltro;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.Optional;
 

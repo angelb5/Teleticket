@@ -47,9 +47,9 @@
                                 </div>
                             </div>
                             <p>o regístrate con:</p>
-                            <button type="button" class="btn btn-danger btn-floating mx-1">
+                            <a type="button" th:href="@{/oauth2/authorization/google}"  class="btn btn-danger btn-floating mx-1">
                                 <i class="fab fa-google"></i>
-                            </button>
+                            </a>
                         </div>
                         <div th:if="${param.error}" class="text-redtele p-2">
                             Acceso denegado

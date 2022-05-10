@@ -6,9 +6,17 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import pe.edu.pucp.teleticket.controller.SesionController;
+import pe.edu.pucp.teleticket.repository.ClienteRepository;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -19,11 +27,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/admin", "/admin/**").hasAuthority("administrador")
                 .antMatchers("/operador", "/operador/**").hasAuthority("operador")
+                .antMatchers("/oauth2", "oauth2/**").access("not (hasAnyAuthority('cliente', 'operador', 'administrador'))")
                 .anyRequest().permitAll();
 
         http.formLogin().loginPage("/login").loginProcessingUrl("/processLogin").
                 usernameParameter("correo").passwordParameter("contrasena")
                 .defaultSuccessUrl("/redirectPorRol",true);
+
+        http.oauth2Login().loginPage("/login").defaultSuccessUrl("/oauth2/redirect",true);
 
         http.logout()
                 .logoutSuccessUrl("/")
@@ -33,6 +44,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     DataSource dataSource;
+
+    @Autowired
+    ClienteRepository clienteRepository;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -44,4 +58,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery("SELECT correo, rol FROM usuarios WHERE correo = ? and activo = 1");
 
     }
+
 }
