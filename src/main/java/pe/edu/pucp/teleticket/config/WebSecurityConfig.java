@@ -27,6 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/admin", "/admin/**").hasAuthority("administrador")
                 .antMatchers("/operador", "/operador/**").hasAuthority("operador")
+                .antMatchers("/cliente", "/cliente/**").access(" isAuthenticated() and not(hasAnyAuthority('operador','administrador')) ")
                 .antMatchers("/oauth2", "oauth2/**").access("not (hasAnyAuthority('cliente', 'operador', 'administrador'))")
                 .anyRequest().permitAll();
 

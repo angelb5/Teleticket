@@ -9,8 +9,7 @@
         <!-- Left elements -->
         <!-- Brand -->
         <a class="navbar-brand me-2 mb-1 d-flex align-items-center" th:href="@{/}">
-            <img th:src="@{/img/logo-teleticket.png}" height="40" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"
-            />
+            <img th:src="@{/img/logo-teleticket.png}" height="40" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
         </a>
 
         <!-- Toggle button -->
@@ -42,7 +41,8 @@
                 <li th:if="${session.usuario!=null}" class="nav-item dropdown me-3 me-lg-1 mx-2">
                     <a  class="nav-link d-sm-flex align-items-sm-center dropdown-toggle hidden-arrow"
                         href="#" id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-                        <img th:src="@{/img/default-profile.png}" class="rounded-circle"  height="22" alt="admin" loading="lazy"/>
+                        <img th:if="${session.rol=='cliente'}"  th:src="@{'/cliente/imagen'}" class="rounded-circle"  height="22" alt="admin" loading="lazy"/>
+                        <img th:unless="${session.rol=='cliente'}"  th:src="@{/img/default-profile.png}" class="rounded-circle"  height="22" alt="admin" loading="lazy"/>
                         <strong class="d-none d-sm-block ms-1 username" th:text="${session.usuario.nombre}">
                             Usuario
                         </strong>

@@ -3356,7 +3356,7 @@ fieldset:disabled .btn {
 }
 
 .btn-dark {
-  border-color: #262626
+  border-color: var(--mdb-dark)
 }
 
 .btn-check:focus+.btn-dark,
@@ -3391,7 +3391,7 @@ fieldset:disabled .btn {
 
 .btn-dark.disabled,
 .btn-dark:disabled {
-  border-color: #262626
+  border-color: var(--mdb-dark)
 }
 
 .btn-white {
@@ -4345,7 +4345,6 @@ fieldset:disabled .btn {
 .nav-link {
   display: block;
   padding: .5rem 1rem;
-  color: #1266f1;
   text-decoration: none;
   transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out
 }
@@ -7277,10 +7276,13 @@ fieldset:disabled .btn {
   color: #1e1e1e
 }
 
-.link-white,
+.link-white{
+  color: white;
+}
+
 .link-white:focus,
 .link-white:hover {
-  color: #fff
+  color: #c4c4c4
 }
 
 .link-black,
@@ -8802,6 +8804,12 @@ fieldset:disabled .btn {
   font-size: 24px !important
 }
 
+.fs-26 {
+  font-size: 26px !important
+}
+.fs-28 {
+  font-size: 28px !important
+}
 
 .fst-italic {
   font-style: italic !important
@@ -16349,7 +16357,7 @@ fieldset:disabled [class*=btn-outline-] {
 
 .btn-dark {
   color: #fff;
-  background-color: #262626
+  background-color: var(--mdb-dark)
 }
 
 .btn-dark.focus,
@@ -19432,9 +19440,8 @@ a{
 
 /*user page*/
 .user-page{
-  min-width: 250px;
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
   position: relative;
   overflow: hidden;
   border-radius: 50%;
@@ -19712,3 +19719,81 @@ a{
 .input-group input:focus {
   border: 0;
 }
+
+
+/*sidebar*/
+.nav-sidebar{
+  width: 400px;
+  height: 100%;
+  background-color: #f8f9fa;
+  overflow-x: hidden;
+  transition: all .5s;
+}
+
+.nav-sidebar-body{
+  padding: 1rem;
+  padding-left: 3rem;
+}
+
+.nav-sidebar-image{
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.nav-sidebar-image img{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.nav-sidebar .nav-link{
+  font-size: 18px;
+  color: #1b1d1e;
+  padding-left: 0;
+}
+
+.nav-sidebar .nav-link.active{
+  font-weight: 700;
+  position: relative;
+  color: var(--mdb-redtele);
+}
+
+
+.nav-sidebar .nav-link:hover {
+  position: relative;
+  color: var(--mdb-redtele);
+}
+
+.nav-sidebar .nav-link.active:before{
+  content: "";
+  position: absolute;
+  right: -15px;
+  top: 50%;
+  margin-top: -13px;
+  width: 5px;
+  height: 25px;
+  background-color: currentColor;
+}
+
+.nav-sidebar .nav-link.active:hover:before{
+  width: 5px;
+}
+.nav-sidebar .nav-link:hover:before {
+  content: "";
+  position: absolute;
+  right: -15px;
+  top: 50%;
+  margin-top: -13px;
+  width: 2px;
+  height: 25px;
+  background-color: currentColor;
+}
+
+.main-cliente{
+  width: -webkit-fill-available;
+  padding: 1rem;
+  padding-right: 5rem;
+}
+

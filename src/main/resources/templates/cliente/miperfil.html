@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Mi perfil')"></head>
+
+<body>
+<nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
+<div class="d-flex" style="height: -webkit-fill-available;">
+    <div class="nav-sidebar">
+        <div class="nav-sidebar-body">
+            <div class="mt-2 mb-4">
+                <div class="d-flex align-items-center">
+                    <div class="nav-sidebar-image">
+                        <img th:src="@{'/cliente/imagen'}" class="rounded-circle" alt="cliente" loading="lazy"/>
+                    </div>
+                    <div class="ms-3">
+                        <div class="fw-bold fs-16" th:text="${session.usuario.nombre}"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav flex-column mb-5 ms-2 fw-light">
+                <a class="nav-link active" th:href="@{/}">
+                    Mi perfil
+                </a>
+                <a class="nav-link" th:href="@{/}">
+                    Mis entradas
+                </a>
+                <form th:action="@{/logout}" method="post">
+                    <a onclick="this.parentNode.submit()" class="nav-link" style="cursor:pointer;">Cerrar sesión</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="main-cliente">
+        <div class="container">
+            <div class="row">
+                <div class="col mb-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item title-30">Mi perfil</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 mb-3 fs-16">
+                    <div class="row row-cols-1 row-cols-md-2" >
+                        <div class="col">
+                            <label class="form-label">Nombre</label>
+                            <div class="fw-bold mb-3" th:text="${cliente.nombre}"></div>
+                        </div>
+                        <div class="col">
+                            <label  class="form-label">Apellido</label>
+                            <div class="fw-bold mb-3" th:text="${cliente.apellido}"></div>
+                        </div>
+                    </div>
+                    <div class="row row-cols-1 row-cols-md-2" >
+                        <div class="col">
+                            <label class="form-label">DNI</label>
+                            <div class="fw-bold mb-3" th:text="${cliente.dni}"></div>
+                        </div>
+                    </div>
+
+                    <form method="post" th:action="@{/}" th:object="${cliente}">
+                        <div class="row row-cols-1 row-cols-md-2 " >
+                            <div class="col">
+                                <label class="form-label">Celular</label>
+                                <input th:field="*{celular}" type="text" class="form-control fs-16 mb-3"
+                                       th:classappend="${#fields.hasErrors('celular')?'is-invalid':''}"/>
+                                <div class="text-danger" th:if="${#fields.hasErrors('celular')}"
+                                     th:errors="*{celular}"></div>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">Direccion</label>
+                                <input th:field="*{direccion}" type="text" class="form-control fs-16 mb-3"
+                                       th:classappend="${#fields.hasErrors('direccion')?'is-invalid':''}"/>
+                                <div class="text-danger" th:if="${#fields.hasErrors('direccion')}"
+                                     th:errors="*{direccion}"></div>
+                            </div>
+                        </div>
+                        <div class="row row-cols-1 row-cols-md-2 " >
+                            <div class="col">
+                                <label class="form-label">Fecha de nacimiento</label>
+                                <input th:field="*{nacimiento}" type="date" class="form-control fs-16 mb-3"
+                                       th:classappend="${#fields.hasErrors('nacimiento')?'is-invalid':''}"/>
+                                <div class="text-danger" th:if="${#fields.hasErrors('nacimiento')}"
+                                     th:errors="*{nacimiento}"></div>
+                            </div>
+                        </div>
+                        <div class="row text-end my-2">
+                            <div>
+                                <button type="submit" class="btn btn-redtele text-center">Guardar cambios</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-lg-4 text-center">
+                    <div class="bg-image hover-overlay ripple user-page d-inline-block mb-3">
+                        <img th:src="@{'/cliente/imagen'}" >
+                        <a href="#!">
+                            <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
+                                <div class="d-flex justify-content-center align-items-center h-100">
+                                    <p class="text-white mb-0">Cambiar imagen</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

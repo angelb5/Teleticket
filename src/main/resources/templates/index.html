@@ -1,26 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Teleticket')">
-
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta http-equiv="x-ua-compatible" content="ie=edge"/>
-    <title>Material Design for Bootstrap</title>
-    <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/b101dc44ce.js" crossorigin="anonymous"></script>
-    <!--JQUery-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap"
-          rel="stylesheet">
-    <!-- MDB -->
-    <link rel="stylesheet" href="../static/css/mdb.min.css"/>
-</head>
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Teleticket')"></head>
 
 <body>
 <nav th:replace="fragmentos/navbar.html :: navbar('Todo')"></nav>
+
 <!--Contenidos-->
 <div class="container">
 
@@ -609,6 +593,8 @@
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
     <!-- End your project here-->
 </body>
+
+<div th:replace="fragmentos/navbar.html :: menu"></div>
 <!-- Modal msg -->
 <div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
     <div class="modal-dialog  ">
@@ -630,7 +616,8 @@
     </div>
 </div>
 
-<script type="text/javascript" th:src="@{../js/mdb.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script  type="text/javascript" th:src="@{/js/busqueda.js}"></script>
 <script type="text/javascript" th:if="${msg != null}">
     $(window).on('load', function() {
         $('#msgModal').modal('show');
