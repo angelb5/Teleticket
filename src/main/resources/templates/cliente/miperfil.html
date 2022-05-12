@@ -1,35 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Mi perfil')"></head>
-
+<head>
+    <style>
+        .dropify-wrapper{
+            height: 250px !important;
+        }
+    </style>
+    <link rel="stylesheet" th:href="@{/dropify/css/dropify.css}"/>
+</head>
 <body>
+<script>
+    $(function() {
+        $('.dropify').dropify();
+    });
+</script>
+
 <nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
 <div class="d-flex" style="height: -webkit-fill-available;">
-    <div class="nav-sidebar">
-        <div class="nav-sidebar-body">
-            <div class="mt-2 mb-4">
-                <div class="d-flex align-items-center">
-                    <div class="nav-sidebar-image">
-                        <img th:src="@{'/cliente/imagen'}" class="rounded-circle" alt="cliente" loading="lazy"/>
-                    </div>
-                    <div class="ms-3">
-                        <div class="fw-bold fs-16" th:text="${session.usuario.nombre}"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="nav flex-column mb-5 ms-2 fw-light">
-                <a class="nav-link active" th:href="@{/}">
-                    Mi perfil
-                </a>
-                <a class="nav-link" th:href="@{/}">
-                    Mis entradas
-                </a>
-                <form th:action="@{/logout}" method="post">
-                    <a onclick="this.parentNode.submit()" class="nav-link" style="cursor:pointer;">Cerrar sesión</a>
-                </form>
-            </div>
-        </div>
-    </div>
+    <div th:replace="fragmentos/sidebar-cliente.html :: sidebar('Perfil')"></div>
     <div class="main-cliente">
         <div class="container">
             <div class="row">
@@ -46,34 +35,34 @@
                     <div class="row row-cols-1 row-cols-md-2" >
                         <div class="col">
                             <label class="form-label">Nombre</label>
-                            <div class="fw-bold mb-3" th:text="${cliente.nombre}"></div>
+                            <div class="fw-bold mb-3" th:text="${session.usuario.nombre}"></div>
                         </div>
                         <div class="col">
                             <label  class="form-label">Apellido</label>
-                            <div class="fw-bold mb-3" th:text="${cliente.apellido}"></div>
+                            <div class="fw-bold mb-3" th:text="${session.usuario.apellido}"></div>
                         </div>
                     </div>
                     <div class="row row-cols-1 row-cols-md-2" >
                         <div class="col">
                             <label class="form-label">DNI</label>
-                            <div class="fw-bold mb-3" th:text="${cliente.dni}"></div>
+                            <div class="fw-bold mb-3" th:text="${session.usuario.dni}"></div>
                         </div>
                     </div>
 
-                    <form method="post" th:action="@{/}" th:object="${cliente}">
+                    <form method="post" th:action="@{/cliente/actualizar}" th:object="${cliente}">
                         <div class="row row-cols-1 row-cols-md-2 " >
                             <div class="col">
                                 <label class="form-label">Celular</label>
                                 <input th:field="*{celular}" type="text" class="form-control fs-16 mb-3"
                                        th:classappend="${#fields.hasErrors('celular')?'is-invalid':''}"/>
-                                <div class="text-danger" th:if="${#fields.hasErrors('celular')}"
+                                <div class="text-danger mb-3" th:if="${#fields.hasErrors('celular')}"
                                      th:errors="*{celular}"></div>
                             </div>
                             <div class="col">
                                 <label class="form-label">Direccion</label>
                                 <input th:field="*{direccion}" type="text" class="form-control fs-16 mb-3"
                                        th:classappend="${#fields.hasErrors('direccion')?'is-invalid':''}"/>
-                                <div class="text-danger" th:if="${#fields.hasErrors('direccion')}"
+                                <div class="text-danger mb-3" th:if="${#fields.hasErrors('direccion')}"
                                      th:errors="*{direccion}"></div>
                             </div>
                         </div>
@@ -82,7 +71,7 @@
                                 <label class="form-label">Fecha de nacimiento</label>
                                 <input th:field="*{nacimiento}" type="date" class="form-control fs-16 mb-3"
                                        th:classappend="${#fields.hasErrors('nacimiento')?'is-invalid':''}"/>
-                                <div class="text-danger" th:if="${#fields.hasErrors('nacimiento')}"
+                                <div class="text-danger mb-3" th:if="${#fields.hasErrors('nacimiento')}"
                                      th:errors="*{nacimiento}"></div>
                             </div>
                         </div>
@@ -98,7 +87,7 @@
                 <div class="col-lg-4 text-center">
                     <div class="bg-image hover-overlay ripple user-page d-inline-block mb-3">
                         <img th:src="@{'/cliente/imagen'}" >
-                        <a href="#!">
+                        <a href="#!" data-mdb-toggle="modal" data-mdb-target="#imagenModal">
                             <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
                                 <div class="d-flex justify-content-center align-items-center h-100">
                                     <p class="text-white mb-0">Cambiar imagen</p>
@@ -111,5 +100,65 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Añadir Imagen -->
+<div class="modal top fade" id="imagenModal" tabindex="-1" aria-labelledby="imagenModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <form method="post" th:action="@{/cliente/cambiarimagen}" enctype="multipart/form-data">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cambiar imagen</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex justify-content-center py-4">
+                    <div style="height: 250px; width: 250px">
+                        <script>
+                            $(function() {
+                                $('.dropify').dropify();
+                            });
+                        </script>
+                        <input  type="file" name="foto" id="foto" data-max-file-size="1M" class="dropify" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
+                        Cerrar
+                    </button>
+                    <button type="submit" class="btn btn-redtele">Subir</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal msg -->
+<div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
+                </div>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class=" w-100 d-flex justify-content-center mb-3">
+                    <i class="fa-solid fa-circle-check" style="font-size: 50px" th:class="${error==null? 'fa-solid fa-circle-check text-success': 'fa-solid fa-circle-xmark text-danger'  }"></i>
+                </div>
+                <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </body>
+<script th:src="@{/dropify/js/dropify.js}"></script>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script type="text/javascript" th:if="${msg != null}">
+    $(window).on('load', function() {
+        $('#msgModal').modal('show');
+    });
+</script>
 </html>

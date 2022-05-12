@@ -17,6 +17,7 @@ import java.util.List;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 
+    @Query("select new Cliente(c.id, c.dni, c.nombre, c.apellido, c.correo, c.celular, c.nacimiento, c.direccion) from Cliente c where c.correo = ?1")
     public Cliente findByCorreo(String correo);
 
     public Cliente findByDni(String dni);
@@ -34,6 +35,11 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Cliente c SET c.foto = :foto where c.id = :id")
     void updateFoto(@Param("foto") byte[] foto, @Param("id") int id);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Cliente c SET c.nacimiento = :nacimiento, c.celular = :celular, c.direccion = :direccion where c.id = :id")
+    void updateCliente(@Param("nacimiento") LocalDate nacimiento, @Param("celular") String celular, @Param("direccion") String direccion, @Param("id") int id);
 
     @Query(nativeQuery = true, value = "select c.nombre as 'nombre', c.apellido as 'apellido', DATE_FORMAT(FROM_DAYS(DATEDIFF(now(),c.nacimiento)), '%Y')+0 as 'edad',\n" +
             "       c.correo as 'correo', c.celular as 'celular'  from clientes c\n" +

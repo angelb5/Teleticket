@@ -1,6 +1,8 @@
 package pe.edu.pucp.teleticket.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -62,4 +64,20 @@ public class Cliente implements Serializable {
 
     @Column(name = "token", length = 16)
     private String token;
+
+    public Cliente() {
+    }
+
+    public Cliente(Integer id, String dni, String nombre, String apellido, String correo, String celular, LocalDate nacimiento, String direccion) {
+        this.id = id;
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+        this.celular = celular;
+        this.nacimiento = nacimiento;
+        this.direccion = direccion;
+    }
+
+
 }

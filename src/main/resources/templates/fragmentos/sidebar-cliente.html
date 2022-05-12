@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body>
+<!-- Navbar-->
+<div  class="navbar navbar-expand-lg bg-dark navbar-dark fs-14  p-3">
+</div>
+
+<div th:fragment="sidebar (activa)" class="nav-sidebar">
+    <div class="nav-sidebar-body">
+        <div class="mt-2 mb-4">
+            <div class="d-flex align-items-center">
+                <div class="nav-sidebar-image">
+                    <img th:src="@{'/cliente/imagen'}" class="rounded-circle" alt="cliente" loading="lazy"/>
+                </div>
+                <div class="ms-3">
+                    <div class="fw-bold fs-16" th:text="${session.usuario.nombre}"></div>
+                </div>
+            </div>
+        </div>
+        <div class="nav flex-column mb-5 ms-2 fw-light">
+            <a class="nav-link" th:classappend="${activa == 'Perfil'}?'active' :''" th:href="@{/cliente/miperfil}">
+                Mi perfil
+            </a>
+                <a class="nav-link" th:classappend="${activa == 'Entradas'}?'active' :''" th:href="@{/}">
+                Mis entradas
+            </a>
+            <form th:action="@{/logout}" method="post">
+                <a onclick="this.parentNode.submit()" class="nav-link" style="cursor:pointer;">Cerrar sesión</a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

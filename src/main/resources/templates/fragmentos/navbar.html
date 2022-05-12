@@ -91,7 +91,7 @@
                     <ul class="dropdown-menu dropdown-menu-end overflow-hidden"
                         aria-labelledby="navbarDropdownMenuLink">
                         <li th:if="${session.rol == 'cliente'}">
-                            <a class="dropdown-item" href="#">Editar información</a>
+                            <a class="dropdown-item" th:href="@{/cliente/miperfil}">Mi perfil</a>
                         </li>
                         <li th:if="${session.rol == 'cliente'}">
                             <hr class="dropdown-divider m-0" />
