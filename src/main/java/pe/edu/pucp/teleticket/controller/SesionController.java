@@ -95,7 +95,7 @@ public class SesionController {
             Cliente cliente = clienteRepository.findByCorreo(auth.getName());
             session.setAttribute("usuario",cliente);
             session.setAttribute("rol", "cliente");
-            return "redirect:/";
+            return "redirect:/cliente";
         }
     }
 
