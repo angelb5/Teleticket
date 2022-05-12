@@ -18,7 +18,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/cliente/sedes")
+@RequestMapping("/sedes")
 public class ClienteSedesController {
 
     private final int sedesPaginas = 6;
@@ -56,7 +56,7 @@ public class ClienteSedesController {
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
         model.addAttribute("ruta", ruta);
-        return "cliente/sedes/lista";
+        return "sedes/lista";
     }
 
 

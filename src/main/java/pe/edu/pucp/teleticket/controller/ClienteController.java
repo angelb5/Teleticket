@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-@RequestMapping("/cliente")
+@RequestMapping("/")
 @Controller
 public class ClienteController {
 
