@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'cliente')"></head>
+    <body>
+        <nav th:replace="fragmentos/navbar.html :: navbar('sedes')"></nav>
+        <!-- Fin de Navbar -->
+        <div class="container py-3" >
+            <!-- Lista sedes -->
+            <div class="row mb-3">
+                <div class="text-start col-lg-9">
+                    <div class="title-24 py-6">Lista de sedes</div>
+                </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 g-4 py-3">
+                <!--Card 1-->
+                <div class="col" th:each="sede : ${listaSedes}">
+                    <div class="card h-100 position-relative">
+                        <div class="row h-100">
+
+                            <div class="col-md-6 pe-0">
+                                <div style="width: 100%; height: 210px">
+                                    <img th:src="@{'/image/sede/'+${sede.fotoprincipal==null? 0 : sede.fotoprincipal}}" alt="Sede" class="img-fluid rounded-start img-cover"/>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 p-3 pe-4">
+                                <div class="fw-bold mb-2 fs-14 card-tele-title" th:text="${sede.nombre}">Sede San Borja</div>
+                                <div class="mb-2 card-tele-subtitle" th:text="${sede.direccion}">
+                                    Av. Javier Prado Este 2225, San Borja 15021
+                                </div>
+                                <div class="mb-2 fw-bold text-end" th:text="${sede.estado}">
+                                    Activa
+                                </div>
+
+                                <div class="text-end">
+                                    <a class="btn btn-redtele" th:href="@{'/admin/sedes/gestion/'+ ${sede.id}}">Ver más</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
+        </div>
+
+        <!-- Footer -->
+        <footer th:replace="fragmentos/footer.html :: footer"></footer>
+        <!-- End your project here-->
+
+
+
+        <!-- MDB -->
+        <script type="text/javascript" src="js/mdb.min.js"></script>
+        <!-- Custom scripts -->
+        <script type="text/javascript">
+            $(document).ready(function(e){
+                $('.search-panel .dropdown-menu').find('a').click(function(e) {
+                    e.preventDefault();
+                    var param = $(this).attr("href").replace("#","");
+                    var concept = $(this).text();
+                    $('.search-panel span#search_concept').text(concept);
+                    $('.input-group #search_param').val(param);
+                });
+            });
+        </script>
+    </body>
+</html>
