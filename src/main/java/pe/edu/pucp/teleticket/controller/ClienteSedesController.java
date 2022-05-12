@@ -22,15 +22,6 @@ import java.util.Optional;
 public class ClienteSedesController {
 
     private final int sedesPaginas = 6;
-    private final int salasPaginas = 5;
-    private final List<String> formatos= Arrays.asList("media/png","media/jpeg", "image/jpeg", "image/png");
-
-    private boolean verificarFoto(MultipartFile file){
-        if(formatos.contains(file.getContentType().toLowerCase(Locale.ROOT))){
-            return true;
-        }
-        return false;
-    }
 
     @Autowired
     SedeRepository sedeRepository;
@@ -56,7 +47,7 @@ public class ClienteSedesController {
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
         model.addAttribute("ruta", ruta);
-        return "sedes/lista";
+        return "/cliente/sedes/lista";
     }
 
 

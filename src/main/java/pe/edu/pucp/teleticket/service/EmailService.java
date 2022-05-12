@@ -25,6 +25,8 @@ public class EmailService {
     @Value("${aplication.domain}")
     private String DOMINIO;
 
+    private static final String FROM = "Teleticket Perú <teleticket2022@gmail.com>";
+
     private static final String LOGO_IMAGE = "static/img/logo-teleticket.png";
 
     private static final String PNG_MIME = "image/png";
@@ -40,7 +42,27 @@ public class EmailService {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
         helper.setSubject("Bienvenid@ a Teleticket, " + cliente.getNombre());
         helper.setText(process, true);
+        helper.setFrom(FROM);
         helper.setTo(cliente.getCorreo());
+        ClassPathResource clr = new ClassPathResource(LOGO_IMAGE);
+        helper.addInline("logo", clr, PNG_MIME);
+        javaMailSender.send(mimeMessage);
+    }
+
+
+    public void correoCambioContrasena(String correo, String token) throws MessagingException {
+        Context context = new Context();
+        context.setVariable("dominio", DOMINIO);
+        context.setVariable("token", token);
+        context.setVariable("logo", LOGO_IMAGE);
+
+        String process = templateEngine.process("mail/cambio-password", context);
+        javax.mail.internet.MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+        helper.setSubject("Cambio de contraseña");
+        helper.setText(process, true);
+        helper.setFrom(FROM);
+        helper.setTo(correo);
         ClassPathResource clr = new ClassPathResource(LOGO_IMAGE);
         helper.addInline("logo", clr, PNG_MIME);
         javaMailSender.send(mimeMessage);

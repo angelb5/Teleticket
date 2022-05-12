@@ -19797,3 +19797,10 @@ a{
   padding-right: 5rem;
 }
 
+a.text-redtele{
+  color: var(--mdb-redisabled) !important;
+}
+
+a.text-redtele:hover{
+  color: var(--mdb-redtele) !important;
+}

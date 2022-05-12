@@ -11,6 +11,7 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -62,11 +63,10 @@ public class Cliente implements Serializable {
     @Column(name = "foto")
     private byte[] foto;
 
-    @Column(name = "token", length = 16)
+    @Column(name = "token", length = 45)
     private String token;
 
-    public Cliente() {
-    }
+    public Cliente() {}
 
     public Cliente(Integer id, String dni, String nombre, String apellido, String correo, String celular, LocalDate nacimiento, String direccion) {
         this.id = id;

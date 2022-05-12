@@ -30,7 +30,7 @@ public class Operador implements Serializable {
     @Column(name = "correo", nullable = false, length = 45)
     private String correo;
 
-    @Column(name = "token", length = 16)
+    @Column(name = "token", length = 45)
     private String token;
 
 }

@@ -130,18 +130,13 @@
 
                         <!-- Register buttons -->
                         <div class="text-center" style="border-top-color: white; border-top: 2px solid white; padding-top: 20px">
-                            <div class="row">
-                                <div class="col">
-                                    <p>¿Ya tienes una cuenta? </p>
-                                </div>
-                                <div class="col">
-                                    <button class="btn btn-danger mb-4" >Ingresa</button>
-                                </div>
+                            <div class="pb-3">
+                                <span>¿Ya tienes cuenta? </span>
+                                <a th:href="@{/login}" class=" mx-2 text-redtele mb-4" >Ingresa</a>
                             </div>
-                            <p>o regístrate con:</p>
-                            <button type="button" class="btn btn-danger btn-floating mx-1">
-                                <i class="fab fa-google"></i>
-                            </button>
+                            <a type="button" th:href="@{/oauth2/authorization/google}"  class="my-2 btn btn-redtele">
+                                <i class="fab fa-google me-2"></i> Ingresa con Google
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -22,6 +22,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 
     public Cliente findByDni(String dni);
 
+    public  Cliente findByToken(String token);
+
     List<Cliente> findAllByOrderByIdAsc(Pageable pageable);
 
     @Transactional
@@ -32,6 +34,11 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
     void registrarUsuario(String dni, String nombre, String apellido, String correo, String contrasena, String celular, LocalDate nacimiento, String direccion);
 
     @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "update clientes set contrasena = :contrasena where idclientes = :id")
+    void updateContrasena(String contrasena, int id);
+
+    @Transactional
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Cliente c SET c.foto = :foto where c.id = :id")
     void updateFoto(@Param("foto") byte[] foto, @Param("id") int id);
@@ -40,6 +47,24 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
     @Modifying
     @Query("UPDATE Cliente c SET c.nacimiento = :nacimiento, c.celular = :celular, c.direccion = :direccion where c.id = :id")
     void updateCliente(@Param("nacimiento") LocalDate nacimiento, @Param("celular") String celular, @Param("direccion") String direccion, @Param("id") int id);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Cliente c SET c.token = :token where c.correo = :correo")
+    void updateToken(@Param("token") String token, @Param("correo") String correo);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value= "CREATE EVENT delete_token_:id " +
+            "ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL :minutos MINUTE " +
+            "ON COMPLETION NOT PRESERVE ENABLE " +
+            "DO update clientes set token=null WHERE idclientes=:id")
+    void crearEvento(int id, int minutos);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value= "DROP EVENT IF EXISTS delete_token_:id ")
+    void dropEvento(int id);
 
     @Query(nativeQuery = true, value = "select c.nombre as 'nombre', c.apellido as 'apellido', DATE_FORMAT(FROM_DAYS(DATEDIFF(now(),c.nacimiento)), '%Y')+0 as 'edad',\n" +
             "       c.correo as 'correo', c.celular as 'celular'  from clientes c\n" +

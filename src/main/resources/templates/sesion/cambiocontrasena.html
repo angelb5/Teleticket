@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Login')"></head>
+<head>
+    <nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
+<body>
+<div class="container py-5 d-flex justify-content-center align-items-center" style="height: -webkit-fill-available;">
+    <div class="p-4 bg-dark text-white rounded-7 w-50" >
+        <div th:unless="${noencontrado==null}">
+            <div class=" title-24 mb-3 text-white text-center">
+                <img th:src="@{/img/logo-teleticket.png}" height="60" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
+            </div>
+            <div class="title-24 mb-3 text-white text-center" th:text="${noencontrado}">Reestablecer contraseña</div>
+        </div>
+        <form th:if="${noencontrado==null}" autocomplete="off" th:action="@{/cambiarcontrasena}" method="post">
+            <input hidden name="token" th:value="${param.token}">
+            <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+            <div class=" title-24 mb-3 text-white text-center">
+                <img th:src="@{/img/logo-teleticket.png}" height="60" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
+            </div>
+            <div class="title-24 mb-3 text-white text-center ">Reestablecer contraseña</div>
+            <div style="text-align: center">
+
+                <div class=" text-center mb-4 align-items-center d-flex" style="min-width: 200px;">
+                    <div  style="padding-left: 90px; padding-right: 90px" class="w-100" >
+                        <div class="row mb-4">
+                            <div class="col">
+                                <div class="form-outline form-white">
+                                    <input name="contrasena" type="password" id="contrasena" class="form-control"
+                                           th:classappend="${error!=null?'is-invalid':''}"/>
+                                    <label class="form-label" for="contrasena">Contraseña</label>
+                                </div>
+                                <div class="text-start text-danger" th:text="${error}" th:unless="${error != null and error.contains('coinciden')}"></div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col">
+                                <div class="form-outline form-white">
+                                    <input name="confcontrasena" type="password" id="confcontrasena" class="form-control"
+                                           th:classappend="${error!=null?'is-invalid':''}"/>
+                                    <label class="form-label" for="confcontrasena">Confirmar contraseña</label>
+                                </div>
+                                <div class="text-start text-danger" th:text="${error}" th:if="${error !=null and error.contains('coinciden')}"></div>
+                            </div>
+                        </div>
+                        <!--Submit button-->
+                        <button type="submit" class="btn btn-light mb-4" >Reestablecer</button>
+                        <!-- Register buttons -->
+                        <div class="text-center" style="border-top-color: white; border-top: 2px solid white; padding-top: 20px">
+                            <div class="pb-3">
+                                <span>¿Aún no tienes cuenta? </span>
+                                <a th:href="@{/registro}" class=" mx-2 text-redtele mb-4" >Regístrate</a>
+                            </div>
+                            <a type="button" th:href="@{/oauth2/authorization/google}"  class="my-2 btn btn-redtele">
+                                <i class="fab fa-google me-2"></i> Ingresa con Google
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+</body>
+
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('button[type="submit"]').click(function() {
+            $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ' +
+                '  Cargando...')
+        });
+    });
+</script>
+</html>

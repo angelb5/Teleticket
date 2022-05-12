@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pe.edu.pucp.teleticket.entity.Cliente;
-import pe.edu.pucp.teleticket.entity.Fotossede;
 import pe.edu.pucp.teleticket.repository.ClienteRepository;
 
 import javax.servlet.ServletException;
@@ -23,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-@RequestMapping("/")
+@RequestMapping("/cliente")
 @Controller
 public class ClienteController {
 
@@ -80,7 +79,7 @@ public class ClienteController {
             clienteRepository.updateCliente(cliente.getNacimiento(), cliente.getCelular(), cliente.getDireccion(), clienteSes.getId());
             Cliente clienteDB = clienteRepository.findByCorreo(clienteSes.getCorreo());
             session.setAttribute("usuario", clienteDB);
-            attr.addFlashAttribute("msg", "Se ha actualizado tu información");
+            attr.addFlashAttribute("msg", "Se ha actualizado la información");
             return "redirect:/cliente/miperfil";
         }
     }

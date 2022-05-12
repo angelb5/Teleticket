@@ -1,6 +1,7 @@
 package pe.edu.pucp.teleticket.controller;
 
 
+import net.bytebuddy.utility.RandomString;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -33,10 +32,8 @@ import pe.edu.pucp.teleticket.repository.OperadorRepository;
 import pe.edu.pucp.teleticket.service.EmailService;
 import reactor.core.publisher.Mono;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDate;
@@ -63,6 +60,9 @@ public class SesionController {
 
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
+
+    private final int MINUTOS_CLIENTE = 5;
+    private final int MINUTOS_OPERADOR = 10;
 
     @GetMapping("/login")
     public String loginForm(){
@@ -99,6 +99,25 @@ public class SesionController {
         }
     }
 
+    @GetMapping("/correocambiocontrasena")
+    public String correoCambioContrasena(){return "/sesion/correocambiocontrasena";}
+
+    @GetMapping("/cambiocontrasena")
+    public String cambioContrasena(@RequestParam("token") String token, Model model){
+        if(token.equalsIgnoreCase("")){
+            return "redirect:/";
+        }
+
+        Cliente cliente = clienteRepository.findByToken(token);
+        Operador operador = operadorRepository.findByToken(token);
+
+        if(cliente == null && operador == null){
+            model.addAttribute("noencontrado", "El token ingresado no es válido");
+        }
+
+        return "sesion/cambiocontrasena";
+    }
+
     @GetMapping("/oauth2/completaregistro")
     public String registroOauth2(Model model, HttpSession session){
         Cliente cliente = (Cliente) session.getAttribute("googleCliente");
@@ -111,7 +130,6 @@ public class SesionController {
     public String redirectOauth2(Model model, OAuth2AuthenticationToken authentication, HttpSession session){
         OAuth2AuthorizedClient authorizedClient = this.getAuthorizedClient(authentication);
 
-        OAuth2AccessToken accessToken = authorizedClient.getAccessToken();
         Map userAttributes = Collections.emptyMap();
         String userInfoEndpointUri = authorizedClient.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUri();
         userAttributes = WebClient.builder().filter(oauth2Credentials(authorizedClient))
@@ -283,4 +301,85 @@ public class SesionController {
         }
     }
 
+    @PostMapping("/enviarcorreocambio")
+    public String enviarCorreoCambio(@RequestParam("correo") String correo,RedirectAttributes attr){
+        Cliente cliente = clienteRepository.findByCorreo(correo);
+        Operador operador = operadorRepository.findByCorreo(correo);
+
+        if(cliente == null && operador == null){
+            attr.addFlashAttribute("error","No existe una cuenta asociada a este correo");
+            return "redirect:/correocambiocontrasena";
+        }
+
+        String token = RandomString.make(45);
+
+        if(cliente!=null){
+            clienteRepository.dropEvento(cliente.getId());
+            clienteRepository.updateToken(token,correo);
+            clienteRepository.crearEvento(cliente.getId(), MINUTOS_CLIENTE);
+        }
+
+        if(operador!=null){
+            operadorRepository.dropEvento(operador.getId());
+            operadorRepository.updateToken(token,correo);
+            operadorRepository.crearEvento(operador.getId(), MINUTOS_OPERADOR);
+        }
+
+        try {
+            emailService.correoCambioContrasena(correo,token);
+            attr.addFlashAttribute("msg", "Se ha enviado el correo para el cambio de contraseña");
+            return "redirect:/";
+        }catch (Exception e){
+            e.printStackTrace();
+            attr.addFlashAttribute("error",1);
+            attr.addFlashAttribute("msg","Ha ocurrido un error, inténtalo más tarde");
+            return "redirect:/";
+        }
+
+    }
+
+    @PostMapping("/cambiarcontrasena")
+    public String cambiarContrasena(@RequestParam("token") String token, @RequestParam("contrasena") String contrasena,
+                                    @RequestParam("confcontrasena") String confcontrasena,
+                                    RedirectAttributes attr, Model model ){
+
+        Cliente cliente = clienteRepository.findByToken(token);
+        Operador operador = operadorRepository.findByToken(token);
+
+        if(cliente == null && operador == null){
+            attr.addFlashAttribute("error",1);
+            attr.addFlashAttribute("msg", "El token ha expirado o es inválido");
+            return "redirect:/";
+        }
+
+        boolean contrasenaHasErrors = false;
+
+        if(contrasena.length()<8 || contrasena.length()>72){
+            model.addAttribute("error", "La contraseña debe contener entre 8 y 72 caracteres");
+            contrasenaHasErrors = true;
+        }else if(!validarContrasena(contrasena)){
+            model.addAttribute("error", "La contraseña debe contener caracteres en mayúsculas y minúsculas y números");
+            contrasenaHasErrors = true;
+        } else if(!contrasena.equals(confcontrasena)){
+            model.addAttribute("error", "Las contraseñas no coinciden");
+            contrasenaHasErrors = true;
+        }
+
+        if(contrasenaHasErrors){
+            return "/sesion/cambiocontrasena";
+        }else{
+            contrasena = new BCryptPasswordEncoder().encode(contrasena);
+            if(cliente!=null){
+                clienteRepository.updateToken(null, cliente.getCorreo());
+                clienteRepository.updateContrasena(contrasena,cliente.getId());
+            }
+            if(operador!=null){
+                operadorRepository.updateToken(null, operador.getCorreo());
+                operadorRepository.updateContrasena(contrasena,operador.getId());
+            }
+
+            attr.addFlashAttribute("msg", "Se ha actualizado la contraseña");
+            return  "redirect:/";
+        }
+    }
 }
