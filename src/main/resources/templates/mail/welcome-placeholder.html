@@ -64,14 +64,14 @@
 <body>
 
 <div class="text-center" style="background: black; padding: 3rem;">
-    <img src="images/spring.png" data-th-src="|cid:logo|" height="50" />
+    <img src="../../static/img/logo-teleticket.png" data-th-src="|cid:logo|" height="50" />
 </div>
 <div class="text-center" style="padding: 2rem;">Bienvenid@ a Teleticket,&nbsp; <b th:text="${cliente.nombre}"></b></div>
 
 <div class="text-center" style="padding: 2rem;"> Se ha registrado con el correo&nbsp; <b th:text="${cliente.correo}"></b></div>
 <div class="text-center">
     <a class="btn btn-redtele" data-th-attr="href='http://'+${dominio}+'/'">
-        Ir al sitio
+        <h2>Ir al sitio</h2>
     </a>
 </div>
 
