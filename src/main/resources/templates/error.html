@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')"></head>
+    <style>
+        .center {
+            margin: auto;
+            width: 60%;
+            padding: 10px;
+        }
+    </style>
+    <body class="bg-black">
+        <div class="center py-3">
+            <img th:src="@{/img/logo-teleticket.png}" style="width: 550px; margin-bottom: 30px">
+        <h1 class="text-white">Ha ocurrido un error en el servidor</h1>
+        <h3 class="text-white">Verifica que el link está escrito correctamente
+        y que tu conexión es estable</h3>
+        <a th:href="@{/}" class="btn btn-redtele"
+           style="margin-top: 20px; width: 250px; height: 45px ; font-size: 17px">Ir a pagina principal</a>
+        </div>
+    </body>
+</html>
