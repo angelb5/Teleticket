@@ -165,8 +165,7 @@ public class SesionController {
             }
 
             session.setAttribute("googleCliente", cliente);
-            model.addAttribute("cliente",cliente);
-            return "/sesion/registro";
+            return "redirect:/oauth2/completaregistro";
         }
     }
 
