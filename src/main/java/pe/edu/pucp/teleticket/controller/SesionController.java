@@ -148,19 +148,19 @@ public class SesionController {
 
             Cliente cliente = new Cliente();
 
-            String given_name = (String) userAttributes.get("given_name");
-            String family_name = (String) userAttributes.get("family_name");
-            String name = (String) userAttributes.get("name");
-            String picture = (String) userAttributes.get("picture");
+            String given_name =  userAttributes.get("given_name")!=null? (String) userAttributes.get("given_name") : "";
+            String family_name = userAttributes.get("family_name")!=null? (String) userAttributes.get("family_name"):"";
+            String name = userAttributes.get("name")!=null? (String) userAttributes.get("name"):"";
+            String picture = userAttributes.get("picture")!=null? (String) userAttributes.get("picture"):"";
 
-            if(given_name!=null && family_name!=null){
+            if(!given_name.equals("") && !family_name.equals("")){
                 cliente.setNombre(given_name);
                 cliente.setApellido(family_name);
-            }else if(name!=null){
+            }else if(!name.equals("")){
                 cliente.setNombre(name);
             }
             cliente.setCorreo(email);
-            if(picture!=null){
+            if(!picture.equals("")){
                 session.setAttribute("picture", picture);
             }
 
