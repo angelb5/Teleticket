@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-@RequestMapping("/")
+@RequestMapping("/cliente")
 @Controller
 public class ClienteController {
 
@@ -35,7 +35,7 @@ public class ClienteController {
     public String miPerfil(Model model, HttpSession session){
         Cliente cliente = (Cliente) session.getAttribute("usuario");
         model.addAttribute("cliente", cliente);
-        return "/miperfil";
+        return "/cliente/miperfil";
     }
 
     @GetMapping("/imagen")
@@ -72,7 +72,7 @@ public class ClienteController {
 
         if(bindingResult.hasFieldErrors("nacimiento") || bindingResult.hasFieldErrors("direccion") ||
                 bindingResult.hasFieldErrors("celular") || nacimientoHasErrors){
-            return "/miperfil";
+            return "/cliente/miperfil";
         }else{
             cliente.setDireccion(cliente.getDireccion().trim());
             Cliente clienteSes = (Cliente) session.getAttribute("usuario");
@@ -80,7 +80,7 @@ public class ClienteController {
             Cliente clienteDB = clienteRepository.findByCorreo(clienteSes.getCorreo());
             session.setAttribute("usuario", clienteDB);
             attr.addFlashAttribute("msg", "Se ha actualizado la información");
-            return "redirect:/miperfil";
+            return "redirect:/cliente/miperfil";
         }
     }
 
@@ -92,31 +92,31 @@ public class ClienteController {
         if (foto.isEmpty()) {
             attr.addFlashAttribute("error",1);
             attr.addFlashAttribute("msg", "Debe subir un archivo");
-            return "redirect:/miperfil";
+            return "redirect:/cliente/miperfil";
         }
         if (!verificarFoto(foto)) {
             attr.addFlashAttribute("error",1);
             attr.addFlashAttribute("msg", "Debe subir una imagen, no se acepta otros archivos");
-            return "redirect:/miperfil";
+            return "redirect:/cliente/miperfil";
         }
         String fotoNombre = foto.getOriginalFilename();
 
         if (fotoNombre.contains("..")) {
             attr.addFlashAttribute("error",1);
             attr.addFlashAttribute("msg", "No se permiten '..' en el archivo");
-            return "redirect:/miperfil";
+            return "redirect:/cliente/miperfil";
         }
 
         try {
             byte[] fotoB = foto.getBytes();
             clienteRepository.updateFoto(fotoB,clienteSes.getId());
             attr.addFlashAttribute("msg","Se ha actualizado la foto de perfil");
-            return "redirect:/miperfil";
+            return "redirect:/cliente/miperfil";
         } catch (IOException e){
             e.printStackTrace();
             attr.addFlashAttribute("error",1);
             attr.addFlashAttribute("msg", "Hubo un error al cargar el archivo");
-            return "redirect:/miperfil";
+            return "redirect:/cliente/miperfil";
         }
 
     }

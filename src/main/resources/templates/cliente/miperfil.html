@@ -49,7 +49,7 @@
                         </div>
                     </div>
 
-                    <form method="post" th:action="@{/actualizar}" th:object="${cliente}">
+                    <form method="post" th:action="@{/cliente/actualizar}" th:object="${cliente}">
                         <div class="row row-cols-1 row-cols-md-2 " >
                             <div class="col">
                                 <label class="form-label">Celular</label>
@@ -86,7 +86,7 @@
 
                 <div class="col-lg-4 text-center">
                     <div class="bg-image hover-overlay ripple user-page d-inline-block mb-3">
-                        <img th:src="@{'/imagen'}" >
+                        <img th:src="@{'/cliente/imagen'}" >
                         <a href="#!" data-mdb-toggle="modal" data-mdb-target="#imagenModal">
                             <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
                                 <div class="d-flex justify-content-center align-items-center h-100">
@@ -104,7 +104,7 @@
 <!-- Modal Añadir Imagen -->
 <div class="modal top fade" id="imagenModal" tabindex="-1" aria-labelledby="imagenModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
     <div class="modal-dialog  ">
-        <form method="post" th:action="@{/cambiarimagen}" enctype="multipart/form-data">
+        <form method="post" th:action="@{/cliente/cambiarimagen}" enctype="multipart/form-data">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Cambiar imagen</h5>
