@@ -18,7 +18,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/listaSedes")
+@RequestMapping("/sedes")
 public class ClienteSedesController {
 
     private final int sedesPaginas = 6;
@@ -26,7 +26,7 @@ public class ClienteSedesController {
     @Autowired
     SedeRepository sedeRepository;
 
-    @GetMapping({"/", "", "/listaSedes"})
+    @GetMapping({"/", "", "/lista"})
     public String listarSedes(Model model, @RequestParam("pag") Optional<Integer> pag,
                               @RequestParam("busqueda") Optional<String> optionalBusqueda) {
         String busqueda = optionalBusqueda.isPresent()? optionalBusqueda.get().trim() : "";
@@ -47,7 +47,7 @@ public class ClienteSedesController {
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
         model.addAttribute("ruta", ruta);
-        return "/listaSedes";
+        return "/cliente/sedes/lista";
     }
 
 
