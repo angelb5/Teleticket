@@ -182,6 +182,10 @@ public class OperadorFuncionesController {
                     FieldError fAforoError = new FieldError("stock", "stock", "El aforo de la función no puede ser mayor que el aforo de la sala");
                     bindingResult.addError(fAforoError);
                     salaHasErrors = true;
+                }else if(funcion.getStock() < funcionDB.getStock()){
+                    FieldError fAforoError = new FieldError("stock", "stock", "El aforo de la función no puede ser reducido");
+                    bindingResult.addError(fAforoError);
+                    salaHasErrors = true;
                 }
             }
         }
