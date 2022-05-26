@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Obras')"></head>
+    <body>
+        <nav th:replace="fragmentos/navbar.html :: navbar('obras')"></nav>
+        <!--Contenidos-->
+
+        <div class="container py-3" >
+            <!-- Lista obras -->
+
+            <div class="row row-cols-1 row-cols-md-4 g-4 py-3">
+                <!--Card 1-->
+                <div class="col" th:each="obra : ${listaObras}">
+                    <div class="card h-100 position-relative">
+                        <a class="card-tele" href="#">
+                            <div class="card-tele-img">
+                                <img th:src="@{'/image/obra/'+${obra.fotoprincipal}}" alt="Obra">
+                            </div>
+                            <div class="card-tele-body">
+                                <div class="card-tele-title" th:text="${obra.titulo}"></div>
+                            </div>
+                        </a>
+                        <div class="card-footer card-tele-footer justify-content-end">
+                            <a th:href="@{'/operador/obras/gestion/'+ ${obra.id}}" class="btn btn-redtele">Ver más</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
+        </div>
+        <!--Fin de contenidos-->
+
+        <footer th:replace="fragmentos/footer.html :: footer"></footer>
+        <!-- End your project here-->
+
+
+
+        <!-- Custom scripts -->
+        <script type="text/javascript">
+
+        </script>
+    </body>
+    <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+</html>
