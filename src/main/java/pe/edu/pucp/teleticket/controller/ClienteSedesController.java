@@ -30,7 +30,7 @@ public class ClienteSedesController {
     public String listarSedes(Model model, @RequestParam("pag") Optional<Integer> pag,
                               @RequestParam("busqueda") Optional<String> optionalBusqueda) {
         String busqueda = optionalBusqueda.isPresent()? optionalBusqueda.get().trim() : "";
-        String ruta = busqueda.isBlank()? "/?" : "/?busqueda=" +busqueda +"&";
+        String ruta = busqueda.isBlank()? "/sedes?" : "/sedes?busqueda=" +busqueda +"&";
         int pagina = pag.isEmpty() ? 1 : pag.get();
         pagina = pagina < 1 ? 1 : pagina;
         int paginas = (int) Math.ceil((float) sedeRepository.contarListarSedesBusqueda(busqueda) / sedesPaginas);
