@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Gestion Persona')"></head>
+<head>
+    <script th:src="@{/selectize/js/standalone/selectize.js}"></script>
+    <link th:href="@{/selectize/css/selectize.bootstrap5.css}" rel="stylesheet">
+    <!--Dropify-->
+    <link rel="stylesheet" th:href="@{/dropify/css/dropify.css}"/>
+</head>
+<body class="bg-lightgrey">
+<nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
+<div class="container py-3">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="card-title text-redtele fs-22" th:text="${persona.id==0? 'Crear Persona' : 'Editar Persona'}">
+                    Persona
+                </div>
+            </div>
+            <form method="post" th:action="@{'/admin/personas/'+${persona.id==0? 'guardar': 'actualizar'}}" th:object="${persona}" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col">
+                        <input hidden th:field="*{id}">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre de la Persona</label>
+                            <input type="text" class="form-control" th:field="*{nombre}"  th:classappend="${#fields.hasErrors('nombre')?'is-invalid':''}"/>
+                            <div class="text-danger mt-3" th:if="${#fields.hasErrors('nombre')}"
+                                 th:errors="*{nombre}"></div>
+                        </div>
+                        <label class="form-label">Estado</label>
+                        <div class="row" th:if="${persona.id==0}">
+                            <p class="fw-bold" >Disponible</p>
+                        </div>
+
+                        <div class="d-flex align-items-center" th:unless="${persona.id==0}">
+                            <div class="form-check d-flex align-items-center me-3">
+                                <input class="form-check-input" type="radio" name="estado"  value="Disponible" th:field="*{estado}"/>
+                                <label class="form-check-label" >Disponible</label>
+                            </div>
+                            <div class="form-check d-flex align-items-center me-3">
+                                <input class="form-check-input" type="radio" name="estado"  value="NoDisponible"  th:field="*{estado}"/>
+                                <label class="form-check-label" >No Disponible</label>
+                            </div>
+                        </div>
+                        <input hidden th:if="${persona.id==0}" id="estado" name="estado" value="Disponible">
+                        <div class="text-danger mt-3" th:if="${#fields.hasErrors('estado')}"
+                             th:errors="*{estado}"></div>
+                        <div class="mb-3" style="margin-top: 15px">
+                            <button class="btn btn-redtele" type="submit"> Guardar</button>
+                            <a class="btn btn-dark text-white" th:href="@{|/admin/personas|}" th:if="${persona.id==0}">Cancelar</a>
+                            <a class="btn btn-dark text-white" th:href="@{|/admin/personas/gestion/${persona.id}|}" th:unless="${persona.id==0}">Cancelar</a>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-2" th:unless="${persona.id==0}">
+                            <input hidden th:field="*{foto}">
+                            <p class="form-label">Foto</p>
+                            <img th:src="@{|/image/persona/${persona.foto}|}" style="height: 307px; width: 600px">
+                        </div>
+
+                        <div class="mb-2" th:if="${persona.id==0}">
+                            <label class="form-label">Foto</label>
+                            <script>
+                                $(function () {
+                                    $('.dropify').dropify();
+                                });
+                            </script>
+                            <input type="file" class="dropify" data-height="293" name="foto" id="foto" data-max-file-size-preview="5M"/>
+                            <div class="text-danger mt-3" th:text="${msg}"></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+</body>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script type="text/javascript" th:src="@{/dropify/js/dropify.js}"></script>
+<script>
+    var uploadField = document.getElementById("foto");
+
+    uploadField.onchange = function() {
+        if(this.files[0].size > 5248000){
+            alert("El archivo es muy grande!");
+            this.value = "";
+        };
+    };
+</script>
+</html>
