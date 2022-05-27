@@ -59,24 +59,35 @@
             background-color: #DA251D
         }
 
+         table {
+             table-layout: fixed;
+             width: 100%;
+         }
+
     </style>
 </head>
 <body>
 
-<div class="text-center" style="background: black; padding: 3rem;">
-    <img src="../../static/img/logo-teleticket.png" data-th-src="|cid:logo|" height="50" />
-</div>
-<div class="text-center" style="padding: 2rem;">Bienvenid@ a Teleticket,&nbsp; Operador <b th:text="${operador.nombre}"></b></div>
-
-<div class="text-center" style="padding: 2rem;"> Se le ha registrado con el correo&nbsp; <b th:text="${operador.correo}"></b></div>
-<div class="text-center" style="padding: 2rem;"> Su contraseña generada es: <b th:text="${operador.contrasena}"></b></div>
-<div class="text-center" style="padding: 2rem;"> Por favor guarde esta contraseña en un lugar seguro.</div>
-
-<div class="text-center">
-    <a class="btn btn-redtele" data-th-attr="href='http://'+${dominio}+'/'">
-        <h2>Ir al sitio</h2>
-    </a>
-</div>
+<table class="text-center">
+    <tbody>
+    <tr>
+        <td></td>
+        <td>
+            <div class="text-center" style="background: black">
+                <img src="../../static/img/logo-teleticket.png" data-th-src="|cid:logo|" height="70" />
+            </div>
+            <div><h6>Bienvenid@ a Teleticket,&nbsp; Operador <b th:text="${operador.nombre}"></b></h6></div>
+            <div><h6>Se le ha registrado con el correo&nbsp; <b th:text="${operador.correo}"></b></h6></div>
+            <div><h6>Su contraseña generada es: <b th:text="${operador.contrasena}"></b></h6></div>
+            <div><h6>Por favor guarde esta contraseña en un lugar seguro.</h6></div>
+            <a class="btn btn-redtele" data-th-attr="href='http://'+${dominio}+'/'">
+                <h3>Ir al sitio</h3>
+            </a>
+        </td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
 
 </body>
 </html>

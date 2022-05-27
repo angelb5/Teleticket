@@ -59,41 +59,51 @@
             background-color: #DA251D
         }
 
+        table {
+            table-layout: fixed;
+            width: 100%;
+        }
+
     </style>
 </head>
 <body>
 
-<div class="text-center" style="background: black; padding: 3rem;">
-    <img src="../../static/img/logo-teleticket.png" data-th-src="|cid:logo|" height="50" />
-</div>
-<div class="text-center" style="padding: 2rem;">Estimado/a,&nbsp; <b th:text="${cliente.nombre}"></b></div>
-
-<div class="text-center" style="padding: 2rem;"> Se le muestra el resumen de su compra</div>
-<div class="text-center">
-    <div class="card-tele-img">
-        <!--- Debería mostrarse la obra comprada y el título de esta, los nombres en los th son genéricos--->
-        <img th:src="${historialcompras.funciones.obras.fotoprincipal}" th:text="${historialcompras.funciones.obras.titulo}">
-    </div>
-    <div class="text-center">
-        <b>Función: </b>
-    </div>
-    <br>
-    <div class="text-center">
-        <!--- Los nombres en los th son genéricos --->
-        <!--- se insertaron fechas de ejemplo --->
-        <b th:text="${historialcompras.funciones.fecha}">25 de junio &nbsp;</b> <!--- Fecha función --->
-        <b th:text="${historialcompras.funciones.inicio}">10:00 -</b> <!--- Hora inicio --->
-        <b th:text="${historialcompras.funciones.fin}">11:00</b> <!--- Hora fin --->
-    </div>
-    <br>
-    <!--- CODIGO QR, la imagen es sacada de internet --->
-    <div class="align-content-center">
-        <img src="https://es.activebarcode.com/codes/images/qrcode/qr-code-37x37.png">
-    </div>
-    <a class="btn btn-redtele" data-th-attr="href='http://'+${dominio}+'/'">
-        <h2>Ver en la página</h2>
-    </a>
-</div>
+<table class="text-center">
+    <tbody>
+    <tr>
+        <td></td>
+        <td>
+            <div class="text-center" style="background: black">
+                <img src="../../static/img/logo-teleticket.png" data-th-src="|cid:logo|" height="70" />
+            </div>
+            <div><h6>Estimado/a,&nbsp; <b th:text="${cliente.nombre}"></b></h6></div>
+            <div><h6>Se le muestra el resumen de su compra: </h6></div>
+            <div class="card-tele-img">
+                <!--- Debería mostrarse la obra comprada y el título de esta, los nombres en los th son genéricos--->
+                <img th:src="${historialcompras.funciones.obras.fotoprincipal}" th:text="${historialcompras.funciones.obras.titulo}">
+            </div>
+            <div><h6>Función: </h6></div>
+            <div>
+                <h6>
+                    <!--- Los nombres en los th son genéricos --->
+                    <!--- se insertaron fechas de ejemplo --->
+                    <b th:text="${historialcompras.funciones.fecha}">25 de junio &nbsp;</b> <!--- Fecha función --->
+                    <b th:text="${historialcompras.funciones.inicio}">10:00 -</b> <!--- Hora inicio --->
+                    <b th:text="${historialcompras.funciones.fin}">11:00</b> <!--- Hora fin --->
+                </h6>
+            </div>
+            <!--- CODIGO QR, la imagen es sacada de internet --->
+            <div>
+                <img src="https://es.activebarcode.com/codes/images/qrcode/qr-code-37x37.png">
+            </div>
+            <a class="btn btn-redtele" data-th-attr="href='http://'+${dominio}+'/'">
+                <h3>Ver en la página</h3>
+            </a>
+        </td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
 
 </body>
 </html>
