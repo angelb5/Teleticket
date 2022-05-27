@@ -337,6 +337,36 @@ public class SesionController {
 
     }
 
+    @PostMapping("/operadorregistrado")
+    public String operadorRegistrado(@RequestParam("correo") String correo, RedirectAttributes attr, HttpSession httpSession){
+        Operador operador = operadorRepository.findByCorreo(correo);
+
+        if(operador == null){
+            attr.addFlashAttribute("error","No existe una cuenta asociada a este correo");
+            return "redirect:/"; // no se que iba aca, lo coloque asi
+        }
+
+        String token = RandomString.make(45); // contraseña generada (?)
+
+        if(operador!=null){
+            operadorRepository.dropEvento(operador.getId());
+            operadorRepository.updateToken(token,correo);
+            // lo de minutos x cliente no va porque es nuevo
+        }
+
+        try {
+            emailService.correoOpRegistrado(correo,token);
+            attr.addFlashAttribute("msg", "Se ha enviado el correo confirmando su registro");
+            return "redirect:/";
+        }catch (Exception e){
+            e.printStackTrace();
+            attr.addFlashAttribute("error",1);
+            attr.addFlashAttribute("msg","Ha ocurrido un error, inténtalo más tarde");
+            return "redirect:/";
+        }
+
+    }
+
     @PostMapping("/cambiarcontrasena")
     public String cambiarContrasena(@RequestParam("token") String token, @RequestParam("contrasena") String contrasena,
                                     @RequestParam("confcontrasena") String confcontrasena,
