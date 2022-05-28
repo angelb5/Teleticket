@@ -14,19 +14,15 @@ import java.util.Optional;
 @Repository
 public interface HistorialRepository extends JpaRepository<Historial, Integer> {
 
-    @Query(nativeQuery = true, value = "select * from historialcompras " +
-            "where idclientes = ?1 and fechalimite > NOW() and estado = 'Reserva' ")
+    @Query(value = "select new Historial(id, idclientes, idfunciones, numtickets,fechalimite,estado) from Historial " +
+            "where idclientes = ?1 and fechalimite > current_timestamp and estado = 'Reserva' ")
     List<Historial> findReservasByIdclientes(int idclientes);
 
-    @Query(nativeQuery = true, value = "select * from historialcompras " +
-            "where idclientes = ?1 and idfunciones = ?2 and fechalimite > NOW() and estado = 'Reserva' ")
+    @Query(value = "select new Historial(id, idclientes, idfunciones, numtickets,fechalimite,estado) from Historial " +
+            "where idclientes = ?1 and idfunciones = ?2 and fechalimite > current_timestamp and estado = 'Reserva' ")
     Optional<Historial> findReservaByIdclientesAndIdfunciones(int idclientes, int idfunciones);
 
-    @Query(nativeQuery = true, value = "select * from historialcompras " +
-            "where idclientes = ?1 and estado = 'Comprado' ")
-    List<Historial> findComprasByIdclientes(int idclientes);
-
-    @Query(nativeQuery = true, value = "select * from historialcompras " +
+    @Query(value = "select new Historial(id, idclientes, idfunciones, numtickets,fechalimite,estado) from Historial " +
             "where idclientes = ?1 and idfunciones = ?2 and estado = 'Comprado' ")
     Optional<Historial> findCompraByIdclientesAndIdfunciones(int idclientes, int idfunciones);
 

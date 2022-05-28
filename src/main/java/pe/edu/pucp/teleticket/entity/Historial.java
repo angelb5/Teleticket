@@ -26,6 +26,10 @@ public class Historial implements Serializable {
     @Column(name = "idfunciones")
     private int idfunciones;
 
+    @ManyToOne
+    @JoinColumn(name = "idfunciones", updatable = false,insertable = false)
+    private Funcion funcion;
+
     @Column(name = "idcompra")
     private String idcompra;
 
@@ -46,4 +50,15 @@ public class Historial implements Serializable {
     @Column(name = "estado")
     private String estado;
 
+    public Historial(int id, int idclientes, int idfunciones, int numtickets, LocalDateTime fechalimite, String estado) {
+        this.id = id;
+        this.idclientes = idclientes;
+        this.idfunciones = idfunciones;
+        this.numtickets = numtickets;
+        this.fechalimite = fechalimite;
+        this.estado = estado;
+    }
+
+    public Historial() {
+    }
 }
