@@ -1,5 +1,6 @@
 package pe.edu.pucp.teleticket.controller;
 
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pe.edu.pucp.teleticket.entity.Operador;
 import pe.edu.pucp.teleticket.repository.OperadorRepository;
+import pe.edu.pucp.teleticket.service.EmailService;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -22,6 +24,9 @@ public class AdminOperadoresController {
 
     @Autowired
     OperadorRepository operadorRepository;
+
+    @Autowired
+    private EmailService emailService;
 
 
     @GetMapping({"/","","/lista"})
@@ -86,12 +91,22 @@ public class AdminOperadoresController {
         if(bindingResult.hasErrors()){
             return "/admin/operadores/form";
         }
+        String token = RandomString.make(45);
 
-        operadorRepository.save(operador);
-        redirectAttributes.addFlashAttribute("msg", "Se ha enviado el correo a la direccion indicada. Avisar al nuevo operador " +
-                "que ingrese al link enviado para que termine de crear la cuenta");
+        try {
+            emailService.correoOpRegistrado(operador.getCorreo(),token);
+            operadorRepository.save(operador);
+            redirectAttributes.addFlashAttribute("msg", "Se ha enviado el correo a la direccion indicada. Avisar al nuevo operador " +
+                    "que ingrese al link enviado para que termine de crear la cuenta");
 
-        return "redirect:/admin/operadores";
+            return "redirect:/admin/operadores";
+        }catch (Exception e){
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error",1);
+            redirectAttributes.addFlashAttribute("msg","Ha ocurrido un error en el registro, inténtalo más tarde");
+            return "redirect:/admin/operadores";
+        }
+
     }
 
 }
