@@ -4,6 +4,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import pe.edu.pucp.teleticket.dto.FuncionesCompra;
+import pe.edu.pucp.teleticket.dto.SedesCompra;
 import pe.edu.pucp.teleticket.entity.Funcion;
 import pe.edu.pucp.teleticket.entity.Obra;
 import pe.edu.pucp.teleticket.entity.Sala;
@@ -16,6 +18,7 @@ import java.util.Optional;
 
 @Repository
 public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
+
     @Query(nativeQuery = true,
             value = "select distinct * from funciones " +
                     "where fecha = :fecha and estado = 'Activa' and " +
@@ -110,4 +113,54 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
                     "inner join sedes s2 on s.idsedes = s2.idsedes where year(funciones.fecha)=?1 and\n" +
                     "                            s.idsedes=?2 and funciones.idobras=?3")
     public long contarListaFuncionesPorAnoySede(Integer ano, Integer sede, Integer idObra);
+
+    @Query(nativeQuery = true, value = "select ss.idfunciones as id, f.idobras as idobras, o.fotoprincipal as fotoprincipal, o.duracion as duracion, " +
+            "o.titulo as titulo, s.numero as nombresala, se.nombre as nombresede, " +
+            "f.fecha as fecha, f.inicio as inicio, f.costo as costo, " +
+            "MIN(disponible) as disponible from " +
+            "(select (f.stock - sum(h.numtickets)) as disponible, f.idfunciones from historialcompras h " +
+            "inner join funciones f on f.idfunciones = h.idfunciones " +
+            "where (h.estado = 'Reserva' and h.fechalimite > NOW()) or h.estado = 'Comprado' " +
+            "group by f.idfunciones " +
+            "union " +
+            "select maxreservas as disponible, idfunciones from funciones) " +
+            "as ss " +
+            "inner join funciones f on f.idfunciones = ss.idfunciones " +
+            "inner join obras o on f.idobras = o.idobras " +
+            "inner join salas s on f.idsalas = s.idsalas " +
+            "inner join sedes se on se.idsedes = s.idsedes " +
+            "where f.idobras=?1 and f.fecha=?2 and se.idsedes =?3 and f.estado = 'Activa' " +
+            "group by ss.idfunciones " +
+            "order by se.nombre, inicio")
+    public List<FuncionesCompra> listaFuncionesCompraPorObraFechaSede(int idobra, LocalDate fecha, int idsede);
+
+    @Query(nativeQuery = true, value = "select ss.idfunciones as id, f.idobras as idobras, o.fotoprincipal as fotoprincipal, o.duracion as duracion, " +
+            "o.titulo as titulo, s.numero as nombresala, se.nombre as nombresede, " +
+            "f.fecha as fecha, f.inicio as inicio, f.costo as costo, " +
+            "MIN(disponible) as disponible from " +
+            "(select (f.stock - sum(h.numtickets)) as disponible, f.idfunciones from historialcompras h " +
+            "inner join funciones f on f.idfunciones = h.idfunciones " +
+            "where (h.estado = 'Reserva' and h.fechalimite > NOW()) or h.estado = 'Comprado' " +
+            "group by f.idfunciones " +
+            "union " +
+            "select maxreservas as disponible, idfunciones from funciones) " +
+            "as ss " +
+            "inner join funciones f on f.idfunciones = ss.idfunciones " +
+            "inner join obras o on f.idobras = o.idobras " +
+            "inner join salas s on f.idsalas = s.idsalas " +
+            "inner join sedes se on se.idsedes = s.idsedes " +
+            "where f.idfunciones=?1  and f.estado = 'Activa' and f.fecha > NOW() " +
+            "group by ss.idfunciones")
+    public FuncionesCompra getFuncionesCompraPorId(int idfunciones);
+
+    @Query(value = "select distinct new pe.edu.pucp.teleticket.dto.SedesCompra(se.id, se.nombre, se.direccion) from " +
+            "Funcion f " +
+            "inner join Sala s on f.sala.id = s.id " +
+            "inner join Sede se on se.id = s.sede.id " +
+            "where f.obra.id=?1 and f.fecha=?2 and f.estado = 'Activa' ")
+    public List<SedesCompra> listaSedesPorObraFecha(int idobra, LocalDate fecha);
+
+    @Query(nativeQuery = true, value = "select distinct fecha from funciones where idobras=?1 and fecha > NOW() " +
+            "order by fecha asc")
+    public List<String> listaFechasDeObra(int idobras);
 }

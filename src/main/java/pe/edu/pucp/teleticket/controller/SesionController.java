@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pe.edu.pucp.teleticket.entity.*;
 import pe.edu.pucp.teleticket.repository.AdminRepository;
 import pe.edu.pucp.teleticket.repository.ClienteRepository;
+import pe.edu.pucp.teleticket.repository.HistorialRepository;
 import pe.edu.pucp.teleticket.repository.OperadorRepository;
 import pe.edu.pucp.teleticket.service.EmailService;
 import reactor.core.publisher.Mono;
@@ -37,6 +38,7 @@ import javax.validation.Valid;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -56,6 +58,9 @@ public class SesionController {
     ClienteRepository clienteRepository;
 
     @Autowired
+    HistorialRepository historialRepository;
+
+    @Autowired
     private EmailService emailService;
 
     @Autowired
@@ -70,7 +75,8 @@ public class SesionController {
     }
 
     @GetMapping("registro")
-    public String registroForm(@ModelAttribute("cliente") Cliente cliente){
+    public String registroForm(@ModelAttribute("cliente") Cliente cliente, HttpSession session){
+        if(session.getAttribute("usuario")!=null){return "redirect:/";}
         return "/sesion/registro";
     }
 
@@ -95,6 +101,7 @@ public class SesionController {
             Cliente cliente = clienteRepository.findByCorreo(auth.getName());
             session.setAttribute("usuario",cliente);
             session.setAttribute("rol", "cliente");
+            session.setAttribute("carrito", historialRepository.findReservasByIdclientes(cliente.getId()));
             return "redirect:";
         }
     }
@@ -142,6 +149,7 @@ public class SesionController {
             Cliente cliente = optionalCliente.get();
             session.setAttribute("usuario",cliente);
             session.setAttribute("rol", "cliente");
+            session.setAttribute("carrito", historialRepository.findReservasByIdclientes(cliente.getId()));
             return "redirect:/";
         }else{
             session.setAttribute("proveedor", "Sesión de Google");
@@ -203,6 +211,9 @@ public class SesionController {
                                  @RequestParam("contrasena") String contrasena,
                                  @RequestParam("confcontrasena") String confcontrasena,
                                  RedirectAttributes attr, Model model, HttpSession session){
+
+        if(session.getAttribute("usuario")!=null){return "redirect:/";}
+
         boolean contrasenaHasErrors = false;
         boolean correoHasErrors = false;
         boolean dniHasErrors = false;
@@ -271,6 +282,7 @@ public class SesionController {
                 cliente = clienteRepository.findByCorreo(cliente.getCorreo());
                 session.setAttribute("usuario", cliente);
                 session.setAttribute("rol", "cliente");
+                session.setAttribute("carrito", historialRepository.findReservasByIdclientes(cliente.getId()));
                 if(session.getAttribute("picture")!=null){
                     subirFotoGoogle((String) session.getAttribute("picture"), cliente.getId());
                 }

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Carrito de compras')"></head>
+<body>
+<nav th:replace="fragmentos/navbar.html :: navbar('Todo')"></nav>
+<!--Contenidos-->
+
+<div class="container py-3">
+    <div class="row d-flex justify-content-center mb-4">
+        <div class="col-md-8">
+            <div class="card mb-4">
+
+                <div class="card-body">
+                    <div class="title-24 mb-2">
+                        Carrito de Compras
+                    </div>
+                    <!-- Elemento -->
+                    <div class="row py-4" th:each="reserva, info : ${session.carrito}">
+                        <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+                            <!-- Image -->
+                            <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                                <img th:src="@{'/image/obra/'+${funciones.get(info.index).fotoprincipal}}" class="img-fluid rounded-start img-cover"/>
+                                <a  th:href="@{'/obras/'+${funciones.get(info.index).idobras}}"></a>
+                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                            </div>
+                            <!-- Image -->
+                        </div>
+
+                        <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                            <!-- Data -->
+                            <div class="fw-bold mb-2 fs-18" th:text="${funciones.get(info.index).titulo}"></div>
+                            <div class="row row-cols-2">
+                                <div class="col">
+                                    <div class="mb-2 text-right">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="currentColor" class="bi bi-calendar3" viewBox="0 0 16 16">
+                                            <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"></path>
+                                            <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path>
+                                        </svg>
+                                        <span th:text="${#temporals.format(funciones.get(info.index).fecha, 'dd/MM/yyyy')}+ ' '+${funciones.get(info.index).inicio}">
+                                            19/06/2022 18:00
+                                        </span>
+                                    </div>
+                                    <div class="mb-2 text-right">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                                        </svg>
+                                        <span th:text="${funciones.get(info.index).nombresede}">
+                                        </span>
+                                    </div>
+                                    <div class="mb-2 text-right">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="currentColor" class="bi bi-cash-stack" viewBox="0 0 16 16">
+                                            <path d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1H1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+                                            <path d="M0 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V5zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V7a2 2 0 0 1-2-2H3z"/>
+                                        </svg>
+                                        <span th:text="'S/ '+${#numbers.formatDecimal(funciones.get(info.index).costo,1,2,'POINT')}">
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-2 text-right">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tv" viewBox="0 0 16 16">
+                                            <path d="M2.5 13.5A.5.5 0 0 1 3 13h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zM13.991 3l.024.001a1.46 1.46 0 0 1 .538.143.757.757 0 0 1 .302.254c.067.1.145.277.145.602v5.991l-.001.024a1.464 1.464 0 0 1-.143.538.758.758 0 0 1-.254.302c-.1.067-.277.145-.602.145H2.009l-.024-.001a1.464 1.464 0 0 1-.538-.143.758.758 0 0 1-.302-.254C1.078 10.502 1 10.325 1 10V4.009l.001-.024a1.46 1.46 0 0 1 .143-.538.758.758 0 0 1 .254-.302C1.498 3.078 1.675 3 2 3h11.991zM14 2H2C0 2 0 4 0 4v6c0 2 2 2 2 2h12c2 0 2-2 2-2V4c0-2-2-2-2-2z"/>
+                                        </svg>
+                                        <span th:text="'Sala ' + ${funciones.get(info.index).nombresala}">
+                                        </span>
+                                    </div>
+                                    <div class="mb-2 text-right">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                                        </svg>
+                                        <span th:text="${funciones.get(info.index).duracion} + ' min'">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 align-items-center d-flex">
+                            <!-- Cantidad -->
+                            <div>
+                                <form method="post" th:action="@{/carrito/anadir}">
+                                    <div class="d-flex mb-2" style="max-width: 300px">
+                                        <input hidden name="idfunciones" th:value="${funciones.get(info.index).id}">
+                                        <button class="btn btn-redtele px-3 me-2"
+                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+
+                                        <input id="form1" min="1" name="numtickets" th:value="${reserva.numtickets}" readonly type="number"
+                                               onchange="this.form.submit()"
+                                               th:max="${funciones.get(info.index).disponible}" class="form-control text-center bg-white"/>
+
+                                        <button class="btn btn-redtele px-3 ms-2"
+                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                                <div class="text-danger text-center mb-2">
+                                    Tiempo restante:
+                                    <span th:id="'time'+${info.index}">
+                                        05:39
+                                    </span>
+                                </div>
+                                <form method="post" th:action="@{/carrito/eliminar}">
+                                    <input hidden name="idfunciones" th:value="${reserva.idfunciones}">
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-redtele">Eliminar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card mb-4 mb-lg-0">
+                <div class="card-body">
+                    <p><strong>Aceptamos</strong></p>
+                    <img class="me-2" width="45px"
+                         src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+                         alt="Visa" />
+                    <img class="me-2" width="45px"
+                         src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
+                         alt="American Express" />
+                    <img class="me-2" width="45px"
+                         src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+                         alt="Mastercard" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header py-3">
+                    <h5 class="mb-0">Resumen</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li th:each="reserva, info : ${session.carrito}" class="list-group-item d-flex justify-content-between align-items-center px-0"
+                        th:classappend="${info.index+1<session.carrito.size()}? 'border-0':''">
+                            <span th:text="${funciones.get(info.index).titulo}"></span>
+                            <span th:text="'S/ '+${#numbers.formatDecimal(funciones.get(info.index).costo*reserva.numtickets,1,2,'POINT')}"></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                            <div>
+                                <strong>Total</strong>
+                                <strong>
+                                    <p class="mb-0">(incluye IGV)</p>
+                                </strong>
+                            </div>
+                            <span th:text="'S/ '+${#numbers.formatDecimal(total,1,2,'POINT')}" ></span>
+                        </li>
+                    </ul>
+
+                    <button type="button" class="btn btn-redtele btn-lg btn-block">
+                        Comprar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+<!--Fin de contenidos-->
+<!--Footer-->
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+
+<div th:replace="fragmentos/navbar.html :: menu"></div>
+
+<!-- Modal msg -->
+<div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
+                </div>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class=" w-100 d-flex justify-content-center mb-3">
+                    <i class="fa-solid fa-circle-check" style="font-size: 50px" th:class="${error==null}? 'fa-solid fa-circle-check text-success': 'fa-solid fa-circle-exclamation text-danger'"></i>
+                </div>
+                <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal conflicto -->
+<div th:if="${historialEnConflicto != null}" class="modal top fade" id="modalConflictos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" >Ha ocurrido un conflicto </h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    No se pudo agregar la función al carrito porque presenta conflictos con tus siguientes reservas o compras
+                </div>
+                <div class="mb-3" th:each="funcion : ${historialEnConflicto}">
+                    <div class="fs-14 fw-bold mb-1" th:text="${funcion.titulo}">
+                    </div>
+                    <div class="mb-2 d-flex align-items-center justify-content-between">
+                        <div class="fs-13 fw-bold text-redtele" th:text="${funcion.nombresede}">
+                        </div>
+                        <div class="fs-13">
+                            <div class="pill-white mx-2" th:text="${funcion.inicio}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script  type="text/javascript" th:src="@{/js/busqueda.js}"></script>
+<script type="text/javascript" th:if="${historialEnConflicto != null}">
+    $(window).on('load', function() {
+        $('#modalConflictos').modal('show');
+    });
+</script>
+<script type="text/javascript" th:if="${msg != null}">
+    $(window).on('load', function() {
+        $('#msgModal').modal('show');
+    });
+</script>
+</html>

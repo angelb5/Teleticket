@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = ${obra.titulo})"></head>
+<body>
+<nav th:replace="fragmentos/navbar.html :: navbar('Todo')"></nav>
+<!--Contenidos-->
+<div class="position-relative">
+    <!--Fondo-->
+    <div class="w-100 overflow-hidden position-absolute d-table" style="height: -webkit-fill-available;">
+        <div class="blur-head d-table-row ">
+            <img th:src="@{'/image/obra/'+${obra.fotoprincipal}}">
+        </div>
+    </div>
+
+    <!--Obra-->
+    <div class="container py-3 position-relative">
+        <div class="row row-cols-1 row-cols-md-2">
+            <!--Informacion de la obra-->
+            <div class="col-12 col-md-6 col-lg-8">
+                <!--Imágenes-->
+                <div class="mb-3">
+                    <div id="carouselExampleInterval" class="carousel slide" data-mdb-ride="carousel">
+                        <div class="carousel-inner rounded-5" >
+                            <div class="carousel-item" th:each="fotoid: ${fotos}"  th:classappend="${fotoid==obra.fotoprincipal}? 'active':''"  data-mdb-interval="3000">
+                                <div class="carousel-obra">
+                                    <img th:src="@{|/image/obra/${fotoid}|}" class="d-block w-100" th:alt="${obra.titulo}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" data-mdb-target="#carouselExampleInterval" type="button" data-mdb-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" data-mdb-target="#carouselExampleInterval" type="button" data-mdb-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!--Informacion de la obra-->
+                <div class="card fs-14">
+                    <div class="card-body pt-4">
+                        <div class="card-title fw-bold fs-24" th:text="${obra.titulo}">
+                        </div>
+                        <div class="mb-4 row">
+                            <div class="col text-start">
+                                <div class="pill-redtele fs-13 me-2" th:text="${obra.restricciones}"></div>
+                                <div class="pill-white fs-13 me-2" th:text="${obra.duracion} + ' min'"></div>
+                            </div>
+                            <div class="col text-end fs-20 align-items-end">
+                                <strong class="fw-bold align-middle">
+                                    4.3
+                                </strong>
+                                <strong class="align-middle">
+                                    /5
+                                </strong>
+                                <i class="ms-1 fa-solid fa-star fs-22"></i>
+                            </div>
+                        </div>
+
+                        <p class="card-text fw-light mb-4 fs-16" th:text="${obra.resumen}">
+                        </p>
+
+                        <div class="card-subtitle fw-bold fs-18 mb-2">
+                            Dirigida por
+                        </div>
+                        <div class="row row-cols-3 mb-3">
+                            <div class="col mb-2" th:each="director : ${obra.directores}">
+                                <div class="card shadow-0">
+                                    <a class="link-actor" href="#" >
+                                        <div class="d-sm-flex align-items-sm-center">
+                                            <div class="actor-image">
+                                                <img th:src="@{/img/katia.png}" th:alt="${director.nombre}">
+                                            </div>
+                                            <strong class="d-none d-sm-block ms-1 actorname" th:text="${director.nombre}">
+                                            </strong>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-subtitle fw-bold fs-18 mb-2">
+                            Reparto principal
+                        </div>
+                        <div class="row row-cols-3 mb-3">
+                            <div class="col mb-2" th:each="actor : ${obra.actores}">
+                                <div class="card shadow-0">
+                                    <a class="link-actor" href="#">
+                                        <div class="d-sm-flex align-items-sm-center">
+                                            <div class="actor-image">
+                                                <img th:src="@{/img/katia.png}" th:alt="${actor.nombre}">
+                                            </div>
+                                            <strong class="d-none d-sm-block ms-1 actorname" th:text="${actor.nombre}">
+                                            </strong>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-subtitle fw-bold fs-18 mb-2">
+                            Géneros
+                        </div>
+                        <div class="text-start mb-3">
+                            <div class="pill-white fs-13 me-2" th:each="genero : ${obra.generos}" th:text="${genero.nombre}"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!--Tickets-->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card fs-14">
+                    <div class="p-3">
+                        <!--Titulo-->
+                        <div>
+                            <div class="fw-bold fs-16 mb-3" th:text="${obra.titulo}">
+                            </div>
+                        </div>
+                        <!--Selector fecha-->
+                        <div>
+                            <div class="row mb-3">
+                                <div class="col-3 d-flex align-items-center">
+                                    <div class="text-black " >
+                                        Fecha
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <form method="get" th:action="@{|/obras/${obra.id}|}">
+                                        <select name="fecha" id="fecha" class="form-select fs-13" onchange="this.form.submit()">
+                                            <option th:each="fecha : ${fechas}" th:value="${fecha}"
+                                                    th:selected="${fecha.toString() == #httpServletRequest.getParameter('fecha')}"
+                                                    th:text="${#temporals.format(fecha, 'dd MMMM')}">
+                                            </option>
+                                        </select>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--Listado de sedes-->
+                    <div>
+                        <!--Sede 1-->
+
+                        <div class="px-3 pb-3" th:each=" sede : ${sedes}">
+                            <div class="fw-bold fs-16 mb-1 text-redtele" th:text="${sede.nombre}">
+                            </div>
+                            <div class="fw-light fs-13 mb-3" th:text="${sede.direccion}">
+                            </div>
+
+                            <!--Lista de funciones-->
+                            <div class="p-2 mb-1 bg-lightgrey">
+                                <div class="d-flex">
+                                    <div class="m-1" th:each="funcion : ${sede.funcionesCompra}">
+                                        <button class="btn btn-redtele" type="button"
+                                                data-mdb-toggle="modal" data-mdb-target="#compraModal"
+                                                data-th-attr="data-sede=${sede.nombre}, data-fname=${funcion.inicio}, data-price=${funcion.costo}, data-max=${funcion.disponible}"
+                                                th:id="${funcion.id}" onclick="setFuncion(id)" th:text="${funcion.inicio}">
+                                            11:00
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Footer-->
+    <footer th:replace="fragmentos/footer.html :: footer"></footer>
+</div>
+<!--Fin de contenidos-->
+
+<!-- Modal iniciar sesion -->
+<div th:if="${session.usuario==null and session.proveedor==null}" class="modal top fade" id="compraModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog   modal-dialog-centered">
+        <div class="modal-content bg-dark">
+            <div class="modal-body text-center text-white border-0 p-4">
+                <img th:src="@{/img/logo-teleticket.png}" alt="Teleticket logo" class="pt-3 mb-3" style="width: 60%" loading="lazy" />
+                <div class="title-24 text-white py-3 mb-4">Parece que no estas logueado</div>
+                <div class="pb-3">
+                    <a th:href="@{/login}" class="btn btn-light mb-4" >Ingresa</a>
+                </div>
+                <div class="pb-3">
+                    <span>¿Aún no tienes cuenta? </span>
+                    <a th:href="@{/registro}" class=" mx-2 text-redtele mb-4" >Regístrate</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal completar registro -->
+<div th:if="${session.usuario==null and session.proveedor!=null}" class="modal top fade" id="compraModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog   modal-dialog-centered">
+        <div class="modal-content bg-dark ">
+            <div class="modal-body text-center text-white border-0 p-4">
+                <img th:src="@{/img/logo-teleticket.png}" alt="Teleticket logo" class="pt-3 mb-3" style="width: 60%" loading="lazy" />
+                <div class="title-24 text-white py-3 mb-4">Parece que aun no has terminado tu registro</div>
+                <div class="pb-3">
+                    <a th:href="@{/oauth2/completaregistro}" class="btn btn-light mb-4" >Completar registro</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal compra -->
+<div th:if="${session.rol=='cliente'}" class="modal top fade" id="compraModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog   modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-start border-0 pb-0">
+                <div class="mb-3">
+                    <div class="fs-20 fw-bold mb-1" th:text="${obra.titulo}">
+                    </div>
+                    <div class="mb-2 d-flex align-items-center justify-content-between">
+                        <div class="fs-16 fw-bold text-redtele" id="sede">
+                        </div>
+                        <div class="fs-14">
+                            <div class="pill-white mx-2" id="funcion">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form th:action="@{/carrito/anadir}" method="post" class="ticket-panel text-start">
+                    <div class="mb-2 fs-14 d-flex align-items-center">
+                        <input hidden type="text" name="idfunciones" id="funcionid">
+                        <div class="col fw-normal">
+                            <i class="fa-solid fa-ticket"></i>
+                            <strong>
+                                &nbsp;General S/&nbsp;
+                            </strong>
+                            <strong id="costo">
+                            </strong>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <div class="d-flex align-items-center " style="max-width: 150px">
+                                <button type="button" class="btn btn-redtele px-3 me-2" onclick="minusTicket()">
+                                    <i class="fas fa-minus" aria-hidden="true"></i>
+                                </button>
+                                <input type="text" id="numtickets" readonly name="numtickets" value="1" class="text-center form-control active fs-13 bg-white">
+                                <button type="button" class="btn btn-redtele px-3 ms-2" onclick="plusTicket()">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="p-3 text-center">
+                        <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-redtele">
+                            Comprar
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragmentos/navbar.html :: menu"></div>
+</body>
+<script type="text/javascript">
+    var maxnum;
+    var fname;
+    function setFuncion(id){
+        var button = document.getElementById(id);
+        maxnum = button.getAttribute("data-max");
+        fname = button.getAttribute("data-fname");
+        sede = button.getAttribute("data-sede");
+        costo = button.getAttribute("data-price");
+        $('.modal-body #funcion').text(fname);
+        $('.modal-body #sede').text(sede);
+        $('.ticket-panel #costo').text(Number(costo).toFixed(2));
+        $('.ticket-panel #numtickets').val(1);
+        $('.ticket-panel #funcionid').val(id);
+    }
+    function plusTicket(){
+        var val = parseInt($('.ticket-panel #numtickets').val());
+
+        if(val<maxnum){
+            $('.ticket-panel #numtickets').val(val+1);
+        }
+    }
+
+    function minusTicket(){
+        var val = parseInt($('.ticket-panel #numtickets').val());
+        if(val>1){
+            $('.ticket-panel #numtickets').val(val-1);
+        }
+    }
+</script>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script  type="text/javascript" th:src="@{/js/busqueda.js}"></script>
+
+</html>

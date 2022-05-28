@@ -34,7 +34,7 @@
                             style="max-width: fit-content; border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important; cursor:pointer;">
                         <span id="search_concept" th:text="${buscaren}"></span> <span class="caret"></span>
                     </a>
-                    <ul sec:authorize="hasAuthority('cliente')" class="dropdown-menu overflow-hidden" role="menu">
+                    <ul th:if="${session.rol=='cliente'}" class="dropdown-menu overflow-hidden" role="menu">
                         <li><a class="dropdown-item" href="#obras">Obras</a></li>
                         <li><a class="dropdown-item" href="#personas">Personas</a></li>
                         <li><a class="dropdown-item" href="#sedes">Sedes</a></li>
@@ -65,10 +65,9 @@
             <ul class="navbar-nav flex-row">
                 <!--Carrito-->
                 <li th:if="${session.rol=='cliente'}" class="nav-item me-3 me-lg-1 mx-2">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" th:href="@{/carrito}">
                         <i class="fas fa-solid fa-cart-shopping fa-lg"></i>
-
-                        <span class="badge rounded-pill badge-notification bg-danger">0</span>
+                        <span class="badge rounded-pill badge-notification bg-danger" th:text="${session.carrito.size()}">0</span>
                     </a>
                 </li>
                 <!--Mis tickets-->
