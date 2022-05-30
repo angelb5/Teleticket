@@ -12,6 +12,7 @@ import pe.edu.pucp.teleticket.dto.SedesCompra;
 import pe.edu.pucp.teleticket.entity.Funcion;
 import pe.edu.pucp.teleticket.entity.Historial;
 import pe.edu.pucp.teleticket.entity.Obra;
+import pe.edu.pucp.teleticket.repository.CalificacionObraRepository;
 import pe.edu.pucp.teleticket.repository.FotoObraRepository;
 import pe.edu.pucp.teleticket.repository.FuncionRepository;
 import pe.edu.pucp.teleticket.repository.ObraRepository;
@@ -33,6 +34,9 @@ public class ClienteObrasController {
 
     @Autowired
     FotoObraRepository fotoObraRepository;
+
+    @Autowired
+    CalificacionObraRepository calificacionObraRepository;
 
     @GetMapping("/{idPath}")
     public String gestionSede(Model model, @PathVariable("idPath") String idPath, @RequestParam("fecha") Optional<String> optfecha){
@@ -70,6 +74,10 @@ public class ClienteObrasController {
         model.addAttribute("sedes", sedesCompraList);
         model.addAttribute("obra", optionalObra.get());
         model.addAttribute("fotos", fotoObraRepository.findAllIdByIdObras(id));
+
+        // para las calificaciones, pensaba hacerlo aparte pero se puede integrar acá
+        model.addAttribute("estrellas", calificacionObraRepository.calificaciones);
+
         return "/cliente/obras/obra";
     }
 
