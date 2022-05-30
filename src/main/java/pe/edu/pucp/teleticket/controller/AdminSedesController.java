@@ -52,11 +52,17 @@ public class AdminSedesController {
     FotoSedeRepository fotoSedeRepository;
 
     @GetMapping({"/", "", "/lista"})
-    public String listarSedes(Model model, @RequestParam("pag") Optional<Integer> pag,
+    public String listarSedes(Model model, @RequestParam("pag") Optional<String> pag,
                               @RequestParam("busqueda") Optional<String> optionalBusqueda) {
+
         String busqueda = optionalBusqueda.isPresent()? optionalBusqueda.get().trim() : "";
         String ruta = busqueda.isBlank()? "/admin/sedes?" : "/admin/sedes?busqueda=" +busqueda +"&";
-        int pagina = pag.isEmpty() ? 1 : pag.get();
+        int pagina=0;
+        try{
+            pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
+        } catch (Exception e){
+            return "redirect:/admin/sedes";
+        }
         pagina = pagina < 1 ? 1 : pagina;
         int paginas = (int) Math.ceil((float) sedeRepository.contarListarSedesBusqueda(busqueda) / sedesPaginas);
         pagina = pagina > paginas ? paginas : pagina;

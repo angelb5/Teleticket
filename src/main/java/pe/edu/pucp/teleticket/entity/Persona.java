@@ -29,6 +29,6 @@ public class Persona {
 
     @NotNull(message = "Tiene que seleccionar un estado")
     @Lob
-    @Column(name = "estado", nullable = false)
+    @Column(name = "estado")
     private String estado;
 }

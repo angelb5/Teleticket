@@ -47,15 +47,13 @@
                              th:errors="*{estado}"></div>
                         <div class="mb-3" style="margin-top: 15px">
                             <button class="btn btn-redtele" type="submit"> Guardar</button>
-                            <a class="btn btn-dark text-white" th:href="@{|/admin/personas|}" th:if="${persona.id==0}">Cancelar</a>
-                            <a class="btn btn-dark text-white" th:href="@{|/admin/personas/gestion/${persona.id}|}" th:unless="${persona.id==0}">Cancelar</a>
+                            <a class="btn btn-dark text-white" th:href="@{|/admin/personas|}">Cancelar</a>
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-2" th:unless="${persona.id==0}">
-                            <input hidden th:field="*{foto}">
                             <p class="form-label">Foto</p>
-                            <img th:src="@{|/image/persona/${persona.foto}|}" style="height: 307px; width: 600px">
+                            <img th:src="@{|/image/persona/${persona.id}|}" style="height: 307px; width: 600px">
                         </div>
 
                         <div class="mb-2" th:if="${persona.id==0}">
@@ -65,7 +63,7 @@
                                     $('.dropify').dropify();
                                 });
                             </script>
-                            <input type="file" class="dropify" data-height="293" name="foto" id="foto" data-max-file-size-preview="5M"/>
+                            <input type="file" class="dropify" data-height="293" name="archivo" id="archivo" data-max-file-size-preview="5M"/>
                             <div class="text-danger mt-3" th:text="${msg}"></div>
                         </div>
                     </div>
