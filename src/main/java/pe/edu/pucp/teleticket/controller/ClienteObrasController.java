@@ -12,19 +12,30 @@ import pe.edu.pucp.teleticket.dto.SedesCompra;
 import pe.edu.pucp.teleticket.entity.Funcion;
 import pe.edu.pucp.teleticket.entity.Historial;
 import pe.edu.pucp.teleticket.entity.Obra;
-import pe.edu.pucp.teleticket.repository.CalificacionObraRepository;
-import pe.edu.pucp.teleticket.repository.FotoObraRepository;
-import pe.edu.pucp.teleticket.repository.FuncionRepository;
-import pe.edu.pucp.teleticket.repository.ObraRepository;
+import pe.edu.pucp.teleticket.repository.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/obras")
 public class ClienteObrasController {
+    private final int obrasPaginas =6;
+    private final int funcionesPaginas = 5;
+    private final int maximoDestacados = 8;
+
+    private final List<String> formatos= Arrays.asList("media/png","media/jpeg", "image/jpeg", "image/png");
+
+    private boolean verificarFoto(MultipartFile file){
+        if(formatos.contains(file.getContentType().toLowerCase(Locale.ROOT))){
+            return true;
+        }
+        return false;
+    }
+
+    @Autowired
+    PersonaRepository personaRepository;
+
 
     @Autowired
     ObraRepository obraRepository;

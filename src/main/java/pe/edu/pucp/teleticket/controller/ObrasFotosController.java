@@ -14,14 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-@RequestMapping("/image/obra")
+
 @Controller
 public class ObrasFotosController {
 
     @Autowired
     FotoObraRepository fotoObraRepository;
 
-    @GetMapping("/{id}")
+    @GetMapping("/image/obra/{id}")
     public void mostrarImagen(@PathVariable("id") int id, HttpServletResponse response) throws ServletException, IOException {
         Optional<Fotosobra> optionalFotosobra = fotoObraRepository.findById(id);
         if(optionalFotosobra.isPresent()){
