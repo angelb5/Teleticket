@@ -43,12 +43,38 @@ public interface PersonaRepository extends JpaRepository<Persona,Integer> {
             "where p.nombre like %?1%" +
             "group by p.idpersonas")
     public List<PersonasListado> findPersonasListado(String busqueda, Pageable pageable);
+    @Query(nativeQuery = true,
+            value = "select count(*)\n" +
+                    "from personas p\n" +
+                    "where p.nombre like %?1%\n")
+    public long countPersonasListado(String busqueda);
 
     @Query(nativeQuery = true,
-    value = "select count(*)\n" +
-            "from personas p\n" +
-            "where p.nombre like %?1%\n")
-    public long countPersonasListado(String busqueda);
+            value = "select p.idpersonas as 'id', p.nombre as 'nombre', round(avg(if(c.rol='Actuacion',c.estrellas,null)),1) as 'pnactuacion',\n" +
+                    "                   round(avg(if(c.rol='Direccion',c.estrellas,null)),1) as 'pdireccion', p.estado, co.actuaciones as 'obrasactor', co.direcciones as 'obrasdirector' , p.foto as 'pfoto', o.titulo as 'ptitulo'\n" +
+                    "            from personas p\n" +
+                    "                     left join calificacionpersonas c on p.idpersonas = c.idpersonas\n" +
+                    "                     inner join personal per on p.idpersonas = per.idpersonas\n" +
+                    "                     inner join obras o on per.idobras = o.idobras\n" +
+                    "                     inner join (select p.idpersonas as 'id',count(a.idobra) as 'actuaciones', count(d.idobra) as 'direcciones' from personas p\n" +
+                    "                    left join directores d on p.idpersonas = d.idpersona\n" +
+                    "                    left join actores a on p.idpersonas = a.idpersona\n" +
+                    "\t\t\n" +
+                    "                                 group by p.idpersonas) co on p.idpersonas = co.id\n" +
+                    "            where p.nombre like %?1% \n" +
+                    "            group by p.idpersonas",
+            countQuery = "select count(*)\n" +
+                    "from personas p\n" +
+                    "where p.nombre like %?1%" +
+                    "group by p.idpersonas")
+    public List<PersonasListado> listadoPersonascliente(String busqueda, Pageable pageable);
+
+
+    @Query(nativeQuery = true,
+            value = "select count(*)\n" +
+                    "from personas p\n" +
+                    "where p.nombre like %?1%\n")
+    public long countPersonasListadoCliente(String busqueda);
 
     @Query(nativeQuery = true,
     value = "select (count(a.idobra)+count(d.idobra)) as 'participaciones' from personas p\n" +

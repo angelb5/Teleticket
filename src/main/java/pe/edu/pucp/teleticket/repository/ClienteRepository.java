@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
+public interface  ClienteRepository extends JpaRepository<Cliente, Integer> {
 
     @Query("select new Cliente(c.id, c.dni, c.nombre, c.apellido, c.correo, c.celular, c.nacimiento, c.direccion) from Cliente c where c.correo = ?1")
     public Cliente findByCorreo(String correo);
