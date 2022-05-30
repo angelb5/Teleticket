@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cambio de contraseña</title>
+    <title>Bienvenid@ a Teleticket</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Google Fonts -->
@@ -215,7 +215,7 @@
                         class="main-header">
                         <!-- section text ======-->
                         <div style="line-height: 35px">
-                            Has solicitado un cambio de contraseña
+                            Bienvenid@ a <span style="color: #DA251D;">Teleticket</span>
                         </div>
                     </td>
                 </tr>
@@ -240,11 +240,13 @@
                             <tr>
                                 <td align="left" style="color: #888888; font-size: 16px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 24px;">
                                     <!-- section text ======-->
-                                    <p style="line-height: 24px;margin-bottom:15px;">
-                                        Hemos recibido una solicitud de cambio de contraseña. Si tú no has solicitado este cambio ignora este mensaje.
+                                    <p style="line-height: 24px; margin-bottom:15px;" th:text="${cliente.nombre} + ','">
+                                    </p>
+                                    <p style="line-height: 24px;margin-bottom:15px;"
+                                       th:text="'Te has registrado con el correo ' + ${cliente.correo} ">
                                     </p>
                                     <p style="line-height: 24px; margin-bottom:20px;">
-                                        Para cambiar tu contraseña sigue el enlace a continuación.
+                                        Ingresa a Teleticket y comienza a disfrutar lo mejor del teatro.
                                     </p>
                                     <table border="0" align="center" width="180" cellpadding="0" cellspacing="0"style="margin-bottom:20px;">
                                         <tr>
@@ -254,8 +256,8 @@
                                             <td align="center" style="color: #ffffff; font-size: 14px; font-family: 'Poppins', Calibri; line-height: 22px">
                                                 <!-- main section button -->
                                                 <div style="line-height: 22px;">
-                                                    <a class="btn btn-redtele" data-th-attr="href='http://'+${dominio}+'/cambiocontrasena?token='+${token}">
-                                                        Cambiar contraseña
+                                                    <a class="btn btn-redtele" data-th-attr="href='http://'+${dominio}+'/'">
+                                                        Establecer contraseña
                                                     </a>
                                                 </div>
                                             </td>

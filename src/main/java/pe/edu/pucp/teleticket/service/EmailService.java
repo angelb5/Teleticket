@@ -38,7 +38,7 @@ public class EmailService {
         context.setVariable("cliente", cliente);
         context.setVariable("logo", LOGO_IMAGE);
 
-        String process = templateEngine.process("mail/welcome-placeholder", context);
+        String process = templateEngine.process("mail/bienvenida-cliente", context);
         javax.mail.internet.MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
         helper.setSubject("Bienvenid@ a Teleticket, " + cliente.getNombre());
