@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Personas')"></head>
+<body>
+<nav th:replace="fragmentos/navbar.html :: navbar('personas')"></nav>
+<!--Contenidos-->
+<div class="container py-3 ">
+
+    <div class="title-24">
+        Actores y Directores
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 py-3">
+        <div class="col" th:each="personas : ${listaActores}">
+            <!--Card 1-->
+
+                <div class="card h-210 position-relative">
+                    <div class="row h-100">
+                        <div class="col-md-5 h-100 pe-0">
+                                <img th:src="@{'/image/persona/'+${personas.id}}"
+                                     alt="Persona" class="img-fluid rounded-start img-cover"/>
+                        </div>
+
+                        <div class="col-md-7 py-3 px-4">
+                            <div class="card-tele-title " th:text="${personas.nombre}">
+                            </div>
+
+                            <div style="height: 100px">
+                                <div class="mb-2" th:if="${personas.pactuacion.isPresent()}">
+                                <span th:if="${personas.pactuacion.isPresent()}" th:text="'Actuación: '+${personas.pactuacion.get()}+'/5'">
+                                </span>
+                                    <i class="ms-1 fa-solid fa-star "></i>
+                                </div>
+                                <div class="mb-2" th:if="${personas.pdireccion.isPresent()}" >
+                                <span th:if="${personas.pdireccion.isPresent()}" th:text="'Dirección: '+${personas.pdireccion.get()}+'/5'">
+                                </span>
+                                    <i class="ms-1 fa-solid fa-star "></i>
+                                </div>
+
+                                <div class="card-tele-subtitle" th:if="${personas.ptitulo!=null}">
+                                    Actúa en <i class=" fw-bold " th:text="${personas.ptitulo}"></i>
+                                </div>
+                            </div>
+
+                            <div class="text-end justify-content-end d-flex align-items-end">
+                                <button class="btn btn-redtele">Ver más</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+    </div>
+    <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
+</div>
+<!--Fin de contenidos-->
+
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+</body>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+</html>

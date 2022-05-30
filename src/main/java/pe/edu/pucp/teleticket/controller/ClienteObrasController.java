@@ -24,18 +24,8 @@ public class ClienteObrasController {
     private final int funcionesPaginas = 5;
     private final int maximoDestacados = 8;
 
-    private final List<String> formatos= Arrays.asList("media/png","media/jpeg", "image/jpeg", "image/png");
-
-    private boolean verificarFoto(MultipartFile file){
-        if(formatos.contains(file.getContentType().toLowerCase(Locale.ROOT))){
-            return true;
-        }
-        return false;
-    }
-
     @Autowired
     PersonaRepository personaRepository;
-
 
     @Autowired
     ObraRepository obraRepository;

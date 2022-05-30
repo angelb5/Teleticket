@@ -18,8 +18,6 @@ public interface PersonasListado {
 
     Integer getObrasactor();
 
-    String getPfoto();
-
     String getPtitulo();
 
 }

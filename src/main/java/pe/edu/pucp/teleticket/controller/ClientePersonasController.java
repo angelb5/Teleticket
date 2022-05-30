@@ -19,20 +19,11 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/actores")
+@RequestMapping("/personas")
 public class ClientePersonasController {
     private final int personasPaginas =6;
     private final int funcionesPaginas = 5;
     private final int maximoDestacados = 8;
-
-    private final List<String> formatos= Arrays.asList("media/png","media/jpeg", "image/jpeg", "image/png");
-
-    private boolean verificarFoto(MultipartFile file){
-        if(formatos.contains(file.getContentType().toLowerCase(Locale.ROOT))){
-            return true;
-        }
-        return false;
-    }
 
     @Autowired
     PersonaRepository personaRepository;
@@ -41,7 +32,7 @@ public class ClientePersonasController {
     @GetMapping({"/","","/lista"})
     public String listarPersonas(Model model, @RequestParam("pag") Optional<String> pag, @RequestParam("busqueda") Optional<String> optionalBusqueda){
         String busqueda = optionalBusqueda.isPresent()? optionalBusqueda.get().trim() : "";
-        String ruta =  busqueda.isBlank()? "/actores?" : "/actores?busqueda=" +busqueda +"&";
+        String ruta =  busqueda.isBlank()? "/personas?" : "/personas?busqueda=" +busqueda +"&";
 
         int pagina=0;
         try{
@@ -68,7 +59,7 @@ public class ClientePersonasController {
         model.addAttribute("paginas", paginas);
         model.addAttribute("ruta", ruta);
 
-        return "cliente/actores/lista";
+        return "cliente/personas/lista";
     }
 
 
