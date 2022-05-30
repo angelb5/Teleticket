@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import pe.edu.pucp.teleticket.dto.ObrasListado;
 import pe.edu.pucp.teleticket.entity.Obra;
 import pe.edu.pucp.teleticket.dto.SedeFiltro;
 
@@ -34,19 +35,17 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
             "inner join funciones f on s2.idsalas = f.idsalas where f.idobras=?1 group by s.idsedes;")
     public List<SedeFiltro> listarSedesSegunObra(Integer idObra);
 
-    @Query(nativeQuery = true, value = "select o.idobras 'id', o.titulo as 'otitulos' , min(f.costo) as 'minprecio'\n" +
-            "from obras o\n" +
-            "\t\tleft join funciones f on o.idobras = f.idobras \n" +
-            "\t\twhere o.idobras = 1\n" +
-            "        group by o.idobras\n" +
-            "    ",
-            countQuery = "select o.idobras 'id', o.titulo as 'otitulos' , min(f.costo) as 'minprecio'\n" +
+    @Query(nativeQuery = true,
+            value = "select o.idobras 'id', o.titulo as 'otitulos' , min(f.costo) as 'minprecio'\n" +
                     "from obras o\n" +
                     "\t\tleft join funciones f on o.idobras = f.idobras \n" +
-                    "\t\twhere o.idobras = 1\n" +
-                    "        group by o.idobras\n" +
-                    "    ")
-    public List<Obra> listarObrasBusquedacliente(Integer idObra, Pageable pageable);
+                    "\t\twhere o.titulo = %?1%\n" +
+                    "        group by o.idobras",
+            countQuery = "select count(*)\n" +
+                    "                    from obras o\n" +
+                    "                    where o.titulo  like %?1%\n" +
+                    "                    group by o.idobras")
+    public List<ObrasListado> listadoObrasliente(String busqueda, Pageable pageable);
 
 
 
