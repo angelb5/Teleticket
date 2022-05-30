@@ -7,11 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.pucp.teleticket.dto.FuncionesCompra;
+import pe.edu.pucp.teleticket.dto.ObrasListado;
 import pe.edu.pucp.teleticket.dto.SedeFiltro;
 import pe.edu.pucp.teleticket.dto.SedesCompra;
 import pe.edu.pucp.teleticket.entity.Funcion;
 import pe.edu.pucp.teleticket.entity.Historial;
 import pe.edu.pucp.teleticket.entity.Obra;
+import pe.edu.pucp.teleticket.entity.Sede;
 import pe.edu.pucp.teleticket.repository.*;
 
 import java.time.LocalDate;
@@ -20,12 +22,22 @@ import java.util.*;
 @Controller
 @RequestMapping("/obras")
 public class ClienteObrasController {
-    private final int obrasPaginas =6;
+    private final int obrasPaginas =8;
     private final int funcionesPaginas = 5;
     private final int maximoDestacados = 8;
 
+    private final List<String> formatos= Arrays.asList("media/png","media/jpeg", "image/jpeg", "image/png");
+
+    /*private boolean verificarFoto(MultipartFile file){
+        if(formatos.contains(file.getContentType().toLowerCase(Locale.ROOT))){
+            return true;
+        }
+        return false;
+    }*/
+
     @Autowired
     PersonaRepository personaRepository;
+
 
     @Autowired
     ObraRepository obraRepository;
@@ -38,6 +50,36 @@ public class ClienteObrasController {
 
     @Autowired
     CalificacionObraRepository calificacionObraRepository;
+
+    @GetMapping({"/", "", "/lista"})
+    public String listarObras(Model model, @RequestParam("pag") Optional<String> pag,
+                              @RequestParam("busqueda") Optional<String> optionalBusqueda) {
+        String busqueda = optionalBusqueda.isPresent()? optionalBusqueda.get().trim() : "";
+        String ruta = busqueda.isBlank()? "/obras?" : "/obras?busqueda=" +busqueda +"&";
+
+        int pagina=0;
+        try{
+            pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
+        } catch (Exception e){
+            return "redirect:/obras";
+        }
+        pagina = pagina < 1 ? 1 : pagina;
+        int paginas = (int) Math.ceil((float) obraRepository.contarListaObrasBusqueda(busqueda) / obrasPaginas);
+        pagina = pagina > paginas ? paginas : pagina;
+        Pageable lista;
+        if (pagina == 0) {
+            lista = PageRequest.of(0, obrasPaginas);
+        } else {
+            lista = PageRequest.of(pagina - 1, obrasPaginas);
+
+        }
+        List<ObrasListado> listaObras = obraRepository.listadoObrasliente(busqueda, lista);
+        model.addAttribute("listaObras", listaObras);
+        model.addAttribute("pag", pagina);
+        model.addAttribute("paginas", paginas);
+        model.addAttribute("ruta", ruta);
+        return "/cliente/obras/lista";
+    }
 
     @GetMapping("/{idPath}")
     public String gestionSede(Model model, @PathVariable("idPath") String idPath, @RequestParam("fecha") Optional<String> optfecha){
@@ -79,5 +121,8 @@ public class ClienteObrasController {
 
         return "/cliente/obras/obra";
     }
+
+
+
 
 }

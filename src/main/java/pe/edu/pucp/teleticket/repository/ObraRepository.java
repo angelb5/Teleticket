@@ -39,7 +39,7 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
             value = "select o.idobras 'id', o.titulo as 'otitulos' , min(f.costo) as 'minprecio'\n" +
                     "from obras o\n" +
                     "\t\tleft join funciones f on o.idobras = f.idobras \n" +
-                    "\t\twhere o.titulo = %?1%\n" +
+                    "\t\twhere o.titulo like %?1%\n" +
                     "        group by o.idobras",
             countQuery = "select count(*)\n" +
                     "                    from obras o\n" +
