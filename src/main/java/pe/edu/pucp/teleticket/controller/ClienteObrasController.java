@@ -6,11 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pe.edu.pucp.teleticket.dto.FuncionesCompra;
-import pe.edu.pucp.teleticket.dto.SedeFiltro;
-import pe.edu.pucp.teleticket.dto.SedesCompra;
-import pe.edu.pucp.teleticket.entity.Funcion;
-import pe.edu.pucp.teleticket.entity.Historial;
 import pe.edu.pucp.teleticket.entity.Obra;
 import pe.edu.pucp.teleticket.repository.CalificacionObraRepository;
 import pe.edu.pucp.teleticket.repository.FotoObraRepository;
@@ -39,8 +34,8 @@ public class ClienteObrasController {
     CalificacionObraRepository calificacionObraRepository;
 
     @GetMapping("/{idPath}")
-    public String gestionSede(Model model, @PathVariable("idPath") String idPath, @RequestParam("fecha") Optional<String> optfecha){
-        int id=0;
+    public String gestionSede(Model model, @PathVariable("idPath") String idPath, @RequestParam("fecha") Optional<String> optfecha) {
+       /* int id=0;
         LocalDate fecha;
         try{
             id= Integer.parseInt(idPath);
@@ -79,6 +74,9 @@ public class ClienteObrasController {
         model.addAttribute("estrellas", calificacionObraRepository.calificaciones);
 
         return "/cliente/obras/obra";
+    }
+*/
+        return"/cliente/obras/obra";
     }
 
 }

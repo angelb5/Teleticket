@@ -17,6 +17,7 @@
                             Sede
                         </div>
                     </div>
+                    </div>
                     <form method="post" th:action="@{'/admin/sedes/'+${sede.id==0? 'guardar': 'actualizar'}}" th:object="${sede}" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col">
@@ -105,7 +106,7 @@
         </div>
         <footer th:replace="fragmentos/footer.html :: footer"></footer>
         <!-- Modal confilctos -->
-        <div th:if="${funcionesVigentes != null}" class="modal top fade" id="modalConflictos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+        <div th:if="${funcionesVigentes != null}" class="modal top fade" id="modalConflictos" tab1="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
             <div class="modal-dialog  ">
                 <div class="modal-content">
                     <div class="modal-header">

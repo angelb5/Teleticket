@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Personas')"></head>
+    <body>
+        <nav th:replace="fragmentos/navbar.html :: navbar('personas')"></nav>
+        <!--Contenidos-->
+        <div class="container py-3 ">
+
+            <div class="title-24">
+                Actores y Directores
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-3 g-4 py-3">
+                <div class="col" th:each="personas : ${listaActores}">
+                    <!--Card 1-->
+
+                        <div class="card h-190 position-relative">
+                            <div class="row h-100">
+                                <div class="col-md-5 h-100 pe-0">
+
+                                        <img th:src="@{'/image/persona/'+${personas.id==null? 0 : personas.id}}"
+                                             alt="Persona" class="img-fluid rounded-start img-cover"/>
+                                </div>
+
+                                <div class="col-md-7 p-4 pe-4">
+                                    <a class="text-dark">
+                                    <div class="card-tele-title " th:text="${personas.nombre}">Leonardo Dicaprio</div>
+                                    <div class="mb-2">
+                                        Puntuación(Actor):
+                                        4.9 / 5 <i class="ms-1 fa-solid fa-star "></i>
+                                    </div>
+                                    <!-- <div class="mb-2">
+                                        Puntuación(Director):
+                                         <i class="ms-1 fa-solid fa-star " th:text="${personas.pdireccion}"></i>
+                                    </div> -->
+
+                                    <div class="card-tele-subtitle mb-2">
+                                        Actúa en <i class=" fw-bold " th:text="${personas.ptitulo}"></i>
+                                    </div>
+                                    </a>
+                                    <div class="text-end">
+                                        <button class="btn btn-redtele">Ver más</button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                </div>
+
+            </div>
+            <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
+        </div>
+        <!--Fin de contenidos-->
+
+        <footer th:replace="fragmentos/footer.html :: footer"></footer>
+        <!-- End your project here-->
+
+
+        <!-- Custom scripts -->
+        <script type="text/javascript">
+
+        </script>
+    </body>
+    <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+</html>

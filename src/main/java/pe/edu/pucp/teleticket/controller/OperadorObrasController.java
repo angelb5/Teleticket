@@ -224,6 +224,23 @@ public class OperadorObrasController {
             return "/operador/obras/form";
         }
 
+        List<Persona> personas = new ArrayList<Persona>();
+        personas.addAll(obra.getActores());
+        personas.addAll(obra.getDirectores());
+        List<Integer> ids = new ArrayList<Integer>();
+        for(Persona i : personas){
+            ids.add(i.getId());
+        }
+        List<Persona> revision = personaRepository.findAllById(ids);
+
+        for(Persona i : revision){
+            if(i.getEstado().equals("No disponible")){
+                return "redirect:/operador/obras/nueva";
+            }
+        }
+
+
+
         Fotosobra fotoObra = new Fotosobra();
         Obra obraCreada =obraRepository.save(obra);
         try {
@@ -254,6 +271,23 @@ public class OperadorObrasController {
             model.addAttribute("generoList", generoList);
             return "/operador/obras/form";
         }
+
+        List<Persona> personas = new ArrayList<Persona>();
+        personas.addAll(obra.getActores());
+        personas.addAll(obra.getDirectores());
+        List<Integer> ids = new ArrayList<Integer>();
+        for(Persona i : personas){
+            ids.add(i.getId());
+        }
+        List<Persona> revision = personaRepository.findAllById(ids);
+
+        for(Persona i : revision){
+            if(i.getEstado().equals("No disponible")){
+                return "redirect:/operador/obras/gestion/"+obra.getId()+"/editar";
+            }
+        }
+
+
         obraRepository.save(obra);
         return "redirect:/operador/obras/gestion/"+obra.getId();
     }

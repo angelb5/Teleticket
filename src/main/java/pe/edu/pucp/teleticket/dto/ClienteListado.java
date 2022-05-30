@@ -10,4 +10,6 @@ public interface ClienteListado {
     String getCorreo();
 
     String getCelular();
+
+
 }
