@@ -149,7 +149,6 @@ public class OperadorFuncionesController {
 
         boolean horaHasErrors = false;
         boolean fechaHasErrors = false;
-        boolean salaHasErrors = false;
 
         if(!bindingResult.hasFieldErrors("inicio")){
             LocalTime minTime = LocalTime.parse( "11:00:00" );
@@ -171,28 +170,9 @@ public class OperadorFuncionesController {
             }
         }
 
-        if(!bindingResult.hasFieldErrors("sala")){
-            Optional<Sala> optionalSala = salaRepository.findById(funcion.getSala().getId());
-            if(optionalSala.map(sala -> sala.getEstado().equals("No disponible")).orElse(true)){
-                FieldError fSalaError = new FieldError("sala", "sala", "Debe eligir una sala válida");
-                bindingResult.addError(fSalaError);
-                salaHasErrors = true;
-            }else{
-                if(funcion.getStock() > optionalSala.get().getAforo()){
-                    FieldError fAforoError = new FieldError("stock", "stock", "El aforo de la función no puede ser mayor que el aforo de la sala");
-                    bindingResult.addError(fAforoError);
-                    salaHasErrors = true;
-                }else if(funcion.getStock() < funcionDB.getStock()){
-                    FieldError fAforoError = new FieldError("stock", "stock", "El aforo de la función no puede ser reducido");
-                    bindingResult.addError(fAforoError);
-                    salaHasErrors = true;
-                }
-            }
-        }
-
         if(bindingResult.hasFieldErrors("fecha") || bindingResult.hasFieldErrors("maxreservas") ||
                 bindingResult.hasFieldErrors("inicio") || bindingResult.hasFieldErrors("costo")
-                || horaHasErrors || fechaHasErrors || salaHasErrors ){
+                || horaHasErrors || fechaHasErrors){
             model.addAttribute("funcion", funcion);
             return "operador/funciones/editaFrm";
         }else{
