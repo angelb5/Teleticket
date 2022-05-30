@@ -201,10 +201,10 @@ public class AdminPersonasController {
             personaRepository.save(persona);
         } catch (IOException e) {
             e.printStackTrace();
-            redirectAttributes.addAttribute("msg", "Ocurrió un error al guardar la persona");
+            redirectAttributes.addAttribute("msg", "Ocurrió un error al guardar la imagen");
             return "redirect:/admin/personas/editar?id="+id;
         }
-        redirectAttributes.addFlashAttribute("msg","Se creo la persona exitosamente");
+        redirectAttributes.addFlashAttribute("msg","Se cambio la imagen exitosamente");
         return "redirect:/admin/personas/editar?id="+id;
     }
 
