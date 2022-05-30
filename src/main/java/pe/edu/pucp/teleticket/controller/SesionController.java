@@ -68,6 +68,7 @@ public class SesionController {
 
     private final int MINUTOS_CLIENTE = 5;
     private final int MINUTOS_OPERADOR = 10;
+    private final LocalDate NACIMIENTO_MIN = LocalDate.parse("1903-01-01");
 
     @GetMapping("/login")
     public String loginForm(){
@@ -250,14 +251,13 @@ public class SesionController {
         }
 
         if(!bindingResult.hasFieldErrors("nacimiento")){
-            LocalDate minDate = LocalDate.now().minusYears(120);
             LocalDate maxDate = LocalDate.now().minusYears(13);
             if(cliente.getNacimiento().isAfter(maxDate)){
                 FieldError nacimientoerror = new FieldError("nacimiento", "nacimiento", "Debes tener por lo menos 13 años para registrarte");
                 bindingResult.addError(nacimientoerror);
                 nacimientoHasErrors=true;
-            } else if(cliente.getNacimiento().isBefore(minDate)){
-                FieldError nacimientoerror = new FieldError("nacimiento", "nacimiento", "La fecha debe ser mayor que " +minDate);
+            } else if(cliente.getNacimiento().isBefore(NACIMIENTO_MIN)){
+                FieldError nacimientoerror = new FieldError("nacimiento", "nacimiento", "La fecha debe ser mayor que " +NACIMIENTO_MIN);
                 bindingResult.addError(nacimientoerror);
                 nacimientoHasErrors=true;
             }
