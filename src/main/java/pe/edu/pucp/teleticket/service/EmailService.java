@@ -50,21 +50,19 @@ public class EmailService {
         javaMailSender.send(mimeMessage);
     }
 
-    public void correoOpRegistrado(String correo, String token) throws MessagingException {
+    public void correoOpRegistrado(Operador operador) throws MessagingException {
         Context context = new Context();
         context.setVariable("dominio", DOMINIO);
-        // se que el operador es nuevo, so no sabia si iba este, igual lo coloco
-        context.setVariable("token", token); // password generada
+        context.setVariable("operador", operador);
         context.setVariable("logo", LOGO_IMAGE);
 
         String process = templateEngine.process("mail/operador-registrado", context);
         javax.mail.internet.MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
-        helper.setSubject("Bienvenid@ a Teleticket, " + correo);
+        helper.setSubject("Bienvenid@ a Teleticket, " + operador.getCorreo());
         helper.setText(process, true);
         helper.setFrom(FROM);
-        helper.setTo(correo); // correo del operador
-        helper.setTo(token); // contraseña generada (?)
+        helper.setTo(operador.getCorreo());
         ClassPathResource clr = new ClassPathResource(LOGO_IMAGE);
         helper.addInline("logo", clr, PNG_MIME);
         javaMailSender.send(mimeMessage);

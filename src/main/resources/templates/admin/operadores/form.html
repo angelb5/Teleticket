@@ -1,104 +1,63 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Administrar Sala')"></head>
-    <head>
-        <script th:src="@{/selectize/js/standalone/selectize.js}"></script>
-        <link th:href="@{/selectize/css/selectize.bootstrap5.css}" rel="stylesheet">
-        <!--Dropify-->
-        <link rel="stylesheet" th:href="@{/dropify/css/dropify.css}"/>
-    </head>
-    <body class="bg-lightgrey">
-        <nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
-        <div class="container py-3" style="width: 450px">
-            <div class="card" >
-                <div class="card-body">
-                    <div class="row">
-                        <div class="card-title text-redtele fs-22">
-                            Nuevo Operador
-                        </div>
-                    </div>
-                    <form method="post" th:action="@{'/admin/operadores/guardar'}"  th:object="${operador}">
-                        <input  hidden type="text" class="form-control"  th:field="*{id}"/>
-                        <div class="row">
-                            <div class="col-10">
-                                <div class="mb-3">
-                                    <label class="form-label">Nombre</label>
-                                    <input  type="text" class="form-control" th:field="*{nombre}" th:classappend="${#fields.hasErrors('nombre')?'is-invalid':''}"/>
-                                    <div class="text-danger mt-3" th:if="${#fields.hasErrors('nombre')}"
-                                         th:errors="*{nombre}"></div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Correo</label>
-                                    <input  type="email" class="form-control" th:field="*{correo}" th:classappend="${#fields.hasErrors('correo')?'is-invalid':''}">
-                                    <div class="text-danger mt-3" th:if="${#fields.hasErrors('correo')}"
-                                         th:errors="*{correo}"></div>
-                                </div>
-
-                                <div class="mb-3" style="margin-top: 30px">
-                                    <button class="btn btn-redtele" type="submit">Crear</button>
-                                    <a class="btn btn-dark text-white" th:href="@{|/admin/operadores|}">Cancelar</a>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </form>
-
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Administrar Sala')"></head>
+<head>
+    <script th:src="@{/selectize/js/standalone/selectize.js}"></script>
+    <link th:href="@{/selectize/css/selectize.bootstrap5.css}" rel="stylesheet">
+    <!--Dropify-->
+    <link rel="stylesheet" th:href="@{/dropify/css/dropify.css}"/>
+</head>
+<body class="bg-lightgrey">
+<nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
+<div class="container py-3" style="width: 450px">
+    <div class="card" >
+        <div class="card-body">
+            <div class="row">
+                <div class="card-title text-redtele fs-22">
+                    Nuevo Operador
                 </div>
             </div>
-        </div>
-        <footer th:replace="fragmentos/footer.html :: footer"></footer>
-
-        <!-- Modal confilctos -->
-        <div th:if="${funcionesVigentes != null}" class="modal top fade" id="modalConflictos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
-            <div class="modal-dialog  ">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel" >La sala no puede cambiar su estado </h5>
-                        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
+            <form method="post" th:action="@{'/admin/operadores/guardar'}"  th:object="${operador}">
+                <input  hidden type="text" class="form-control"  th:field="*{id}"/>
+                <div class="row">
+                    <div class="col-10">
                         <div class="mb-3">
-                            La sala tiene asociadas las siguientes funciones vigentes
+                            <label class="form-label">Nombre</label>
+                            <input  type="text" class="form-control" th:field="*{nombre}" th:classappend="${#fields.hasErrors('nombre')?'is-invalid':''}"/>
+                            <div class="text-danger mt-3" th:if="${#fields.hasErrors('nombre')}"
+                                 th:errors="*{nombre}"></div>
                         </div>
-                        <div class="mb-3" th:each="funcion : ${funcionesVigentes}">
-                            <div>
-                                <span>Obra:&nbsp</span>
-                                <span class="fw-bold" th:text="${funcion.obra.titulo}"></span>
-                            </div>
-                            <div>
-                                <span>Fecha:&nbsp</span>
-                                <span class="fw-bold" th:text="${funcion.fecha}"></span>
-                            </div>
-                            <div>
-                                <span>Inicio:&nbsp</span>
-                                <span class="fw-bold" th:text="${funcion.inicio}"></span>
-                            </div>
-                            <div>
-                                <span>Fin:&nbsp</span>
-                                <span class="fw-bold" th:text="${funcion.fin}"></span>
-                            </div>
-                            <div>
-                                <span>Sala:&nbsp</span>
-                                <span class="fw-bold" th:text="| ${funcion.sala.numero} - ${funcion.sala.sede.nombre}|"></span>
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label">Correo</label>
+                            <input  type="text" class="form-control" th:field="*{correo}" th:classappend="${#fields.hasErrors('correo')?'is-invalid':''}">
+                            <div class="text-danger mt-3" th:if="${#fields.hasErrors('correo')}"
+                                 th:errors="*{correo}"></div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
-                            Cerrar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-    </body>
-    <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
-    <script type="text/javascript"  th:src="@{/dropify/js/dropify.js}"></script>
-    <script type="text/javascript" th:if="${funcionesVigentes != null}">
-        $(window).on('load', function() {
-            $('#modalConflictos').modal('show');
+                        <div class="mb-3" style="margin-top: 30px">
+                            <button class="btn btn-redtele" type="submit">Crear</button>
+                            <a class="btn btn-dark text-white" th:href="@{|/admin/operadores|}">Cancelar</a>
+                        </div>
+
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+
+</body>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script type="text/javascript"  th:src="@{/dropify/js/dropify.js}"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('button[type="submit"]').click(function() {
+            $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ' +
+                '  Cargando...')
         });
-    </script>
+    });
+</script>
 </html>

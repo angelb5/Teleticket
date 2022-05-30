@@ -234,7 +234,7 @@ public class SesionController {
         }
 
         if(!bindingResult.hasFieldErrors("correo")){
-            if(clienteRepository.findByCorreo(cliente.getCorreo())!=null){
+            if(clienteRepository.findByCorreo(cliente.getCorreo())!=null || operadorRepository.findByCorreo(cliente.getCorreo())!=null || adminRepository.findByCorreo(cliente.getCorreo())!=null){
                 FieldError correoError = new FieldError("correo", "correo", "Ya existe un usuario con este correo");
                 bindingResult.addError(correoError);
                 correoHasErrors = true;

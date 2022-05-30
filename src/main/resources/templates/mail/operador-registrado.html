@@ -13,14 +13,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
     <!-- use the font -->
-    <style>
+    <style type="text/css">
 
         a{
             text-decoration: none;
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-            font-size: 48px;
         }
         .text-center{
             text-align: center;
@@ -59,35 +55,274 @@
             background-color: #DA251D
         }
 
-         table {
-             table-layout: fixed;
-             width: 100%;
-         }
+        body {
+            width: 100%;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            mso-margin-top-alt: 0px;
+            mso-margin-bottom-alt: 0px;
+            mso-padding-alt: 0px 0px 0px 0px;
+        }
+
+        p,
+        h1,
+        h2,
+        h3,
+        h4 {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        span.preheader {
+            display: none;
+            font-size: 1px;
+        }
+
+        html {
+            width: 100%;
+        }
+
+        table {
+            font-size: 14px;
+            border: 0;
+        }
+        /* ----------- responsivity ----------- */
+
+        @media only screen and (max-width: 640px) {
+            /*------ top header ------ */
+            .main-header {
+                font-size: 20px !important;
+            }
+            .main-section-header {
+                font-size: 28px !important;
+            }
+            .show {
+                display: block !important;
+            }
+            .hide {
+                display: none !important;
+            }
+            .align-center {
+                text-align: center !important;
+            }
+            .no-bg {
+                background: none !important;
+            }
+            /*----- main image -------*/
+            .main-image img {
+                width: 440px !important;
+                height: auto !important;
+            }
+            /* ====== divider ====== */
+            .divider img {
+                width: 440px !important;
+            }
+            /*-------- container --------*/
+            .container590 {
+                width: 440px !important;
+            }
+            .container580 {
+                width: 400px !important;
+            }
+            .main-button {
+                width: 220px !important;
+            }
+            /*-------- secions ----------*/
+            .section-img img {
+                width: 320px !important;
+                height: auto !important;
+            }
+            .team-img img {
+                width: 100% !important;
+                height: auto !important;
+            }
+        }
+
+        @media only screen and (max-width: 479px) {
+            /*------ top header ------ */
+            .main-header {
+                font-size: 18px !important;
+            }
+            .main-section-header {
+                font-size: 26px !important;
+            }
+            /* ====== divider ====== */
+            .divider img {
+                width: 280px !important;
+            }
+            /*-------- container --------*/
+            .container590 {
+                width: 280px !important;
+            }
+            .container590 {
+                width: 280px !important;
+            }
+            .container580 {
+                width: 260px !important;
+            }
+            /*-------- secions ----------*/
+            .section-img img {
+                width: 280px !important;
+                height: auto !important;
+            }
+        }
 
     </style>
 </head>
 <body>
-
-<table class="text-center">
-    <tbody>
+<!-- header -->
+<table border="0" width="650" align="center"  cellpadding="0" cellspacing="0" bgcolor="ffffff">
     <tr>
-        <td></td>
-        <td>
-            <div class="text-center" style="background: black">
-                <img src="../../static/img/logo-teleticket.png" data-th-src="|cid:logo|" height="70" />
-            </div>
-            <div><h6>Bienvenid@ a Teleticket,&nbsp; Operador <b th:text="${operador.nombre}"></b></h6></div>
-            <div><h6>Se le ha registrado con el correo&nbsp; <b th:text="${operador.correo}"></b></h6></div>
-            <div><h6>Su contraseña generada es: <b th:text="${operador.contrasena}"></b></h6></div>
-            <div><h6>Por favor guarde esta contraseña en un lugar seguro.</h6></div>
-            <a class="btn btn-redtele" data-th-attr="href='http://'+${dominio}+'/'">
-                <h3>Ir al sitio</h3>
-            </a>
+        <td align="center">
+            <table border="0" align="center" width="100%" cellpadding="0" cellspacing="0" >
+                <tr>
+                    <td height="25" style="font-size: 25px; line-height: 25px;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <table border="0" align="center" width="100%" cellpadding="0" bgcolor="000000" cellspacing="0">
+                            <tr>
+                                <td align="center" height="70" style="height:70px">
+                                    <a data-th-attr="href='http://'+${dominio}+'/'" style="display: block; border-style: none !important; border: 0 !important;">
+                                        <img height="50" border="0" style="display: block; height: 50px;"
+                                             src="../../static/img/logo-teleticket.png" data-th-src="|cid:logo|" alt="Teleticket logo" />
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="25" style="font-size: 25px; line-height: 25px;">&nbsp;</td>
+                </tr>
+            </table>
         </td>
-        <td></td>
     </tr>
-    </tbody>
 </table>
+<!-- end header -->
+
+<table border="0" width="650" align="center" cellpadding="0" cellspacing="0" bgcolor="ffffff">
+    <tr>
+        <td align="center">
+            <table border="0" align="center" width="590" cellpadding="0" cellspacing="0" class="container590">
+
+                <tr>
+                    <td align="center" style="color: #343434; font-size: 24px; font-family: Quicksand, Calibri, sans-serif; font-weight:700;letter-spacing: 3px; line-height: 35px;"
+                        class="main-header">
+                        <!-- section text ======-->
+                        <div style="line-height: 35px">
+                            Bienvenido a <span style="color: #DA251D;">Teleticket</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="10" style="font-size: 10px; line-height: 10px;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <table border="0" width="40" align="center" cellpadding="0" cellspacing="0" bgcolor="eeeeee">
+                            <tr>
+                                <td height="2" style="font-size: 2px; line-height: 2px;">&nbsp;</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="20" style="font-size: 20px; line-height: 20px;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <table border="0" width="590" align="center" cellpadding="0" cellspacing="0" class="container590">
+                            <tr>
+                                <td align="left" style="color: #888888; font-size: 16px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 24px;">
+                                    <!-- section text ======-->
+                                    <p style="line-height: 24px; margin-bottom:15px;" th:text="${operador.nombre} + ','">
+                                    </p>
+                                    <p style="line-height: 24px;margin-bottom:15px;">
+                                        Un administrador te ha agregado como operador a Teleticket.
+                                    </p>
+                                    <p style="line-height: 24px; margin-bottom:20px;">
+                                        Para establecer tu contraseña sigue el enlace a continuación.
+                                    </p>
+                                    <table border="0" align="center" width="180" cellpadding="0" cellspacing="0"style="margin-bottom:20px;">
+                                        <tr>
+                                            <td height="10" style="font-size: 10px; line-height: 10px;">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" style="color: #ffffff; font-size: 14px; font-family: 'Poppins', Calibri; line-height: 22px">
+                                                <!-- main section button -->
+                                                <div style="line-height: 22px;">
+                                                    <a class="btn btn-redtele" data-th-attr="href='http://'+${dominio}+'/cambiocontrasena?token='+${operador.token}">
+                                                        Establecer contraseña
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td height="10" style="font-size: 10px; line-height: 10px;">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    <p style="line-height: 24px">
+                                        Atentamente,</br>
+                                        El equipo de Teleticket
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td height="40" style="font-size: 40px; line-height: 40px;">&nbsp;</td>
+    </tr>
+</table>
+<!-- end section -->
+
+<!-- footer ====== -->
+<table border="0" width="650" align="center" cellpadding="0" cellspacing="0" bgcolor="f4f4f4">
+    <tr>
+        <td height="25" style="font-size: 25px; line-height: 25px;">&nbsp;</td>
+    </tr>
+    <tr>
+        <td align="center">
+            <table border="0" align="center" width="590" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td>
+                        <table border="0" align="left" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+                            <tr>
+                                <td align="left" style="color: #aaaaaa; font-size: 14px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 24px;">
+                                    <div style="line-height: 24px;">
+                                        <span style="color: #333333;">Teleticket</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table border="0" align="left" width="5" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"
+                               class="container590">
+                            <tr>
+                                <td height="20" width="5" style="font-size: 20px; line-height: 20px;">&nbsp;</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td height="25" style="font-size: 25px; line-height: 25px;">&nbsp;</td>
+    </tr>
+
+</table>
+<!-- end footer ====== -->
 
 </body>
 </html>

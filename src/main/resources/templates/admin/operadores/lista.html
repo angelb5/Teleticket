@@ -1,85 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head th:insert="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')">
-        <link rel="stylesheet" th:href="@{'/css/tables.css'}"/>
-    </head>
-    <body>
-        <nav th:replace="fragmentos/navbar.html :: navbar('operadores')"></nav>
+<head th:insert="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')">
+    <link rel="stylesheet" th:href="@{'/css/tables.css'}"/>
+</head>
+<body>
+<nav th:replace="fragmentos/navbar.html :: navbar('operadores')"></nav>
 
-        <!--Contenidos-->
-        <div class="container py-4" >
-            <div class="row mb-3" style="margin-right: 170px">
-                <div class="text-start col-lg-9">
-                    <div class="title-26 py-6">Gestión de Operadores</div>
+<!--Contenidos-->
+<div class="container py-4" >
+    <div class="row mb-3">
+        <div class="text-start col-lg-9">
+            <div class="title-26 py-6">Gestión de Operadores</div>
+        </div>
+        <div class="d-flex align-items-center justify-content-end col-lg-3">
+            <a class="btn btn-redtele btn-sm h-100 rounded-7" type="button"
+               th:href="@{|/admin/operadores/nuevo|}" style="width: 140px">
+                <div class="row h-100">
+                    <div class="col-3 h-100 d-flex align-items-center"><i
+                            class="fa fa-user  fa-images fs-24"></i>
+                    </div>
+                    <div class="col-9 h-100 d-flex align-items-center justify-content-center">Nuevo Operador
+                    </div>
                 </div>
-                <div class="d-flex align-items-center justify-content-end col-lg-3">
-                    <a class="btn btn-redtele btn-sm h-100 rounded-7" type="button"
-                       th:href="@{|/admin/operadores/nuevo|}" style="width: 140px">
-                        <div class="row h-100">
-                            <div class="col-3 h-100 d-flex align-items-center"><i
-                                    class="fa fa-user  fa-images fs-24"></i>
-                            </div>
-                            <div class="col-9 h-100 d-flex align-items-center justify-content-center">Nuevo Operador
-                            </div>
-                        </div>
+            </a>
+        </div>
+    </div>
+
+
+    <table class="content-table hover" width="100%">
+        <thead class="bg-light">
+            <tr class="bg-dark" style="font-size: 14px">
+                <th class="text-white fw-bold">Índice</th>
+                <th class="text-white fw-bold">Nombre</th>
+                <th class="text-white fw-bold">Correo</th>
+                <th class="text-white fw-bold">Acciones</th>
+            </tr>
+        </thead>
+        <tbody style="font-size: 12px">
+            <tr th:each="operador, i : ${operadores}">
+                <td class="fw-bold" th:text="${i.index+index}">
+                    1
+                </td>
+                <td th:text="${operador.nombre}">
+                    Julio Joaquín Elías
+                </td>
+                <td th:text="${operador.correo}">
+                    JJelias@teleticket.pe
+                </td>
+                <td>
+                    <a type="button" class="btn btn-outline-danger fw-bold btn-sm btn-rounded"
+                       data-mdb-ripple-color="dark"
+                       th:href="@{|/admin/operadores/borrar?id=${operador.id}|}">
+                        Eliminar
                     </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!--Paginacion-->
+    <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
+</div>
+
+<!--Footer-->
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+
+<!-- Modal msg -->
+<div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
+                </div>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class=" w-100 d-flex justify-content-center mb-3">
+                    <i class="fa-solid fa-circle-check" style="font-size: 50px" th:class="${error==null}? 'fa-solid fa-circle-check text-success': 'fa-solid fa-circle-exclamation text-danger'"></i>
+                </div>
+                <div class="w-100 d-flex justify-content-center text-center my-2" th:text="${msg}">
                 </div>
             </div>
-
-
-            <table class="content-table hover">
-                <thead class="bg-light">
-                    <tr class="bg-dark" style="font-size: 14px">
-                        <th class="text-white fw-bold">Índice</th>
-                        <th class="text-white fw-bold">Nombre</th>
-                        <th class="text-white fw-bold">Correo</th>
-                        <th class="text-white fw-bold">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody style="font-size: 12px">
-                    <tr th:each="operador, i : ${operadores}">
-                        <td class="fw-bold" th:text="${i.index+index}">
-                            1
-                        </td>
-                        <td th:text="${operador.nombre}">
-                            Julio Joaquín Elías
-                        </td>
-                        <td th:text="${operador.correo}">
-                            JJelias@teleticket.pe
-                        </td>
-                        <td>
-                            <a type="button" class="btn btn-outline-danger fw-bold btn-sm btn-rounded"
-                               data-mdb-ripple-color="dark"
-                               th:href="@{|/admin/operadores/borrar?id=${operador.id}|}">
-                                Eliminar
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <!--Paginacion-->
-            <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
-
         </div>
+    </div>
+</div>
 
-
-        </div>
-
-
-        <!--Footer-->
-        <footer th:replace="fragmentos/footer.html :: footer"></footer>
-        </div>
-        <!--Fin de contenidos-->
-        <!-- Modal -->
-
-        <!-- End your project here-->
-
-
-        <!-- MDB -->
-        <script type="text/javascript" src="../js/mdb.min.js"></script>
-        <!-- Custom scripts -->
-
-
-        </script>
-    </body>
+</body>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script  type="text/javascript" th:src="@{/js/busqueda.js}"></script>
+<script type="text/javascript" th:if="${msg != null}">
+    $(window).on('load', function() {
+        $('#msgModal').modal('show');
+    });
+</script>
 </html>

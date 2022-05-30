@@ -7,9 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pe.edu.pucp.teleticket.entity.Operador;
+import pe.edu.pucp.teleticket.repository.AdminRepository;
+import pe.edu.pucp.teleticket.repository.ClienteRepository;
 import pe.edu.pucp.teleticket.repository.OperadorRepository;
 import pe.edu.pucp.teleticket.service.EmailService;
 
@@ -21,6 +24,12 @@ import java.util.Optional;
 public class AdminOperadoresController {
 
     private final int operadoresPaginas=8;
+
+    @Autowired
+    ClienteRepository clienteRepository;
+
+    @Autowired
+    AdminRepository adminRepository;
 
     @Autowired
     OperadorRepository operadorRepository;
@@ -88,13 +97,27 @@ public class AdminOperadoresController {
 
     @PostMapping("/guardar")
     public String guardarOperador(@ModelAttribute @Valid Operador operador, BindingResult bindingResult, RedirectAttributes redirectAttributes){
-        if(bindingResult.hasErrors()){
+
+        boolean correoHasErrors = false;
+
+        if(!bindingResult.hasFieldErrors("correo")){
+            if(clienteRepository.findByCorreo(operador.getCorreo())!=null || operadorRepository.findByCorreo(operador.getCorreo())!=null || adminRepository.findByCorreo(operador.getCorreo())!=null){
+                FieldError correoError = new FieldError("correo", "correo", "Ya existe un usuario con este correo");
+                bindingResult.addError(correoError);
+                correoHasErrors = true;
+            }
+        }
+
+        if(bindingResult.hasErrors()|| correoHasErrors){
             return "/admin/operadores/form";
         }
+
+        operador.setNombre(operador.getNombre().trim());
         String token = RandomString.make(45);
 
         try {
-            emailService.correoOpRegistrado(operador.getCorreo(),token);
+            operador.setToken(token);
+            emailService.correoOpRegistrado(operador);
             operadorRepository.save(operador);
             redirectAttributes.addFlashAttribute("msg", "Se ha enviado el correo a la direccion indicada. Avisar al nuevo operador " +
                     "que ingrese al link enviado para que termine de crear la cuenta");
