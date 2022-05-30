@@ -1,5 +1,6 @@
 package pe.edu.pucp.teleticket.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -41,4 +42,34 @@ public interface HistorialRepository extends JpaRepository<Historial, Integer> {
             "and ((h.estado = 'Reserva' and h.fechalimite > NOW()) or h.estado = 'Comprado') " +
             "and f.idfunciones <> :idfunciones")
     List<FuncionesCompra> findHistorialEnConflicto(int idfunciones, int idclientes, LocalDate fecha, LocalTime inicio, LocalTime fin);
+
+    @Query(nativeQuery = true, value = "select count(*) from historialcompras h " +
+            "inner join funciones f on f.idfunciones = h.idfunciones " +
+            "where h.idclientes = :idclientes and h.estado='Comprado' and f.fecha > NOW()")
+    public long contarComprasVigentes(int idclientes);
+
+    @Query(nativeQuery = true, value = "select count(*) from historialcompras h " +
+            "inner join funciones f on f.idfunciones = h.idfunciones " +
+            "where h.idclientes = :idclientes and h.estado='Comprado' and f.fecha < NOW()")
+    public long contarComprasAsistidas(int idclientes);
+
+    @Query(value = "select new Historial(h.id, h.idclientes, h.funcion, h.idcompra, h.total, h.numtickets, h.fechacompra) " +
+            "from Historial h " +
+            "inner join Funcion f on f.id = h.funcion.id " +
+            "where h.idclientes = :idclientes and h.estado = 'Comprado' and f.fecha > current_date ",
+    countQuery = "select count(h) " +
+            " from Historial h  " +
+            "inner join Funcion f on f.id = h.funcion.id " +
+            "where h.idclientes = :idclientes and h.estado = 'Comprado' and f.fecha > current_date")
+    List<Historial> findComprasVigentes(int idclientes, Pageable pageable);
+
+    @Query(value = "select new Historial(h.id, h.idclientes, h.funcion, h.idcompra, h.total, h.numtickets, h.fechacompra) " +
+            "from Historial h " +
+            "inner join Funcion f on f.id = h.funcion.id " +
+            "where h.idclientes = :idclientes and h.estado = 'Comprado' and f.fecha < current_date ",
+            countQuery = "select count(h) " +
+                    " from Historial h  " +
+                    "inner join Funcion f on f.id = h.funcion.id " +
+                    "where h.idclientes = :idclientes and h.estado = 'Comprado' and f.fecha < current_date")
+    List<Historial> findComprasAsistidas(int idclientes, Pageable pageable);
 }

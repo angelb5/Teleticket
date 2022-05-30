@@ -40,8 +40,7 @@ public class Historial implements Serializable {
     private int numtickets;
 
     @Column(name = "fechacompra")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate fechacompra;
+    private LocalDateTime fechacompra;
 
     @Column(name = "fechalimite")
     private LocalDateTime fechalimite;
@@ -57,6 +56,16 @@ public class Historial implements Serializable {
         this.numtickets = numtickets;
         this.fechalimite = fechalimite;
         this.estado = estado;
+    }
+
+    public Historial(int id, int idclientes, Funcion funcion, String idcompra, double total, int numtickets, LocalDateTime fechacompra) {
+        this.id = id;
+        this.idclientes = idclientes;
+        this.funcion = funcion;
+        this.idcompra = idcompra;
+        this.total = total;
+        this.numtickets = numtickets;
+        this.fechacompra = fechacompra;
     }
 
     public Historial() {

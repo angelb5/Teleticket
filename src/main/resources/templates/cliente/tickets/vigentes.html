@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Mis tickets')"></head>
+<head>
+    <link rel="stylesheet" th:href="@{/css/tables.css}" />
+</head>
+<body>
+
+<nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
+<div class="d-flex" style="height: -webkit-fill-available;">
+    <div th:replace="fragmentos/sidebar-cliente.html :: sidebar('Tickets')"></div>
+    <div class="main-cliente">
+        <div class="container">
+            <div class="row">
+                <div class="col mb-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item title-30">Mis tickets</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <table class="table content-table hover-light align-middle mb-0  text-center ">
+                        <thead class="bg-light">
+                        <tr class="bg-dark">
+                            <th class="text-white fw-bold">Obra</th>
+                            <th class="text-white fw-bold">Fecha y hora de compra</th>
+                            <th class="text-white fw-bold">Sede</th>
+                            <th class="text-white fw-bold">Cantidad</th>
+                            <th class="text-white fw-bold">Total</th>
+                            <th class="text-white fw-bold">Detalles</th>
+                        </tr>
+                        </thead>
+                        <tbody >
+                        <tr th:each=" compra : ${comprasVigentes}">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="historial-img">
+                                        <img th:src="@{'/image/obra/'+${compra.funcion.obra.fotoprincipal}}">
+                                    </div>
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1" th:text="${compra.funcion.obra.titulo}"></p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td th:text="${#temporals.format(compra.fechacompra, 'dd/MM/yyyy HH:mm')}">
+                            </td>
+                            <td th:text="${compra.funcion.sala.sede.nombre}">
+                            </td>
+                            <td class="text-center" th:text="${compra.numtickets}">
+                            </td>
+                            <td>
+                                <b class="fw-bold" th:text="'S/ '+${#numbers.formatDecimal(compra.total,1,2,'POINT')}"></b>
+                            </td>
+                            <td>
+                                <a th:href="@{'/cliente/tickets/'+compra.id}" class="btn btn-redtele fw-bold btn-sm btn-rounded">
+                                    Ver detalles
+                                </a>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <nav th:replace="fragmentos/paginacion :: paginacion('/cliente/tickets?',${pag},${paginas})"></nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+
+</html>

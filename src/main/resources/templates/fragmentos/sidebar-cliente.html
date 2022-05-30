@@ -23,8 +23,11 @@
             <a class="nav-link" th:classappend="${activa == 'Perfil'}?'active' :''" th:href="@{/cliente/miperfil}">
                 Mi perfil
             </a>
-                <a class="nav-link" th:classappend="${activa == 'Entradas'}?'active' :''" th:href="@{/}">
-                Mis entradas
+            <a class="nav-link" th:classappend="${activa == 'Tickets'}?'active' :''" th:href="@{/cliente/tickets}">
+                Mis tickets
+            </a>
+            <a class="nav-link" th:classappend="${activa == 'Asistidas'}?'active' :''" th:href="@{/cliente/tickets/califica}">
+                Califica
             </a>
             <form th:action="@{/logout}" method="post">
                 <a onclick="this.parentNode.submit()" class="nav-link" style="cursor:pointer;">Cerrar sesión</a>
