@@ -64,7 +64,7 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
             "inner join salas s on f.idsalas = s.idsalas " +
             "where s.idsedes=?1 and f.fecha > NOW() " +
             "group by o.idobras")
-    public long contarObrasClienteByIdsede(int idsede);
+    public Integer contarObrasClienteByIdsede(int idsede);
 
     @Query(nativeQuery = true,
             value = "select o.idobras 'id', o.titulo as 'otitulo' , o.fotoprincipal as 'fotoprincipal', min(f.costo) as 'minprecio'\n" +
