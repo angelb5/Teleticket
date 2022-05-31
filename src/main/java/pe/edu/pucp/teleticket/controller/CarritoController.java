@@ -1,5 +1,6 @@
 package pe.edu.pucp.teleticket.controller;
 
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -157,7 +158,11 @@ public class CarritoController {
         if(!(object instanceof Cliente clienteSes)){return "redirect:/";}
         List<Historial> carrito = historialRepository.findReservasByIdclientes(clienteSes.getId());
         for (Historial item : carrito){
+            FuncionesCompra fc = funcionRepository.getFuncionesCompraPorId(item.getIdfunciones());
+            item.setTotal(fc.getCosto()*item.getNumtickets());
             item.setEstado("Comprado");
+            item.setIdcompra(RandomString.make(8).toUpperCase());
+            item.setFechacompra(LocalDateTime.now());
         }
         historialRepository.saveAll(carrito);
         return "redirect:/cliente/tickets";
