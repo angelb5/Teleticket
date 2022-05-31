@@ -96,13 +96,11 @@ public interface  ClienteRepository extends JpaRepository<Cliente, Integer> {
 
     @Query(nativeQuery = true, value = "select c.nombre as 'nombre', c.apellido as 'apellido', DATE_FORMAT(FROM_DAYS(DATEDIFF(now(),c.nacimiento)), '%Y')+0 as 'edad',\n" +
             "       c.correo as 'correo', c.celular as 'celular'  from clientes c\n" +
-            "       inner join calificacionobras c2 on c.idclientes = c2.idclientes\n" +
-            "       inner join calificacionpersonas c3 on c.idclientes = c3.idclientes\n" +
-            "       where lower(concat(c.nombre,' ',c.apellido)) like %?1% group by c.idclientes order by apellido asc",
-    countQuery = "select count(*) from (select c.nombre from clientes c\n" +
-            "       inner join calificacionobras c2 on c.idclientes = c2.idclientes\n" +
-            "       inner join calificacionpersonas c3 on c.idclientes = c3.idclientes\n" +
-            "       where lower(concat(c.nombre,' ',c.apellido)) like %?1% group by c.idclientes order by apellido asc) contar")
+            "inner join historialcompras c2 on c.idclientes = c2.idclientes  \n" +
+            "where lower(concat(c.nombre,' ',c.apellido)) like %?1% and c2.estado='Comprado' group by c.idclientes order by 'apellido' asc",
+    countQuery = "select count(*)\n" +
+            "inner join historialcompras c2 on c.idclientes = c2.idclientes\n" +
+            "where lower(concat(c.nombre,' ',c.apellido)) like %?1% and c2.estado='Comprado' group by c.idclientes order by 'apellido' asc")
     public List<ClienteListado> listarClientesConCompras(String busqueda, Pageable pageable);
 
     @Query(nativeQuery = true, value = "select count(*) from (select c.nombre from clientes c\n" +
@@ -113,11 +111,11 @@ public interface  ClienteRepository extends JpaRepository<Cliente, Integer> {
 
     @Query(nativeQuery = true, value = "select c.nombre as 'nombre', c.apellido as 'apellido', DATE_FORMAT(FROM_DAYS(DATEDIFF(now(),c.nacimiento)), '%Y')+0 as 'edad',\n" +
             "       c.correo as 'correo', c.celular as 'celular'  from clientes c\n" +
-            "       left join historialcompras h on c.idclientes = h.idclientes\n" +
-            "       where lower(concat(c.nombre,' ',c.apellido)) like %?1% and h.idcompra is null order by apellido asc",
+            "       where lower(concat(c.nombre,' ',c.apellido)) like %?1% and c.idclientes not in (\n" +
+            "           select h.idclientes from historialcompras h where estado='Comprado')",
     countQuery = "select count(*) from clientes c\n" +
-            "       left join historialcompras h on c.idclientes = h.idclientes\n" +
-            "       where lower(concat(c.nombre,' ',c.apellido)) like %?1% and h.idcompra is null order by apellido asc")
+            "       where lower(concat(c.nombre,' ',c.apellido)) like %?1% and c.idclientes not in (\n" +
+            "           select h.idclientes from historialcompras h where estado='Comprado')")
     public List<ClienteListado> listarClientesSinHistorial(String busqueda, Pageable pageable);
 
     @Query(nativeQuery = true, value = " select count(*) from clientes c\n" +
