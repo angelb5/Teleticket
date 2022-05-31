@@ -33,7 +33,7 @@ public class ClienteSedesController {
         String ruta = busqueda.isBlank()? "/sedes?" : "/sedes?busqueda=" +busqueda +"&";
         int pagina = pag.isEmpty() ? 1 : pag.get();
         pagina = pagina < 1 ? 1 : pagina;
-        int paginas = (int) Math.ceil((float) sedeRepository.contarListarSedesBusqueda(busqueda) / sedesPaginas);
+        int paginas = (int) Math.ceil((float) sedeRepository.contarListarSedesCliente(busqueda) / sedesPaginas);
         pagina = pagina > paginas ? paginas : pagina;
         Pageable lista;
         if (pagina == 0) {
@@ -42,7 +42,7 @@ public class ClienteSedesController {
             lista = PageRequest.of(pagina - 1, sedesPaginas);
 
         }
-        List<Sede> listaSedes = sedeRepository.listarSedesBusqueda(busqueda, lista);
+        List<Sede> listaSedes = sedeRepository.listarSedesCliente(busqueda, lista);
         model.addAttribute("listaSedes", listaSedes);
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
