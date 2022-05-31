@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:insert="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')">
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')">
+</head>
+<head>
     <link rel="stylesheet" th:href="@{'/css/tables.css'}"/>
 </head>
 <body>
@@ -64,6 +66,7 @@
 <!--Footer-->
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
 
+
 <!-- Modal msg -->
 <div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
     <div class="modal-dialog  ">
@@ -84,6 +87,8 @@
         </div>
     </div>
 </div>
+
+<div th:replace="fragmentos/navbar.html :: menu"></div>
 
 </body>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>

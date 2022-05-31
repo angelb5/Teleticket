@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')"></head>
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Sedes')"></head>
 <body>
 <nav th:replace="fragmentos/navbar.html :: navbar('sedes')"></nav>
     <!--Contenidos-->
@@ -63,13 +63,9 @@
 
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
     <!-- End your project here-->
-    
-    
+<div th:replace="fragmentos/navbar.html :: menu"></div>
 
-<!-- Custom scripts -->
-<script type="text/javascript">
-
-</script>
 </body>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script  type="text/javascript" th:src="@{/js/busqueda.js}"></script>
 </html>

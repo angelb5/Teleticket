@@ -44,17 +44,11 @@
 
     <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
 </div>
-    <!--Fin de contenidos-->
+
 
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
-    <!-- End your project here-->
-    
-    
 
-<!-- Custom scripts -->
-<script type="text/javascript">
-
-</script>
+<div th:replace="fragmentos/navbar.html :: menu"></div>
 </body>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 </html>

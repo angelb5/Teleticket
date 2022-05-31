@@ -34,7 +34,9 @@
                             style="max-width: fit-content; border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important; cursor:pointer;">
                         <span id="search_concept" th:text="${buscaren}"></span> <span class="caret"></span>
                     </a>
-                    <ul th:if="${session.rol=='cliente'}" class="dropdown-menu overflow-hidden" role="menu">
+                    <ul th:if="${session.rol=='cliente' || session.rol == null}" class="dropdown-menu overflow-hidden" role="menu">
+                        <span hidden id="rol">cliente</span>
+                        <span hidden th:text="${buscaren}" id="buscaren"></span>
                         <li><a class="dropdown-item" href="#obras">Obras</a></li>
                         <li><a class="dropdown-item" href="#personas">Personas</a></li>
                         <li><a class="dropdown-item" href="#sedes">Sedes</a></li>
@@ -47,6 +49,12 @@
                         <li><a class="dropdown-item" href="#operadores">Operadores</a></li>
                         <li><a class="dropdown-item" href="#personas">Personas</a></li>
                         <li><a class="dropdown-item" href="#clientes">Clientes</a></li>
+                    </ul>
+
+                    <ul sec:authorize="hasAuthority('operador')" class="dropdown-menu overflow-hidden" role="menu">
+                        <span hidden id="rol">operador</span>
+                        <span hidden th:text="${buscaren}" id="buscaren"></span>
+                        <li><a class="dropdown-item" href="#obras">Obras</a></li>
                     </ul>
 
                     <input autocomplete="off" type="text" class="form-control rounded-7 fs-14" placeholder="Buscar en Teleticket"

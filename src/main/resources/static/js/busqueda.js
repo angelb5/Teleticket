@@ -1,14 +1,19 @@
 $(document).ready(function(e){
     rol = $('.search-panel span#rol').text();
+    if(rol != "admin" && rol !="operador"){
+        rol = "/";
+    }else{
+        rol = "/"+rol+"/";
+    }
     buscaren = $('.search-panel span#buscaren').text();
-    $('#busquedaFrm').attr('action', '/'+rol+'/'+buscaren)
+    $('#busquedaFrm').attr('action', rol+buscaren)
 
     $('.search-panel .dropdown-menu').find('a').click(function(e) {
         e.preventDefault();
         var param = $(this).attr("href").replace("#","");
         var concept = $(this).text();
         $('.search-panel span#search_concept').text(concept);
-        $('#busquedaFrm').attr('action', '/'+rol+'/'+param)
+        $('#busquedaFrm').attr('action', rol+param)
     });
 
 });
