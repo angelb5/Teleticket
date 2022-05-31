@@ -8,6 +8,7 @@ import pe.edu.pucp.teleticket.entity.Sede;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SedeRepository extends JpaRepository<Sede, Integer> {
@@ -17,6 +18,8 @@ public interface SedeRepository extends JpaRepository<Sede, Integer> {
     @Query(nativeQuery = true, value = "select * from sedes where estado = 'Disponible'")
     public List<Sede> findSedesDisponibles();
 
+    @Query(nativeQuery = true, value = "select * from sedes where estado = 'Disponible' and idsedes=?1")
+    public Optional<Sede> findDisponibleById(int id);
 
     @Query(nativeQuery = true, value = "select * from sedes where lower(nombre) like %?1% or lower(direccion) like %?1% order by nombre asc",
     countQuery = "select count(*) from sedes where lower(nombre) like %?1% or lower(direccion) like %?1% order by nombre asc")

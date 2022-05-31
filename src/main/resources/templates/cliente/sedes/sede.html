@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = ${sede.nombre})"></head>
+<body>
+<nav th:replace="fragmentos/navbar.html :: navbar('Todo')"></nav>
+<!--Contenidos-->
+<div class="position-relative">
+    <!--Fondo-->
+    <div class="w-100 overflow-hidden position-absolute d-table" style="height: -webkit-fill-available;">
+        <div class="blur-head d-table-row" style="height: 450px;">
+            <img src="../img/sanborja.jpg" alt="Sede San Borja">
+        </div>
+    </div>
+
+    <!--Sede-->
+    <div class="container py-3 position-relative">
+        <!--Imágenes-->
+        <div class="my-3">
+            <div id="carouselExampleInterval" class="carousel slide" data-mdb-ride="carousel">
+                <!-- Indicators -->
+                <div class="carousel-indicators" >
+                    <button th:each="fotoid, info : ${fotos}"
+                            type="button"
+                            data-mdb-target="#carouselBasicExample"
+                            th:attr="data-mdb-slide-to=${info.index}, aria-label='Slide '+${info.index +1},
+                            aria-current=${info.index==0}? 'true':'false'"
+                            th:class="${info.index==0}? 'active':''"
+                    ></button>
+                </div>
+                <div class="carousel-inner rounded-5">
+                    <div class="carousel-item" data-mdb-interval="3000" th:each="fotoid : ${fotos}" th:classappend="${fotoid==sede.fotoprincipal}? 'active':'' ">
+                        <div class="carousel-sede">
+                            <img th:src="'/image/sede/'+${fotoid}" th:alt="${sede.nombre}"/>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" data-mdb-target="#carouselExampleInterval" type="button" data-mdb-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" data-mdb-target="#carouselExampleInterval" type="button" data-mdb-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+
+
+        <div class="title-30 mb-4">
+            <div th:text="${sede.nombre}">
+            </div>
+            <div class="fs-20 fw-light" th:text="${sede.direccion}">
+            </div>
+        </div>
+
+        <div class="title-24">
+            Obras en esta sede
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-4 g-4 py-3">
+            <div class="col" th:each="obra : ${obras}">
+                <!--Card-->
+                <div class="col">
+                    <div class="card h-100 position-relative">
+                        <a class="card-tele" href="#">
+                            <div class="card-tele-img">
+                                <img th:src="@{'/image/obra/'+${obra.fotoprincipal}}" alt="Obras"
+                                     class="img-fluid rounded-start img-cover"/>
+                            </div>
+                            <div class="card-tele-body">
+                                <div class="card-tele-title" th:text="${obra.otitulo}">Antes de decirte adiós
+                                </div>
+                            </div>
+                        </a>
+                        <div class="card-footer card-tele-footer">
+                            <div class="d-flex align-items-end">
+                                <span>Desde&nbsp;&nbsp;</span>
+                                <span class="fw-bold fs-14" th:text="'S/ '+${#numbers.formatDecimal(obra.minprecio,1,2,'POINT')}">S/ 35.00</span>
+                            </div>
+
+                            <a class="btn btn-redtele" th:href="@{'/obras/'+ ${obra.id}}">
+                                Comprar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
+
+        <!--Seccion informacion mapa-->
+        <div class="py-3" >
+            <div class="row g-0">
+                <div class="col-md-5 rounded-6 overflow-hidden">
+                    <div id="map" class="map"> </div>
+                </div>
+                <div class="col-md-7 px-4">
+                    <div class="title-22" th:text="${sede.nombre}">
+                    </div>
+                    <div class="mb-3 fs-18">
+                        <div class="text-redtele fw-bold">
+                            <i class="fa-solid fa-location-dot"></i>
+                            Dirección
+                        </div>
+                        <div th:text="${sede.direccion}">
+                        </div>
+                    </div>
+                    <div class="mb-3 fs-18">
+                        <div class="text-redtele fw-bold">
+                            <i class="fa-solid fa-door-open"></i>
+                            Número de salas
+                        </div>
+                        <div th:text="${sede.salas.size()}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Footer-->
+    <footer th:replace="fragmentos/footer.html :: footer"></footer>
+</div>
+
+
+<div th:replace="fragmentos/navbar.html :: menu"></div>
+</body>
+<!--Script mapa-->
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+        defer></script>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    // Initialize and add the map
+    function initMap() {
+        // The location of Uluru
+        const uluru = { lat: [[${sede.latitud}]], lng: [[${sede.longitud}]]};
+        // The map, centered at Uluru
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 14,
+            center: uluru,
+            zoomControl: true,
+            mapTypeControl: false,
+            scaleControl: true,
+            streetViewControl: false,
+            rotateControl: true,
+            fullscreenControl: false,
+        });
+        // The marker, positioned at Uluru
+        const marker = new google.maps.Marker({
+            position: uluru,
+            map: map,
+        });
+    }
+    window.initMap = initMap;
+    /*]]>*/
+</script>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script  type="text/javascript" th:src="@{/js/busqueda.js}"></script>
+
+</html>
