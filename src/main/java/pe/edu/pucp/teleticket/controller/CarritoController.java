@@ -158,7 +158,7 @@ public class CarritoController {
         if(!(object instanceof Cliente clienteSes)){return "redirect:/";}
         List<Historial> carrito = historialRepository.findReservasByIdclientes(clienteSes.getId());
         for (Historial item : carrito){
-            FuncionesCompra fc = funcionRepository.getFuncionesCompraPorId(item.getIdfunciones());
+            Funcion fc = funcionRepository.findById(item.getIdfunciones()).get();
             item.setTotal(fc.getCosto()*item.getNumtickets());
             item.setEstado("Comprado");
             item.setIdcompra(RandomString.make(8).toUpperCase());
