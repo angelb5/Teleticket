@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:insert="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')">
     <link rel="stylesheet" th:href="@{'/css/tables.css'}"/>
 </head>
@@ -14,14 +14,14 @@
         Gestión de Actores y Directores
     </div>
     <div style="float: right">
-        <button class="btn btn-redtele btn-sm" type="button"
+        <a class="btn btn-redtele btn-sm" type="button" th:href="@{|/admin/personas/nuevo|}"
                 style="height: 45px; width: 140px;margin-bottom: 10px">
             <div class="row">
                 <div class="col-3"><i class="fa fa-address-card col"
                                       style="font-size: 24px;margin-top: 5px"></i></div>
                 <div class="col-9"><p class="text-white fw-bold col">Nueva Persona</p></div>
             </div>
-        </button>
+        </a>
     </div>
     <br>
 
@@ -37,277 +37,95 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr th:each="persona : ${personas}">
                 <td>
                     <div class="d-flex align-items-center">
                         <div class="actor-image">
-                            <img src="../img/persona.jpg" alt="Leonardo">
+                            <img th:src="@{|/image/persona/${persona.id}|}" alt="Leonardo">
                         </div>
                         <div class="ms-3">
-                            <p class="fw-bold mb-1">Leonardo Dicaprio</p>
+                            <p class="fw-bold mb-1" th:text="${persona.nombre}">Leonardo Dicaprio</p>
                         </div>
                     </div>
                 </td>
-                <td>
-                    4.9/5 <i class="ms-1 fa-solid fa-star "></i>
-                </td>
-                <td>
-                    <span class="badge badge-warning rounded-pill d-inline"
-                          style="font-size: 13px">Sin Obras</span>
-                </td>
-                <td><span class="badge badge-success rounded-pill d-inline" style="font-size: 13px"
-                >Activo</span
-                ></td>
-                <td>
-                    <button type="button" class="btn btn-redtele fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Editar
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="d-flex align-items-center">
-                        <div class="actor-image">
-                            <img src="../img/director.jpg" alt="Leonardo">
+                <td  th:if="${persona.pactuacion.isPresent()}">
+                    <div class="row">
+                        <div class="col-1">
+                            <i  class="ms-1 fa-solid fa-star"></i>
                         </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1">George Lucas</p>
+                        <div class="col-6">
+                            <p class="fw-bold" th:text="${persona.pactuacion.get()+'/5'}">
+                            </p>
                         </div>
                     </div>
                 </td>
-                <td>
+                <td th:if="${persona.pactuacion.isEmpty()}">
                     <span class="badge badge-warning rounded-pill d-inline"
-                          style="font-size: 13px">Sin Obras</span>
+                          style="font-size: 13px">Sin Puntuacion</span>
                 </td>
-                <td>
-                    4.2/5 <i class="ms-1 fa-solid fa-star "></i>
-                </td>
-                <td><span class="badge badge-danger rounded-pill d-inline"
-                          style="font-size: 13px">Inactivo</span>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-redtele fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Editar
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="d-flex align-items-center">
-                        <div class="actor-image">
-                            <img src="../img/persona.jpg" alt="Leonardo">
+                <td  th:if="${persona.pdireccion.isPresent()}">
+                    <div class="row">
+                        <div class="col-1">
+                            <i  class="ms-1 fa-solid fa-star"></i>
                         </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1">Leonardo Dicao</p>
+                        <div class="col-6">
+                            <p class="fw-bold" th:text="${persona.pdireccion.get()+'/5'}">
+                            </p>
                         </div>
                     </div>
                 </td>
-                <td>
+                <td th:if="${persona.pdireccion.isEmpty()}">
                     <span class="badge badge-warning rounded-pill d-inline"
-                          style="font-size: 13px">Sin Obras</span>
+                          style="font-size: 13px">Sin Puntuacion</span>
+                </td>
+
                 </td>
                 <td>
-                    <span class="badge badge-warning rounded-pill d-inline"
-                          style="font-size: 13px">Sin Obras</span>
+                    <span th:if="${persona.estado.equalsIgnoreCase('Disponible')}"
+                            class="badge badge-success rounded-pill d-inline" style="font-size: 13px">Activo</span>
+                    <span th:unless="${persona.estado.equalsIgnoreCase('Disponible')}"
+                            class="badge badge-danger rounded-pill d-inline" style="font-size: 13px">Inactivo</span>
                 </td>
-                <td><span class="badge badge-success rounded-pill d-inline" style="font-size: 13px"
-                >Activo</span
-                ></td>
                 <td>
-                    <button type="button" class="btn btn-redtele fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
+                    <a type="button" class="btn btn-redtele fw-bold btn-sm btn-rounded"
+                            data-mdb-ripple-color="dark" th:href="@{|/admin/personas/editar?id=${persona.id}|}">
                         Editar
-                    </button>
-                    <button type="button" class="btn btn-dark btn-sm btn-rounded" data-mdb-ripple-color="dark">
+                    </a>
+                    <a th:if="${(persona.obrasactor+persona.obrasdirector)==0}"
+                            type="button" class="btn btn-black fw-bold btn-sm btn-rounded"
+                       data-mdb-ripple-color="dark" th:href="@{|/admin/personas/borrar?id=${persona.id}|}">
                         Eliminar
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="d-flex align-items-center">
-                        <div class="actor-image">
-                            <img src="../img/persona.jpg" alt="Leonardo">
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1">Leonardo Dicaprio</p>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    4.9/5 <i class="ms-1 fa-solid fa-star "></i>
-                </td>
-                <td>
-                    <span class="badge badge-warning rounded-pill d-inline"
-                          style="font-size: 13px">Sin Obras</span>
-                </td>
-                <td><span class="badge badge-success rounded-pill d-inline" style="font-size: 13px"
-                >Activo</span
-                ></td>
-                <td>
-                    <button type="button" class="btn btn-redtele fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Editar
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="d-flex align-items-center">
-                        <div class="actor-image">
-                            <img src="../img/director.jpg" alt="Leonardo">
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1">George Lucas</p>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <span class="badge badge-warning rounded-pill d-inline"
-                          style="font-size: 13px">Sin Obras</span>
-                </td>
-                <td>
-                    4.2/5 <i class="ms-1 fa-solid fa-star "></i>
-                </td>
-                <td><span class="badge badge-danger rounded-pill d-inline" style="font-size: 13px"
-                >Inactivo</span
-                ></td>
-                <td>
-                    <button type="button" class="btn btn-redtele fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Editar
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="d-flex align-items-center">
-                        <div class="actor-image">
-                            <img src="../img/persona.jpg" alt="Leonardo">
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1">Leonardo Dicao</p>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <span class="badge badge-warning rounded-pill d-inline"
-                          style="font-size: 13px">Sin Obras</span>
-                </td>
-                <td>
-                    <span class="badge badge-warning rounded-pill d-inline"
-                          style="font-size: 13px">Sin Obras</span>
-                </td>
-                <td><span class="badge badge-success rounded-pill d-inline" style="font-size: 13px"
-                >Activo</span
-                ></td>
-                <td>
-                    <button type="button" class="btn btn-redtele fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Editar
-                    </button>
-                    <button type="button" class="btn btn-dark btn-sm btn-rounded" data-mdb-ripple-color="dark">
-                        Eliminar
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="d-flex align-items-center">
-                        <div class="actor-image">
-                            <img src="../img/persona.jpg" alt="Leonardo">
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1">Leonardo Dicaprio</p>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    4.9/5 <i class="ms-1 fa-solid fa-star "></i>
-                </td>
-                <td>
-                    <span class="badge badge-warning rounded-pill d-inline"
-                          style="font-size: 13px">Sin Obras</span>
-                </td>
-                <td><span class="badge badge-success rounded-pill d-inline" style="font-size: 13px"
-                >Activo</span
-                ></td>
-                <td>
-                    <button type="button" class="btn btn-redtele fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Editar
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="d-flex align-items-center">
-                        <div class="actor-image">
-                            <img src="../img/director.jpg" alt="Leonardo">
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1">George Lucas</p>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <span class="badge badge-warning rounded-pill d-inline"
-                          style="font-size: 13px">Sin Obras</span>
-                </td>
-                <td>
-                    4.2/5 <i class="ms-1 fa-solid fa-star "></i>
-                </td>
-                <td><span class="badge badge-danger rounded-pill d-inline" style="font-size: 13px"
-                >Inactivo</span
-                ></td>
-                <td>
-                    <button type="button" class="btn btn-redtele fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Editar
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="d-flex align-items-center">
-                        <div class="actor-image">
-                            <img src="../img/persona.jpg" alt="Leonardo">
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1">Leonardo Dicao</p>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <span class="badge badge-warning rounded-pill d-inline"
-                          style="font-size: 13px">Sin Obras</span>
-                </td>
-                <td>
-                    <span class="badge badge-warning rounded-pill d-inline"
-                          style="font-size: 13px">Sin Obras</span>
-                </td>
-                <td><span class="badge badge-success rounded-pill d-inline" style="font-size: 13px"
-                >Activo</span
-                ></td>
-                <td>
-                    <button type="button" class="btn btn-redtele fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark">
-                        Editar
-                    </button>
-                    <button type="button" class="btn btn-dark btn-sm btn-rounded" data-mdb-ripple-color="dark">
-                        Eliminar
-                    </button>
+                    </a>
                 </td>
             </tr>
         </tbody>
     </table>
 
     <!--Paginacion-->
-    <nav th:replace="fragmentos/paginacion :: paginacion('ruta',1,3)"></nav>
+    <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
 
 </div>
+
+    <!-- Modal msg -->
+    <div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+        <div class="modal-dialog  ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">
+                        <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
+                    </div>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class=" w-100 d-flex justify-content-center mb-3">
+                        <i class="fa-solid fa-circle-check" style="font-size: 50px" th:class="${error==null? 'fa-solid fa-circle-check text-success': 'fa-solid fa-circle-xmark text-danger'  }"></i>
+                    </div>
+                    <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
 
@@ -315,4 +133,9 @@
 </body>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <script  type="text/javascript" th:src="@{/js/busqueda.js}"></script>
+    <script type="text/javascript" th:if="${msg != null}">
+        $(window).on('load', function() {
+            $('#msgModal').modal('show');
+        });
+    </script>
 </html>

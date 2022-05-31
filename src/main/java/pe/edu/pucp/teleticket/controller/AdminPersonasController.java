@@ -112,11 +112,11 @@ public class AdminPersonasController {
         } catch (Exception e){
             return "redirect:/admin/personas";
         }
-        Optional<Persona> optionalPersona = personaRepository.findById(id);
+        Optional<Persona> optionalPersona = personaRepository.buscarPersona(id);
         if(optionalPersona.isEmpty()){
             return "redirect:/admin/personas";
         }
-        model.addAttribute("persona", persona);
+        model.addAttribute("persona", optionalPersona.get());
         return "admin/personas/form";
     }
 
@@ -125,15 +125,18 @@ public class AdminPersonasController {
                                  BindingResult bindingResult, @RequestParam("archivo") MultipartFile archivo,
                                  Model model, RedirectAttributes redirectAttributes){
         if (archivo.isEmpty()) {
+            model.addAttribute("error", 1);
             model.addAttribute("msg", "Debe subir un archivo");
             return "admin/personas/form";
         }
         if (!verificarFoto(archivo)) {
+            model.addAttribute("error", 1);
             model.addAttribute("msg", "Debe subir una imagen, no se acepta otros archivos");
             return "admin/personas/form";
         }
         String fotoNombre = archivo.getOriginalFilename();
         if (fotoNombre.contains("..")) {
+            model.addAttribute("error", 1);
             model.addAttribute("msg", "No se permiten '..' en el archivo");
             return "admin/personas/form";
         }
@@ -145,6 +148,7 @@ public class AdminPersonasController {
             personaRepository.save(persona);
         } catch (IOException e) {
             e.printStackTrace();
+            model.addAttribute("error", 1);
             model.addAttribute("msg", "Ocurrió un error al guardar la persona");
             return "admin/personas/form";
         }
@@ -155,8 +159,10 @@ public class AdminPersonasController {
 
     @PostMapping("/actualizar")
     public String actualizarPersona(@ModelAttribute("persona") @Valid Persona persona,BindingResult bindingResult ,RedirectAttributes redirectAttributes){
-        Optional<Persona> optionalPersona = personaRepository.findById(persona.getId());
+        Optional<Persona> optionalPersona = personaRepository.buscarPersona(persona.getId());
         if(optionalPersona.isEmpty()){
+            redirectAttributes.addFlashAttribute("error",1);
+            redirectAttributes.addFlashAttribute("msg","Ocurrio un error al borrar a la persona");
             return "redirect:/admin/personas";
         }
         if(bindingResult.hasErrors()){
@@ -167,8 +173,8 @@ public class AdminPersonasController {
         return  "redirect:/admin/personas";
     }
 
-    @PostMapping("/cambiarFoto")
-    public String cambiarFotoPersona(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") String idString,
+    @PostMapping("/cambiarfoto")
+    public String cambiarFotoPersona(@RequestParam("imagen") MultipartFile archivo, @RequestParam("id") String idString,
                                      RedirectAttributes redirectAttributes){
         Integer id=0;
         try{
@@ -183,15 +189,18 @@ public class AdminPersonasController {
         }
         if (archivo.isEmpty()) {
             redirectAttributes.addFlashAttribute("msg", "Debe subir un archivo");
+            redirectAttributes.addFlashAttribute("error",1);
             return "redirect:/admin/personas/editar?id="+id;
         }
         if (!verificarFoto(archivo)) {
             redirectAttributes.addFlashAttribute("msg", "Debe subir una imagen, no se acepta otros archivos");
+            redirectAttributes.addFlashAttribute("error",1);
             return "redirect:/admin/personas/editar?id="+id;
         }
         String fotoNombre = archivo.getOriginalFilename();
         if (fotoNombre.contains("..")) {
             redirectAttributes.addFlashAttribute("msg", "No se permiten '..' en el archivo");
+            redirectAttributes.addFlashAttribute("error",1);
             return "redirect:/admin/personas/editar?id="+id;
         }
 
@@ -202,6 +211,7 @@ public class AdminPersonasController {
         } catch (IOException e) {
             e.printStackTrace();
             redirectAttributes.addAttribute("msg", "Ocurrió un error al guardar la imagen");
+            redirectAttributes.addFlashAttribute("error",1);
             return "redirect:/admin/personas/editar?id="+id;
         }
         redirectAttributes.addFlashAttribute("msg","Se cambio la imagen exitosamente");

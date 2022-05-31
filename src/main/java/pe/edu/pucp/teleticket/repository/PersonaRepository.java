@@ -2,8 +2,10 @@ package pe.edu.pucp.teleticket.repository;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import pe.edu.pucp.teleticket.dto.PersonasListado;
 import pe.edu.pucp.teleticket.entity.Funcion;
 import pe.edu.pucp.teleticket.entity.Persona;
@@ -28,7 +30,7 @@ public interface PersonaRepository extends JpaRepository<Persona,Integer> {
     public List<Persona> findDirectoresByIdObra(int idobras);
 
     @Query(nativeQuery = true,
-    value = "select p.idpersonas as 'id', p.nombre as 'nombre', round(avg(if(c.rol='Actuacion',c.estrellas,null)),1) as 'pnactuacion',\n" +
+    value = "select p.idpersonas as 'id', p.nombre as 'nombre', round(avg(if(c.rol='Actuacion',c.estrellas,null)),1) as 'pactuacion',\n" +
             "       round(avg(if(c.rol='Direccion',c.estrellas,null)),1) as 'pdireccion', p.estado, co.actuaciones as 'obrasactor', co.direcciones as 'obrasdirector'\n" +
             "from personas p\n" +
             "         left join calificacionpersonas c on p.idpersonas = c.idpersonas\n" +
@@ -50,7 +52,7 @@ public interface PersonaRepository extends JpaRepository<Persona,Integer> {
     public long countPersonasListado(String busqueda);
 
     @Query(nativeQuery = true,
-            value = "select p.idpersonas as 'id', p.nombre as 'nombre', round(avg(if(c.rol='Actuacion',c.estrellas,null)),1) as 'pnactuacion',\n" +
+            value = "select p.idpersonas as 'id', p.nombre as 'nombre', round(avg(if(c.rol='Actuacion',c.estrellas,null)),1) as 'pactuacion',\n" +
                     "                                       round(avg(if(c.rol='Direccion',c.estrellas,null)),1) as 'pdireccion', p.estado, co.actuaciones as 'obrasactor', co.direcciones as 'obrasdirector', o.titulo as 'ptitulo'\n" +
                     "                                from personas p\n" +
                     "                                        left join calificacionpersonas c on p.idpersonas = c.idpersonas\n" +
@@ -83,13 +85,15 @@ public interface PersonaRepository extends JpaRepository<Persona,Integer> {
             "group by p.idpersonas")
     public Optional<Integer> partipacionesPersona(Integer id);
 
+    @Transactional
+    @Modifying
     @Query(nativeQuery = true,
-    value = "insert into personas(nombre, estado)\n" +
-            "values (?2,?3) where idpersonas=?1")
-    public void actualizarPersona(Integer id,String nombre, String estado);
+    value = "update personas set nombre=?2, estado=?3\n" +
+            "where idpersonas=?1")
+    void actualizarPersona(Integer id,String nombre, String estado);
 
     @Query(nativeQuery = true,
-    value="select idpersonas,nombre,estado from personas\n" +
+    value="select p.idpersonas, p.nombre, null as 'foto' ,p.estado  from personas p\n" +
             "where idpersonas=?1")
     public Optional<Persona> buscarPersona(Integer id);
 
