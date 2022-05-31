@@ -155,10 +155,12 @@
                             <span th:text="'S/ '+${#numbers.formatDecimal(total,1,2,'POINT')}" ></span>
                         </li>
                     </ul>
+                    <form th:action="@{/carrito/comprar}" method="post">
+                        <button type="submit" class="btn btn-redtele btn-lg btn-block">
+                            Comprar
+                        </button>
+                    </form>
 
-                    <button type="button" class="btn btn-redtele btn-lg btn-block">
-                        Comprar
-                    </button>
                 </div>
             </div>
         </div>

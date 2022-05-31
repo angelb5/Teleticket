@@ -150,4 +150,16 @@ public class CarritoController {
 
         return "redirect:/carrito";
     }
+
+    @PostMapping("/comprar")
+    public String comprarCarrito(HttpSession session){
+        Object object = session.getAttribute("usuario");
+        if(!(object instanceof Cliente clienteSes)){return "redirect:/";}
+        List<Historial> carrito = historialRepository.findReservasByIdclientes(clienteSes.getId());
+        for (Historial item : carrito){
+            item.setEstado("Comprado");
+        }
+        historialRepository.saveAll(carrito);
+        return "redirect:/cliente/tickets";
+    }
 }
