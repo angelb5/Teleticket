@@ -40,7 +40,7 @@ public class OperadorFuncionesController {
     public String nuevaFuncion(@RequestParam("idobra") int idobra, Model model, @ModelAttribute("funcion") Funcion funcion) {
         Optional<Obra> optionalObra = obraRepository.findById(idobra);
         if(optionalObra.isPresent()){
-            List<Sede> sedeList = sedeRepository.findAll();
+            List<Sede> sedeList = sedeRepository.findSedesDisponibles();
             funcion.setObra(optionalObra.get());
             model.addAttribute("sedeList", sedeList);
             return "operador/funciones/nuevaFrm";
@@ -70,7 +70,7 @@ public class OperadorFuncionesController {
             return "redirect:/operador/";
         }
 
-        List<Sede> sedeList = sedeRepository.findAll();
+        List<Sede> sedeList = sedeRepository.findSedesDisponibles();
 
         boolean horaHasErrors = false;
         boolean fechaHasErrors = false;
@@ -98,7 +98,7 @@ public class OperadorFuncionesController {
 
         if(!bindingResult.hasFieldErrors("sala")){
             Optional<Sala> optionalSala = salaRepository.findById(funcion.getSala().getId());
-            if(optionalSala.map(sala -> sala.getEstado().equals("No disponible")).orElse(true)){
+            if(optionalSala.isEmpty() || optionalSala.get().getEstado().equals("No disponible") || !optionalSala.get().getSede().getEstado().equals("Disponible")){
                 FieldError fSalaError = new FieldError("sala", "sala", "Debe eligir una sala válida");
                 bindingResult.addError(fSalaError);
                 salaHasErrors = true;

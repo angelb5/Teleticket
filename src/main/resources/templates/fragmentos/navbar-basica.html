@@ -8,8 +8,8 @@
     <div class="container-fluid container justify-content-between">
         <!-- Left elements -->
         <!-- Brand -->
-        <a class="navbar-brand me-2 mb-1 d-flex align-items-center" th:href="@{/}">
-            <img th:src="@{/img/logo-teleticket.png}" height="40" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
+        <a class="navbar-brand me-3 mb-1 d-flex align-items-center" th:href="@{/}">
+            <img th:src="@{/img/logo-teleticket.png}" height="40" alt="Teleticket logo" loading="lazy" />
         </a>
 
         <!-- Toggle button -->
@@ -18,21 +18,26 @@
         </button>
 
         <!-- Collapsible wrapper -->
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+            <button class="btn btn-dark shadow-0 text-capitalize fw-light fs-13" type="button" data-mdb-toggle="modal" data-mdb-target="#menuFullscreen" >
+                <strong>
+                    <i class="fa-solid fa-bars mx-1"></i>
+                    Menú
+                </strong>
+            </button>
 
             <!-- Right elements -->
-            <ul class="navbar-nav flex-row w-100 d-flex justify-content-end">
+            <ul class="navbar-nav flex-row">
                 <!--Carrito-->
                 <li th:if="${session.rol=='cliente'}" class="nav-item me-3 me-lg-1 mx-2">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" th:href="@{/carrito}">
                         <i class="fas fa-solid fa-cart-shopping fa-lg"></i>
-
-                        <span class="badge rounded-pill badge-notification bg-danger">0</span>
+                        <span class="badge rounded-pill badge-notification bg-danger" th:text="${session.carrito.size()}">0</span>
                     </a>
                 </li>
                 <!--Mis tickets-->
                 <li th:if="${session.rol=='cliente'}" class="nav-item mx-2">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" th:href="@{cliente/tickets}">
                         <i class="fa-solid fa-ticket mx-1"></i>
                         Mis tickets
                     </a>
@@ -41,7 +46,7 @@
                 <li th:if="${session.usuario!=null}" class="nav-item dropdown me-3 me-lg-1 mx-2">
                     <a  class="nav-link d-sm-flex align-items-sm-center dropdown-toggle hidden-arrow"
                         href="#" id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-                        <img th:if="${session.rol=='cliente'}"  th:src="@{'/cliente/imagen'}" class="rounded-circle"  height="22" alt="admin" loading="lazy"/>
+                        <img th:if="${session.rol=='cliente'}"  th:src="@{'/cliente/imagen'}" class="rounded-circle"  height="22" alt="cliente" loading="lazy"/>
                         <img th:unless="${session.rol=='cliente'}"  th:src="@{/img/default-profile.png}" class="rounded-circle"  height="22" alt="admin" loading="lazy"/>
                         <strong class="d-none d-sm-block ms-1 username" th:text="${session.usuario.nombre}">
                             Usuario
@@ -50,7 +55,7 @@
                     <ul class="dropdown-menu dropdown-menu-end overflow-hidden"
                         aria-labelledby="navbarDropdownMenuLink">
                         <li th:if="${session.rol == 'cliente'}">
-                            <a class="dropdown-item" href="#">Editar información</a>
+                            <a class="dropdown-item" th:href="@{/cliente/miperfil}">Mi perfil</a>
                         </li>
                         <li th:if="${session.rol == 'cliente'}">
                             <hr class="dropdown-divider m-0" />
@@ -72,7 +77,7 @@
                     </a>
                 </li>
                 <!--Google-->
-                <li th:if="${session.proveedor!=null and session.usuario==null}"  class="nav-item dropdown me-3 me-lg-1 mx-2">
+                <li th:if="${session.proveedor!=null and session.usuario==null}"   class="nav-item dropdown me-3 me-lg-1 mx-2">
                     <a  class="nav-link d-sm-flex align-items-sm-center dropdown-toggle hidden-arrow"
                         href="#" id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
                         <img th:src="@{/img/default-profile.png}" class="rounded-circle"  height="22" alt="admin" loading="lazy"/>

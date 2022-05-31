@@ -42,7 +42,7 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
                     "where lower(o.titulo) like %?1% " +
                     "and f.fecha > NOW() " +
                     "        group by o.idobras",
-            countQuery = "select count(*) " +
+            countQuery = "select count(distinct o.idobras) " +
                     "                    from obras o" +
                     "                    inner join funciones f on o.idobras = f.idobras " +
                     "                    where lower(o.titulo)  like %?1% " +
@@ -50,12 +50,37 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
                     "                    group by o.idobras")
     public List<ObrasListado> listadoObrasliente(String busqueda, Pageable pageable);
 
-    @Query(nativeQuery = true, value = "select count(*) " +
+    @Query(nativeQuery = true, value = "select count(distinct o.idobras) " +
             "from obras o " +
-            "inner join funciones f " +
+            "inner join funciones f on o.idobras = f.idobras " +
             "where lower(o.titulo) like %?1% and f.fecha > NOW() " +
             "group by o.idobras")
     public long contarListaObrasCliente(String nombre);
 
+
+    @Query(nativeQuery = true, value = "select count(distinct o.idobras) " +
+            "from obras o " +
+            "inner join funciones f on o.idobras = f.idobras " +
+            "inner join salas s on f.idsalas = s.idsalas " +
+            "where s.idsedes=?1 and f.fecha > NOW() " +
+            "group by o.idobras")
+    public long contarObrasClienteByIdsede(int idsede);
+
+    @Query(nativeQuery = true,
+            value = "select o.idobras 'id', o.titulo as 'otitulo' , o.fotoprincipal as 'fotoprincipal', min(f.costo) as 'minprecio'\n" +
+                    "from obras o " +
+                    "inner join funciones f on o.idobras = f.idobras " +
+                    "inner join salas s on f.idsalas = s.idsalas " +
+                    "where s.idsedes=?1 " +
+                    "and f.fecha > NOW() " +
+                    "        group by o.idobras",
+            countQuery = "select count(distinct o.idobras) " +
+                    "from obras o " +
+                    "inner join funciones f on o.idobras = f.idobras " +
+                    "inner join salas s on f.idsalas = s.idsalas " +
+                    "where s.idsedes=?1 " +
+                    "and f.fecha > NOW() " +
+                    "group by o.idobras")
+    public List<ObrasListado> listadoObraslienteByIdsede(int idsede, Pageable pageable);
 
 }

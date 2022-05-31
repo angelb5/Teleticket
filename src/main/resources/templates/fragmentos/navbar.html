@@ -80,7 +80,7 @@
                 </li>
                 <!--Mis tickets-->
                 <li th:if="${session.rol=='cliente'}" class="nav-item mx-2">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" th:href="@{cliente/tickets}">
                         <i class="fa-solid fa-ticket mx-1"></i>
                         Mis tickets
                     </a>
@@ -167,28 +167,69 @@
                 </div>
 
             </div>
-            <div class="modal-body px-7 pt-5">
+            <div th:if="${session.rol==null || session.rol=='cliente'}" class="modal-body px-7 pt-5">
                 <div class="row row-cols-1 row-cols-md-3">
                     <div class="col">
-                        <a class="link-white fs-26 fw-bold" th:href="@{/}">
+                        <a class="link-white fs-26 fw-bold" th:href="@{/sedes}">
                             <i class="fa-solid fa-location-dot me-2 text-redtele"></i>
                             Explora Sedes
                         </a>
                     </div>
                     <div class="col">
-                        <a class="link-white fs-26 fw-bold" th:href="@{/}">
+                        <a class="link-white fs-26 fw-bold" th:href="@{/obras}">
                             <i class="fa-solid fa-masks-theater me-2 text-redtele"></i>
                             Obras en Cartelera
                         </a>
                     </div>
                     <div class="col">
-                        <a class="link-white fs-26 fw-bold" th:href="@{/}">
+                        <a class="link-white fs-26 fw-bold" th:href="@{/personas}">
                             <i class="fa-solid fa-people-group me-2 text-redtele"></i>
                             Ver Actores y Directores
                         </a>
                     </div>
                 </div>
             </div>
+
+            <div th:if="${session.rol=='administrador'}" class="modal-body px-7 pt-5">
+                <div class="row row-cols-1 row-cols-md-3">
+                    <div class="col">
+                        <a class="link-white fs-26 fw-bold" th:href="@{/admin/sedes}">
+                            <i class="fa-solid fa-location-dot me-2 text-redtele"></i>
+                            Gestión de Sedes
+                        </a>
+                    </div>
+                    <div class="col">
+                        <a class="link-white fs-26 fw-bold" th:href="@{/admin/operadores}">
+                            <i class="fas fa-user-edit me-2 text-redtele"></i>
+                            Gestión de Operadores
+                        </a>
+                    </div>
+                    <div class="col">
+                        <a class="link-white fs-26 fw-bold" th:href="@{/admin/personas}">
+                            <i class="fa-solid fa-people-group me-2 text-redtele"></i>
+                            Gestión de Actores y Directores
+                        </a>
+                    </div>
+                    <div class="col">
+                        <a class="link-white fs-26 fw-bold" th:href="@{/admin/clientes}">
+                            <i class="fas fa-users me-2 text-redtele"></i>
+                            Listado de Clientes
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${session.rol=='operador'}" class="modal-body px-7 pt-5">
+                <div class="row row-cols-1 row-cols-md-3">
+                    <div class="col">
+                        <a class="link-white fs-26 fw-bold" th:href="@{/operador/obras}">
+                            <i class="fa-solid fa-masks-theater me-2 text-redtele"></i>
+                            Gestión de Obras
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
