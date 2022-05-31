@@ -71,7 +71,7 @@
                                     <a class="link-actor" href="#" >
                                         <div class="d-sm-flex align-items-sm-center">
                                             <div class="actor-image">
-                                                <img th:src="@{/img/katia.png}" th:alt="${director.nombre}">
+                                                <img th:src="@{'/image/persona/'+${director.id}}" th:alt="${director.nombre}">
                                             </div>
                                             <strong class="d-none d-sm-block ms-1 actorname" th:text="${director.nombre}">
                                             </strong>
@@ -90,7 +90,7 @@
                                     <a class="link-actor" href="#">
                                         <div class="d-sm-flex align-items-sm-center">
                                             <div class="actor-image">
-                                                <img th:src="@{/img/katia.png}" th:alt="${actor.nombre}">
+                                                <img th:src="@{'/image/persona/'+${actor.id}}" th:alt="${actor.nombre}">
                                             </div>
                                             <strong class="d-none d-sm-block ms-1 actorname" th:text="${actor.nombre}">
                                             </strong>

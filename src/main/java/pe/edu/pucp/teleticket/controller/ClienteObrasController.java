@@ -26,15 +26,6 @@ public class ClienteObrasController {
     private final int funcionesPaginas = 5;
     private final int maximoDestacados = 8;
 
-    private final List<String> formatos= Arrays.asList("media/png","media/jpeg", "image/jpeg", "image/png");
-
-    /*private boolean verificarFoto(MultipartFile file){
-        if(formatos.contains(file.getContentType().toLowerCase(Locale.ROOT))){
-            return true;
-        }
-        return false;
-    }*/
-
     @Autowired
     PersonaRepository personaRepository;
 
@@ -64,7 +55,7 @@ public class ClienteObrasController {
             return "redirect:/obras";
         }
         pagina = pagina < 1 ? 1 : pagina;
-        int paginas = (int) Math.ceil((float) obraRepository.contarListaObrasBusqueda(busqueda) / obrasPaginas);
+        int paginas = (int) Math.ceil((float) obraRepository.contarListaObrasCliente(busqueda) / obrasPaginas);
         pagina = pagina > paginas ? paginas : pagina;
         Pageable lista;
         if (pagina == 0) {

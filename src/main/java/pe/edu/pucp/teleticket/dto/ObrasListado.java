@@ -6,7 +6,9 @@ public interface ObrasListado {
 
     int getId();
 
-    String getOtitulos();
+    int getFotoprincipal();
+
+    String getOtitulo();
 
     Float getMinprecio();
 

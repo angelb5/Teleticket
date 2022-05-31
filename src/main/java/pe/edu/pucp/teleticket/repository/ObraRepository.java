@@ -36,17 +36,26 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
     public List<SedeFiltro> listarSedesSegunObra(Integer idObra);
 
     @Query(nativeQuery = true,
-            value = "select o.idobras 'id', o.titulo as 'otitulos' , min(f.costo) as 'minprecio'\n" +
-                    "from obras o\n" +
-                    "\t\tleft join funciones f on o.idobras = f.idobras \n" +
-                    "\t\twhere o.titulo like %?1%\n" +
+            value = "select o.idobras 'id', o.titulo as 'otitulo' , o.fotoprincipal as 'fotoprincipal', min(f.costo) as 'minprecio'\n" +
+                    "from obras o " +
+                    "inner join funciones f on o.idobras = f.idobras " +
+                    "where lower(o.titulo) like %?1% " +
+                    "and f.fecha > NOW() " +
                     "        group by o.idobras",
-            countQuery = "select count(*)\n" +
-                    "                    from obras o\n" +
-                    "                    where o.titulo  like %?1%\n" +
+            countQuery = "select count(*) " +
+                    "                    from obras o" +
+                    "                    inner join funciones f on o.idobras = f.idobras " +
+                    "                    where lower(o.titulo)  like %?1% " +
+                    "                    and f.fecha > NOW() " +
                     "                    group by o.idobras")
     public List<ObrasListado> listadoObrasliente(String busqueda, Pageable pageable);
 
+    @Query(nativeQuery = true, value = "select count(*) " +
+            "from obras o " +
+            "inner join funciones f " +
+            "where lower(o.titulo) like %?1% and f.fecha > NOW() " +
+            "group by o.idobras")
+    public long contarListaObrasCliente(String nombre);
 
 
 }

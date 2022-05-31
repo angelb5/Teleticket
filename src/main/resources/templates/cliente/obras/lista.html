@@ -1,55 +1,48 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Obras')"></head>
-    <body>
-        <nav th:replace="fragmentos/navbar.html :: navbar('obras')"></nav>
-        <!--Contenidos-->
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Obras')"></head>
+<body>
+<nav th:replace="fragmentos/navbar.html :: navbar('obras')"></nav>
+<!--Contenidos-->
 
-        <div class="container py-3">
-            <!-- Lista obras -->
+<div class="container py-3">
+    <!-- Lista obras -->
 
-            <div class="row row-cols-1 row-cols-md-4 g-4 py-3">
-                <div class="col" th:each="obras : ${listaObras}">
-                    <!--Card 1-->
-                    <div class="col">
-                        <div class="card h-100 position-relative">
-                            <a class="card-tele" href="#">
-                                <div class="card-tele-img">
-                                    <img th:src="@{'/image/obra/'+${obras.id==null? 0 : obras.id}}" alt="Obras"
-                                         class="img-fluid rounded-start img-cover"/>
-                                </div>
-                                <div class="card-tele-body">
-                                    <div class="card-tele-title" th:text="${obras.otitulos}">Antes de decirte adiós
-                                    </div>
-                                </div>
-                            </a>
-                            <div class="card-footer card-tele-footer">
-                                <div class="d-flex align-items-end">
-                                    <span>Desde&nbsp;&nbsp;</span>
-                                    <span class="fw-bold fs-14" th:text="${obras.minprecio}">S/ 35.00</span>
-                                </div>
-
-                                <button class="btn btn-redtele" th:href="@{'/cliente/obras/obra/'+ ${obras.id}}">
-                                    Comprar
-                                </button>
+    <div class="row row-cols-1 row-cols-md-4 g-4 py-3">
+        <div class="col" th:each="obras : ${listaObras}">
+            <!--Card 1-->
+            <div class="col">
+                <div class="card h-100 position-relative">
+                    <a class="card-tele" href="#">
+                        <div class="card-tele-img">
+                            <img th:src="@{'/image/obra/'+${obras.fotoprincipal}}" alt="Obras"
+                                 class="img-fluid rounded-start img-cover"/>
+                        </div>
+                        <div class="card-tele-body">
+                            <div class="card-tele-title" th:text="${obras.otitulo}">Antes de decirte adiós
                             </div>
                         </div>
-                    </div>
+                    </a>
+                    <div class="card-footer card-tele-footer">
+                        <div class="d-flex align-items-end">
+                            <span>Desde&nbsp;&nbsp;</span>
+                            <span class="fw-bold fs-14" th:text="'S/ '+${#numbers.formatDecimal(obras.minprecio,1,2,'POINT')}">S/ 35.00</span>
+                        </div>
 
+                        <a class="btn btn-redtele" th:href="@{'/obras/'+ ${obras.id}}">
+                            Comprar
+                        </a>
+                    </div>
                 </div>
             </div>
-            <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
+
         </div>
-                <!--Fin de contenidos-->
+    </div>
+    <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
+</div>
+<!--Fin de contenidos-->
 
-                <footer th:replace="fragmentos/footer.html :: footer"></footer>
-                <!-- End your project here-->
-
-
-                <!-- Custom scripts -->
-                <script type="text/javascript">
-
-                </script>
-    </body>
-                <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+</body>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 </html>
