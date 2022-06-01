@@ -138,8 +138,6 @@ public class OperadorFuncionesController {
         Optional<Funcion> optionalFuncion = funcionRepository.findById(idfuncion);
         if(idfuncion==0 || optionalFuncion.isEmpty() ) {return "redirect:/operador/";}
 
-        int idobra = funcion.getObra().getId();
-        Optional<Obra> optionalObra = obraRepository.findById(idobra);
         Funcion funcionDB = optionalFuncion.get();
         funcion.setSala(funcionDB.getSala());
         funcion.setObra(funcionDB.getObra());
@@ -176,7 +174,7 @@ public class OperadorFuncionesController {
             model.addAttribute("funcion", funcion);
             return "operador/funciones/editaFrm";
         }else{
-                LocalTime fin = funcion.getInicio().plusMinutes(optionalObra.get().getDuracion());
+                LocalTime fin = funcion.getInicio().plusMinutes(funcion.getObra().getDuracion());
                 funcion.setFin(fin);
                 List<Funcion> funcionesConflictoList = funcionRepository.findFuncionesEnConflictoId(funcion.getFecha(),funcion.getInicio(),fin,funcion.getObra().getId(), funcion.getSala().getId(), funcion.getId());
                 if(funcionesConflictoList.size()>0){
