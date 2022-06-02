@@ -27,6 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/admin", "/admin/**").hasAuthority("administrador")
                 .antMatchers("/operador", "/operador/**").hasAuthority("operador")
+                .antMatchers("/correocambiocontrasena").anonymous()
                 .antMatchers("/cliente", "/cliente/**", "/carrito", "/carrito/*").access(" isAuthenticated() and not(hasAnyAuthority('operador','administrador')) ")
                 .antMatchers("/oauth2", "/oauth2/**").access("not (hasAnyAuthority('cliente', 'operador', 'administrador'))")
                 .antMatchers("/sedes","/sedes/**","/obras","/obras/**","/personas","/personas/**").access("not (hasAnyAuthority('operador','administrador'))")

@@ -17,7 +17,6 @@
                     Sede
                 </div>
             </div>
-            </div>
             <form method="post" th:action="@{'/admin/sedes/'+${sede.id==0? 'guardar': 'actualizar'}}" th:object="${sede}" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col">
@@ -37,7 +36,7 @@
                         </div>
                         <label class="form-label">Estado</label>
                         <div class="row" th:if="${sede.id==0}">
-                                <p class="fw-bold" >Disponible</p>
+                            <p class="fw-bold" >Disponible</p>
                         </div>
 
                         <div class="d-flex align-items-center" th:unless="${sede.id==0}">
@@ -100,7 +99,6 @@
                     </div>
                 </div>
             </form>
-
         </div>
     </div>
 </div>

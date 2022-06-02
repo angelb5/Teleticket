@@ -111,8 +111,14 @@ public class SesionController {
     public String correoCambioContrasena(){return "/sesion/correocambiocontrasena";}
 
     @GetMapping("/cambiocontrasena")
-    public String cambioContrasena(@RequestParam("token") String token, Model model){
+    public String cambioContrasena(@RequestParam("token") String token, Model model, HttpSession session, RedirectAttributes attr){
         if(token.equalsIgnoreCase("")){
+            return "redirect:/";
+        }
+
+        if(session.getAttribute("usuario")!=null||session.getAttribute("proveedor")!=null){
+            attr.addFlashAttribute("error",1);
+            attr.addFlashAttribute("msg", "No puedes acceder a esta página porque tienes una sesión activa");
             return "redirect:/";
         }
 
@@ -353,7 +359,7 @@ public class SesionController {
     @PostMapping("/cambiarcontrasena")
     public String cambiarContrasena(@RequestParam("token") String token, @RequestParam("contrasena") String contrasena,
                                     @RequestParam("confcontrasena") String confcontrasena,
-                                    RedirectAttributes attr, Model model ){
+                                    RedirectAttributes attr, Model model, HttpSession session ){
 
         Cliente cliente = clienteRepository.findByToken(token);
         Operador operador = operadorRepository.findByToken(token);
