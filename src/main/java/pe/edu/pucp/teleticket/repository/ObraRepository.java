@@ -83,4 +83,20 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
                     "group by o.idobras")
     public List<ObrasListado> listadoObraslienteByIdsede(int idsede, Pageable pageable);
 
+    @Query(nativeQuery = true,
+    value = "select o.idobras as id,  o.titulo as otitulo, o.fotoprincipal as fotoprincipal, if(f.fecha>NOW(), min(f.costo),null)  as minprecio from actores a\n" +
+            "inner join obras o on a.idobra = o.idobras\n" +
+            "left join funciones f on f.idobras = o.idobras\n" +
+            "where a.idpersona =?1 \n" +
+            "group by o.idobras")
+    public List<ObrasListado> findActuacionesByIdpersona(int id);
+
+    @Query(nativeQuery = true,
+    value = "select o.idobras as id,  o.titulo as otitulo, o.fotoprincipal as fotoprincipal, if(f.fecha>NOW(), min(f.costo),null) as minprecio from directores d\n" +
+            "inner join obras o on d.idobra = o.idobras\n" +
+            "left join funciones f on f.idobras = o.idobras\n" +
+            "where d.idpersona =?1 \n" +
+            "group by o.idobras")
+    public List<ObrasListado> findDireccionesByIdpersona(int id);
+
 }

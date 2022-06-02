@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = ${persona.nombre})"></head>
+<body>
+<nav th:replace="fragmentos/navbar.html :: navbar('Todo')"></nav>
+<!--Contenidos-->
+<div class="position-relative">
+    <!--Fondo-->
+    <div class="w-100 overflow-hidden position-absolute d-table" style="height: -webkit-fill-available;">
+        <div class="blur-head d-table-row" style="height: 290px;">
+            <img th:src="@{'/image/persona/'+${persona.id}}">
+        </div>
+    </div>
+
+    <!--Persona-->
+    <div class="container py-3 position-relative">
+        <!--Información-->
+        <div class="mt-5 text-center mb-3">
+            <div class="rounded-7 overflow-hidden text-center">
+                <div class="actor-page d-inline-block">
+                    <img th:src="@{'/image/persona/'+${persona.id}}">
+                </div>
+            </div>
+            <div>
+                <div class="title-30" th:text="${persona.nombre}">
+                </div>
+                <div>
+                    <div class="fs-20 align-items-end" th:if="${persona.obrasdirector>0}">
+                        Dirección&nbsp;&nbsp;
+                        <span th:if="${persona.pdireccion.isPresent()}">
+                            <strong class="fw-bold align-middle" th:text="${persona.pdireccion.get()}">
+                            4.3
+                            </strong>
+                            <strong class="align-middle">
+                                / 5
+                            </strong>
+                            <i class="ms-1 fa-solid fa-star fs-22"></i>
+                        </span>
+                        <span th:if="${persona.pdireccion.isEmpty()}" class="fw-bold align-middle">
+                            Sin puntuación
+                        </span>
+
+                    </div>
+                    <div class="fs-20 align-items-end" th:if="${persona.obrasactor>0}">
+                        Actuación&nbsp;&nbsp;
+                        <span th:if="${persona.pactuacion.isPresent()}">
+                            <strong class="fw-bold align-middle" th:text="${persona.pdireccion.get()}">
+                            4.3
+                            </strong>
+                            <strong class="align-middle">
+                                / 5
+                            </strong>
+                            <i class="ms-1 fa-solid fa-star fs-22"></i>
+                        </span>
+                        <span th:if="${persona.pactuacion.isEmpty()}" class="fw-bold align-middle">
+                            Sin puntuación
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="title-24" th:if="${direcciones.size()>0}">
+            Dirige en
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-4 g-4 py-3" th:if="${direcciones.size()>0}">
+            <div class="col" th:each="obras : ${direcciones}">
+                <!--Card-->
+                <div class="col">
+                    <div class="card h-100 position-relative">
+                        <a class="card-tele" href="#">
+                            <div class="card-tele-img">
+                                <img th:src="@{'/image/obra/'+${obras.fotoprincipal}}" alt="Obras"
+                                     class="img-fluid rounded-start img-cover"/>
+                            </div>
+                            <div class="card-tele-body">
+                                <div class="card-tele-title" th:text="${obras.otitulo}">Antes de decirte adiós
+                                </div>
+                            </div>
+                        </a>
+                        <div class="card-footer card-tele-footer" th:if="${obras.minprecio!=null}">
+                            <div class="d-flex align-items-end">
+                                <span>Desde&nbsp;&nbsp;</span>
+                                <span class="fw-bold fs-14" th:text="'S/ '+${#numbers.formatDecimal(obras.minprecio,1,2,'POINT')}">S/ 35.00</span>
+                            </div>
+
+                            <a class="btn btn-redtele" th:href="@{'/obras/'+ ${obras.id}}">
+                                Comprar
+                            </a>
+                        </div>
+                        <div class="card-footer card-tele-footer" th:if="${obras.minprecio==null}">
+                            <div class="d-flex align-items-end">
+                                <span class="note-card-footer">
+                                    Sin funciones
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="title-24" th:if="${actuaciones.size()>0}">
+            Actúa en
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-4 g-4 py-3" th:if="${actuaciones.size()>0}">
+            <div class="col" th:each="obras : ${actuaciones}">
+                <!--Card-->
+                <div class="col">
+                    <div class="card h-100 position-relative">
+                        <a class="card-tele" href="#">
+                            <div class="card-tele-img">
+                                <img th:src="@{'/image/obra/'+${obras.fotoprincipal}}" alt="Obras"
+                                     class="img-fluid rounded-start img-cover"/>
+                            </div>
+                            <div class="card-tele-body">
+                                <div class="card-tele-title" th:text="${obras.otitulo}">Antes de decirte adiós
+                                </div>
+                            </div>
+                        </a>
+                        <div class="card-footer card-tele-footer" th:if="${obras.minprecio!=null}">
+                            <div class="d-flex align-items-end">
+                                <span>Desde&nbsp;&nbsp;</span>
+                                <span class="fw-bold fs-14" th:text="'S/ '+${#numbers.formatDecimal(obras.minprecio,1,2,'POINT')}">S/ 35.00</span>
+                            </div>
+
+                            <a class="btn btn-redtele" th:href="@{'/obras/'+ ${obras.id}}">
+                                Comprar
+                            </a>
+                        </div>
+                        <div class="card-footer card-tele-footer" th:if="${obras.minprecio==null}">
+                            <div class="d-flex align-items-end">
+                                <span class="note-card-footer">
+                                    Sin funciones
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!--Footer-->
+    <footer th:replace="fragmentos/footer.html :: footer"></footer>
+</div>
+<!--Fin de contenidos-->
+
+</body>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script  type="text/javascript" th:src="@{/js/busqueda.js}"></script>
+
+</html>

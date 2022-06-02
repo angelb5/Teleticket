@@ -97,4 +97,18 @@ public interface PersonaRepository extends JpaRepository<Persona,Integer> {
             "where idpersonas=?1")
     public Optional<Persona> buscarPersona(Integer id);
 
+    @Query(nativeQuery = true,
+            value = "select p.idpersonas as 'id', p.nombre as 'nombre', round(avg(if(c.rol='Actuacion',c.estrellas,null)),1) as 'pactuacion',\n" +
+                    "                                       round(avg(if(c.rol='Direccion',c.estrellas,null)),1) as 'pdireccion', p.estado, co.actuaciones as 'obrasactor', co.direcciones as 'obrasdirector'\n" +
+                    "                                from personas p\n" +
+                    "                                        left join calificacionpersonas c on p.idpersonas = c.idpersonas\n"+
+                    "                                        inner join (select p.idpersonas as 'id',count(a.idobra) as 'actuaciones', count(d.idobra) as 'direcciones' from personas p\n" +
+                    "                                       left join directores d on p.idpersonas = d.idpersona\n" +
+                    "                                        left join actores a on p.idpersonas = a.idpersona\n" +
+                    "                                                   group by p.idpersonas) co on p.idpersonas = co.id\n" +
+                    "                             where p.idpersonas = ?1 " +
+                    "                                group by p.idpersonas")
+    public PersonasListado findPersonasclienteById(int id);
+
+
 }
