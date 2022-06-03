@@ -68,7 +68,6 @@ public class ClientePersonasController {
     @GetMapping("/{idPath}")
     public String gestionSede(Model model, @PathVariable("idPath") String idPath){
         int id=0;
-        LocalDate fecha;
         try{
             id= Integer.parseInt(idPath);
         } catch (Exception e){

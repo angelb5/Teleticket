@@ -55,7 +55,7 @@
                                 <b class="fw-bold" th:text="'S/ '+${#numbers.formatDecimal(compra.total,1,2,'POINT')}"></b>
                             </td>
                             <td>
-                                <a th:href="@{'/cliente/tickets/'+compra.id}" class="btn btn-redtele fw-bold btn-sm btn-rounded">
+                                <a th:href="@{'/cliente/tickets/vigentes/'+${compra.idcompra}}" class="btn btn-redtele fw-bold btn-sm btn-rounded">
                                     Ver detalles
                                 </a>
                             </td>
@@ -70,7 +70,32 @@
     </div>
 </div>
 <div th:replace="fragmentos/navbar.html :: menu"></div>
+<!-- Modal msg -->
+<div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
+                </div>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class=" w-100 d-flex justify-content-center mb-3">
+                    <i class="fa-solid fa-circle-check" style="font-size: 50px" th:class="${error==null? 'fa-solid fa-circle-check text-success': 'fa-solid fa-circle-xmark text-danger'  }"></i>
+                </div>
+                <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
-
+<script type="text/javascript" th:if="${msg != null}">
+    $(window).on('load', function() {
+        $('#msgModal').modal('show');
+    });
+</script>
 </html>

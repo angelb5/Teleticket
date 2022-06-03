@@ -19277,6 +19277,14 @@ a{
 
 /*Titulos*/
 
+.title-20{
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--mdb-black);
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important
+}
+
 .title-22{
   font-size: 22px;
   font-weight: 600;

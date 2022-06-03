@@ -2,8 +2,10 @@ package pe.edu.pucp.teleticket.repository;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import pe.edu.pucp.teleticket.dto.FuncionesCompra;
 import pe.edu.pucp.teleticket.entity.Historial;
 
@@ -72,4 +74,15 @@ public interface HistorialRepository extends JpaRepository<Historial, Integer> {
                     "inner join Funcion f on f.id = h.funcion.id " +
                     "where h.idclientes = :idclientes and h.estado = 'Comprado' and f.fecha < current_date")
     List<Historial> findComprasAsistidas(int idclientes, Pageable pageable);
+
+    @Query(value = "select new Historial(h.id, h.idclientes, h.funcion, h.idcompra, h.total, h.numtickets, h.fechacompra) " +
+            "from Historial h " +
+            "inner join Funcion f on f.id = h.funcion.id " +
+            "where h.idclientes = :idclientes and h.idcompra= :idcompra and h.estado = 'Comprado' and f.fecha > current_date")
+    Historial findVigenteById(int idclientes, String idcompra);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "update historialcompras set estado='Cancelado' where idcompra = ?1")
+    void cancelarCompra(String idcompra);
 }

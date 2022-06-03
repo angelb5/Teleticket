@@ -68,7 +68,7 @@
                         <div class="row row-cols-3 mb-3">
                             <div class="col mb-2" th:each="director : ${obra.directores}">
                                 <div class="card shadow-0">
-                                    <a class="link-actor" href="#" >
+                                    <a class="link-actor" th:href="@{'/personas/'+${director.id}}">
                                         <div class="d-sm-flex align-items-sm-center">
                                             <div class="actor-image">
                                                 <img th:src="@{'/image/persona/'+${director.id}}" th:alt="${director.nombre}">
@@ -87,7 +87,7 @@
                         <div class="row row-cols-3 mb-3">
                             <div class="col mb-2" th:each="actor : ${obra.actores}">
                                 <div class="card shadow-0">
-                                    <a class="link-actor" href="#">
+                                    <a class="link-actor" th:href="@{'/personas/'+${actor.id}}">
                                         <div class="d-sm-flex align-items-sm-center">
                                             <div class="actor-image">
                                                 <img th:src="@{'/image/persona/'+${actor.id}}" th:alt="${actor.nombre}">
