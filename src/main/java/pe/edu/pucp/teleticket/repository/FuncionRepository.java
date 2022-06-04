@@ -41,11 +41,11 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
     List<Funcion> findAllByObraOrderByFechaAsc(Obra obra, Pageable pageable);
 
     @Query(nativeQuery = true,
-            value = "select * from funciones where idsalas = :idsalas and estado = 'Activa' and fecha > DATE(now())")
+            value = "select * from funciones where idsalas = :idsalas and estado = 'Activa' and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW()))")
     public List<Funcion> getVigentesByIdsalas(int idsalas);
 
     @Query(nativeQuery = true,
-            value = "SELECT max(stock) FROM funciones where idsalas = :idsalas and estado = 'Activa' and fecha > DATE(now())")
+            value = "SELECT max(stock) FROM funciones where idsalas = :idsalas and estado = 'Activa' and (f.fecha > NOW()  or (f.fecha = current_date()  and f.inicio>NOW()))")
     public long getMaxStockByIdsala(int idsalas);
 
 
@@ -55,7 +55,7 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
                     "inner join sedes se on s.idsedes = se.idsedes " +
                     "where se.idsedes = :idsedes and " +
                     "f.estado = 'Activa' " +
-                    "and f.fecha > DATE(now());")
+                    "and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW()))")
     public List<Funcion> getVigentesByIdsedes(int idsedes);
 
     @Query(nativeQuery = true, value = "select * from funciones inner join salas s on funciones.idsalas = s.idsalas\n" +
@@ -149,7 +149,7 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
             "inner join obras o on f.idobras = o.idobras " +
             "inner join salas s on f.idsalas = s.idsalas " +
             "inner join sedes se on se.idsedes = s.idsedes " +
-            "where f.idfunciones=?1  and f.estado = 'Activa' and f.fecha > NOW() " +
+            "where f.idfunciones=?1  and f.estado = 'Activa' and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW()))" +
             "group by ss.idfunciones")
     public FuncionesCompra getFuncionesCompraPorId(int idfunciones);
 
@@ -160,7 +160,7 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
             "where f.obra.id=?1 and f.fecha=?2 and f.estado = 'Activa' ")
     public List<SedesCompra> listaSedesPorObraFecha(int idobra, LocalDate fecha);
 
-    @Query(nativeQuery = true, value = "select distinct fecha from funciones where idobras=?1 and fecha > NOW() " +
+    @Query(nativeQuery = true, value = "select distinct fecha from funciones where idobras=?1 and fecha >= current_date() " +
             "order by fecha asc")
     public List<String> listaFechasDeObra(int idobras);
 }

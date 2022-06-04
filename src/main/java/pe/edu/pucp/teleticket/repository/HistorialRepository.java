@@ -47,39 +47,47 @@ public interface HistorialRepository extends JpaRepository<Historial, Integer> {
 
     @Query(nativeQuery = true, value = "select count(*) from historialcompras h " +
             "inner join funciones f on f.idfunciones = h.idfunciones " +
-            "where h.idclientes = :idclientes and h.estado='Comprado' and f.fecha > NOW()")
+            "where h.idclientes = :idclientes and h.estado='Comprado' and (f.fecha > NOW()  or (f.fecha = current_date() and f.fin>=NOW()))")
     public long contarComprasVigentes(int idclientes);
 
     @Query(nativeQuery = true, value = "select count(*) from historialcompras h " +
             "inner join funciones f on f.idfunciones = h.idfunciones " +
-            "where h.idclientes = :idclientes and h.estado='Comprado' and f.fecha < NOW()")
+            "where h.idclientes = :idclientes and h.estado='Comprado' and (f.fecha < NOW() or (f.fecha = current_date() and f.fin<NOW()))")
     public long contarComprasAsistidas(int idclientes);
 
     @Query(value = "select new Historial(h.id, h.idclientes, h.funcion, h.idcompra, h.total, h.numtickets, h.fechacompra) " +
             "from Historial h " +
             "inner join Funcion f on f.id = h.funcion.id " +
-            "where h.idclientes = :idclientes and h.estado = 'Comprado' and f.fecha > current_date ",
+            "where h.idclientes = :idclientes and h.estado = 'Comprado' and (f.fecha > current_date or (f.fecha = current_date  and f.fin>=current_time)) " +
+            "order by h.fechacompra desc",
     countQuery = "select count(h) " +
             " from Historial h  " +
             "inner join Funcion f on f.id = h.funcion.id " +
-            "where h.idclientes = :idclientes and h.estado = 'Comprado' and f.fecha > current_date")
+            "where h.idclientes = :idclientes and h.estado = 'Comprado' and (f.fecha > current_date or (f.fecha = current_date  and f.fin>= current_time))")
     List<Historial> findComprasVigentes(int idclientes, Pageable pageable);
 
     @Query(value = "select new Historial(h.id, h.idclientes, h.funcion, h.idcompra, h.total, h.numtickets, h.fechacompra) " +
             "from Historial h " +
             "inner join Funcion f on f.id = h.funcion.id " +
-            "where h.idclientes = :idclientes and h.estado = 'Comprado' and f.fecha < current_date ",
+            "where h.idclientes = :idclientes and h.estado = 'Comprado' and (f.fecha < current_date or (f.fecha = current_date  and f.fin < current_time)) " +
+            "order by h.fechacompra desc",
             countQuery = "select count(h) " +
                     " from Historial h  " +
                     "inner join Funcion f on f.id = h.funcion.id " +
-                    "where h.idclientes = :idclientes and h.estado = 'Comprado' and f.fecha < current_date")
+                    "where h.idclientes = :idclientes and h.estado = 'Comprado' and (f.fecha < current_date or (f.fecha = current_date  and f.fin < current_time)")
     List<Historial> findComprasAsistidas(int idclientes, Pageable pageable);
 
     @Query(value = "select new Historial(h.id, h.idclientes, h.funcion, h.idcompra, h.total, h.numtickets, h.fechacompra) " +
             "from Historial h " +
             "inner join Funcion f on f.id = h.funcion.id " +
-            "where h.idclientes = :idclientes and h.idcompra= :idcompra and h.estado = 'Comprado' and f.fecha > current_date")
+            "where h.idclientes = :idclientes and h.idcompra= :idcompra and h.estado = 'Comprado' and (f.fecha > current_date or (f.fecha = current_date  and f.fin>=current_time))")
     Historial findVigenteById(int idclientes, String idcompra);
+
+    @Query(value = "select new Historial(h.id, h.idclientes, h.funcion, h.idcompra, h.total, h.numtickets, h.fechacompra) " +
+            "from Historial h " +
+            "inner join Funcion f on f.id = h.funcion.id " +
+            "where h.idclientes = :idclientes and h.idcompra= :idcompra and h.estado = 'Comprado' and (f.fecha < current_date or (f.fecha = current_date  and f.fin < current_time))")
+    Historial findAsistidaById(int idclientes, String idcompra);
 
     @Transactional
     @Modifying

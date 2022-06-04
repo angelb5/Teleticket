@@ -52,9 +52,9 @@ public class ClienteTicketsController {
         pagina = pagina>paginas? paginas : pagina;
         pagina = pagina<1? 1 : pagina;
         Pageable lista = PageRequest.of(pagina-1, historialPaginas);
-        List<Historial> comprasVigentes = historialRepository.findComprasAsistidas(clienteSes.getId(), lista);
+        List<Historial> comprasAsistidas = historialRepository.findComprasAsistidas(clienteSes.getId(), lista);
 
-        model.addAttribute("comprasVigentes",comprasVigentes);
+        model.addAttribute("comprasAsistidas",comprasAsistidas);
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
 
@@ -62,7 +62,21 @@ public class ClienteTicketsController {
     }
 
     @GetMapping("/vigentes/{idPath}")
-    public String gestionSede(Model model, @PathVariable("idPath") String idcompra, HttpSession session){
+    public String mostrarTicketVigente(Model model, @PathVariable("idPath") String idcompra, HttpSession session){
+
+        Cliente clienteSes = (Cliente) session.getAttribute("usuario");
+
+        Optional<Historial> optionalHistorial = Optional.ofNullable(historialRepository.findVigenteById(clienteSes.getId(),idcompra));
+        if(optionalHistorial.isEmpty()){return "redirect:/cliente/tickets";}
+        Historial compra = optionalHistorial.get();
+
+        model.addAttribute("ticket", compra);
+
+        return "/cliente/tickets/vigente";
+    }
+
+    @GetMapping("/califica/{idPath}")
+    public String mostrarTicketAsistido(Model model, @PathVariable("idPath") String idcompra, HttpSession session){
 
         Cliente clienteSes = (Cliente) session.getAttribute("usuario");
 

@@ -22,7 +22,7 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
     @Query(nativeQuery = true, value = "select count(*) from obras o where lower(o.titulo) like %?1% order by o.titulo asc")
     public long contarListaObrasBusqueda(String nombre);
 
-    @Query(nativeQuery = true, value = "select count(*)  from funciones f where datediff(f.fecha, now())>0 and f.idobras=?1")
+    @Query(nativeQuery = true, value = "select count(*)  from funciones f where (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW())) and f.idobras=?1")
     public long funcionesVigentes(Integer idObra);
 
     @Query(nativeQuery = true, value = "select count(*) from obras  where destacado = 1")
@@ -40,20 +40,20 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
                     "from obras o " +
                     "inner join funciones f on o.idobras = f.idobras " +
                     "where lower(o.titulo) like %?1% " +
-                    "and f.fecha > NOW() " +
+                    "and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW())) " +
                     "        group by o.idobras",
             countQuery = "select count(distinct o.idobras) " +
                     "                    from obras o" +
                     "                    inner join funciones f on o.idobras = f.idobras " +
                     "                    where lower(o.titulo)  like %?1% " +
-                    "                    and f.fecha > NOW() " +
+                    "                    and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW())) " +
                     "                    group by o.idobras")
     public List<ObrasListado> listadoObrasliente(String busqueda, Pageable pageable);
 
     @Query(nativeQuery = true, value = "select count(distinct o.idobras) " +
             "from obras o " +
             "inner join funciones f on o.idobras = f.idobras " +
-            "where lower(o.titulo) like %?1% and f.fecha > NOW() " +
+            "where lower(o.titulo) like %?1% and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW())) " +
             "group by o.idobras")
     public long contarListaObrasCliente(String nombre);
 
@@ -62,7 +62,7 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
             "from obras o " +
             "inner join funciones f on o.idobras = f.idobras " +
             "inner join salas s on f.idsalas = s.idsalas " +
-            "where s.idsedes=?1 and f.fecha > NOW() " +
+            "where s.idsedes=?1 and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW())) " +
             "group by o.idobras")
     public Integer contarObrasClienteByIdsede(int idsede);
 
@@ -72,19 +72,19 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
                     "inner join funciones f on o.idobras = f.idobras " +
                     "inner join salas s on f.idsalas = s.idsalas " +
                     "where s.idsedes=?1 " +
-                    "and f.fecha > NOW() " +
+                    "and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW())) " +
                     "        group by o.idobras",
             countQuery = "select count(distinct o.idobras) " +
                     "from obras o " +
                     "inner join funciones f on o.idobras = f.idobras " +
                     "inner join salas s on f.idsalas = s.idsalas " +
                     "where s.idsedes=?1 " +
-                    "and f.fecha > NOW() " +
+                    "and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW())) " +
                     "group by o.idobras")
     public List<ObrasListado> listadoObraslienteByIdsede(int idsede, Pageable pageable);
 
     @Query(nativeQuery = true,
-    value = "select o.idobras as id,  o.titulo as otitulo, o.fotoprincipal as fotoprincipal, if(f.fecha>NOW(), min(f.costo),null)  as minprecio from actores a\n" +
+    value = "select o.idobras as id,  o.titulo as otitulo, o.fotoprincipal as fotoprincipal, if(timestamp(f.fecha,f.inicio)>=NOW(), min(f.costo),null)  as minprecio from actores a\n" +
             "inner join obras o on a.idobra = o.idobras\n" +
             "left join funciones f on f.idobras = o.idobras\n" +
             "where a.idpersona =?1 \n" +
@@ -92,7 +92,7 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
     public List<ObrasListado> findActuacionesByIdpersona(int id);
 
     @Query(nativeQuery = true,
-    value = "select o.idobras as id,  o.titulo as otitulo, o.fotoprincipal as fotoprincipal, if(f.fecha>NOW(), min(f.costo),null) as minprecio from directores d\n" +
+    value = "select o.idobras as id,  o.titulo as otitulo, o.fotoprincipal as fotoprincipal, if(timestamp(f.fecha,f.inicio)>=NOW(), min(f.costo),null) as minprecio from directores d\n" +
             "inner join obras o on d.idobra = o.idobras\n" +
             "left join funciones f on f.idobras = o.idobras\n" +
             "where d.idpersona =?1 \n" +
