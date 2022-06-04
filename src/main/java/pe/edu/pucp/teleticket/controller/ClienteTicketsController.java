@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pe.edu.pucp.teleticket.dto.PersonasListado;
 import pe.edu.pucp.teleticket.entity.Cliente;
+import pe.edu.pucp.teleticket.entity.Funcion;
 import pe.edu.pucp.teleticket.entity.Historial;
 import pe.edu.pucp.teleticket.repository.HistorialRepository;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,6 +71,9 @@ public class ClienteTicketsController {
         Optional<Historial> optionalHistorial = Optional.ofNullable(historialRepository.findVigenteById(clienteSes.getId(),idcompra));
         if(optionalHistorial.isEmpty()){return "redirect:/cliente/tickets";}
         Historial compra = optionalHistorial.get();
+        if(compra.getFuncion().getFecha().isEqual(LocalDate.now())){
+            model.addAttribute("nocancelable", "La compra no puede cancelarse por ser el día de la función");
+        }
 
         model.addAttribute("ticket", compra);
 
@@ -99,6 +104,11 @@ public class ClienteTicketsController {
         if(optCompra.isEmpty()){
             return "redirect:/cliente/tickets";
         }
+        Funcion f = optCompra.get().getFuncion();
+        if(LocalDate.now().isEqual(f.getFecha())){
+            return "redirect:/cliente/tickets";
+        }
+
         historialRepository.cancelarCompra(idcompra);
         attr.addFlashAttribute("msg", "Su compra ha sido cancelada");
 
