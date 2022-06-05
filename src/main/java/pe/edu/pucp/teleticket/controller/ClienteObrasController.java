@@ -108,7 +108,6 @@ public class ClienteObrasController {
         model.addAttribute("sedes", sedesCompraList);
         model.addAttribute("obra", optionalObra.get());
         model.addAttribute("fotos", fotoObraRepository.findAllIdByIdObras(id));
-        model.addAttribute("estrellas", calificacionObraRepository.calificaciones);
 
         return "/cliente/obras/obra";
     }

@@ -19842,3 +19842,21 @@ input[type=number] {
   height: 100%;
   object-fit: cover;
 }
+
+/*Puntuar*/
+.puntuar{
+  background-color: #FFFFFF;
+  padding: 0.75rem;
+  color: var(--mdb-redisabled);
+  font-weight: 700;
+  border-radius: 1rem;
+  font-size: 14px;
+  line-height: 1.5;
+  border:0;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.puntuar:hover{
+  background-color: lightgrey;
+  color: var(--mdb-redtele);
+}

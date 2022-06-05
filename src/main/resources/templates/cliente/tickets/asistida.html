@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Califica')"></head>
+<head>
+    <link rel="stylesheet" th:href="@{/css/tables.css}" />
+</head>
+<body>
+
+<nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
+<div class="d-flex" >
+    <div th:replace="fragmentos/sidebar-cliente.html :: sidebar('Califica')"></div>
+    <div class="main-cliente">
+        <div class="container">
+            <div class="row">
+                <div class="col mb-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item title-30" style="color: #757575">Califica</li>
+                            <li class="breadcrumb-item title-30" th:text="${ticket.idcompra}"></li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-9 mb-3">
+                    <div class="title-20 text-black fw-bold">
+                        <i class="fas fa-theater-masks"></i>
+                        Obra
+                    </div>
+                    <div class="text-black-50 fs-18">
+                        <span th:text="${ticket.funcion.obra.titulo}" ></span>
+                    </div>
+
+                    <div class="title-20 text-black fw-bold">
+                        <i class="fa-solid fa-location-dot"></i>
+                        Sede
+                    </div>
+                    <div class="text-black-50 fs-18">
+                        <span th:text="${ticket.funcion.sala.sede.nombre} + ' - Sala '+${ticket.funcion.sala.numero}" ></span>
+                    </div>
+                    <div class="text-black-50 fs-18">
+                        <span th:text="${ticket.funcion.sala.sede.direccion}" ></span>
+                    </div>
+
+                    <div class="title-20 text-black fw-bold">
+                        <i class="fa-solid fa-clock"></i>
+                        Horario
+                    </div>
+                    <div class="text-black-50 fs-18">
+                        <span th:text="${#temporals.format(ticket.funcion.fecha, 'dd MMMM, yyyy')}+ ' - '+${ticket.funcion.inicio}" ></span>
+                    </div>
+
+                    <div class="title-20 text-black fw-bold">
+                        <i class="fas fa-ticket "></i>
+                        Tickets
+                    </div>
+                    <div class="text-black-50 fs-18">
+                        <span th:text="${ticket.numtickets}" ></span>
+                    </div>
+                </div>
+                <div class="col-md-3 text-end mb-3">
+                    <div class="fs-16 mb-2">
+                        <span class="text-black-50 align-content-end">Código de retiro: </span>
+                        <span class="text-redtele fw-bold align-content-end" th:text="${ticket.idcompra}">XYZ123</span>
+                    </div>
+                    <img src="https://es.qr-code-generator.com/wp-content/themes/qr/new_structure/markets/core_market/generator/dist/generator/assets/images/websiteQRCode_noFrame.png"
+                         class="w-100 border-1 border-black" style="border-style: solid;" alt="qr"/>
+                </div>
+            </div>
+            <div class="row align-items-end">
+                <div class="col-md-9 mb-5 title-20">
+                    <span >
+                        Total:
+                    </span>
+                    <span class="text-redtele fs-22" th:text="'S/ '+${#numbers.formatDecimal(ticket.total,1,2,'POINT')}">
+                    </span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col fs-22 fw-bold">
+                    Informacion de la obra
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-3 mb-2">
+                    <img th:src="@{|/image/obra/${ticket.funcion.obra.fotoprincipal}|}" class="w-100 rounded-6" />
+                </div>
+                <div class="col-md-7 mb-2">
+                    <div class="title-22 px-2" th:text="${ticket.funcion.obra.titulo}"></div>
+                    <div class="px-2">
+                        <div class="pill-redtele fs-13 mb-3 me-2" th:text="${ticket.funcion.obra.restricciones}"></div>
+                        <div class="pill-white fs-13 mb-3 me-2" th:text="${ticket.funcion.obra.duracion} + ' min'"></div>
+                    </div>
+                    <div class="px-2">
+                        <div class="pill-white fs-13 me-2" th:each="genero : ${ticket.funcion.obra.generos}" th:text="${genero.nombre}"></div>
+                    </div>
+                </div>
+                <div class="col-md-2 mb-2 ">
+                    <button class="puntuar"
+                            data-mdb-toggle="modal" data-mdb-target="#starModal"
+                            data-th-attr="data-tipo='obra', data-idobra=${ticket.funcion.obra.id}, data-titulo=${ticket.funcion.obra.titulo}, data-estrellas=${calificacionObra==null}?0:${calificacionObra}"
+                            th:id="'obra'+${ticket.funcion.obra.id}" onclick="setCalificar(id)">
+                        <span th:if="${calificacionObra==null}" >
+                            Puntuar
+                        <i class="far fa-star"></i>
+                        </span>
+                        <span th:if="${calificacionObra!=null}">
+                            <span th:text="${calificacionObra+' /5'}" ></span>
+                        <i class="fas fa-star"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div >
+                <div class="card-subtitle fw-bold fs-18 mb-2">
+                    Dirigida por
+                </div>
+                <div class="row row-cols-2 mb-4">
+                    <div class="col mb-2" th:each="director,info : ${ticket.funcion.obra.directores}">
+                        <div class="align-items-center row">
+                            <div class="col-md-8">
+                                <a class="link-actor" th:href="@{'/personas/'+${director.id}}" >
+                                    <div class="d-sm-flex align-items-sm-center">
+                                        <div class="actor-image">
+                                            <img th:src="@{'/image/persona/'+${director.id}}" th:alt="${director.nombre}">
+                                        </div>
+                                        <strong class="d-none d-sm-block ms-1 actorname fs-14" th:text="${director.nombre}">
+                                        </strong>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="puntuar"
+                                        data-mdb-toggle="modal" data-mdb-target="#starModal"
+                                        data-th-attr="data-tipo='director', data-idpersona=${director.id}, data-titulo=${director.nombre},
+                                        data-estrellas=${calificacionDirectores.get(info.index)==null}?0:${calificacionDirectores.get(info.index)}"
+                                        th:id="'director'+${director.id}" onclick="setCalificar(id)">
+                                    <span th:if="${calificacionDirectores.get(info.index)==null}" >
+                                        Puntuar
+                                    <i class="far fa-star"></i>
+                                    </span>
+                                    <span th:if="${calificacionDirectores.get(info.index)!=null}" >
+                                        <span th:text="${calificacionDirectores.get(info.index)+' /5'}" ></span>
+                                    <i class="fas fa-star"></i>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-subtitle fw-bold fs-18 mb-2">
+                    Reparto principal
+                </div>
+                <div class="row row-cols-2 mb-3 pb-5">
+                    <div class="col mb-2" th:each="actor,info : ${ticket.funcion.obra.actores}">
+                        <div class="align-items-center row">
+                            <div class="col-md-8">
+                                <a class="link-actor" th:href="@{'/personas/'+${actor.id}}">
+                                    <div class="d-sm-flex align-items-sm-center">
+                                        <div class="actor-image">
+                                            <img th:src="@{'/image/persona/'+${actor.id}}" th:alt="${actor.nombre}">
+                                        </div>
+                                        <strong class="d-none d-sm-block ms-1 actorname fs-14" th:text="${actor.nombre}">
+                                        </strong>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-4 ">
+                                <button class="puntuar"
+                                        data-mdb-toggle="modal" data-mdb-target="#starModal"
+                                        data-th-attr="data-tipo='actor', data-idpersona=${actor.id}, data-titulo=${actor.nombre},
+                                        data-estrellas=${calificacionActores.get(info.index)==null}?0:${calificacionActores.get(info.index)}"
+                                        th:id="'actor'+${actor.id}" onclick="setCalificar(id)">
+                                    <span th:if="${calificacionActores.get(info.index)==null}" >
+                                        Puntuar
+                                    <i class="far fa-star"></i>
+                                    </span>
+                                    <span th:if="${calificacionActores.get(info.index)!=null}" >
+                                        <span th:text="${calificacionActores.get(info.index)+' /5'}" ></span>
+                                    <i class="fas fa-star"></i>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragmentos/navbar.html :: menu"></div>
+
+<!-- Modal calificacion  -->
+<div class="modal top fade" id="starModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Puntúa</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="title-22" id="titulo"></div>
+                <form method="post" id="calificar" th:action="@{/}">
+                    <div class="d-flex justify-content-center">
+                        <div class="rate fs-16">
+                            <input type="radio" id="star5" name="estrellas" value="5" required/>
+                            <label for="star5" title="text">5 stars</label>
+                            <input type="radio" id="star4" name="estrellas" value="4" />
+                            <label for="star4" title="text">4 stars</label>
+                            <input type="radio" id="star3" name="estrellas" value="3" />
+                            <label for="star3" title="text">3 stars</label>
+                            <input type="radio" id="star2" name="estrellas" value="2" />
+                            <label for="star2" title="text">2 stars</label>
+                            <input type="radio" id="star1" name="estrellas" value="1" />
+                            <label for="star1" title="text">1 star</label>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center py-4">
+                        <div class="w-50">
+                            <button type="submit" class="w-100 btn btn-redtele">Calificar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    function setCalificar(id){
+        idfunciones = [[${ticket.funcion.id}]];
+        var button = document.getElementById(id);
+        estrellas = button.getAttribute("data-estrellas");
+        if(estrellas !=0){
+            $("#star"+estrellas).prop("checked", true);
+        }
+        titulo = button.getAttribute("data-titulo");
+        $('.modal-body #titulo').text(titulo);
+        if(button.getAttribute("data-tipo")=='obra'){
+            idobras = button.getAttribute("data-idobra");
+            $('.modal-body #calificar').attr('action', '/cliente/tickets/calificarobra?idobras='+idobras+'&idfunciones='+idfunciones);
+        }
+        if(button.getAttribute("data-tipo")=='director'){
+            idpersonas = button.getAttribute("data-idpersona");
+            $('.modal-body #calificar').attr('action', '/cliente/tickets/calificarpersona?idpersonas='+idpersonas+'&idfunciones='+idfunciones+'&rol=Direccion');
+        }
+        if(button.getAttribute("data-tipo")=='actor'){
+            idpersonas = button.getAttribute("data-idpersona");
+            $('.modal-body #calificar').attr('action', '/cliente/tickets/calificarpersona?idpersonas='+idpersonas+'&idfunciones='+idfunciones+'&rol=Actuacion');
+        }
+
+    }
+    /*]]>*/
+</script>
+</html>

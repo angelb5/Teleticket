@@ -15,7 +15,7 @@
                 <div class="col mb-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item title-30">Mis tickets</li>
+                            <li class="breadcrumb-item title-30">Califica</li>
                         </ol>
                     </nav>
                 </div>
@@ -34,7 +34,7 @@
                         </tr>
                         </thead>
                         <tbody >
-                        <tr th:each=" compra : ${comprasVigentes}">
+                        <tr th:each=" compra : ${comprasAsistidas}">
                             <td>
                                 <div class="d-flex align-items-center">
                                     <div class="historial-img">
@@ -55,8 +55,8 @@
                                 <b class="fw-bold" th:text="'S/ '+${#numbers.formatDecimal(compra.total,1,2,'POINT')}"></b>
                             </td>
                             <td>
-                                <a th:href="@{'/cliente/tickets/'+compra.id}" class="btn btn-redtele fw-bold btn-sm btn-rounded">
-                                    Ver detalles
+                                <a th:href="@{'/cliente/tickets/califica/'+${compra.idcompra}}" class="btn btn-redtele fw-bold btn-sm btn-rounded">
+                                    Calificar
                                 </a>
                             </td>
                         </tr>

@@ -93,4 +93,10 @@ public interface HistorialRepository extends JpaRepository<Historial, Integer> {
     @Modifying
     @Query(nativeQuery = true, value = "update historialcompras set estado='Cancelado' where idcompra = ?1")
     void cancelarCompra(String idcompra);
+
+    @Query(value = "select new Historial(h.id, h.idclientes, h.funcion, h.idcompra, h.total, h.numtickets, h.fechacompra) " +
+            "from Historial h " +
+            "inner join Funcion f on f.id = h.funcion.id " +
+            "where h.idclientes = :idclientes and f.id = :idfunciones and h.estado = 'Comprado' and (f.fecha < current_date or (f.fecha = current_date  and f.fin < current_time))")
+    Historial findAsistidaByIdFuncion(int idclientes, int idfunciones);
 }
