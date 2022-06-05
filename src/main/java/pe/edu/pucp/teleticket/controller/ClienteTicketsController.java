@@ -106,7 +106,7 @@ public class ClienteTicketsController {
         }
 
         for(Persona p : compra.getFuncion().getObra().getActores()){
-            calificacionActores.add(cpRepository.findEstrellasDireccionCliente(compra.getFuncion().getId(), clienteSes.getId(), p.getId()));
+            calificacionActores.add(cpRepository.findEstrellasActuacionCliente(compra.getFuncion().getId(), clienteSes.getId(), p.getId()));
         }
 
         model.addAttribute("ticket", compra);
@@ -139,11 +139,10 @@ public class ClienteTicketsController {
 
     @PostMapping("/calificarobra")
     public String calificarObra(int idobras, int idfunciones, int estrellas, HttpSession session){
-        System.out.println(idobras);
-        System.out.println(idfunciones);
-        System.out.println(estrellas);
         Object object = session.getAttribute("usuario");
         if(!(object instanceof Cliente clienteSes)){return "redirect:/";}
+
+        if(estrellas>5 || estrellas<1){return "redirect:/cliente/tickets";}
 
         Optional<Historial> optCompra = Optional.ofNullable(historialRepository.findAsistidaByIdFuncion(clienteSes.getId(), idfunciones));
         if(optCompra.isEmpty()){return "redirect:/cliente/tickets";}
@@ -168,5 +167,87 @@ public class ClienteTicketsController {
             coRepository.save(co);
             return "redirect:/cliente/tickets/califica/"+compra.getIdcompra();
         }
+    }
+
+    @PostMapping("/calificarpersona")
+    public String calificarPersona(int idpersonas, int idfunciones, int estrellas, String rol, HttpSession session){
+        Object object = session.getAttribute("usuario");
+        if(!(object instanceof Cliente clienteSes)){return "redirect:/";}
+
+        if(estrellas>5 || estrellas<1){return "redirect:/cliente/tickets";}
+
+        Optional<Historial> optCompra = Optional.ofNullable(historialRepository.findAsistidaByIdFuncion(clienteSes.getId(), idfunciones));
+        if(optCompra.isEmpty()){return "redirect:/cliente/tickets";}
+
+        Historial compra = optCompra.get();
+        Obra o = compra.getFuncion().getObra();
+        List<Persona> personas;
+        boolean perteneceAObra = false;
+        if (rol.equals("Direccion")){
+            personas = o.getDirectores();
+        }else{
+            personas = o.getActores();
+        }
+        for(Persona p : personas){
+            if (p.getId() == idpersonas) {
+                perteneceAObra = true;
+                break;
+            }
+        }
+        if(!perteneceAObra){return "redirect:/cliente/tickets";}
+
+        Optional<Calificacionpersona> optCal = Optional.ofNullable(cpRepository.findCalificacionpersonaDB(compra.getFuncion().getId(), clienteSes.getId(), idpersonas,rol));
+        if(optCal.isPresent()){
+            Calificacionpersona cpDB =  optCal.get();
+            cpDB.setEstrellas(estrellas);
+            cpRepository.save(cpDB);
+
+            return "redirect:/cliente/tickets/califica/"+compra.getIdcompra();
+        }else{
+            Calificacionpersona cp = new Calificacionpersona();
+            cp.setIdclientes(clienteSes.getId());
+            cp.setEstrellas(estrellas);
+            cp.setIdpersonas(idpersonas);
+            cp.setRol(rol);
+            cp.setIdfunciones(idfunciones);
+            cpRepository.save(cp);
+            return "redirect:/cliente/tickets/califica/"+compra.getIdcompra();
+        }
+    }
+
+    @PostMapping("/eliminarcobra")
+    public String eliminarCalificacionObra(int idobras, int idfunciones, HttpSession session){
+        Object object = session.getAttribute("usuario");
+        if(!(object instanceof Cliente clienteSes)){return "redirect:/";}
+
+        Optional<Historial> optCompra = Optional.ofNullable(historialRepository.findAsistidaByIdFuncion(clienteSes.getId(), idfunciones));
+        if(optCompra.isEmpty()){return "redirect:/cliente/tickets";}
+
+        Historial compra = optCompra.get();
+
+        Optional<Calificacionobra> optCal = Optional.ofNullable(coRepository.findCalificacionobraDB(compra.getFuncion().getId(), clienteSes.getId(), idobras));
+        if(optCal.isPresent()){
+            Calificacionobra coDB =  optCal.get();
+            coRepository.deleteById(coDB.getId());
+        }
+        return "redirect:/cliente/tickets/califica/"+compra.getIdcompra();
+    }
+
+    @PostMapping("/eliminarcpersona")
+    public String eliminarCalificacionPersona(int idpersonas, int idfunciones, String rol, HttpSession session){
+        Object object = session.getAttribute("usuario");
+        if(!(object instanceof Cliente clienteSes)){return "redirect:/";}
+
+        Optional<Historial> optCompra = Optional.ofNullable(historialRepository.findAsistidaByIdFuncion(clienteSes.getId(), idfunciones));
+        if(optCompra.isEmpty()){return "redirect:/cliente/tickets";}
+
+        Historial compra = optCompra.get();
+
+        Optional<Calificacionpersona> optCal = Optional.ofNullable(cpRepository.findCalificacionpersonaDB(compra.getFuncion().getId(), clienteSes.getId(), idpersonas,rol));
+        if(optCal.isPresent()){
+            Calificacionpersona cpDB =  optCal.get();
+            cpRepository.deleteById(cpDB.getId());
+        }
+        return "redirect:/cliente/tickets/califica/"+compra.getIdcompra();
     }
 }

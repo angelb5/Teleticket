@@ -222,6 +222,13 @@
                         </div>
                     </div>
                 </form>
+                <form method="post" id="eliminar" th:action="@{/}">
+                    <div class="d-flex justify-content-center pb-4">
+                        <div class="w-50">
+                            <button type="submit" class="w-100 btn btn-dark">Eliminar calificación</button>
+                         </div>
+                    </div>
+                </form>
             </div>
 
         </div>
@@ -233,25 +240,45 @@
 <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
     function setCalificar(id){
+        formEliminar = $('.modal-body #eliminar');
         idfunciones = [[${ticket.funcion.id}]];
         var button = document.getElementById(id);
         estrellas = button.getAttribute("data-estrellas");
         if(estrellas !=0){
             $("#star"+estrellas).prop("checked", true);
+        }else{
+            $("input:radio").prop("checked", false);
+            formEliminar.hide();
         }
+
         titulo = button.getAttribute("data-titulo");
         $('.modal-body #titulo').text(titulo);
         if(button.getAttribute("data-tipo")=='obra'){
             idobras = button.getAttribute("data-idobra");
-            $('.modal-body #calificar').attr('action', '/cliente/tickets/calificarobra?idobras='+idobras+'&idfunciones='+idfunciones);
+            params = 'idobras='+idobras+'&idfunciones='+idfunciones
+            $('.modal-body #calificar').attr('action', '/cliente/tickets/calificarobra?'+params);
+            if(estrellas!=0){
+                formEliminar.attr('action', '/cliente/tickets/eliminarcobra?'+params);
+                formEliminar.show();
+            }
         }
         if(button.getAttribute("data-tipo")=='director'){
             idpersonas = button.getAttribute("data-idpersona");
-            $('.modal-body #calificar').attr('action', '/cliente/tickets/calificarpersona?idpersonas='+idpersonas+'&idfunciones='+idfunciones+'&rol=Direccion');
+            params = 'idpersonas='+idpersonas+'&idfunciones='+idfunciones+'&rol=Direccion';
+            $('.modal-body #calificar').attr('action', '/cliente/tickets/calificarpersona?'+params);
+            if(estrellas!=0){
+                formEliminar.attr('action', '/cliente/tickets/eliminarcpersona?'+params);
+                formEliminar.show();
+            }
         }
         if(button.getAttribute("data-tipo")=='actor'){
             idpersonas = button.getAttribute("data-idpersona");
-            $('.modal-body #calificar').attr('action', '/cliente/tickets/calificarpersona?idpersonas='+idpersonas+'&idfunciones='+idfunciones+'&rol=Actuacion');
+            params = 'idpersonas='+idpersonas+'&idfunciones='+idfunciones+'&rol=Actuacion';
+            $('.modal-body #calificar').attr('action', '/cliente/tickets/calificarpersona?'+params)
+            if(estrellas!=0){
+                formEliminar.attr('action', '/cliente/tickets/eliminarcpersona?'+params);
+                formEliminar.show();
+            }
         }
 
     }

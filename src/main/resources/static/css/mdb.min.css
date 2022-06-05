@@ -19845,6 +19845,8 @@ input[type=number] {
 
 /*Puntuar*/
 .puntuar{
+  width: 110px;
+  text-align: center;
   background-color: #FFFFFF;
   padding: 0.75rem;
   color: var(--mdb-redisabled);
