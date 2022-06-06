@@ -118,4 +118,8 @@ public interface  ClienteRepository extends JpaRepository<Cliente, Integer> {
             "       where lower(concat(c.nombre,' ',c.apellido)) like %?1% and c.idclientes not in (\n" +
             "           select h.idclientes from historialcompras h where estado='Comprado')")
     public long contarClientesSinHistorial(String busqueda);
+
+    @Query(nativeQuery = true, value = "select contrasena from clientes " +
+            "where idclientes = :idclientes")
+    public String getContrasenaById(int idclientes);
 }

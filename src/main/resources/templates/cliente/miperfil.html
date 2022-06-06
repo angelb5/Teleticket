@@ -75,8 +75,13 @@
                                      th:errors="*{nacimiento}"></div>
                             </div>
                         </div>
-                        <div class="row text-end my-2">
-                            <div>
+                        <div class="row my-2">
+                            <div class="col">
+                                <a href="#!"  class="text-redtele fs-14" data-mdb-toggle="modal" data-mdb-target="#contrasenaModal">
+                                    Cambiar contraseña
+                                </a>
+                            </div>
+                            <div class="col text-end">
                                 <button type="submit" class="btn btn-redtele text-center">Guardar cambios</button>
                             </div>
 
@@ -131,6 +136,33 @@
     </div>
 </div>
 
+<!-- Modal contraseña -->
+<div class="modal top fade" id="contrasenaModal" tabindex="-1" aria-labelledby="contrasenaModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <form method="post" th:action="@{/cliente/cambiarcontrasena}" enctype="multipart/form-data">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contrasenaModalLabel">Cambiar contraseña</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <label class="form-label">Contraseña Actual</label>
+                    <input type="password" name="pwactual" class="form-control mb-3"/>
+                    <label class="form-label">Nueva Contraseña</label>
+                    <input type="password" name="contrasena" class="form-control mb-3"/>
+                    <label class="form-label">Confirmar Contraseña</label>
+                    <input type="password" name="confcontrasena" class="form-control mb-3"/>
+                    <div class="text-danger mb-3" th:if="${contrasenaerrores!=null}" th:text="${contrasenaerrores}">
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center border-0">
+                    <button type="submit" class="btn btn-redtele">Cambiar contraseña</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- Modal msg -->
 <div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
     <div class="modal-dialog  ">
@@ -159,6 +191,11 @@
 <script type="text/javascript" th:if="${msg != null}">
     $(window).on('load', function() {
         $('#msgModal').modal('show');
+    });
+</script>
+<script type="text/javascript" th:if="${contrasenaerrores != null}">
+    $(window).on('load', function() {
+        $('#contrasenaModal').modal('show');
     });
 </script>
 </html>

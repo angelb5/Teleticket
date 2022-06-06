@@ -1,6 +1,7 @@
 package pe.edu.pucp.teleticket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RequestMapping("/cliente")
 @Controller
@@ -118,7 +121,55 @@ public class ClienteController {
             attr.addFlashAttribute("msg", "Hubo un error al cargar el archivo");
             return "redirect:/cliente/miperfil";
         }
+    }
 
+    @PostMapping("/cambiarcontrasena")
+    public String cambiarContrasena(@RequestParam("pwactual") String contrasenaactual, @RequestParam("contrasena") String contrasena,
+                                    @RequestParam("confcontrasena") String confcontrasena,
+                                    RedirectAttributes attr, Model model, HttpSession session){
+        Cliente clienteSes = (Cliente) session.getAttribute("usuario");
+
+        BCryptPasswordEncoder b = new BCryptPasswordEncoder();
+        if(!b.matches(contrasenaactual, clienteRepository.getContrasenaById(clienteSes.getId()))){
+            attr.addFlashAttribute("contrasenaerrores", "La contraseña actual es incorrecta");
+            return "redirect:/cliente/miperfil";
+        }
+
+        boolean contrasenaHasErrors = false;
+
+        if(contrasena.length()<8 || contrasena.length()>72){
+            attr.addFlashAttribute("contrasenaerrores", "La contraseña debe contener entre 8 y 72 caracteres");
+            contrasenaHasErrors = true;
+        }else if(!validarContrasena(contrasena)){
+            attr.addFlashAttribute("contrasenaerrores", "La contraseña debe contener caracteres en mayúsculas y minúsculas y números");
+            contrasenaHasErrors = true;
+        } else if(!contrasena.equals(confcontrasena)){
+            attr.addFlashAttribute("contrasenaerrores", "Las contraseñas no coinciden");
+            contrasenaHasErrors = true;
+        }
+
+        if(contrasenaHasErrors){
+            return "redirect:/cliente/miperfil";
+        }else{
+            contrasena = new BCryptPasswordEncoder().encode(contrasena);
+            clienteRepository.updateContrasena(contrasena,clienteSes.getId());
+
+            attr.addFlashAttribute("msg", "Se ha actualizado la contraseña");
+            return "redirect:/cliente/miperfil";
+        }
+    }
+
+    private static boolean validarContrasena(String password) {
+        String regex = "^(?=.*[0-9])"
+                + "(?=.*[a-zÀ-ȕ])(?=.*[A-Z])"
+                + "(?=\\S+$).{8,72}$";
+
+        Pattern p = Pattern.compile(regex);
+        if (password == null) {
+            return false;
+        }
+        Matcher m = p.matcher(password);
+        return m.matches();
     }
 
     private boolean verificarFoto(MultipartFile file){
