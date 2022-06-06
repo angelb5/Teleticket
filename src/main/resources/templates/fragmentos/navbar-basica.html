@@ -37,7 +37,7 @@
                 </li>
                 <!--Mis tickets-->
                 <li th:if="${session.rol=='cliente'}" class="nav-item mx-2">
-                    <a class="nav-link" th:href="@{cliente/tickets}">
+                    <a class="nav-link" th:href="@{/cliente/tickets}">
                         <i class="fa-solid fa-ticket mx-1"></i>
                         Mis tickets
                     </a>
@@ -46,7 +46,9 @@
                 <li th:if="${session.usuario!=null}" class="nav-item dropdown me-3 me-lg-1 mx-2">
                     <a  class="nav-link d-sm-flex align-items-sm-center dropdown-toggle hidden-arrow"
                         href="#" id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-                        <img th:if="${session.rol=='cliente'}"  th:src="@{'/cliente/imagen'}" class="rounded-circle"  height="22" alt="cliente" loading="lazy"/>
+                        <div th:if="${session.rol=='cliente'}" style="height: 22px; width: 22px; border-radius: 50%">
+                            <img  th:src="@{'/cliente/imagen'}" class="rounded-circle" height="22" alt="cliente" loading="lazy" style="width: 100%; height: 100%; object-fit: cover"/>
+                        </div>
                         <img th:unless="${session.rol=='cliente'}"  th:src="@{/img/default-profile.png}" class="rounded-circle"  height="22" alt="admin" loading="lazy"/>
                         <strong class="d-none d-sm-block ms-1 username" th:text="${session.usuario.nombre}">
                             Usuario

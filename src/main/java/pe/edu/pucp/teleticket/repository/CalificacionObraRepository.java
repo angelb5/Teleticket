@@ -24,7 +24,7 @@ public interface CalificacionObraRepository extends JpaRepository<Calificacionob
             "and idobras = :idobras ")
     Calificacionobra findCalificacionobraDB(int idfunciones, int idclientes, int idobras);
 
-    @Query(nativeQuery = true, value = "select round(avg(estrellas)) from calificacionobras where idobras = :idobras")
+    @Query(nativeQuery = true, value = "select avg(estrellas) from calificacionobras where idobras = :idobras")
     Optional<Float> getPuntajeByIdobra(int idobras);
 
 }
