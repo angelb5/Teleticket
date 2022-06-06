@@ -24,9 +24,11 @@
         </a>
     </div>
     <br>
+    <div  class="container badge-danger  border round-border" style="height: 70px;display: flex;justify-content: center;align-items: center;"  th:if="${personas.isEmpty()}" >
+        <h3>No se han encontrado personas que coincidan con la busqueda</h3>
+    </div>
 
-
-    <table class="table hover-light align-middle mb-0 round-border">
+    <table class="table hover-light align-middle mb-0 round-border" th:unless="${personas.isEmpty()}">
         <thead class="bg-light">
             <tr class="bg-dark">
                 <th class="text-white fw-bold">Nombre</th>

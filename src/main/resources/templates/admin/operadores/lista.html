@@ -27,9 +27,11 @@
             </a>
         </div>
     </div>
+    <div class="container badge-danger  border round-border" style="height: 70px;display: flex;justify-content: center;align-items: center;"th:if="${operadores.isEmpty()}" >
+        <h3>No se han encontrado operadores que coincidan con la busqueda</h3>
+    </div>
 
-
-    <table class="content-table hover" width="100%">
+    <table class="content-table hover" width="100%" th:unless="${operadores.isEmpty()}">
         <thead class="bg-light">
             <tr class="bg-dark" style="font-size: 14px">
                 <th class="text-white fw-bold">Índice</th>

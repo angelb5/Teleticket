@@ -34,7 +34,10 @@
         </div>
     </div>
     <br>
-    <table class="hover content-table" width="100%">
+    <div class="container badge-danger  border round-border" style="height: 70px;display: flex;justify-content: center;align-items: center;" th:if="${listaClientes.isEmpty()}" >
+        <h3>No se han encontrado clientes que coincidan con la busqueda</h3>
+    </div>
+    <table class="hover content-table" width="100%" th:unless="${listaClientes.isEmpty()}">
         <thead class="bg-light">
             <tr class="bg-dark" style="font-size: 14px">
                 <th class="text-white fw-bold">Nombre</th>
