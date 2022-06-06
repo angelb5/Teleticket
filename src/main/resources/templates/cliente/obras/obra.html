@@ -48,9 +48,8 @@
                                 <div class="pill-redtele fs-13 me-2" th:text="${obra.restricciones}"></div>
                                 <div class="pill-white fs-13 me-2" th:text="${obra.duracion} + ' min'"></div>
                             </div>
-                            <div class="col text-end fs-20 align-items-end">
-                                <strong class="fw-bold align-middle">
-                                    4.3
+                            <div class="col text-end fs-20 align-items-end" th:if="${puntaje.isPresent()}">
+                                <strong class="fw-bold align-middle" th:text="${puntaje.get()}">
                                 </strong>
                                 <strong class="align-middle">
                                     /5
@@ -145,7 +144,7 @@
                     </div>
                     <!--Listado de sedes-->
                     <div>
-                        <!--Sede 1-->
+                        <!--Sede-->
 
                         <div class="px-3 pb-3" th:each=" sede : ${sedes}">
                             <div class="fw-bold fs-16 mb-1 text-redtele" th:text="${sede.nombre}">
@@ -281,8 +280,8 @@
         var button = document.getElementById(id);
         maxnum = button.getAttribute("data-max");
         fname = button.getAttribute("data-fname");
-        sede = button.getAttribute("data-sede");
-        costo = button.getAttribute("data-price");
+        var sede = button.getAttribute("data-sede");
+        var costo = button.getAttribute("data-price");
         $('.modal-body #funcion').text(fname);
         $('.modal-body #sede').text(sede);
         $('.ticket-panel #costo').text(Number(costo).toFixed(2));

@@ -1,11 +1,11 @@
 $(document).ready(function(e){
-    rol = $('.search-panel span#rol').text();
+    var rol = $('.search-panel span#rol').text();
     if(rol != "admin" && rol !="operador"){
         rol = "/";
     }else{
         rol = "/"+rol+"/";
     }
-    buscaren = $('.search-panel span#buscaren').text();
+    var buscaren = $('.search-panel span#buscaren').text();
     $('#busquedaFrm').attr('action', rol+buscaren)
 
     $('.search-panel .dropdown-menu').find('a').click(function(e) {

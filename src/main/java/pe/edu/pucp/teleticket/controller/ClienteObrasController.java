@@ -54,9 +54,11 @@ public class ClienteObrasController {
         } catch (Exception e){
             return "redirect:/obras";
         }
-        pagina = pagina < 1 ? 1 : pagina;
-        int paginas = (int) Math.ceil((float) obraRepository.contarListaObrasCliente(busqueda) / obrasPaginas);
+
+        Integer cantidadObrasCliente = obraRepository.contarListaObrasCliente(busqueda)==null? 0: obraRepository.contarListaObrasCliente(busqueda);
+        int paginas = (int) Math.ceil((float) cantidadObrasCliente / obrasPaginas);
         pagina = pagina > paginas ? paginas : pagina;
+        pagina = pagina < 1 ? 1 : pagina;
         Pageable lista;
         if (pagina == 0) {
             lista = PageRequest.of(0, obrasPaginas);
@@ -108,6 +110,7 @@ public class ClienteObrasController {
         model.addAttribute("sedes", sedesCompraList);
         model.addAttribute("obra", optionalObra.get());
         model.addAttribute("fotos", fotoObraRepository.findAllIdByIdObras(id));
+        model.addAttribute("puntaje", calificacionObraRepository.getPuntajeByIdobra(id));
 
         return "/cliente/obras/obra";
     }

@@ -52,9 +52,10 @@ public class OperadorObrasController {
         String ruta =  busqueda.isBlank()? "/operador/obras?" : "operador/obras?busqueda=" +busqueda +"&";
 
         int pagina = pag.isEmpty()? 1 : pag.get();
-        pagina = pagina<1? 1 : pagina;
-        int paginas = (int) Math.ceil((float)obraRepository.contarListaObrasBusqueda(busqueda)/obrasPaginas);
+        Integer cantidadObrasBusqueda = obraRepository.contarListaObrasBusqueda(busqueda)==null? 0:obraRepository.contarListaObrasBusqueda(busqueda);
+        int paginas = (int) Math.ceil((float)cantidadObrasBusqueda/obrasPaginas);
         pagina = pagina>paginas? paginas : pagina;
+        pagina = pagina<1? 1 : pagina;
         Pageable lista = PageRequest.of(pagina-1, obrasPaginas);
         List<Obra> listaObras = obraRepository.listarObrasBusqueda(busqueda, lista);
 

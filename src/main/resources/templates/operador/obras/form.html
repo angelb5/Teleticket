@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')"></head>
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Gestion de Obra')"></head>
 <head>
     <script th:src="@{/selectize/js/standalone/selectize.js}"></script>
     <link th:href="@{/selectize/css/selectize.bootstrap5.css}" rel="stylesheet">
@@ -31,7 +31,8 @@
                         <div class="mb-3">
                             <label class="form-label">Descripción</label>
                             <textarea th:field="*{resumen}" type="text" class="form-control"
-                                      th:classappend="${#fields.hasErrors('resumen')?'is-invalid':''}"></textarea>
+                                      th:classappend="${#fields.hasErrors('resumen')?'is-invalid':''}"
+                                      style="height: 150px;"></textarea>
                             <div class="text-danger" th:if="${#fields.hasErrors('resumen')}"
                                  th:errors="*{resumen}"></div>
                         </div>
@@ -80,11 +81,6 @@
                         <script>
                             $('#generos').selectize();
                         </script>
-                        <div class="mb-3" style="margin-top: 15px">
-                            <button class="btn btn-redtele" type="submit"> Guardar</button>
-                            <a class="btn btn-dark text-white" th:href="@{|/operador/obras|}" th:if="${obra.id==0}">Cancelar</a>
-                            <a class="btn btn-dark text-white" th:href="@{|/operador/obras/gestion/${obra.id}|}" th:unless="${obra.id==0}">Cancelar</a>
-                        </div>
                     </div>
                     <div class="col">
                         <div class="mb-3">
@@ -128,10 +124,18 @@
                         <div class="mb-3" th:unless="${obra.id==0}">
                             <label class="form-label">Foto Principal</label><br>
                             <input hidden th:field="*{fotoprincipal}">
-                            <img th:src="@{|/image/obra/${obra.fotoprincipal}|}" style="width: 600px; height: 300px">
+                            <div style="width: 600px; height: 300px; overflow: hidden">
+                                <img th:src="@{|/image/obra/${obra.fotoprincipal}|}" style="width: 100%; height: 100%; object-fit: cover">
+                            </div>
+
                         </div>
 
                     </div>
+                </div>
+                <div class="mb-3" style="margin-top: 15px">
+                    <button class="btn btn-redtele" type="submit"> Guardar</button>
+                    <a class="btn btn-dark text-white" th:href="@{|/operador/obras|}" th:if="${obra.id==0}">Cancelar</a>
+                    <a class="btn btn-dark text-white" th:href="@{|/operador/obras/gestion/${obra.id}|}" th:unless="${obra.id==0}">Cancelar</a>
                 </div>
             </form>
 

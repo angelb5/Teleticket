@@ -75,10 +75,11 @@ public class ClienteSedesController {
         }
 
         int pagina = pag.isEmpty() ? 1 : pag.get();
-        pagina = pagina < 1 ? 1 : pagina;
-        Integer cantidadObras = obraRepository.contarObrasClienteByIdsede(id)==null? 1 : obraRepository.contarObrasClienteByIdsede(id);
+
+        Integer cantidadObras = obraRepository.contarObrasClienteByIdsede(id)==null? 0 : obraRepository.contarObrasClienteByIdsede(id);
         int paginas = (int) Math.ceil((float) cantidadObras / obrasPaginas);
         pagina = pagina > paginas ? paginas : pagina;
+        pagina = pagina < 1 ? 1 : pagina;
         Pageable lista = PageRequest.of(pagina - 1, obrasPaginas);
 
         model.addAttribute("fotos", fotoSedeRepository.findAllIdByIdSedes(id));

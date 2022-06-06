@@ -24,16 +24,15 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6 p-3 pe-4">
-                        <div class="fw-bold mb-2 fs-14 card-tele-title" th:text="${sede.nombre}">Sede San Borja</div>
-                        <div class="mb-2 card-tele-subtitle" th:text="${sede.direccion}">
-                            Av. Javier Prado Este 2225, San Borja 15021
-                        </div>
-                        <div class="mb-2 fw-bold text-end" th:text="${sede.estado}">
-                            Activa
+                    <div class="col-md-6 p-4 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="fw-bold mb-2 fs-14 card-tele-title" th:text="${sede.nombre}">Sede San Borja</div>
+                            <div class="mb-2 card-tele-subtitle" th:text="${sede.direccion}">
+                                Av. Javier Prado Este 2225, San Borja 15021
+                            </div>
                         </div>
 
-                        <div class="text-end">
+                        <div class="text-end ">
                             <a class="btn btn-redtele" th:href="@{'/sedes/'+ ${sede.id}}">Ver más</a>
                         </div>
                     </div>

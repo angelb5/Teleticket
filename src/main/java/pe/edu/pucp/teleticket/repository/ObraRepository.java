@@ -20,7 +20,7 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
     public List<Obra> listarObrasBusqueda(String nombre, Pageable pageable);
 
     @Query(nativeQuery = true, value = "select count(*) from obras o where lower(o.titulo) like %?1% order by o.titulo asc")
-    public long contarListaObrasBusqueda(String nombre);
+    public Integer contarListaObrasBusqueda(String nombre);
 
     @Query(nativeQuery = true, value = "select count(*)  from funciones f where (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW())) and f.idobras=?1")
     public long funcionesVigentes(Integer idObra);
@@ -55,7 +55,7 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
             "inner join funciones f on o.idobras = f.idobras " +
             "where lower(o.titulo) like %?1% and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW())) " +
             "group by o.idobras")
-    public long contarListaObrasCliente(String nombre);
+    public Integer contarListaObrasCliente(String nombre);
 
 
     @Query(nativeQuery = true, value = "select count(distinct o.idobras) " +
