@@ -71,7 +71,7 @@ public class ClienteObrasController {
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
         model.addAttribute("ruta", ruta);
-        return "/cliente/obras/lista";
+        return "cliente/obras/lista";
     }
 
     @GetMapping("/{idPath}")
@@ -112,7 +112,7 @@ public class ClienteObrasController {
         model.addAttribute("fotos", fotoObraRepository.findAllIdByIdObras(id));
         model.addAttribute("puntaje", calificacionObraRepository.getPuntajeByIdobra(id));
 
-        return "/cliente/obras/obra";
+        return "cliente/obras/obra";
     }
 
 

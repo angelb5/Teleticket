@@ -50,7 +50,7 @@ public class ClienteTicketsController {
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
 
-        return "/cliente/tickets/vigentes";
+        return "cliente/tickets/vigentes";
     }
 
     @GetMapping("/califica")
@@ -68,7 +68,7 @@ public class ClienteTicketsController {
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
 
-        return "/cliente/tickets/asistidas";
+        return "cliente/tickets/asistidas";
     }
 
     @GetMapping("/vigentes/{idPath}")
@@ -85,7 +85,7 @@ public class ClienteTicketsController {
 
         model.addAttribute("ticket", compra);
 
-        return "/cliente/tickets/vigente";
+        return "cliente/tickets/vigente";
     }
 
     @GetMapping("/califica/{idPath}")
@@ -114,7 +114,7 @@ public class ClienteTicketsController {
         model.addAttribute("calificacionDirectores", calificacionDirectores);
         model.addAttribute("calificacionActores", calificacionActores);
 
-        return "/cliente/tickets/asistida";
+        return "cliente/tickets/asistida";
     }
 
     @PostMapping("/cancelarcompra")

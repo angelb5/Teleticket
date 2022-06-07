@@ -58,7 +58,7 @@ public class ClienteSedesController {
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
         model.addAttribute("ruta", ruta);
-        return "/cliente/sedes/lista";
+        return "cliente/sedes/lista";
     }
 
     @GetMapping("/{idPath}")
@@ -88,7 +88,7 @@ public class ClienteSedesController {
         model.addAttribute("sede", optionalSede.get());
         model.addAttribute("obras", obraRepository.listadoObraslienteByIdsede(id, lista));
         model.addAttribute("ruta", "/sedes/" + id+ "?");
-        return "/cliente/sedes/sede";
+        return "cliente/sedes/sede";
     }
 
 }

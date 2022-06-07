@@ -152,7 +152,7 @@ public class AdminSedesController {
             List<Funcion> funcionesVigentes = funcionRepository.getVigentesByIdsedes(sede.getId());
             if(funcionesVigentes.size()>0 && !sede.getEstado().equals("Disponible")){
                 model.addAttribute("funcionesVigentes",funcionesVigentes);
-                return "/admin/sedes/form";
+                return "admin/sedes/form";
             }
         }
         sedeRepository.save(sede);
@@ -193,7 +193,7 @@ public class AdminSedesController {
         model.addAttribute("sede", optionalSede.get());
         model.addAttribute("salas", salaRepository.findAllBySede(sede, lista));
         model.addAttribute("ruta", "/admin/sedes/gestion/" + sede.getId() + "?");
-        return "/admin/sedes/gestionsede";
+        return "admin/sedes/gestionsede";
     }
 
     @GetMapping("/gestion/{idPath}/nuevasala")
@@ -210,7 +210,7 @@ public class AdminSedesController {
         }
         sala.setSede(new Sede());
         sala.getSede().setId(idSede);
-        return "/admin/sedes/salas/form";
+        return "admin/sedes/salas/form";
     }
 
     @GetMapping("/gestion/editarsala")
@@ -228,14 +228,14 @@ public class AdminSedesController {
         }
         model.addAttribute("sala", optionalSala.get());
         model.addAttribute("idSede", sala.getSede().getId());
-        return "/admin/sedes/salas/form";
+        return "admin/sedes/salas/form";
     }
 
     @PostMapping("/gestion/sala/guardar")
     public String guardarSala(@ModelAttribute("sala") @Valid Sala sala, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
 
         if (bindingResult.hasErrors()) {
-            return "/admin/sedes/salas/form";
+            return "admin/sedes/salas/form";
         }
 
         String msg;
@@ -248,13 +248,13 @@ public class AdminSedesController {
             if (funcionesVigentes.size()>0){
                 if (sala.getEstado().equals("No disponible")){
                     model.addAttribute("funcionesVigentes",funcionesVigentes);
-                    return "/admin/sedes/salas/form";
+                    return "admin/sedes/salas/form";
                 }else{
                     long maxStockByIdsala = funcionRepository.getMaxStockByIdsala(sala.getId());
                     if(maxStockByIdsala>sala.getAforo()){
                         FieldError fAforoError = new FieldError("aforo", "aforo", "El aforo de la sala no puede ser menor que "+ maxStockByIdsala + " ya que hay una función asociada");
                         bindingResult.addError(fAforoError);
-                        return "/admin/sedes/salas/form";
+                        return "admin/sedes/salas/form";
                     }
                 }
             }

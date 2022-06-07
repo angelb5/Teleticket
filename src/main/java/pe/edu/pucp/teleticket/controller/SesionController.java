@@ -72,13 +72,13 @@ public class SesionController {
 
     @GetMapping("/login")
     public String loginForm(){
-        return "/sesion/login";
+        return "sesion/login";
     }
 
     @GetMapping("registro")
     public String registroForm(@ModelAttribute("cliente") Cliente cliente, HttpSession session){
         if(session.getAttribute("usuario")!=null){return "redirect:/";}
-        return "/sesion/registro";
+        return "sesion/registro";
     }
 
     @GetMapping("/redirectPorRol")
@@ -103,7 +103,7 @@ public class SesionController {
             session.setAttribute("usuario",cliente);
             session.setAttribute("rol", "cliente");
             session.setAttribute("carrito", historialRepository.findReservasByIdclientes(cliente.getId()));
-            return "redirect:";
+            return "redirect:/";
         }
     }
 
@@ -137,7 +137,7 @@ public class SesionController {
         Cliente cliente = (Cliente) session.getAttribute("googleCliente");
         if(session.getAttribute("usuario")!=null || cliente ==null){return "redirect:/";}
         model.addAttribute("cliente",cliente);
-        return "/sesion/registro";
+        return "sesion/registro";
     }
 
     @GetMapping("/oauth2/redirect")
@@ -270,7 +270,7 @@ public class SesionController {
         }
 
         if(bindingResult.hasErrors() || contrasenaHasErrors || correoHasErrors || dniHasErrors || nacimientoHasErrors){
-            return "/sesion/registro";
+            return "sesion/registro";
         }else{
             cliente.setNombre(cliente.getNombre().trim());
             cliente.setApellido(cliente.getApellido().trim());

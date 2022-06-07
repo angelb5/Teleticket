@@ -62,7 +62,7 @@ public class CarritoController {
         }
         model.addAttribute("funciones", funcionesCompras);
         model.addAttribute("total",total);
-        return "/cliente/carrito/carrito";
+        return "cliente/carrito/carrito";
     }
 
     @PostMapping("/anadir")
@@ -113,7 +113,7 @@ public class CarritoController {
             }
             model.addAttribute("funciones", funcionesCompras);
             model.addAttribute("total",total);
-            return "/cliente/carrito/carrito";
+            return "cliente/carrito/carrito";
         }
 
         if(historial.getNumtickets()>funcionCompra.getDisponible()){

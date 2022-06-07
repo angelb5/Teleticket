@@ -39,7 +39,7 @@ public class ClienteController {
     public String miPerfil(Model model, HttpSession session){
         Cliente cliente = (Cliente) session.getAttribute("usuario");
         model.addAttribute("cliente", cliente);
-        return "/cliente/miperfil";
+        return "cliente/miperfil";
     }
 
     @GetMapping("/imagen")
@@ -75,7 +75,7 @@ public class ClienteController {
 
         if(bindingResult.hasFieldErrors("nacimiento") || bindingResult.hasFieldErrors("direccion") ||
                 bindingResult.hasFieldErrors("celular") || nacimientoHasErrors){
-            return "/cliente/miperfil";
+            return "cliente/miperfil";
         }else{
             cliente.setDireccion(cliente.getDireccion().trim());
             Cliente clienteSes = (Cliente) session.getAttribute("usuario");

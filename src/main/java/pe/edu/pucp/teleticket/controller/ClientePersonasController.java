@@ -81,7 +81,7 @@ public class ClientePersonasController {
         model.addAttribute("actuaciones", obraRepository.findActuacionesByIdpersona(id));
         model.addAttribute("direcciones", obraRepository.findDireccionesByIdpersona(id));
 
-        return "/cliente/personas/persona";
+        return "cliente/personas/persona";
     }
 
 

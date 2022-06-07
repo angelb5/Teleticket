@@ -92,7 +92,7 @@ public class AdminOperadoresController {
 
     @GetMapping("/nuevo")
     public String nuevoOperador(@ModelAttribute Operador operador){
-        return "/admin/operadores/form";
+        return "admin/operadores/form";
     }
 
     @PostMapping("/guardar")
@@ -109,7 +109,7 @@ public class AdminOperadoresController {
         }
 
         if(bindingResult.hasErrors()|| correoHasErrors){
-            return "/admin/operadores/form";
+            return "admin/operadores/form";
         }
 
         operador.setNombre(operador.getNombre().trim());
