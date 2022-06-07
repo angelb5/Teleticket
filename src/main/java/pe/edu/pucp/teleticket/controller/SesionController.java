@@ -108,7 +108,7 @@ public class SesionController {
     }
 
     @GetMapping("/correocambiocontrasena")
-    public String correoCambioContrasena(){return "/sesion/correocambiocontrasena";}
+    public String correoCambioContrasena(){return "sesion/correocambiocontrasena";}
 
     @GetMapping("/cambiocontrasena")
     public String cambioContrasena(@RequestParam("token") String token, Model model, HttpSession session, RedirectAttributes attr){
@@ -384,7 +384,7 @@ public class SesionController {
         }
 
         if(contrasenaHasErrors){
-            return "/sesion/cambiocontrasena";
+            return "sesion/cambiocontrasena";
         }else{
             contrasena = new BCryptPasswordEncoder().encode(contrasena);
             if(cliente!=null){
