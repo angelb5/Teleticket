@@ -14,6 +14,7 @@ import pe.edu.pucp.teleticket.entity.Funcion;
 import pe.edu.pucp.teleticket.entity.Historial;
 import pe.edu.pucp.teleticket.repository.FuncionRepository;
 import pe.edu.pucp.teleticket.repository.HistorialRepository;
+import pe.edu.pucp.teleticket.service.EmailService;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
@@ -32,6 +33,9 @@ public class CarritoController {
 
     @Autowired
     HistorialRepository historialRepository;
+
+    @Autowired
+    EmailService emailService;
 
     private final int MIN = 8;
 
@@ -165,6 +169,14 @@ public class CarritoController {
             item.setFechacompra(LocalDateTime.now());
         }
         historialRepository.saveAll(carrito);
+        for (Historial item : carrito){
+            try{
+                emailService.correoResumenCompra(clienteSes,item.getIdcompra());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        session.setAttribute("carrito", historialRepository.findReservasByIdclientes(clienteSes.getId()));
         return "redirect:/cliente/tickets";
     }
 }

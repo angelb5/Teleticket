@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Resumen de su compra</title>
+    <title>Bienvenid@ a Teleticket</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Google Fonts -->
@@ -13,14 +13,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
     <!-- use the font -->
-    <style>
+    <style type="text/css">
 
         a{
             text-decoration: none;
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-            font-size: 48px;
         }
         .text-center{
             text-align: center;
@@ -59,51 +55,311 @@
             background-color: #DA251D
         }
 
-        table {
-            table-layout: fixed;
+        body {
             width: 100%;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            mso-margin-top-alt: 0px;
+            mso-margin-bottom-alt: 0px;
+            mso-padding-alt: 0px 0px 0px 0px;
+        }
+
+        p,
+        h1,
+        h2,
+        h3,
+        h4 {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        span.preheader {
+            display: none;
+            font-size: 1px;
+        }
+
+        html {
+            width: 100%;
+        }
+
+        table {
+            font-size: 14px;
+            border: 0;
+        }
+        /* ----------- responsivity ----------- */
+
+        @media only screen and (max-width: 640px) {
+            /*------ top header ------ */
+            .main-header {
+                font-size: 20px !important;
+            }
+            .main-section-header {
+                font-size: 28px !important;
+            }
+            .show {
+                display: block !important;
+            }
+            .hide {
+                display: none !important;
+            }
+            .align-center {
+                text-align: center !important;
+            }
+            .no-bg {
+                background: none !important;
+            }
+            /*----- main image -------*/
+            .main-image img {
+                width: 440px !important;
+                height: auto !important;
+            }
+            /* ====== divider ====== */
+            .divider img {
+                width: 440px !important;
+            }
+            /*-------- container --------*/
+            .container590 {
+                width: 440px !important;
+            }
+            .container580 {
+                width: 400px !important;
+            }
+            .main-button {
+                width: 220px !important;
+            }
+            /*-------- secions ----------*/
+            .section-img img {
+                width: 320px !important;
+                height: auto !important;
+            }
+            .team-img img {
+                width: 100% !important;
+                height: auto !important;
+            }
+        }
+
+        @media only screen and (max-width: 479px) {
+            /*------ top header ------ */
+            .main-header {
+                font-size: 18px !important;
+            }
+            .main-section-header {
+                font-size: 26px !important;
+            }
+            /* ====== divider ====== */
+            .divider img {
+                width: 280px !important;
+            }
+            /*-------- container --------*/
+            .container590 {
+                width: 280px !important;
+            }
+            .container590 {
+                width: 280px !important;
+            }
+            .container580 {
+                width: 260px !important;
+            }
+            /*-------- secions ----------*/
+            .section-img img {
+                width: 280px !important;
+                height: auto !important;
+            }
         }
 
     </style>
 </head>
 <body>
-
-<table class="text-center">
-    <tbody>
+<!-- header -->
+<table border="0" width="650" align="center"  cellpadding="0" cellspacing="0" bgcolor="ffffff">
     <tr>
-        <td></td>
-        <td>
-            <div class="text-center" style="background: black">
-                <img src="../../static/img/logo-teleticket.png" data-th-src="|cid:logo|" height="70" />
-            </div>
-            <div><h6>Estimado/a,&nbsp; <b th:text="${cliente.nombre}"></b></h6></div>
-            <div><h6>Se le muestra el resumen de su compra: </h6></div>
-            <div class="card-tele-img">
-                <!--- Debería mostrarse la obra comprada y el título de esta, los nombres en los th son genéricos--->
-                <img th:src="${historialcompras.funciones.obras.fotoprincipal}" th:text="${historialcompras.funciones.obras.titulo}">
-            </div>
-            <div><h6>Función: </h6></div>
-            <div>
-                <h6>
-                    <!--- Los nombres en los th son genéricos --->
-                    <!--- se insertaron fechas de ejemplo --->
-                    <b th:text="${historialcompras.funciones.fecha}">25 de junio &nbsp;</b> <!--- Fecha función --->
-                    <b th:text="${historialcompras.funciones.inicio}">10:00 -</b> <!--- Hora inicio --->
-                    <b th:text="${historialcompras.funciones.fin}">11:00</b> <!--- Hora fin --->
-                </h6>
-            </div>
-            <!--- CODIGO QR, la imagen es sacada de internet --->
-            <div>
-                <img src="https://es.activebarcode.com/codes/images/qrcode/qr-code-37x37.png">
-            </div>
-            <a class="btn btn-redtele" data-th-attr="href='http://'+${dominio}+'/'">
-                <h3>Ver en la página</h3>
-            </a>
+        <td align="center">
+            <table border="0" align="center" width="100%" cellpadding="0" cellspacing="0" >
+                <tr>
+                    <td height="25" style="font-size: 25px; line-height: 25px;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <table border="0" align="center" width="100%" cellpadding="0" bgcolor="000000" cellspacing="0">
+                            <tr>
+                                <td align="center" height="100" style="height:100px">
+                                    <a data-th-attr="href='http://'+${dominio}+'/'" style="display: block; border-style: none !important; border: 0 !important;">
+                                        <img height="50" border="0" style="display: block; height: 50px;"
+                                             src="../../static/img/logo-teleticket.png" data-th-src="|cid:logo|" alt="Teleticket logo" />
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="25" style="font-size: 25px; line-height: 25px;">&nbsp;</td>
+                </tr>
+            </table>
         </td>
-        <td></td>
     </tr>
-    </tbody>
 </table>
+<!-- end header -->
+
+<table border="0" width="650" align="center" cellpadding="0" cellspacing="0" bgcolor="ffffff">
+    <tr>
+        <td align="center">
+            <table border="0" align="center" width="590" cellpadding="0" cellspacing="0" class="container590">
+
+                <tr>
+                    <td align="center" style="color: #343434; font-size: 24px; font-family: Quicksand, Calibri, sans-serif; font-weight:700;letter-spacing: 3px; line-height: 35px;"
+                        class="main-header">
+                        <!-- section text ======-->
+                        <div style="line-height: 35px">
+                            Detalle de compra
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="10" style="font-size: 10px; line-height: 10px;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <table border="0" width="40" align="center" cellpadding="0" cellspacing="0" bgcolor="eeeeee">
+                            <tr>
+                                <td height="2" style="font-size: 2px; line-height: 2px;">&nbsp;</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="20" style="font-size: 20px; line-height: 20px;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <table border="0" width="590" align="center" cellpadding="0" cellspacing="0" class="container590">
+                            <tr>
+                                <td align="left" style="color: #888888; font-size: 18px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 24px;">
+                                    <!-- section text ======-->
+                                    <p style="line-height: 24px; margin-bottom:15px;color: #888888;" th:text="'Hola '+${cliente.nombre} + ', a continuación verás el detalle de tu compra'">
+                                    </p>
+                                    <div style="text-align: center; margin-bottom: 10px">
+                                        <img height="250" src="https://es.qr-code-generator.com/wp-content/themes/qr/new_structure/markets/core_market/generator/dist/generator/assets/images/websiteQRCode_noFrame.png">
+                                    </div>
+                                    <p style="line-height: 24px;margin-bottom:15px; text-align: center">
+                                        <span style="font-size: 18px; color: #4d4d4d"> CÓDIGO DE VALIDACIÓN</span>
+                                        <span th:text="${ticket.idcompra}" style="font-size:22px; color: #DA251D; font-weight: 700"></span>
+                                    </p>
+                                    <p style="line-height: 24px;margin-bottom:10px;">
+                                        <img width="16" src="https://www.kindpng.com/picc/m/30-300787_musical-theatre-mask-drama-computer-icons-theater-mask.png">
+                                        <span style="font-weight: 700; color: black">Obra:&nbsp; </span>
+                                        <span th:text="${ticket.funcion.obra.titulo}"></span>
+                                    </p>
+                                    <p style="line-height: 24px;margin-bottom:10px;">
+                                        <img width="16" src="https://i.pinimg.com/originals/70/8f/04/708f04dc59840d0b6e92ef4f4ed967f8.png">
+                                        <span style="font-weight: 700; color: black">Sede:&nbsp; </span>
+                                        <span th:text="${ticket.funcion.sala.sede.nombre} + ' - Sala '+${ticket.funcion.sala.numero}"></span>
+                                    </p>
+                                    <p style="line-height: 24px;margin-bottom:10px;">
+                                        <img width="16" src="https://uxwing.com/wp-content/themes/uxwing/download/13-time-date/clock.png">
+                                        <span style="font-weight: 700; color: black">Horario:&nbsp; </span>
+                                        <span th:text="${#temporals.format(ticket.funcion.fecha, 'dd MMMM, yyyy')}+ ' - '+${ticket.funcion.inicio}" ></span>
+                                    </p>
+                                    <p style="line-height: 24px;margin-bottom:20px;">
+                                        <img width="16" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_io15fklpXjMTvp59wLEZA7y_MnRTjGrqK0ZuyHc8hhz3MHWh25kyrny0ckdBsRLxL5o&usqp=CAU">
+                                        <span style="font-weight: 700; color: black">Tickets:&nbsp; </span>
+                                        <span th:text="${ticket.numtickets}"></span>
+                                    </p>
+                                    <p style="line-height: 24px; margin-bottom:20px;">
+                                        <span style="color: #DA251D; font-weight: 700">FECHA DE COMPRA:&nbsp;</span>
+                                        <span style="color: #888888;" th:text="${#temporals.format(ticket.fechacompra, 'dd/MM/yyyy HH:mm')}"></span>
+                                    </p>
+                                    <p style="line-height: 24px; margin-bottom:20px;">
+                                        <span style="color: #DA251D; font-weight: 700">TOTAL:&nbsp;</span>
+                                        <span th:text="'S/ '+${#numbers.formatDecimal(ticket.total,1,2,'POINT')}"></span>
+                                    </p>
+                                    <p style="line-height: 24px; margin-bottom:20px; text-align: center; color: #888888;">
+                                        PASOS PARA CANJEAR TUS <span style="color: #DA251D">TICKETS</span>
+                                    </p>
+                                    <table border="0" align="center" width="100%" cellpadding="0" cellspacing="0"style="margin-bottom:20px;">
+                                        <tr>
+                                            <td width="50%">
+                                                <div style="text-align: center">
+                                                    <img height="100" src="http://assets.stickpng.com/images/6122617910aa310004f3981b.png">
+                                                </div>
+                                                <p style="font-weight: 700; color: #DA251D; text-align: center">
+                                                    PASO N°1
+                                                </p>
+                                                <p style="text-align: center; color: #888888;">
+                                                    Te recomendamos llegar 30 minutos antes de iniciar la función.
+                                                </p>
+                                            </td>
+                                            <td width="50%">
+                                                <div style="text-align: center; color: #888888;">
+                                                    <img height="100" src="https://cdn2.iconfinder.com/data/icons/qr-codes-and-bitcoins-innovicons-black-and-white/128/button-QR_code-scanner-mobile-hand-512.png">
+                                                </div>
+                                                <p style="font-weight: 700; color: #DA251D; text-align: center">
+                                                    PASO N°2
+                                                </p>
+                                                <p style="text-align: center; color: #888888;">
+                                                    Presenta tu código QR junto a tu carnet de vacunación y tu DNI en los podios de validación y disfruta de la función
+                                                </p>
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td height="40" style="font-size: 40px; line-height: 40px;">&nbsp;</td>
+    </tr>
+</table>
+<!-- end section -->
+
+<!-- footer ====== -->
+<table border="0" width="650" align="center" cellpadding="0" cellspacing="0" bgcolor="f4f4f4">
+    <tr>
+        <td height="25" style="font-size: 25px; line-height: 25px;">&nbsp;</td>
+    </tr>
+    <tr>
+        <td align="center">
+            <table border="0" align="center" width="590" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td>
+                        <table border="0" align="left" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+                            <tr>
+                                <td align="left" style="color: #aaaaaa; font-size: 14px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 24px;">
+                                    <div style="line-height: 24px;">
+                                        <span style="color: #333333;">Teleticket</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table border="0" align="left" width="5" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"
+                               class="container590">
+                            <tr>
+                                <td height="20" width="5" style="font-size: 20px; line-height: 20px;">&nbsp;</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td height="25" style="font-size: 25px; line-height: 25px;">&nbsp;</td>
+    </tr>
+
+</table>
+<!-- end footer ====== -->
 
 </body>
 </html>

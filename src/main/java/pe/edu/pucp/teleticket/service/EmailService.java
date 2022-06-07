@@ -2,6 +2,7 @@ package pe.edu.pucp.teleticket.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import pe.edu.pucp.teleticket.entity.Cliente;
+import pe.edu.pucp.teleticket.entity.Historial;
 import pe.edu.pucp.teleticket.entity.Operador;
+import pe.edu.pucp.teleticket.repository.HistorialRepository;
 
 import javax.mail.MessagingException;
 import java.nio.charset.StandardCharsets;
@@ -25,6 +28,9 @@ public class EmailService {
 
     @Value("${aplication.domain}")
     private String DOMINIO;
+
+    @Autowired
+    HistorialRepository historialRepository;
 
     private static final String FROM = "Teleticket Perú <teleticket2022@gmail.com>";
 
@@ -81,6 +87,26 @@ public class EmailService {
         helper.setText(process, true);
         helper.setFrom(FROM);
         helper.setTo(correo);
+        ClassPathResource clr = new ClassPathResource(LOGO_IMAGE);
+        helper.addInline("logo", clr, PNG_MIME);
+        javaMailSender.send(mimeMessage);
+    }
+
+    public void correoResumenCompra(Cliente cliente, String idcompra) throws MessagingException {
+        Historial ticket = historialRepository.findVigenteById(cliente.getId(), idcompra);
+        Context context = new Context();
+        context.setVariable("dominio", DOMINIO);
+        context.setVariable("cliente", cliente);
+        context.setVariable("ticket",ticket);
+        context.setVariable("logo", LOGO_IMAGE);
+
+        String process = templateEngine.process("mail/resumen-compra", context);
+        javax.mail.internet.MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+        helper.setSubject("Compra exitosa - Teleticket Perú");
+        helper.setText(process, true);
+        helper.setFrom(FROM);
+        helper.setTo(cliente.getCorreo());
         ClassPathResource clr = new ClassPathResource(LOGO_IMAGE);
         helper.addInline("logo", clr, PNG_MIME);
         javaMailSender.send(mimeMessage);
