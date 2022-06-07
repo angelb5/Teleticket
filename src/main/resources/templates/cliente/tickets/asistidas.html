@@ -20,7 +20,18 @@
                     </nav>
                 </div>
             </div>
-            <div class="row">
+
+            <div th:if="${comprasAsistidas.isEmpty()}"  style="border-radius: 20px;margin-top: 10px;height: 450px;">
+                <div class="container py-4" style="display: flex; text-align: center; justify-content: center">
+                    <img th:src="@{/img/ticket.png}" style="width: 150px; border-radius:20%; margin-top: 80px"/>
+                </div>
+                <div class="container" style="display: flex; text-align: center; justify-content: center">
+                    <h4 class="fw-bold" style="font-size: 19px">Aquí se mostrarán todas las funciones a las que ha asistido</h4>
+
+                </div>
+            </div>
+
+            <div class="row" th:unless="${comprasAsistidas.isEmpty()}">
                 <div class="col">
                     <table class="table content-table hover-light align-middle mb-0  text-center ">
                         <thead class="bg-light">
