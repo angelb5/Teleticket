@@ -100,9 +100,9 @@ public interface  ClienteRepository extends JpaRepository<Cliente, Integer> {
             "where lower(concat(c.nombre,' ',c.apellido)) like %?1% and c2.estado='Comprado' group by c.idclientes order by 'apellido' asc")
     public List<ClienteListado> listarClientesConCompras(String busqueda, Pageable pageable);
 
-    @Query(nativeQuery = true, value = "select count(*) from clientes c\n" +
+    @Query(nativeQuery = true, value = "select count(distinct c.idclientes) from clientes c\n" +
             "inner join historialcompras c2 on c.idclientes = c2.idclientes\n" +
-            "where lower(concat(c.nombre,' ',c.apellido)) like %?1% and c2.estado='Comprado' group by c.idclientes order by 'apellido' asc")
+            "where lower(concat(c.nombre,' ',c.apellido)) like %?1% and c2.estado='Comprado' order by 'apellido' asc")
     public long contarClientesConCompras(String busqueda);
 
     @Query(nativeQuery = true, value = "select c.nombre as 'nombre', c.apellido as 'apellido', DATE_FORMAT(FROM_DAYS(DATEDIFF(now(),c.nacimiento)), '%Y')+0 as 'edad',\n" +

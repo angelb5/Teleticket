@@ -227,7 +227,7 @@ public class AdminSedesController {
             return "redirect:/admin/sedes";
         }
         model.addAttribute("sala", optionalSala.get());
-        model.addAttribute("idSede", sala.getSede().getId());
+        model.addAttribute("idSede", optionalSala.get().getSede().getId());
         return "admin/sedes/salas/form";
     }
 
