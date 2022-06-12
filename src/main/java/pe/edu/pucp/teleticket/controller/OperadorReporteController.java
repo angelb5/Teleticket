@@ -32,9 +32,14 @@ public class OperadorReporteController {
             response.setContentType("application/octet-stream");
             response.setHeader("Content-Disposition", "attachment; filename=Reporte"+id+".xlsx");
             ByteArrayInputStream stream = excelService.exportarReportePorId(id);
-            IOUtils.copy(stream, response.getOutputStream());
+            if(stream !=null){
+                IOUtils.copy(stream, response.getOutputStream());
+            }else{
+                response.sendRedirect("/operador/obras");
+            }
         }catch (Exception e){
             e.printStackTrace();
+            response.sendRedirect("/operador/obras");
         }
     }
 
