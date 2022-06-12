@@ -255,12 +255,13 @@
                                    type="button" class="btn btn-redtele btn-sm btn-rounded"
                                    th:href="@{'/operador/funciones/editar?idfuncion=' + ${funcion.id}}"
                                    data-mdb-ripple-color="dark">Editar</a>
-                                <button th:unless="${funcion.getEstadoRVC() == 'Cancelada'}" type="button"
+                                <a th:unless="${funcion.getEstadoRVC() == 'Cancelada'}" type="button"
                                         style="width: 130px;margin-top: 10px"
                                         class="btn btn-outline-success fw-bold btn-sm btn-rounded"
-                                        data-mdb-ripple-color="dark">
+                                        data-mdb-ripple-color="dark"
+                                        th:href="@{'/operador/reporte/'+${funcion.id}}">
                                     Reporte xsl
-                                </button>
+                                </a>
                             </td>
                         </tr>
                     </tbody>

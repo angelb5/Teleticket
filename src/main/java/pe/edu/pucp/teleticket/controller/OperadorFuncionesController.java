@@ -126,7 +126,7 @@ public class OperadorFuncionesController {
                 funcion.setEstado("Activa");
                 funcionRepository.save(funcion);
                 attr.addFlashAttribute("msg", "Se ha creado la función con éxito");
-                return "redirect:operador/obras/gestion/" + funcion.getObra().getId();
+                return "redirect:/operador/obras/gestion/" + funcion.getObra().getId();
             }
         }
     }
