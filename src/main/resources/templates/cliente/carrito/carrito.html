@@ -102,7 +102,7 @@
                                 </form>
                                 <div class="text-danger text-center mb-2">
                                     Tiempo restante:
-                                    <span class="timereserva" th:id="'time'+${reserva.id}" data-th-attr="data-time=${#temporals.format(reserva.fechalimite, 'dd/MM/yyyy HH:mm:ss')}">
+                                    <span class="timereserva" th:id="'time'+${reserva.id}" data-th-attr="data-time=${#temporals.format(reserva.fechalimite, 'yyyy/MM/dd HH:mm:ss')}">
                                         --:--
                                     </span>
                                 </div>
@@ -249,7 +249,6 @@
     $(document).ready(
         setInterval(function(){
                 $('.timereserva').each(function(){
-                    console.log($(this));
                     let countDownDate = new Date($(this).attr('data-time')).getTime();
                     let now = new Date().getTime();
                     let timeleft = countDownDate - now;
@@ -257,11 +256,12 @@
                     let seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
                     if(timeleft < 0){
                         location.reload();
+                    }else{
+                        if(seconds<10){
+                            seconds = '0'+seconds;
+                        }
+                        $(this).html('0'+minutes + ':'+seconds);
                     }
-                    if(seconds<10){
-                        seconds = '0'+seconds;
-                    }
-                    $(this).html('0'+minutes + ':'+seconds);
                 });
         },1000)
     )

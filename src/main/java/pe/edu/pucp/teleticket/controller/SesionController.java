@@ -25,6 +25,7 @@ import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pe.edu.pucp.teleticket.dao.DniDao;
 import pe.edu.pucp.teleticket.entity.*;
 import pe.edu.pucp.teleticket.repository.AdminRepository;
 import pe.edu.pucp.teleticket.repository.ClienteRepository;
@@ -62,6 +63,9 @@ public class SesionController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    DniDao dniDao;
 
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
@@ -251,6 +255,10 @@ public class SesionController {
         if(!bindingResult.hasFieldErrors("dni")){
             if(clienteRepository.findByDni(cliente.getDni())!=null){
                 FieldError dniError = new FieldError("dni", "dni", "Ya existe un usuario con este DNI");
+                bindingResult.addError(dniError);
+                dniHasErrors = true;
+            }else if(!dniDao.verificarDni(cliente.getDni())){
+                FieldError dniError = new FieldError("dni", "dni", "El DNI ingresado no existe");
                 bindingResult.addError(dniError);
                 dniHasErrors = true;
             }
