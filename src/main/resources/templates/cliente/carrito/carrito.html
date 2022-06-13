@@ -18,11 +18,12 @@
                     <div class="row py-4" th:each="reserva, info : ${session.carrito}">
                         <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
                             <!-- Image -->
+                            <a  th:href="@{'/obras/'+${funciones.get(info.index).idobras}}">
                             <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
                                 <img th:src="@{'/image/obra/'+${funciones.get(info.index).fotoprincipal}}" class="img-fluid rounded-start img-cover"/>
-                                <a  th:href="@{'/obras/'+${funciones.get(info.index).idobras}}"></a>
                                 <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
                             </div>
+                            </a>
                             <!-- Image -->
                         </div>
 
@@ -155,11 +156,10 @@
                             <span th:text="'S/ '+${#numbers.formatDecimal(total,1,2,'POINT')}" ></span>
                         </li>
                     </ul>
-                    <form th:action="@{/carrito/comprar}" method="post">
-                        <button type="submit" class="btn btn-redtele btn-lg btn-block">
-                            Comprar
-                        </button>
-                    </form>
+                    <button type="button" class="btn btn-redtele btn-lg btn-block"
+                                data-mdb-toggle="modal" data-mdb-target="#pagoModal">
+                        Comprar
+                    </button>
 
                 </div>
             </div>
@@ -175,6 +175,63 @@
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
 
 <div th:replace="fragmentos/navbar.html :: menu"></div>
+
+<!-- Modal cc -->
+<div class="modal top fade" id="pagoModal" tabindex="-1" aria-labelledby="pagoModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog modal-lg  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 d-flex flex-column pb-0">
+                <img th:src="@{/img/logo-teleticket-alt.png}" height="45" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
+                <h5 class="modal-title" id="pagoModalLabel">Ingresa tu tarjeta de débito o crédito</h5>
+            </div>
+            <div class="modal-body">
+                <div class="cc-container">
+                    <div class="col1 px-3">
+                        <div class="card">
+                            <div class="front">
+                                <div class="type">
+                                    <img class="bankid"/>
+                                </div>
+                                <span class="chip"></span>
+                                <span class="card_number">&#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; </span>
+                                <div class="date"><span class="date_value">MM / YYYY</span></div>
+                                <span class="fullname">FULL NAME</span>
+                            </div>
+                            <div class="back">
+                                <div class="magnetic"></div>
+                                <div class="bar"></div>
+                                <span class="seccode">&#x25CF;&#x25CF;&#x25CF;</span>
+                                <span class="chip"></span><span class="disclaimer">This card is property of Random Bank of Random corporation. <br> If found please return to Random Bank of Random corporation - 21968 Paris, Verdi Street, 34 </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-3 col2">
+                        <form th:action="@{/carrito/comprar}" method="post">
+                            <div class="px-3 row mb-3">
+                                <label>Número de tarjeta</label>
+                                <input class="number" type="text" ng-model="ncard" maxlength="19" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                            </div>
+                            <div class="px-3 row mb-3">
+                                <label>Fecha de expiración</label>
+                                <input class="expire" type="text" placeholder="MM/YYYY"/>
+                            </div>
+                            <div class="px-3 row mb-3">
+                                <label>CVC</label>
+                                <input class="ccv" type="text" placeholder="CVC" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                            </div>
+                            <div class="px-3 row">
+                                <button type="button" class="buy btn btn-redtele btn-lg btn-block"
+                                        th:text="'Pagar S/ '+${#numbers.formatDecimal(total,1,2,'POINT')}">
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal msg -->
 <div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
@@ -234,6 +291,7 @@
 </body>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <script  type="text/javascript" th:src="@{/js/busqueda.js}"></script>
+<script  type="text/javascript" th:src="@{/js/tarjeta.js}"></script>
 <script type="text/javascript" th:if="${historialEnConflicto != null}">
     $(window).on('load', function() {
         $('#modalConflictos').modal('show');
