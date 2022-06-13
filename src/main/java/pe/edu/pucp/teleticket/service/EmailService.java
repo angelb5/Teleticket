@@ -38,6 +38,8 @@ public class EmailService {
 
     private static final String PNG_MIME = "image/png";
 
+    private final String qrurl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&margin=7&data=";
+
     public void correoBienvenida(Cliente cliente) throws MessagingException {
         Context context = new Context();
         context.setVariable("dominio", DOMINIO);
@@ -99,6 +101,7 @@ public class EmailService {
         context.setVariable("cliente", cliente);
         context.setVariable("ticket",ticket);
         context.setVariable("logo", LOGO_IMAGE);
+        context.setVariable("qrcode", qrurl+idcompra);
 
         String process = templateEngine.process("mail/resumen-compra", context);
         javax.mail.internet.MimeMessage mimeMessage = javaMailSender.createMimeMessage();

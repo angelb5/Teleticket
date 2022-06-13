@@ -25,6 +25,8 @@ public class ClienteTicketsController {
 
     private final int historialPaginas = 3;
 
+    private final String url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&margin=7&data=";
+
     @Autowired
     HistorialRepository historialRepository;
 
@@ -84,7 +86,7 @@ public class ClienteTicketsController {
         }
 
         model.addAttribute("ticket", compra);
-
+        model.addAttribute("qrcode", url+compra.getIdcompra());
         return "cliente/tickets/vigente";
     }
 
@@ -110,6 +112,7 @@ public class ClienteTicketsController {
         }
 
         model.addAttribute("ticket", compra);
+        model.addAttribute("qrcode", url+compra.getIdcompra());
         model.addAttribute("calificacionObra",calificacionObra);
         model.addAttribute("calificacionDirectores", calificacionDirectores);
         model.addAttribute("calificacionActores", calificacionActores);
