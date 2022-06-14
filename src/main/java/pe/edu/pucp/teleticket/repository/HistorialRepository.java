@@ -29,6 +29,11 @@ public interface HistorialRepository extends JpaRepository<Historial, Integer> {
             "where idclientes = ?1 and idfunciones = ?2 and estado = 'Comprado' ")
     Optional<Historial> findCompraByIdclientesAndIdfunciones(int idclientes, int idfunciones);
 
+    @Query(value = "select new Historial(h.id, h.idclientes, h.funcion, h.idcompra, h.total, h.numtickets, h.fechacompra) from Historial h " +
+            "inner join Funcion f on f.id = h.funcion.id " +
+            "where h.idfunciones = ?1 and h.estado = 'Cancelado' ")
+    List<Historial> findCanceladasByIdfunciones(int idfunciones);
+
     @Query(nativeQuery = true, value = "select f.idfunciones as id, f.idobras as idobras, o.fotoprincipal as fotoprincipal, o.duracion as duracion, " +
             "o.titulo as titulo, 0 as nombresala, se.nombre as nombresede, " +
             "f.fecha as fecha, f.inicio as inicio, f.costo as costo, " +
@@ -74,7 +79,7 @@ public interface HistorialRepository extends JpaRepository<Historial, Integer> {
             countQuery = "select count(h) " +
                     " from Historial h  " +
                     "inner join Funcion f on f.id = h.funcion.id " +
-                    "where h.idclientes = :idclientes and h.estado = 'Comprado' and (f.fecha < current_date or (f.fecha = current_date  and f.fin < current_time)")
+                    "where h.idclientes = :idclientes and h.estado = 'Comprado' and (f.fecha < current_date or (f.fecha = current_date  and f.fin < current_time))")
     List<Historial> findComprasAsistidas(int idclientes, Pageable pageable);
 
     @Query(value = "select new Historial(h.id, h.idclientes, h.funcion, h.idcompra, h.total, h.numtickets, h.fechacompra) " +
@@ -89,10 +94,21 @@ public interface HistorialRepository extends JpaRepository<Historial, Integer> {
             "where h.idclientes = :idclientes and h.idcompra= :idcompra and h.estado = 'Comprado' and (f.fecha < current_date or (f.fecha = current_date  and f.fin < current_time))")
     Historial findAsistidaById(int idclientes, String idcompra);
 
+    @Query(value = "select new Historial(h.id, h.idclientes, h.funcion, h.idcompra, h.total, h.numtickets, h.fechacompra) " +
+            "from Historial h " +
+            "inner join Funcion f on f.id = h.funcion.id " +
+            "where h.idclientes = :idclientes and h.idcompra= :idcompra")
+    Historial findByIdclientesIdcompra(int idclientes, String idcompra);
+
     @Transactional
     @Modifying
     @Query(nativeQuery = true, value = "update historialcompras set estado='Cancelado' where idcompra = ?1")
     void cancelarCompra(String idcompra);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "update historialcompras set estado='Cancelado' where idfunciones = ?1")
+    void cancelarFuncion(int idfunciones);
 
     @Query(value = "select new Historial(h.id, h.idclientes, h.funcion, h.idcompra, h.total, h.numtickets, h.fechacompra) " +
             "from Historial h " +

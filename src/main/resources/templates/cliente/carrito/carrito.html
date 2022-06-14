@@ -207,24 +207,23 @@
                     </div>
                     <div class="px-3 col2">
                         <form th:action="@{/carrito/comprar}" method="post">
-                            <div class="px-3 row mb-3">
+                            <div class="px-3 row mb-2">
                                 <label>Número de tarjeta</label>
                                 <input class="number" type="text" ng-model="ncard" maxlength="19" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
                             </div>
-                            <div class="px-3 row mb-3">
+                            <div class="px-3 row mb-2">
                                 <label>Fecha de expiración</label>
                                 <input class="expire" type="text" placeholder="MM/YYYY"/>
                             </div>
-                            <div class="px-3 row mb-3">
+                            <div class="px-3 row mb-2">
                                 <label>CVC</label>
                                 <input class="ccv" type="text" placeholder="CVC" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
                             </div>
                             <div class="px-3 row">
-                                <button type="button" class="buy btn btn-redtele btn-lg btn-block"
+                                <button type="submit" class="buy btn btn-redtele btn-lg btn-block"
                                         th:text="'Pagar S/ '+${#numbers.formatDecimal(total,1,2,'POINT')}">
                                 </button>
                             </div>
-
                         </form>
                     </div>
                 </div>

@@ -12,7 +12,9 @@ import pe.edu.pucp.teleticket.entity.*;
 import pe.edu.pucp.teleticket.repository.CalificacionObraRepository;
 import pe.edu.pucp.teleticket.repository.CalificacionPersonaRepository;
 import pe.edu.pucp.teleticket.repository.HistorialRepository;
+import pe.edu.pucp.teleticket.service.EmailService;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,6 +38,8 @@ public class ClienteTicketsController {
     @Autowired
     CalificacionObraRepository coRepository;
 
+    @Autowired
+    EmailService emailService;
 
     @GetMapping({"/","","/vigentes"})
     public String listarVigentes(Model model, @RequestParam("pag") Optional<Integer> pag, HttpSession session){
@@ -136,6 +140,12 @@ public class ClienteTicketsController {
 
         historialRepository.cancelarCompra(idcompra);
         attr.addFlashAttribute("msg", "Su compra ha sido cancelada");
+
+        try{
+            emailService.correoCompraCancelada(clienteSes, idcompra);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
 
         return "redirect:/cliente/tickets";
     }
