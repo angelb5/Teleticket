@@ -12,7 +12,9 @@ import pe.edu.pucp.teleticket.entity.*;
 import pe.edu.pucp.teleticket.repository.CalificacionObraRepository;
 import pe.edu.pucp.teleticket.repository.CalificacionPersonaRepository;
 import pe.edu.pucp.teleticket.repository.HistorialRepository;
+import pe.edu.pucp.teleticket.service.EmailService;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ public class ClienteTicketsController {
 
     private final int historialPaginas = 3;
 
+    private final String url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&margin=7&data=";
+
     @Autowired
     HistorialRepository historialRepository;
 
@@ -34,6 +38,8 @@ public class ClienteTicketsController {
     @Autowired
     CalificacionObraRepository coRepository;
 
+    @Autowired
+    EmailService emailService;
 
     @GetMapping({"/","","/vigentes"})
     public String listarVigentes(Model model, @RequestParam("pag") Optional<Integer> pag, HttpSession session){
@@ -84,7 +90,7 @@ public class ClienteTicketsController {
         }
 
         model.addAttribute("ticket", compra);
-
+        model.addAttribute("qrcode", url+compra.getIdcompra());
         return "cliente/tickets/vigente";
     }
 
@@ -110,6 +116,7 @@ public class ClienteTicketsController {
         }
 
         model.addAttribute("ticket", compra);
+        model.addAttribute("qrcode", url+compra.getIdcompra());
         model.addAttribute("calificacionObra",calificacionObra);
         model.addAttribute("calificacionDirectores", calificacionDirectores);
         model.addAttribute("calificacionActores", calificacionActores);
@@ -133,6 +140,12 @@ public class ClienteTicketsController {
 
         historialRepository.cancelarCompra(idcompra);
         attr.addFlashAttribute("msg", "Su compra ha sido cancelada");
+
+        try{
+            emailService.correoCompraCancelada(clienteSes, idcompra);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
 
         return "redirect:/cliente/tickets";
     }

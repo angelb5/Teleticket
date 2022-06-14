@@ -243,7 +243,7 @@
                                     <p style="line-height: 24px; margin-bottom:15px;color: #888888;" th:text="'Hola '+${cliente.nombre} + ', a continuación verás el detalle de tu compra'">
                                     </p>
                                     <div style="text-align: center; margin-bottom: 10px">
-                                        <img height="250" src="https://es.qr-code-generator.com/wp-content/themes/qr/new_structure/markets/core_market/generator/dist/generator/assets/images/websiteQRCode_noFrame.png">
+                                        <img height="250" data-th-src="${qrcode}">
                                     </div>
                                     <p style="line-height: 24px;margin-bottom:15px; text-align: center">
                                         <span style="font-size: 18px; color: #4d4d4d"> CÓDIGO DE VALIDACIÓN</span>

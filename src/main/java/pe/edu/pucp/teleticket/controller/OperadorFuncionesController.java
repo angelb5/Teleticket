@@ -7,14 +7,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pe.edu.pucp.teleticket.entity.Funcion;
-import pe.edu.pucp.teleticket.entity.Obra;
-import pe.edu.pucp.teleticket.entity.Sala;
-import pe.edu.pucp.teleticket.entity.Sede;
-import pe.edu.pucp.teleticket.repository.FuncionRepository;
-import pe.edu.pucp.teleticket.repository.ObraRepository;
-import pe.edu.pucp.teleticket.repository.SalaRepository;
-import pe.edu.pucp.teleticket.repository.SedeRepository;
+import pe.edu.pucp.teleticket.entity.*;
+import pe.edu.pucp.teleticket.repository.*;
+import pe.edu.pucp.teleticket.service.EmailService;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -28,13 +23,21 @@ public class OperadorFuncionesController {
 
     @Autowired
     ObraRepository obraRepository;
+
     @Autowired
     SedeRepository sedeRepository;
 
     @Autowired
     SalaRepository salaRepository;
+
     @Autowired
     FuncionRepository funcionRepository;
+
+    @Autowired
+    HistorialRepository historialRepository;
+
+    @Autowired
+    EmailService emailService;
 
     @GetMapping("/nueva")
     public String nuevaFuncion(@RequestParam("idobra") int idobra, Model model, @ModelAttribute("funcion") Funcion funcion) {
@@ -196,9 +199,17 @@ public class OperadorFuncionesController {
         Funcion funcion = optionalFuncion.get();
         funcion.setEstado("Cancelada");
         funcionRepository.save(funcion);
+        historialRepository.cancelarFuncion(id);
 
+        for(Historial h : historialRepository.findCanceladasByIdfunciones(id)){
+            try{
+                emailService.correoFuncionCancelada(h);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
         //PENDIENTE
-        //Al momento de cancelar una función se deben cancelar las compras asociadas
+        //Al momento de cancelar una función se debe realizar la devolucion del dinero
 
         attr.addFlashAttribute("msg", "La función ha sido cancelada");
         return "redirect:/operador/obras/gestion/" + funcion.getObra().getId();

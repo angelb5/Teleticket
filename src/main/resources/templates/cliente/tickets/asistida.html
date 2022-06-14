@@ -63,7 +63,7 @@
                         <span class="text-black-50 align-content-end">Código de retiro: </span>
                         <span class="text-redtele fw-bold align-content-end" th:text="${ticket.idcompra}">XYZ123</span>
                     </div>
-                    <img src="https://es.qr-code-generator.com/wp-content/themes/qr/new_structure/markets/core_market/generator/dist/generator/assets/images/websiteQRCode_noFrame.png"
+                    <img th:src="${qrcode}"
                          class="w-100 border-1 border-black" style="border-style: solid;" alt="qr"/>
                 </div>
             </div>
