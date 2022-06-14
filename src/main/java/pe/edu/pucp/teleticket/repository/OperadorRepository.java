@@ -49,4 +49,7 @@ public interface OperadorRepository extends JpaRepository<Operador, Integer> {
     @Query(nativeQuery = true, value = "select count(*) from operadores o where LOWER(o.nombre) like %?1% ")
      public long contarListaOperadores(String nombre);
 
+
+
+
 }

@@ -4,7 +4,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import pe.edu.pucp.teleticket.dto.FuncionOperadorDto;
 import pe.edu.pucp.teleticket.dto.FuncionesCompra;
+import pe.edu.pucp.teleticket.dto.ObrasListado;
 import pe.edu.pucp.teleticket.dto.SedesCompra;
 import pe.edu.pucp.teleticket.entity.Funcion;
 import pe.edu.pucp.teleticket.entity.Obra;
@@ -163,4 +165,30 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
     @Query(nativeQuery = true, value = "select distinct fecha from funciones where estado='Activa' and idobras=?1 and fecha >= current_date() " +
             "order by fecha asc")
     public List<String> listaFechasDeObra(int idobras);
+
+    @Query(nativeQuery = true,
+            value = "select f.idfunciones'id', o.titulo as 'obra', o.fotoprincipal as 'foto', f.fecha as 'fecha' ,f.inicio as 'Hora', se.nombre as 'sede' , f.estado as 'estado'\n" +
+                    "            from funciones f\n" +
+                    "                     left join obras o on f.idobras = o.idobras\n" +
+                    "                     left join salas s on f.idsalas = s.idsalas\n" +
+                    "                     left join sedes se on s.idsedes = se.idsedes\n" +
+                    "            where o.titulo like %?1% \n" +
+                    "            group by f.idfunciones",
+            countQuery = "select count(distinct f.idfunciones)\n" +
+                    "            from funciones f\n" +
+                    "                     left join obras o on f.idobras = o.idobras\n" +
+                    "                     left join salas s on f.idsalas = s.idsalas\n" +
+                    "                     left join sedes se on s.idsedes = se.idsedes\n" +
+                    "            where o.titulo like %?1%\n" +
+                    "            group by f.idfunciones")
+    public List<FuncionOperadorDto> listadoOperadorFunciones(String busqueda, Pageable pageable);
+
+    @Query(nativeQuery = true, value = "select count(distinct f.idfunciones)\n" +
+            "            from funciones f\n" +
+            "                     left join obras o on f.idobras = o.idobras\n" +
+            "                     left join salas s on f.idsalas = s.idsalas\n" +
+            "                     left join sedes se on s.idsedes = se.idsedes\n" +
+            "            where o.titulo like %?1%\n" +
+            "            group by f.idfunciones")
+    public Integer contarlistadoOperadorFunciones(String nombre);
 }

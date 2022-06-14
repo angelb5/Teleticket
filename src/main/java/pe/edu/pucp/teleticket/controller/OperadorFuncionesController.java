@@ -1,12 +1,16 @@
 package pe.edu.pucp.teleticket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pe.edu.pucp.teleticket.dto.FuncionOperadorDto;
+import pe.edu.pucp.teleticket.dto.ObrasListado;
 import pe.edu.pucp.teleticket.entity.*;
 import pe.edu.pucp.teleticket.repository.*;
 import pe.edu.pucp.teleticket.service.EmailService;
@@ -20,6 +24,9 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/operador/funciones")
 public class OperadorFuncionesController {
+
+    private final int funcionesPaginas =8;
+
 
     @Autowired
     ObraRepository obraRepository;
@@ -38,6 +45,43 @@ public class OperadorFuncionesController {
 
     @Autowired
     EmailService emailService;
+
+    @GetMapping({"/", "", "/lista"})
+    public String listarFunciones(Model model, @RequestParam("pag") Optional<String> pag,
+                              @RequestParam("busqueda") Optional<String> optionalBusqueda , Optional<String> pagString) {
+        String busqueda = optionalBusqueda.isPresent()? optionalBusqueda.get().trim() : "";
+
+        int pagina;
+        try {
+            if (pagString.isEmpty() || pagString.get().isEmpty()) {
+                pagina = 0;
+            } else {
+                pagina = Integer.parseInt(pagString.get());
+            }
+        } catch (Exception e) {
+            return "redirect:/operador/funciones";
+        }
+
+        Integer cantidadFuncionesOperador = funcionRepository.contarlistadoOperadorFunciones(busqueda)==null? 0: funcionRepository.contarlistadoOperadorFunciones(busqueda);
+        int paginas = (int) Math.ceil((float) cantidadFuncionesOperador / funcionesPaginas);
+        pagina = pagina > paginas ? paginas : pagina;
+        pagina = pagina < 1 ? 1 : pagina;
+        Pageable lista;
+        if (pagina == 0) {
+            lista = PageRequest.of(0, funcionesPaginas);
+        } else {
+            lista = PageRequest.of(pagina - 1, funcionesPaginas);
+
+        }
+        List<FuncionOperadorDto> listaFunciones = funcionRepository.listadoOperadorFunciones(busqueda, lista);
+        model.addAttribute("listaFunciones", listaFunciones);
+        model.addAttribute("pag", pagina);
+        model.addAttribute("paginas", paginas);
+        model.addAttribute("ruta", "/operador/funciones?");
+        model.addAttribute("index", (pagina-1)*funcionesPaginas+1);
+
+        return "operador/funciones/lista";
+    }
 
     @GetMapping("/nueva")
     public String nuevaFuncion(@RequestParam("idobra") int idobra, Model model, @ModelAttribute("funcion") Funcion funcion) {
