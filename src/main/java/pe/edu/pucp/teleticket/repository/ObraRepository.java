@@ -40,13 +40,13 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
                     "from obras o " +
                     "inner join funciones f on o.idobras = f.idobras " +
                     "where lower(o.titulo) like %?1% " +
-                    "or (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW())) " +
+                    "and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW())) " +
                     "        group by o.idobras",
             countQuery = "select count(distinct o.idobras) " +
                     "                    from obras o" +
                     "                    inner join funciones f on o.idobras = f.idobras " +
                     "                    where lower(o.titulo)  like %?1% " +
-                    "                    or (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW())) " +
+                    "                    and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW())) " +
                     "                    group by o.idobras")
     public List<ObrasListado> listadoObrasliente(String busqueda, Pageable pageable);
 
