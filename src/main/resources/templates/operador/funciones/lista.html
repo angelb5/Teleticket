@@ -77,19 +77,19 @@
                         <td>
                              <span th:if="${funcion.estado.equalsIgnoreCase('Activa')}"
                                    class="badge badge-success rounded-pill d-inline"
-                                   style="font-size: 13px">Activa</span>
+                                   style="font-size: 13px">Vigente</span>
                             <span th:unless="${funcion.estado.equalsIgnoreCase('Activa')}"
                                   class="badge badge-danger rounded-pill d-inline"
                                   style="font-size: 13px">Cancelada</span>
                         </td>
                         <td>
                             <a type="button" class="btn btn-outline-primary fw-bold btn-sm btn-rounded"
-                               data-mdb-ripple-color="dark" th:href="@{|/operador/funciones/editar?id=${funcion.id}|}">
+                               data-mdb-ripple-color="dark" th:href="@{|/operador/funciones/editar?idfuncion=${funcion.id}|}">
                                 Editar
                             </a>
                             <a type="button" style="width: 140px;margin-top: 0px"
                                class="btn btn-outline-success fw-bold btn-sm btn-rounded" data-mdb-ripple-color="dark"
-                               th:href="@{|/operador/funciones/reporte?id=${funcion.id}|}">
+                               th:href="@{|/operador/funciones/reporte/${funcion.id}|}">
                                 REPORTE XLS
                             </a>
                         </td>
