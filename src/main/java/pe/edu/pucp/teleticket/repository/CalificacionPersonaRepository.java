@@ -2,12 +2,7 @@ package pe.edu.pucp.teleticket.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import pe.edu.pucp.teleticket.dto.CalificacionPersonaDTO;
-import pe.edu.pucp.teleticket.entity.Calificacionobra;
 import pe.edu.pucp.teleticket.entity.Calificacionpersona;
-import pe.edu.pucp.teleticket.entity.Persona;
-
-import java.util.List;
 
 public interface CalificacionPersonaRepository extends JpaRepository<Calificacionpersona, Integer> {
 
@@ -34,15 +29,4 @@ public interface CalificacionPersonaRepository extends JpaRepository<Calificacio
             "and idpersonas = :idpersonas " +
             "and rol = :rol ")
     Calificacionpersona findCalificacionpersonaDB(int idfunciones, int idclientes, int idpersonas, String rol);
-
-    @Query(nativeQuery = true, value = "select tp.foto,tp.nombre,tc.estrellas " +
-            "from personas " +
-            "as tp " +
-            "inner join calificacionpersonas " +
-            "as tc " +
-            "on tp.idpersonas = tc.idpersonas " +
-            "inner join actores " +
-            "as ta " +
-            "on tp.idpersonas = ta.idpersona ")
-    List<CalificacionPersonaDTO> encontrarEstrellasActor();
 }
