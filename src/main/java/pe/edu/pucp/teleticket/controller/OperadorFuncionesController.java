@@ -48,25 +48,20 @@ public class OperadorFuncionesController {
 
     @GetMapping({"/", "", "/lista"})
     public String listarFunciones(Model model, @RequestParam("pag") Optional<String> pag,
-                              @RequestParam("busqueda") Optional<String> optionalBusqueda , Optional<String> pagString) {
+                              @RequestParam("busqueda") Optional<String> optionalBusqueda ) {
         String busqueda = optionalBusqueda.isPresent()? optionalBusqueda.get().trim() : "";
         String ruta = busqueda.isBlank()? "/operador/funciones?" : "/operador/funciones?busqueda=" +busqueda +"&";
 
-        int pagina;
-        try {
-            if (pagString.isEmpty() || pagString.get().isEmpty()) {
-                pagina = 0;
-            } else {
-                pagina = Integer.parseInt(pagString.get());
-            }
-        } catch (Exception e) {
+        int pagina=0;
+        try{
+            pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
+        } catch (Exception e){
             return "redirect:/operador/funciones";
         }
-
-        Integer cantidadFuncionesOperador = funcionRepository.contarlistadoOperadorFunciones(busqueda)==null? 0: funcionRepository.contarlistadoOperadorFunciones(busqueda);
-        int paginas = (int) Math.ceil((float) cantidadFuncionesOperador / funcionesPaginas);
-        pagina = pagina > paginas ? paginas : pagina;
         pagina = pagina < 1 ? 1 : pagina;
+        int paginas = (int) Math.ceil((float)funcionRepository.contarlistadoOperadorFunciones(busqueda)/funcionesPaginas);
+        pagina = pagina > paginas ? paginas : pagina;
+
         Pageable lista;
         if (pagina == 0) {
             lista = PageRequest.of(0, funcionesPaginas);

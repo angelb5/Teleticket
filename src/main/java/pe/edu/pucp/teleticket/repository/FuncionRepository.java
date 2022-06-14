@@ -188,7 +188,6 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
             "                     left join obras o on f.idobras = o.idobras\n" +
             "                     left join salas s on f.idsalas = s.idsalas\n" +
             "                     left join sedes se on s.idsedes = se.idsedes\n" +
-            "            where o.titulo like %?1%\n" +
-            "            group by f.idfunciones")
+            "            where o.titulo like %?1%\n")
     public Integer contarlistadoOperadorFunciones(String nombre);
 }

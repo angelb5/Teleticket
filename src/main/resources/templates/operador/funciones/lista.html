@@ -23,6 +23,7 @@
                 </a>
             </div>
             <br>
+
             <table class="table hover-light align-middle mb-0 round-border" th:unless="${listaFunciones.isEmpty()}">
                 <thead class="bg-light">
                     <tr class="bg-dark">
@@ -84,7 +85,8 @@
                         </td>
                         <td>
                             <a type="button" class="btn btn-outline-primary fw-bold btn-sm btn-rounded"
-                               data-mdb-ripple-color="dark" th:href="@{|/operador/funciones/editar?idfuncion=${funcion.id}|}">
+                               data-mdb-ripple-color="dark"
+                               th:href="@{|/operador/funciones/editar?idfuncion=${funcion.id}|}">
                                 Editar
                             </a>
                             <a type="button" style="width: 140px;margin-top: 0px"
@@ -97,6 +99,7 @@
                     </tr>
                 </tbody>
             </table>
+
             <!--Paginacion-->
             <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
         </div>
