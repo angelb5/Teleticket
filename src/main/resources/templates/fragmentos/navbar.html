@@ -55,6 +55,7 @@
                         <span hidden id="rol">operador</span>
                         <span hidden th:text="${buscaren}" id="buscaren"></span>
                         <li><a class="dropdown-item" href="#obras">Obras</a></li>
+                        <li><a class="dropdown-item" href="#funciones">Funciones</a></li>
                     </ul>
 
                     <input autocomplete="off" type="text" class="form-control rounded-7 fs-14" placeholder="Buscar en Teleticket"
@@ -225,6 +226,12 @@
                         <a class="link-white fs-26 fw-bold" th:href="@{/operador/obras}">
                             <i class="fa-solid fa-masks-theater me-2 text-redtele"></i>
                             Gestión de Obras
+                        </a>
+                    </div>
+                    <div class="col">
+                        <a class="link-white fs-26 fw-bold" th:href="@{/operador/funciones}">
+                            <i class="fa-solid fa-masks-theater me-2 text-redtele"></i>
+                            Gestión de Funciones
                         </a>
                     </div>
                 </div>
