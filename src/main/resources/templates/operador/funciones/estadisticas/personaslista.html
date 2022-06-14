@@ -338,20 +338,11 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td scope="row">
-                                        <div class="d-flex align-items-center">
-                                            <div class="actor-image">
-                                                <img src="../img/persona.jpg" alt="Leonardo">
-                                            </div>
-                                            <div class="ms-3">
-                                                <p class="fw-bold mb-1">Leonardo Dicaprio</p>
-                                            </div>
-                                        </div>
-
-                                    </td>
+                                <tr th:each="actores : ${listaCalificacionActores}">
+                                    <td th:text="${actores.nombre}"></td>
+                                    <td th:text="${actores.estrellas}"></td>
                                     <td>
-                                        4.1 / 5 <i class="ms-1 fa-solid fa-star "></i>
+                                       <!-- <img width="20" height="10" alt="Avatar" th:src="">-->
                                     </td>
                                 </tr>
                                 <tr>
@@ -521,6 +512,7 @@
                     </div>
                 </div>
             </div>
+
     </section>
 
 
@@ -533,7 +525,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between px-md-1">
                             <div>
-                                <h3 class="text-danger">11</h3>
+                                <h3 class="text-danger" th:text="${totalSedes}" ></h3>
                                 <p class="mb-0">Total sedes</p>
                             </div>
                             <div class="align-self-center">

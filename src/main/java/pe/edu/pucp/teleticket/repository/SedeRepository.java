@@ -38,4 +38,8 @@ public interface SedeRepository extends JpaRepository<Sede, Integer> {
     @Query(nativeQuery = true, value= "select count(*) from sedes " +
             "where estado = 'Disponible' and  ( lower(nombre) like %?1% or lower(direccion) like %?1% ) order by nombre asc")
     public long contarListarSedesCliente(String busqueda);
+
+
+    @Query(nativeQuery = true, value = "select count(*)from sedes where estado = 'Disponible'")
+    public int totalSedesDisponibles();
 }
