@@ -75,7 +75,7 @@
             <!--Card-->
             <div class="col">
                 <div class="card h-100 position-relative">
-                    <a class="card-tele" href="#">
+                    <a class="card-tele" th:href="@{'/obras/' + ${obras.id}}">
                         <div class="card-tele-img">
                             <img th:src="@{'/image/obra/'+${obras.fotoprincipal}}" alt="Obras"
                                  class="img-fluid rounded-start img-cover"/>
@@ -101,7 +101,7 @@
         </div>
     </div>
     <div class="text-center fw-bold pt-2 pb-5">
-        <a th:href="@{obras/lista}" class="link-sub">
+        <a th:href="@{obras}" class="link-sub">
             Ver más obras
             <i class="ms-1 fa-solid fa-angle-right"></i>
         </a>
@@ -111,7 +111,7 @@
     <div class="row row-cols-1 row-cols-md-3 g-4 py-5">
         <div class="col">
             <div class="card bg-dark text-white">
-                <a href="/sedes/lista">
+                <a th:href="@{sedes}">
                     <img src="../img/sedesbanner.jpg" class="card-img" alt="Exlora sedes"/>
                 </a>
 
@@ -119,14 +119,14 @@
         </div>
         <div class="col">
             <div class="card bg-dark text-white">
-                <a href="/obras/lista">
+                <a th:href="@{obras}">
                     <img src="../img/teatrobanner.jpg" class="card-img" alt="Lo mejor del teatro"/>
                 </a>
             </div>
         </div>
         <div class="col">
             <div class="card bg-dark text-white">
-                <a href="/personas/lista">
+                <a th:href="@{personas}">
                     <img src="../img/personasbanner.jpg" class="card-img" alt="Descubre actores"/>
                 </a>
             </div>
@@ -178,7 +178,7 @@
         </div>
     </div>
     <div class="text-center fw-bold pt-2 pb-5">
-        <a th:href="@{personas/lista}" class="link-sub">
+        <a th:href="@{personas}" class="link-sub">
             Ver más actores y directores
             <i class="ms-1 fa-solid fa-angle-right"></i>
         </a>
@@ -219,7 +219,7 @@
 
     </div>
     <div class="text-center fw-bold pt-2 pb-5">
-        <a th:href="@{sedes/lista}" class="link-sub">
+        <a th:href="@{sedes}" class="link-sub">
             Ver más sedes
             <i class="ms-1 fa-solid fa-angle-right"></i>
         </a>
