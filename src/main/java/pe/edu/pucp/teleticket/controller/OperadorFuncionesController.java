@@ -25,7 +25,7 @@ import java.util.Optional;
 @RequestMapping("/operador/funciones")
 public class OperadorFuncionesController {
 
-    private final int funcionesPaginas =8;
+    private final int funcionesPaginas =6;
 
 
     @Autowired
@@ -50,6 +50,7 @@ public class OperadorFuncionesController {
     public String listarFunciones(Model model, @RequestParam("pag") Optional<String> pag,
                               @RequestParam("busqueda") Optional<String> optionalBusqueda , Optional<String> pagString) {
         String busqueda = optionalBusqueda.isPresent()? optionalBusqueda.get().trim() : "";
+        String ruta = busqueda.isBlank()? "/operador/funciones?" : "/operador/funciones?busqueda=" +busqueda +"&";
 
         int pagina;
         try {
@@ -77,8 +78,7 @@ public class OperadorFuncionesController {
         model.addAttribute("listaFunciones", listaFunciones);
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
-        model.addAttribute("ruta", "/operador/funciones?");
-        model.addAttribute("index", (pagina-1)*funcionesPaginas+1);
+        model.addAttribute("ruta", ruta);
 
         return "operador/funciones/lista";
     }

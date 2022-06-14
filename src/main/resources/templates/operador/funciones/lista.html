@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head th:insert="fragmentos/cabecera.html :: cabecera( titulo = 'Funciones')">
@@ -15,10 +14,11 @@
                 Mostrando todas las funciones
             </div>
             <div style="float: right">
-                <a class="btn btn-redtele btn-sm" type="button" th:href="@{|/operadores/funciones/estadisticas|}"
-                   style="height: 45px; width: 140px;margin-bottom: 10px">
+                <a th:href="@{|/operadores/funciones/estadisticas|}">
                     <div class="row">
-                        <div class="col-9"><p class="text-white fw-bold col">ESTADISTICAS</p></div>
+                        <div class="btn btn-redtele btn-sm fw-bold " style="height: 30px;width: 130px" type="button"
+                             aria-expanded="false"> ESTADISTICAS
+                        </div>
                     </div>
                 </a>
             </div>
@@ -26,26 +26,30 @@
             <table class="table hover-light align-middle mb-0 round-border" th:unless="${listaFunciones.isEmpty()}">
                 <thead class="bg-light">
                     <tr class="bg-dark">
-                        <th class="text-white fw-bold">Obra</th>
                         <th class="text-white fw-bold">Foto</th>
+                        <th class="text-white fw-bold">Obra</th>
                         <th class="text-white fw-bold">Fecha</th>
                         <th class="text-white fw-bold">Hora</th>
                         <th class="text-white fw-bold">Sede</th>
+                        <th class="text-white fw-bold">Estado</th>
+                        <th class="text-white fw-bold">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="funcion : ${listaFunciones}">
+
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="ms-3">
-                                    <p class="fw-bold mb-1" th:text="${funcion.obra}">Las Monjas</p>
+                                    <p class="fw-bold mb-1" th:text="${funcion.foto}">1</p>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="d-flex align-items-center">
+
                                 <div class="ms-3">
-                                    <p class="fw-bold mb-1" th:text="${funcion.foto}">1</p>
+                                    <p class="fw-bold mb-1" th:text="${funcion.obra}">Las Monjas</p>
                                 </div>
                             </div>
                         </td>
@@ -69,9 +73,25 @@
                                     <p class="fw-bold mb-1" th:text="${funcion.sede}">La Cúpula de las Artes</p>
                                 </div>
                             </div>
-
-
-
+                        </td>
+                        <td>
+                             <span th:if="${funcion.estado.equalsIgnoreCase('Activa')}"
+                                   class="badge badge-success rounded-pill d-inline"
+                                   style="font-size: 13px">Activa</span>
+                            <span th:unless="${funcion.estado.equalsIgnoreCase('Activa')}"
+                                  class="badge badge-danger rounded-pill d-inline"
+                                  style="font-size: 13px">Cancelada</span>
+                        </td>
+                        <td>
+                            <a type="button" class="btn btn-outline-primary fw-bold btn-sm btn-rounded"
+                               data-mdb-ripple-color="dark" th:href="@{|/operador/funciones/editar?id=${funcion.id}|}">
+                                Editar
+                            </a>
+                            <a type="button" style="width: 140px;margin-top: 0px"
+                               class="btn btn-outline-success fw-bold btn-sm btn-rounded" data-mdb-ripple-color="dark"
+                               th:href="@{|/operador/funciones/reporte?id=${funcion.id}|}">
+                                REPORTE XLS
+                            </a>
                         </td>
 
                     </tr>
@@ -79,22 +99,24 @@
             </table>
             <!--Paginacion-->
             <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
-
         </div>
 
         <!-- Modal msg -->
-        <div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+        <div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal"
+             aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
             <div class="modal-dialog  ">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="modal-title">
-                            <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
+                            <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo"
+                                 loading="lazy" style="margin-top: 2px;"/>
                         </div>
                         <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class=" w-100 d-flex justify-content-center mb-3">
-                            <i class="fa-solid fa-circle-check" style="font-size: 50px" th:class="${error==null? 'fa-solid fa-circle-check text-success': 'fa-solid fa-circle-xmark text-danger'  }"></i>
+                            <i class="fa-solid fa-circle-check" style="font-size: 50px"
+                               th:class="${error==null? 'fa-solid fa-circle-check text-success': 'fa-solid fa-circle-xmark text-danger'  }"></i>
                         </div>
                         <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
                         </div>
@@ -108,9 +130,9 @@
         <div th:replace="fragmentos/navbar.html :: menu"></div>
     </body>
     <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
-    <script  type="text/javascript" th:src="@{/js/busqueda.js}"></script>
+    <script type="text/javascript" th:src="@{/js/busqueda.js}"></script>
     <script type="text/javascript" th:if="${msg != null}">
-        $(window).on('load', function() {
+        $(window).on('load', function () {
             $('#msgModal').modal('show');
         });
     </script>

@@ -1,142 +1,148 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')">
-    <link rel="stylesheet" th:href="@{'/css/tables.css'}"/>
-</head>
-<body>
-<nav th:replace="fragmentos/navbar.html :: navbar('personas')"></nav>
-<!-- Fin de Navbar -->
+    <head th:insert="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')">
+        <link rel="stylesheet" th:href="@{'/css/tables.css'}"/>
+    </head>
+    <body>
+        <nav th:replace="fragmentos/navbar.html :: navbar('personas')"></nav>
+        <!-- Fin de Navbar -->
 
-<!--Contenidos-->
-<div class="container py-2 ">
+        <!--Contenidos-->
+        <div class="container py-2 ">
 
-    <div class="title-22 py-4">
-        Gestión de Actores y Directores
-    </div>
-    <div style="float: right">
-        <a class="btn btn-redtele btn-sm" type="button" th:href="@{|/admin/personas/nuevo|}"
-                style="height: 45px; width: 140px;margin-bottom: 10px">
-            <div class="row">
-                <div class="col-3"><i class="fa fa-address-card col"
-                                      style="font-size: 24px;margin-top: 5px"></i></div>
-                <div class="col-9"><p class="text-white fw-bold col">Nueva Persona</p></div>
+            <div class="title-22 py-4">
+                Gestión de Actores y Directores
             </div>
-        </a>
-    </div>
-    <br>
-    <div  class="container badge-danger  border round-border" style="height: 70px;display: flex;justify-content: center;align-items: center;"  th:if="${personas.isEmpty()}" >
-        <h3>No se han encontrado personas que coincidan con la busqueda</h3>
-    </div>
-
-    <table class="table hover-light align-middle mb-0 round-border" th:unless="${personas.isEmpty()}">
-        <thead class="bg-light">
-            <tr class="bg-dark">
-                <th class="text-white fw-bold">Nombre</th>
-                <th class="text-white fw-bold">Puntuación(Actor)</th>
-                <th class="text-white fw-bold">Puntuación(Director)</th>
-                <th class="text-white fw-bold">Estado</th>
-                <th class="text-white fw-bold">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="persona : ${personas}">
-                <td>
-                    <div class="d-flex align-items-center">
-                        <div class="actor-image">
-                            <img th:src="@{|/image/persona/${persona.id}|}" alt="Leonardo">
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1" th:text="${persona.nombre}">Leonardo Dicaprio</p>
-                        </div>
-                    </div>
-                </td>
-                <td  th:if="${persona.pactuacion.isPresent()}">
+            <div style="float: right">
+                <a class="btn btn-redtele btn-sm" type="button" th:href="@{|/admin/personas/nuevo|}"
+                   style="height: 45px; width: 140px;margin-bottom: 10px">
                     <div class="row">
-                        <div class="col-1">
-                            <i  class="ms-1 fa-solid fa-star"></i>
-                        </div>
-                        <div class="col-6">
-                            <p class="fw-bold" th:text="${persona.pactuacion.get()+'/5'}">
-                            </p>
-                        </div>
+                        <div class="col-3"><i class="fa fa-address-card col"
+                                              style="font-size: 24px;margin-top: 5px"></i></div>
+                        <div class="col-9"><p class="text-white fw-bold col">Nueva Persona</p></div>
                     </div>
-                </td>
-                <td th:if="${persona.pactuacion.isEmpty()}">
+                </a>
+            </div>
+            <br>
+            <div class="container badge-danger  border round-border"
+                 style="height: 70px;display: flex;justify-content: center;align-items: center;"
+                 th:if="${personas.isEmpty()}">
+                <h3>No se han encontrado personas que coincidan con la busqueda</h3>
+            </div>
+
+            <table class="table hover-light align-middle mb-0 round-border" th:unless="${personas.isEmpty()}">
+                <thead class="bg-light">
+                    <tr class="bg-dark">
+                        <th class="text-white fw-bold">Nombre</th>
+                        <th class="text-white fw-bold">Puntuación(Actor)</th>
+                        <th class="text-white fw-bold">Puntuación(Director)</th>
+                        <th class="text-white fw-bold">Estado</th>
+                        <th class="text-white fw-bold">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="persona : ${personas}">
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="actor-image">
+                                    <img th:src="@{|/image/persona/${persona.id}|}" alt="Leonardo">
+                                </div>
+                                <div class="ms-3">
+                                    <p class="fw-bold mb-1" th:text="${persona.nombre}">Leonardo Dicaprio</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td th:if="${persona.pactuacion.isPresent()}">
+                            <div class="row">
+                                <div class="col-1">
+                                    <i class="ms-1 fa-solid fa-star"></i>
+                                </div>
+                                <div class="col-6">
+                                    <p class="fw-bold" th:text="${persona.pactuacion.get()+'/5'}">
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                        <td th:if="${persona.pactuacion.isEmpty()}">
                     <span class="badge badge-warning rounded-pill d-inline"
                           style="font-size: 13px">Sin Puntuacion</span>
-                </td>
-                <td  th:if="${persona.pdireccion.isPresent()}">
-                    <div class="row">
-                        <div class="col-1">
-                            <i  class="ms-1 fa-solid fa-star"></i>
-                        </div>
-                        <div class="col-6">
-                            <p class="fw-bold" th:text="${persona.pdireccion.get()+'/5'}">
-                            </p>
-                        </div>
-                    </div>
-                </td>
-                <td th:if="${persona.pdireccion.isEmpty()}">
+                        </td>
+                        <td th:if="${persona.pdireccion.isPresent()}">
+                            <div class="row">
+                                <div class="col-1">
+                                    <i class="ms-1 fa-solid fa-star"></i>
+                                </div>
+                                <div class="col-6">
+                                    <p class="fw-bold" th:text="${persona.pdireccion.get()+'/5'}">
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                        <td th:if="${persona.pdireccion.isEmpty()}">
                     <span class="badge badge-warning rounded-pill d-inline"
                           style="font-size: 13px">Sin Puntuacion</span>
-                </td>
+                        </td>
 
-                </td>
-                <td>
+                        </td>
+                        <td>
                     <span th:if="${persona.estado.equalsIgnoreCase('Disponible')}"
-                            class="badge badge-success rounded-pill d-inline" style="font-size: 13px">Activo</span>
-                    <span th:unless="${persona.estado.equalsIgnoreCase('Disponible')}"
-                            class="badge badge-danger rounded-pill d-inline" style="font-size: 13px">Inactivo</span>
-                </td>
-                <td>
-                    <a type="button" class="btn btn-redtele fw-bold btn-sm btn-rounded"
-                            data-mdb-ripple-color="dark" th:href="@{|/admin/personas/editar?id=${persona.id}|}">
-                        Editar
-                    </a>
-                    <a th:if="${(persona.obrasactor+persona.obrasdirector)==0}"
-                            type="button" class="btn btn-black fw-bold btn-sm btn-rounded"
-                       data-mdb-ripple-color="dark" th:href="@{|/admin/personas/borrar?id=${persona.id}|}">
-                        Eliminar
-                    </a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                          class="badge badge-success rounded-pill d-inline" style="font-size: 13px">Activo</span>
+                            <span th:unless="${persona.estado.equalsIgnoreCase('Disponible')}"
+                                  class="badge badge-danger rounded-pill d-inline"
+                                  style="font-size: 13px">Inactivo</span>
+                        </td>
+                        <td>
+                            <a type="button" class="btn btn-redtele fw-bold btn-sm btn-rounded"
+                               data-mdb-ripple-color="dark" th:href="@{|/admin/personas/editar?id=${persona.id}|}">
+                                Editar
+                            </a>
+                            <a th:if="${(persona.obrasactor+persona.obrasdirector)==0}"
+                               type="button" class="btn btn-black fw-bold btn-sm btn-rounded"
+                               data-mdb-ripple-color="dark" th:href="@{|/admin/personas/borrar?id=${persona.id}|}">
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-    <!--Paginacion-->
-    <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
+            <!--Paginacion-->
+            <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
 
-</div>
+        </div>
 
-    <!-- Modal msg -->
-    <div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
-        <div class="modal-dialog  ">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title">
-                        <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
+        <!-- Modal msg -->
+        <div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal"
+             aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+            <div class="modal-dialog  ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title">
+                            <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo"
+                                 loading="lazy" style="margin-top: 2px;"/>
+                        </div>
+                        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class=" w-100 d-flex justify-content-center mb-3">
-                        <i class="fa-solid fa-circle-check" style="font-size: 50px" th:class="${error==null? 'fa-solid fa-circle-check text-success': 'fa-solid fa-circle-xmark text-danger'  }"></i>
-                    </div>
-                    <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
+                    <div class="modal-body">
+                        <div class=" w-100 d-flex justify-content-center mb-3">
+                            <i class="fa-solid fa-circle-check" style="font-size: 50px"
+                               th:class="${error==null? 'fa-solid fa-circle-check text-success': 'fa-solid fa-circle-xmark text-danger'  }"></i>
+                        </div>
+                        <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-<footer th:replace="fragmentos/footer.html :: footer"></footer>
+        <footer th:replace="fragmentos/footer.html :: footer"></footer>
 
-<div th:replace="fragmentos/navbar.html :: menu"></div>
-</body>
-<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
-<script  type="text/javascript" th:src="@{/js/busqueda.js}"></script>
+        <div th:replace="fragmentos/navbar.html :: menu"></div>
+    </body>
+    <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/busqueda.js}"></script>
     <script type="text/javascript" th:if="${msg != null}">
-        $(window).on('load', function() {
+        $(window).on('load', function () {
             $('#msgModal').modal('show');
         });
     </script>
