@@ -17,6 +17,6 @@ public interface FuncionOperadorDto {
 
     String getSede();
 
-    int getEstado();
+    String getEstado();
 
 }
