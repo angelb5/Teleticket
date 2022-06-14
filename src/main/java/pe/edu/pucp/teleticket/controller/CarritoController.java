@@ -4,11 +4,9 @@ import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pe.edu.pucp.teleticket.dao.TarjetaCreditoDao;
 import pe.edu.pucp.teleticket.dto.FuncionesCompra;
 import pe.edu.pucp.teleticket.dto.TarjetaCredito;
 import pe.edu.pucp.teleticket.entity.Cliente;
@@ -22,9 +20,12 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/carrito")
@@ -39,7 +40,17 @@ public class CarritoController {
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    TarjetaCreditoDao tarjetaCreditoDao;
+
     private final int MIN = 8;
+
+    private boolean stringIsNumeric(String string){
+        if (Pattern.matches("[a-zA-Z]+", string) == false) {
+            return true;
+        }
+        return false;
+    }
 
     @GetMapping({"","/"})
     public String mostrarCarrito(Model model, HttpSession session){
@@ -159,9 +170,71 @@ public class CarritoController {
     }
 
     @PostMapping("/comprar")
-    public String comprarCarrito(HttpSession session){
+    public String comprarCarrito(@RequestParam("numero") String numero, @RequestParam("mes") String mes,
+                                 @RequestParam("ano") String ano, @RequestParam("ccv") String ccv, HttpSession session, RedirectAttributes attr){
+
         Object object = session.getAttribute("usuario");
         if(!(object instanceof Cliente clienteSes)){return "redirect:/";}
+
+        String errores="";
+
+        if(numero.isEmpty() || mes.isEmpty() || ano.isEmpty() || ccv.isEmpty()){
+            errores = "Todos los campos son necesarios";
+            attr.addFlashAttribute("errores",errores);
+            return "redirect:/carrito";
+        }
+        numero = numero.replaceAll("\\s","");
+
+        //Validacion de la tarjeta
+
+        boolean errorExiste = false;
+
+        if(!stringIsNumeric(numero) || numero.length() != 16){
+            errores = "El formato del número no es correcto";
+            errorExiste=true;
+        }
+        if(!stringIsNumeric(mes) || !stringIsNumeric(ano)){
+            errorExiste=true;
+            errores = "La fecha no tiene el formato correcto";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        try {
+            LocalDate date = LocalDate.parse(ano + "-" + mes + "-01", formatter);
+            if(date.isBefore(LocalDate.now())){
+                errorExiste=true;
+                errores = "La tarjeta se encuentra caducada";
+            }
+        }catch (Exception e){
+            errorExiste=true;
+            errores = "La fecha no tiene el formato correcto";
+        }
+
+        if(!stringIsNumeric(ccv) || ccv.length()<3 || ccv.length()>4){
+            errorExiste=true;
+            errores = "El CCV no tiene el formato correcto";
+        }
+        if(errorExiste){
+            attr.addFlashAttribute("errores",errores);
+            return "redirect:/carrito";
+        }
+
+        TarjetaCreditoDao tarjetaCreditoDao = new TarjetaCreditoDao();
+        TarjetaCredito tarjetaCredito = new TarjetaCredito(numero,mes+"/"+ano,ccv);
+        try{
+            boolean validarTarjeta = tarjetaCreditoDao.validarTarjeta(tarjetaCredito);
+            if(!validarTarjeta){
+                errores = "La tarjeta ingresada no es válida";
+                attr.addFlashAttribute("errores",errores);
+                return "redirect:/carrito";
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            errores = "Hubo un error y no se pudo procesar la tarjeta";
+            attr.addFlashAttribute("errores",errores);
+            return "redirect:/carrito";
+        }
+
+
         List<Historial> carrito = historialRepository.findReservasByIdclientes(clienteSes.getId());
         for (Historial item : carrito){
             Funcion fc = funcionRepository.findById(item.getIdfunciones()).get();

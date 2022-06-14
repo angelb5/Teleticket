@@ -195,7 +195,7 @@
                                 <span class="chip"></span>
                                 <span class="card_number">&#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; </span>
                                 <div class="date"><span class="date_value">MM / YYYY</span></div>
-                                <span class="fullname">FULL NAME</span>
+                                <span class="fullname">XXXXX XXXXX</span>
                             </div>
                             <div class="back">
                                 <div class="magnetic"></div>
@@ -209,16 +209,23 @@
                         <form th:action="@{/carrito/comprar}" method="post">
                             <div class="px-3 row mb-2">
                                 <label>Número de tarjeta</label>
-                                <input class="number" type="text" ng-model="ncard" maxlength="19" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                                <input name="numero" class="number" type="text" ng-model="ncard" maxlength="19" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
                             </div>
                             <div class="px-3 row mb-2">
                                 <label>Fecha de expiración</label>
-                                <input class="expire" type="text" placeholder="MM/YYYY"/>
+                                <input class="expire" type="text" placeholder="MM/YYYY" />
+                                <input hidden id="mes" name="mes">
+                                <input hidden id="ano" name="ano">
                             </div>
                             <div class="px-3 row mb-2">
-                                <label>CVC</label>
-                                <input class="ccv" type="text" placeholder="CVC" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                                <label>CCV</label>
+                                <input name="ccv" class="ccv" type="text" placeholder="CCV" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
                             </div>
+
+                            <div  class="px-3 row mb-2" th:if="${errores !=null}">
+                                <div class=" text-center text-danger mt-3" th:text="${errores}"></div>
+                            </div>
+
                             <div class="px-3 row">
                                 <button type="submit" class="buy btn btn-redtele btn-lg btn-block"
                                         th:text="'Pagar S/ '+${#numbers.formatDecimal(total,1,2,'POINT')}">
@@ -300,6 +307,23 @@
     $(window).on('load', function() {
         $('#msgModal').modal('show');
     });
+</script>
+<script type="text/javascript" th:if="${errores != null}">
+    $(window).on('load', function() {
+        $('#pagoModal').modal('show');
+    });
+</script>
+<script type="text/javascript">
+    $(".expire").change(function(){
+        let fechastr =  $(".expire").val();
+        console.log(fechastr)
+        let fechaarr = fechastr.split('/');
+        if(fechaarr.length>1){
+            console.log(fechaarr)
+            $("#mes").val(fechaarr[0]);
+            $("#ano").val(fechaarr[1]);
+        }
+    })
 </script>
 <script type="text/javascript" >
 

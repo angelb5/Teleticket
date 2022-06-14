@@ -24,7 +24,7 @@ public class TarjetaCreditoDao {
 
     private final String usuario= "teleticket";
     private final String password= "4675bedyv86g8nyiv21s07";
-    private final String url= "http://localhost:8081";
+    private final String url= "http://apitarjeta.japaneast.cloudapp.azure.com";
 
     public boolean validarTarjeta(TarjetaCredito tarjetaCredito){
         HttpHeaders headers = new HttpHeaders();
