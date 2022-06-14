@@ -160,7 +160,7 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
             "where f.obra.id=?1 and f.fecha=?2 and f.estado = 'Activa' ")
     public List<SedesCompra> listaSedesPorObraFecha(int idobra, LocalDate fecha);
 
-    @Query(nativeQuery = true, value = "select distinct fecha from funciones where idobras=?1 and fecha >= current_date() " +
+    @Query(nativeQuery = true, value = "select distinct fecha from funciones where estado='Activa' and idobras=?1 and fecha >= current_date() " +
             "order by fecha asc")
     public List<String> listaFechasDeObra(int idobras);
 }
