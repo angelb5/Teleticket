@@ -102,7 +102,7 @@ public class OperadorFuncionesController {
         Optional<Funcion> optionalFuncion = funcionRepository.findById(idfuncion);
         if(optionalFuncion.isEmpty()){return "redirect:/operador/";}
         funcion = optionalFuncion.get();
-        if(funcion.getEstado().equals("Cancelada") || funcion.getEstadoRVC().equals("Realizada")){return "redirect:/operador/";}
+        //if(funcion.getEstado().equals("Cancelada") || funcion.getEstadoRVC().equals("Realizada")){return "redirect:/operador/";}
         model.addAttribute("funcion", funcion);
         return "operador/funciones/editaFrm";
     }

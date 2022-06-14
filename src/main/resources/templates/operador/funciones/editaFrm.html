@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')"></head>
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Editar')"></head>
 <head>
     <script th:src="@{/selectize/js/standalone/selectize.js}"></script>
     <link th:href="@{/selectize/css/selectize.bootstrap5.css}" rel="stylesheet">
@@ -65,7 +65,8 @@
                     <button class="btn btn-redtele" type="submit" form="guardarForm">
                         Guardar
                     </button>
-                    <a class="btn btn-dark" th:href="@{'/operador/obras/gestion/' + ${funcion.obra.id}}">
+                    <!--<a class="btn btn-dark" th:href="@{'/operador/obras/gestion/' + ${funcion.obra.id}}">-->
+                    <a class="btn btn-dark" th:href="@{'/operador/funciones/lista'}">
                         Cancelar
                     </a>
                 </div>
