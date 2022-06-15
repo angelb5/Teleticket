@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -338,14 +338,33 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="actores : ${listaCalificacionActores}">
+                                <div th:each="actor : ${actores}">
+                                    <tr>
+                                        <td scope="row">
+                                            <div class="d-flex align-items-center">
+                                                <div class="actor-image">
+                                                    <img src="../img/persona.jpg" alt="Leonardo">
+                                                </div>
+                                                <div class="ms-3">
+                                                    <p class="fw-bold mb-1" th:text="${actor.getNombre()}"></p>
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                        <td th:text="${actor.getEstrellas() +'/5'}">
+                                            <i class="ms-1 fa-solid fa-star "></i>
+                                        </td>
+                                    </tr>
+                                </div>
+                                <!--<tr >
                                     <td th:text="${actores.nombre}"></td>
                                     <td th:text="${actores.estrellas}"></td>
                                     <td>
-                                       <!-- <img width="20" height="10" alt="Avatar" th:src="">-->
+                                       &lt;!&ndash; <img width="20" height="10" alt="Avatar" th:src="">&ndash;&gt;
                                     </td>
-                                </tr>
-                                <tr>
+                                </tr>-->
+
+                                <!--<tr>
                                     <td scope="row">
                                         <div class="d-flex align-items-center">
                                             <div class="actor-image">
@@ -392,23 +411,7 @@
                                     <td>
                                         4.1 / 5 <i class="ms-1 fa-solid fa-star "></i>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td scope="row">
-                                        <div class="d-flex align-items-center">
-                                            <div class="actor-image">
-                                                <img src="../img/persona.jpg" alt="Leonardo">
-                                            </div>
-                                            <div class="ms-3">
-                                                <p class="fw-bold mb-1">Leonardo Dicaprio</p>
-                                            </div>
-                                        </div>
-
-                                    </td>
-                                    <td>
-                                        4.1 / 5 <i class="ms-1 fa-solid fa-star "></i>
-                                    </td>
-                                </tr>
+                                </tr>-->
                                 </tbody>
                             </table>
                         </div>
@@ -430,82 +433,24 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td scope="row">
-                                        <div class="d-flex align-items-center">
-                                            <div class="actor-image">
-                                                <img src="../img/july.png" alt="Leonardo">
+                                <div th:each="director : ${directores}">
+                                    <tr>
+                                        <td scope="row">
+                                            <div class="d-flex align-items-center">
+                                                <div class="actor-image">
+                                                    <img src="../img/july.png" alt="Leonardo">
+                                                </div>
+                                                <div class="ms-3">
+                                                    <p class="fw-bold mb-1" th:text="${director.getNombre()}">July Naters</p>
+                                                </div>
                                             </div>
-                                            <div class="ms-3">
-                                                <p class="fw-bold mb-1">July Naters</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        4.3 / 5 <i class="ms-1 fa-solid fa-star "></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td scope="row">
-                                        <div class="d-flex align-items-center">
-                                            <div class="actor-image">
-                                                <img src="../img/july.png" alt="Leonardo">
-                                            </div>
-                                            <div class="ms-3">
-                                                <p class="fw-bold mb-1">July Naters</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        4.3 / 5 <i class="ms-1 fa-solid fa-star "></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td scope="row">
-                                        <div class="d-flex align-items-center">
-                                            <div class="actor-image">
-                                                <img src="../img/july.png" alt="Leonardo">
-                                            </div>
-                                            <div class="ms-3">
-                                                <p class="fw-bold mb-1">July Naters</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        4.3 / 5 <i class="ms-1 fa-solid fa-star "></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td scope="row">
-                                        <div class="d-flex align-items-center">
-                                            <div class="actor-image">
-                                                <img src="../img/july.png" alt="Leonardo">
-                                            </div>
-                                            <div class="ms-3">
-                                                <p class="fw-bold mb-1">July Naters</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        4.3 / 5 <i class="ms-1 fa-solid fa-star "></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td scope="row">
-                                        <div class="d-flex align-items-center">
-                                            <div class="actor-image">
-                                                <img src="../img/july.png" alt="Leonardo">
-                                            </div>
-                                            <div class="ms-3">
-                                                <p class="fw-bold mb-1">July Naters</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        4.3 / 5 <i class="ms-1 fa-solid fa-star "></i>
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td th:text="${director.getEstrellas() + '/5'}">
+                                            4.3 / 5 <i class="ms-1 fa-solid fa-star "></i>
+                                        </td>
+                                    </tr>
 
+                                </div>
                                 </tbody>
                             </table>
                         </div>
@@ -540,7 +485,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between px-md-1">
                             <div>
-                                <h3 class="text-success">156</h3>
+                                <h3 class="text-success" th:text="${totalCliente}">156</h3>
                                 <p class="mb-0">Total Clientes</p>
                             </div>
                             <div class="align-self-center">
@@ -555,7 +500,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between px-md-1">
                             <div>
-                                <h3 class="text-warning">19</h3>
+                                <h3 class="text-warning" th:text="${totalObras}">19</h3>
                                 <p class="mb-0">Obras en Cartelera</p>
                             </div>
                             <div class="align-self-center">
@@ -570,7 +515,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between px-md-1">
                             <div>
-                                <h3 class="text-info">43</h3>
+                                <h3 class="text-info" th:text="${totalAD}">43</h3>
                                 <p class="mb-0">Actores y Directores</p>
                             </div>
                             <div class="align-self-center">
@@ -597,7 +542,7 @@
                         <div class="d-flex justify-content-between p-md-1">
                             <div class="d-flex flex-row">
                                 <div class="align-self-center">
-                                    <h2 class="h1 mb-0 me-4">170</h2>
+                                    <h2 class="h1 mb-0 me-4" th:text="totalTickets">170</h2>
                                 </div>
                                 <div>
                                     <h4>Tickets Vendidos</h4>
@@ -617,7 +562,7 @@
                         <div class="d-flex justify-content-between p-md-1">
                             <div class="d-flex flex-row">
                                 <div class="align-self-center">
-                                    <h2 class="h1 mb-0 me-4">S/ 6000.00</h2>
+                                    <h2 class="h1 mb-0 me-4" th:text="${'S/' + ventas}">S/ 6000.00</h2>
                                 </div>
                                 <div>
                                     <h4>Total de Ventas</h4>

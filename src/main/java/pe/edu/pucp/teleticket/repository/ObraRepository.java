@@ -101,4 +101,8 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
             "group by o.idobras")
     public List<ObrasListado> findDireccionesByIdpersona(int id);
 
+    @Query(value = "select count(*) from obras as o\n" +
+            "inner join funciones as f on o.idobras=f.idobras\n" +
+            "where f.estado='Vigente'",nativeQuery = true)
+    Integer obrasVigentes();
 }

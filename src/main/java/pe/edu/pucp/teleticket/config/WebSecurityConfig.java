@@ -48,8 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     DataSource dataSource;
 
-    @Autowired
-    ClienteRepository clienteRepository;
+    /*@Autowired
+    ClienteRepository clienteRepository;*/
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

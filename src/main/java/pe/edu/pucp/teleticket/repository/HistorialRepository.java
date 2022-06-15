@@ -122,4 +122,10 @@ public interface HistorialRepository extends JpaRepository<Historial, Integer> {
             "where f.id = :idfunciones and h.estado = 'Comprado' " +
             "order by h.fechacompra")
     List<Historial> findComprasByIdfunciones(int idfunciones);
+
+    @Query(value = "select sum(numtickets) as tickets from historialcompras where timestampdiff(DAY,date(fechacompra),date(now()))<=30 and estado='Comprado'",nativeQuery = true)
+    Integer ticketsTotale();
+
+    @Query(value = "select sum(total) as tickets from historialcompras where timestampdiff(DAY,date(fechacompra),date(now()))<=30 and estado='Comprado'",nativeQuery = true)
+    Integer totalVenta();
 }

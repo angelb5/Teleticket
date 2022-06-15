@@ -18,13 +18,15 @@ import java.util.List;
 public interface  ClienteRepository extends JpaRepository<Cliente, Integer> {
 
     @Query("select new Cliente(c.id, c.dni, c.nombre, c.apellido, c.correo, c.celular, c.nacimiento, c.direccion) from Cliente c where c.correo = ?1")
-    public Cliente findByCorreo(String correo);
+    Cliente findByCorreo(String correo);
 
     public Cliente findByDni(String dni);
 
     public  Cliente findByToken(String token);
 
     List<Cliente> findAllByOrderByIdAsc(Pageable pageable);
+    @Query(value = "select count(*) from clientes",nativeQuery = true)
+    Integer totalCliente();
 
     @Transactional
     @Modifying

@@ -20,6 +20,8 @@ public interface PersonaRepository extends JpaRepository<Persona,Integer> {
     public List<Persona> findAllByEstadoEquals(String estado);
 
     public Optional<Persona> findById(Integer id);
+    @Query(value = "select (select count(*) from actores) + (select count(*) from directores)",nativeQuery = true)
+    Integer totalActoresDirectores();
 
     @Query(nativeQuery = true,
             value = "select * from personas p inner join actores a on p.idpersonas = a.idpersona where idobra = ?1")
