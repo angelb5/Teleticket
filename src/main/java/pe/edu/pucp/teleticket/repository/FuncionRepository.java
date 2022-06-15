@@ -43,11 +43,11 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
     List<Funcion> findAllByObraOrderByFechaAsc(Obra obra, Pageable pageable);
 
     @Query(nativeQuery = true,
-            value = "select * from funciones where idsalas = :idsalas and estado = 'Activa' and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW()))")
+            value = "select * from funciones where idsalas = :idsalas and estado = 'Activa' and (fecha > NOW()  or (fecha = current_date() and inicio>NOW()))")
     public List<Funcion> getVigentesByIdsalas(int idsalas);
 
     @Query(nativeQuery = true,
-            value = "SELECT max(stock) FROM funciones where idsalas = :idsalas and estado = 'Activa' and (f.fecha > NOW()  or (f.fecha = current_date()  and f.inicio>NOW()))")
+            value = "SELECT max(stock) FROM funciones where idsalas = :idsalas and estado = 'Activa' and (fecha > NOW()  or (fecha = current_date()  and inicio>NOW()))")
     public long getMaxStockByIdsala(int idsalas);
 
 
