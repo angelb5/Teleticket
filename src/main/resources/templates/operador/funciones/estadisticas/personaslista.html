@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Estadísticas')">
+    <link rel="stylesheet" th:href="@{'/css/tables.css'}"/>
+</head>
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -22,304 +25,14 @@
 <!-- Start your project here-->
 
 <!-- Navbar-->
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark fs-14  p-3">
-    <div class="container-fluid container justify-content-between">
-        <!-- Left elements -->
-        <!-- Brand -->
-        <a class="navbar-brand me-2 mb-1 d-flex align-items-center" href="#">
-            <img
-                    src="../img/logo-teleticket.png"
-                    height="40"
-                    alt="Teleticket logo"
-                    loading="lazy"
-                    style="margin-top: 2px;"
-            />
-        </a>
-
-        <!-- Toggle button -->
-        <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
-                data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-        </button>
-
-        <!-- Collapsible wrapper -->
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mb-2 mb-lg-0">
-            </ul>
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="min-width: 50%;">
-                <!-- Search form -->
-                <form class="input-group w-auto my-auto d-flex flex-row search-panel ms-5"
-                      style="min-width: 80%;">
-
-                    <button class="form-control rounded-7 btn-light  fs-14 text-start font-weight-bold"
-                            data-mdb-toggle="dropdown"
-                            style="max-width: fit-content; border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important;">
-                        <span id="search_concept">Obra</span> <span class="caret"></span>
-                    </button>
-
-                    <input type="hidden" name="search_param" value="all" id="search_param">
-                    <input
-                            autocomplete="off"
-                            type="search"
-                            class="form-control rounded-7 fs-14"
-                            placeholder="Buscar en Teleticket"
-                            style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;"
-                    />
-                    <span class="input-group-text border-0 d-none d-lg-flex">
-                        <i class="fas fa-search"></i>
-                    </span>
-                </form>
-            </ul>
-
-
-            <!-- Right elements -->
-            <ul class="navbar-nav flex-row">
-
-                <!--Usuario-->
-                <li class="nav-item dropdown me-3 me-lg-1 mx-2">
-                    <a class="nav-link d-sm-flex align-items-sm-center dropdown-toggle hidden-arrow"
-                       href="#"
-                       id="navbarDropdownMenuLink"
-                       role="button"
-                       data-mdb-toggle="dropdown"
-                       aria-expanded="false">
-                        <img
-                                src="../img/default-profile.png"
-                                class="rounded-circle"
-                                height="22"
-                                alt="usuario"
-                                loading="lazy"/>
-                        <strong class="d-none d-sm-block ms-1 username">
-                            Operador
-                        </strong>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end fs-13"
-                        aria-labelledby="navbarDropdownMenuLink">
-                        <li>
-                            <a class="dropdown-item text-redtele" href="#">Cerrar sesión</a>
-                        </li>
-                    </ul>
-                </li>
-
-            </ul>
-        </div>
-    </div>
-</nav>
+<nav th:replace="fragmentos/navbar.html :: navbar('funciones')"></nav>
 <!-- Fin de Navbar -->
 <!--Contenidos-->
 <div class="container py-3 ">
 
-    <div class="mb-0 text-center title-30">
-        <strong>Estadísticas</strong>
+    <div class="title-22 py-4">
+        Estadísticas
     </div>
-
-    <section class="mb-4">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="title-24">
-                            Obras mejor calificadas
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="input-group">
-                            <select class="form-select fs-13" aria-label="Default select example" >
-                                <option value="1">En cartelera</option>
-                                <option value="2">Sin funciones</option>
-                                <option value="3">Todas</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="table-responsive">
-                    <table class="table round-border align-middle table-hover text-nowrap" style="min-width: 900px">
-                        <thead class="bg-white">
-                        <tr class="bg-dark text-white fw-bold">
-                            <th class="fw-bold" >Obra</th>
-                            <th class="fw-bold">Puntuación</th>
-                            <th class="fw-bold">Función más vista</th>
-                            <th class="fw-bold">Función menos vista</th>
-                            <th class="fw-bold">Recaudación total</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td scope="row">
-                                <div class="d-flex align-items-center">
-                                    <div class="obra-stat me-3">
-                                        <img src="../img/monjas.jpg" class="img-fluid">
-                                    </div>
-                                    <div class="fw-bold">
-                                        Las Monjas
-                                    </div>
-                                </div>
-
-                            </td>
-                            <td>
-                                4.3 / 5 <i class="ms-1 fa-solid fa-star "></i>
-                            </td>
-                            <td>
-                                <div>
-                                    Sede Surco
-                                </div>
-                                <div>
-                                    18/04 19:00
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    Sede San Borja
-                                </div>
-                                <div>
-                                    25/04 11:00
-                                </div>
-                            </td>
-                            <td class="text-success fw-bold">S/ 1300.00</td>
-                        </tr>
-                        <tr>
-                            <td scope="row">
-                                <div class="d-flex align-items-center">
-                                    <div class="obra-stat me-3">
-                                        <img src="../img/antesde.jpg" class="img-fluid">
-                                    </div>
-                                    <div class="fw-bold">
-                                        Antes de decirte adiós
-                                    </div>
-                                </div>
-
-                            </td>
-                            <td>
-                                4.3 / 5 <i class="ms-1 fa-solid fa-star "></i>
-                            </td>
-                            <td>
-                                <div>
-                                    Sede Surco
-                                </div>
-                                <div>
-                                    18/04 19:00
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    Sede San Borja
-                                </div>
-                                <div>
-                                    25/04 11:00
-                                </div>
-                            </td>
-                            <td class="text-success fw-bold">S/ 1300.00</td>
-                        </tr>
-                        <tr>
-                            <td scope="row">
-                                <div class="d-flex align-items-center">
-                                    <div class="obra-stat me-3">
-                                        <img src="../img/agua.png" class="img-fluid">
-                                    </div>
-                                    <div class="fw-bold">
-                                        Agua
-                                    </div>
-                                </div>
-
-                            </td>
-                            <td>
-                                4.3 / 5 <i class="ms-1 fa-solid fa-star "></i>
-                            </td>
-                            <td>
-                                <div>
-                                    Sede Surco
-                                </div>
-                                <div>
-                                    18/04 19:00
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    Sede San Borja
-                                </div>
-                                <div>
-                                    25/04 11:00
-                                </div>
-                            </td>
-                            <td class="text-success fw-bold">S/ 1300.00</td>
-                        </tr>
-                        <tr>
-                            <td scope="row">
-                                <div class="d-flex align-items-center">
-                                    <div class="obra-stat me-3">
-                                        <img src="../img/juan.jpg" class="img-fluid">
-                                    </div>
-                                    <div class="fw-bold">
-                                        Juan está muerto
-                                    </div>
-                                </div>
-
-                            </td>
-                            <td>
-                                4.3 / 5 <i class="ms-1 fa-solid fa-star "></i>
-                            </td>
-                            <td>
-                                <div>
-                                    Sede Surco
-                                </div>
-                                <div>
-                                    18/04 19:00
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    Sede San Borja
-                                </div>
-                                <div>
-                                    25/04 11:00
-                                </div>
-                            </td>
-                            <td class="text-success fw-bold">S/ 1300.00</td>
-                        </tr>
-                        <tr>
-                            <td scope="row">
-                                <div class="d-flex align-items-center">
-                                    <div class="obra-stat me-3">
-                                        <img src="../img/chimoc.jpg" class="img-fluid">
-                                    </div>
-                                    <div class="fw-bold">
-                                        Chimoc en la playa
-                                    </div>
-                                </div>
-
-                            </td>
-                            <td>
-                                4.3 / 5 <i class="ms-1 fa-solid fa-star "></i>
-                            </td>
-                            <td>
-                                <div>
-                                    Sede Surco
-                                </div>
-                                <div>
-                                    18/04 19:00
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    Sede San Borja
-                                </div>
-                                <div>
-                                    25/04 11:00
-                                </div>
-                            </td>
-                            <td class="text-success fw-bold">S/ 1300.00</td>
-                        </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!--Seccion: Mejores actores y directores-->
     <section class="mb-4">
         <div class="row row-cols-1 row-cols-md-2">
@@ -330,7 +43,8 @@
                             <div class="title-24">
                                 Actores mejor calificados
                             </div>
-                            <table class="table round-border align-middle table-hover text-nowrap" style="min-width: 450px">
+                            <table class="table round-border align-middle table-hover text-nowrap"
+                                   style="min-width: 450px">
                                 <thead class="bg-dark text-white">
                                 <tr>
                                     <th class="fw-bold">Nombre</th>
@@ -425,7 +139,8 @@
                             <div class="title-24">
                                 Directores mejor calificados
                             </div>
-                            <table class="table align-middle table-hover round-border text-nowrap" style="min-width: 450px" >
+                            <table class="table align-middle table-hover round-border text-nowrap"
+                                   style="min-width: 450px">
                                 <thead class="bg-dark text-white">
                                 <tr>
                                     <th class="fw-bold">Nombre</th>
@@ -441,7 +156,8 @@
                                                     <img src="../img/july.png" alt="Leonardo">
                                                 </div>
                                                 <div class="ms-3">
-                                                    <p class="fw-bold mb-1" th:text="${director.getNombre()}">July Naters</p>
+                                                    <p class="fw-bold mb-1" th:text="${director.getNombre()}">July
+                                                        Naters</p>
                                                 </div>
                                             </div>
                                         </td>
@@ -461,7 +177,6 @@
     </section>
 
 
-
     <!--Section: Minimal statistics cards-->
     <section>
         <div class="row">
@@ -470,7 +185,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between px-md-1">
                             <div>
-                                <h3 class="text-danger" th:text="${totalSedes}" ></h3>
+                                <h3 class="text-danger" th:text="${totalSedes}"></h3>
                                 <p class="mb-0">Total sedes</p>
                             </div>
                             <div class="align-self-center">
@@ -530,8 +245,6 @@
     <!--Section: Minimal statistics cards-->
 
 
-
-
     <!--Section: Statistics with subtitles-->
     <section>
 
@@ -586,7 +299,7 @@
     <!-- Grid container -->
     <div class="container p-3">
         <!-- Section: Social media -->
-        <section class="text-center" >
+        <section class="text-center">
             <!-- Facebook -->
             <a
                     class="btn btn-dark btn-floating btn-lg text-white m-1"
@@ -630,15 +343,14 @@
 <!-- End your project here-->
 
 
-
 <!-- MDB -->
 <script type="text/javascript" src="../js/mdb.min.js"></script>
 <!-- Custom scripts -->
 <script type="text/javascript">
-    $(document).ready(function(e){
-        $('.search-panel .dropdown-menu').find('a').click(function(e) {
+    $(document).ready(function (e) {
+        $('.search-panel .dropdown-menu').find('a').click(function (e) {
             e.preventDefault();
-            var param = $(this).attr("href").replace("#","");
+            var param = $(this).attr("href").replace("#", "");
             var concept = $(this).text();
             $('.search-panel span#search_concept').text(concept);
             $('.input-group #search_param').val(param);

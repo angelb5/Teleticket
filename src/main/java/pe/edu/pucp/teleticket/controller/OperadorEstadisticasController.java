@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping("/operador/estadisticas")
+@RequestMapping("/operador/funciones/estadisticas")
 public class OperadorEstadisticasController {
 
     @Autowired
@@ -30,7 +30,7 @@ public class OperadorEstadisticasController {
     @Autowired
     HistorialRepository historialRepository;
 
-    @GetMapping(value = "/p")
+    @GetMapping({"/", "", "/p"})
     public String  listaActoresConEstrellas(Model model) {
         Integer totalSedes= sedeRepository.totalSedesDisponibles();
         List<MejoresCalificacioneDto> directores= calificacionPersonaRepository.listaMejoresDirectores();
