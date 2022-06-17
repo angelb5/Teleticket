@@ -36,8 +36,8 @@ public class OperadorEstadisticasController {
         List<MejoresCalificacioneDto> directores= calificacionPersonaRepository.listaMejoresDirectores();
         List<MejoresCalificacioneDto> actores= calificacionPersonaRepository.listaMejoresActores();
         Integer clientes= clienteRepository.totalCliente();
-        Integer obras = obraRepository.obrasVigentes();
-        Integer totalActoresDirectores= personaRepository.totalActoresDirectores();
+        Integer obras = obraRepository.contarObras();
+        Integer totalActoresDirectores= personaRepository.contarPersonas();
 
         Integer totalTickets= historialRepository.ticketsTotale();
         Integer venta=historialRepository.totalVenta();

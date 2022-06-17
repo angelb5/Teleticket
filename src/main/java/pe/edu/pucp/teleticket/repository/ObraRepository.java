@@ -105,4 +105,7 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
             "inner join funciones as f on o.idobras=f.idobras\n" +
             "where f.estado='Vigente'",nativeQuery = true)
     Integer obrasVigentes();
+
+    @Query(value = "select count(*)from obras",nativeQuery = true)
+    Integer contarObras();
 }

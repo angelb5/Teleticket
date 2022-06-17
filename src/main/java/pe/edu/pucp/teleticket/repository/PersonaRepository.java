@@ -112,5 +112,6 @@ public interface PersonaRepository extends JpaRepository<Persona,Integer> {
                     "                                group by p.idpersonas")
     public PersonasListado findPersonasclienteById(int id);
 
-
+    @Query(value = "select count(*)from personas",nativeQuery = true)
+    Integer contarPersonas();
 }
