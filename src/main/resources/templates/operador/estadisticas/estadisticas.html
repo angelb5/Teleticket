@@ -1,25 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Estadísticas')">
-    <link rel="stylesheet" th:href="@{'/css/tables.css'}"/>
 </head>
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta http-equiv="x-ua-compatible" content="ie=edge"/>
-    <title>Material Design for Bootstrap</title>
-    <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/b101dc44ce.js" crossorigin="anonymous"></script>
-    <!--JQUery-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- MDB -->
-    <link rel="stylesheet" href="../css/mdb.min.css"/>
-    <!--Table-->
-    <link rel="stylesheet" href="../css/tables.css"/>
+    <link rel="stylesheet" th:href="@{'/css/tables.css'}"/>
 </head>
 <body>
 <!-- Start your project here-->
@@ -52,26 +36,22 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <div th:each="actor : ${actores}">
-                                    <tr>
+                                    <tr th:each="actor : ${actores}">
                                         <td scope="row">
                                             <div class="d-flex align-items-center">
                                                 <div class="actor-image">
-                                                    <img src="../img/persona.jpg" alt="Leonardo">
-                                                    <!--<img th:src="@{'/image/persona/'+${personas.id}}"
-                                                        alt="Persona" class="img-fluid rounded-start img-cover"/>-->
+                                                    <img th:src="@{'/image/persona/'+${actor.id}}"/>
                                                 </div>
                                                 <div class="ms-3">
-                                                    <p class="fw-bold mb-1" th:text="${actor.getNombre()}"></p>
+                                                    <p class="fw-bold mb-1" th:text="${actor.nombre}"></p>
                                                 </div>
                                             </div>
 
                                         </td>
-                                        <td th:text="${actor.getEstrellas() +'/5'}">
+                                        <td th:text="${actor.pactuacion}+' / 5'">
                                             <i class="ms-1 fa-solid fa-star "></i>
                                         </td>
                                     </tr>
-                                </div>
                                 </tbody>
                             </table>
                         </div>
@@ -94,31 +74,28 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <div th:each="director : ${directores}">
-                                    <tr>
+                                    <tr th:each="director : ${directores}">
                                         <td scope="row">
                                             <div class="d-flex align-items-center">
                                                 <div class="actor-image">
-                                                    <img src="../img/july.png" alt="Leonardo">
+                                                    <img th:src="@{'/image/persona/'+${director.id}}"/>
                                                 </div>
                                                 <div class="ms-3">
-                                                    <p class="fw-bold mb-1" th:text="${director.getNombre()}"></p>
+                                                    <p class="fw-bold mb-1" th:text="${director.nombre}"></p>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td th:text="${director.getEstrellas() + '/5'}">
+                                        <td th:text="${director.pdireccion}+ ' / 5'">
                                             <i class="ms-1 fa-solid fa-star "></i>
                                         </td>
                                     </tr>
-
-                                </div>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-
+        </div>
     </section>
 
 
@@ -187,12 +164,8 @@
             </div>
         </div>
     </section>
-    <!--Section: Minimal statistics cards-->
-
-
     <!--Section: Statistics with subtitles-->
     <section>
-
         <div class="row">
             <div class="col-xl-6 col-md-12 mb-4">
                 <div class="card">
@@ -200,7 +173,7 @@
                         <div class="d-flex justify-content-between p-md-1">
                             <div class="d-flex flex-row">
                                 <div class="align-self-center">
-                                    <h2 class="h1 mb-0 me-4" th:text=${totalTickets}>170</h2>
+                                    <h2 class="h1 mb-0 me-4" th:text="${totalTickets}">170</h2>
                                 </div>
                                 <div>
                                     <h4>Tickets Vendidos</h4>
@@ -220,7 +193,7 @@
                         <div class="d-flex justify-content-between p-md-1">
                             <div class="d-flex flex-row">
                                 <div class="align-self-center">
-                                    <h2 class="h1 mb-0 me-4" th:text="${'S/ ' + ventas}">S/ 6000.00</h2>
+                                    <h2 class="h1 mb-0 me-4" th:text="'S/ '+${#numbers.formatDecimal(ventas,1,2,'POINT')}">S/ 6000.00</h2>
                                 </div>
                                 <div>
                                     <h4>Total de Ventas</h4>
@@ -236,71 +209,12 @@
             </div>
         </div>
     </section>
-    <!--Section: Statistics with subtitles-->
 </div>
 
 <!-- Footer -->
-<footer class="bg-dark text-white text-start">
-    <!-- Grid container -->
-    <div class="container p-3">
-        <!-- Section: Social media -->
-        <section class="text-center">
-            <!-- Facebook -->
-            <a
-                    class="btn btn-dark btn-floating btn-lg text-white m-1"
-                    href="#!"
-                    role="button"
-                    data-mdb-ripple-color="dark"
-            ><i class="fab fa-facebook-f"></i
-            ></a>
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+<div th:replace="fragmentos/navbar.html :: menu"></div>
 
-            <!-- Twitter -->
-            <a
-                    class="btn btn-dark btn-floating btn-lg text-white m-1"
-                    href="#!"
-                    role="button"
-                    data-mdb-ripple-color="dark"
-            ><i class="fab fa-twitter"></i
-            ></a>
-
-            <!-- Instagram -->
-            <a
-                    class="btn btn-dark btn-floating btn-lg text-white m-1"
-                    href="#!"
-                    role="button"
-                    data-mdb-ripple-color="dark"
-            ><i class="fab fa-instagram"></i
-            ></a>
-
-        </section>
-        <!-- Section: Social media -->
-    </div>
-    <!-- Grid container -->
-
-    <!-- Copyright -->
-    <div class="text-start p-2" style="background-color: rgba(0, 0, 0, 0.2);">
-        <div class="container">
-            © 2022 Teleticket
-        </div>
-    </div>
-    <!-- Copyright -->
-</footer>
-<!-- End your project here-->
-
-
-<!-- MDB -->
-<script type="text/javascript" src="../js/mdb.min.js"></script>
-<!-- Custom scripts -->
-<script type="text/javascript">
-    $(document).ready(function (e) {
-        $('.search-panel .dropdown-menu').find('a').click(function (e) {
-            e.preventDefault();
-            var param = $(this).attr("href").replace("#", "");
-            var concept = $(this).text();
-            $('.search-panel span#search_concept').text(concept);
-            $('.input-group #search_param').val(param);
-        });
-    });
-</script>
-
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script  type="text/javascript" th:src="@{/js/busqueda.js}"></script>
 </body>

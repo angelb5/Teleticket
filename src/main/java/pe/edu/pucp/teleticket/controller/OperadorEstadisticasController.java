@@ -5,16 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pe.edu.pucp.teleticket.dto.MejoresCalificacioneDto;
-import pe.edu.pucp.teleticket.entity.Cliente;
+import pe.edu.pucp.teleticket.dto.PersonasListado;
 import pe.edu.pucp.teleticket.repository.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping("/operador/funciones/estadisticas")
+@RequestMapping("/operador/estadisticas")
 public class OperadorEstadisticasController {
 
     @Autowired
@@ -30,17 +27,17 @@ public class OperadorEstadisticasController {
     @Autowired
     HistorialRepository historialRepository;
 
-    @GetMapping({"/", "", "/p"})
+    @GetMapping({"/", ""})
     public String  listaActoresConEstrellas(Model model) {
         Integer totalSedes= sedeRepository.totalSedesDisponibles();
-        List<MejoresCalificacioneDto> directores= calificacionPersonaRepository.listaMejoresDirectores();
-        List<MejoresCalificacioneDto> actores= calificacionPersonaRepository.listaMejoresActores();
+        List<PersonasListado> directores= personaRepository.top5Directores();
+        List<PersonasListado> actores= personaRepository.top5Actores();
         Integer clientes= clienteRepository.totalCliente();
-        Integer obras = obraRepository.contarObras();
+        Integer obras = obraRepository.contarListaObrasCliente("");
         Integer totalActoresDirectores= personaRepository.contarPersonas();
 
         Integer totalTickets= historialRepository.ticketsTotale();
-        Integer venta=historialRepository.totalVenta();
+        float venta=historialRepository.totalVenta();
         model.addAttribute("directores",directores);
         model.addAttribute("actores",actores);
         model.addAttribute("totalCliente",clientes);
@@ -49,7 +46,7 @@ public class OperadorEstadisticasController {
         model.addAttribute("totalTickets",totalTickets);
         model.addAttribute("ventas",venta);
         model.addAttribute("totalSedes", totalSedes);
-        return "/operador/funciones/estadisticas/personaslista";
+        return "operador/estadisticas/estadisticas";
 
     }
 }
