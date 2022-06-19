@@ -77,21 +77,21 @@ public class OperadorFuncionesController {
             pagina = pagina > paginas ? paginas : pagina;
             lista = PageRequest.of(pagina-1,funcionesPaginas);
             listaFunciones = funcionRepository.listarFuncionesPorMesAndIdobra(mes,idobra.get(),lista);
-            ruta+="idobra="+idobra.get()+"&";
+            ruta+="obra="+idobra.get()+"&";
         }else if(idobra.isEmpty()){
             paginas = (int) Math.ceil((float) funcionRepository.contarFuncionesPorMesAndIdsede(mes, idsede.get()) / funcionesPaginas);
             paginas= paginas==0? 1: paginas;
             pagina = pagina > paginas ? paginas : pagina;
             lista = PageRequest.of(pagina-1,funcionesPaginas);
             listaFunciones = funcionRepository.listarFuncionesPorMesAndIdsede(mes,idsede.get(),lista);
-            ruta+="idsede="+idsede.get()+"&";
+            ruta+="sede="+idsede.get()+"&";
         }else {
             paginas = (int) Math.ceil((float) funcionRepository.contarFuncionesPorMesAndIdobraAndIdsede(mes, idobra.get(), idsede.get()) / funcionesPaginas);
             paginas= paginas==0? 1: paginas;
             pagina = pagina > paginas ? paginas : pagina;
             lista = PageRequest.of(pagina-1,funcionesPaginas);
             listaFunciones = funcionRepository.listarFuncionesPorMesAndIdObraAndIdsede(mes,idobra.get(),idsede.get(),lista);
-            ruta+="idobra="+idobra.get()+"&idsede="+idsede.get()+"&";
+            ruta+="obra="+idobra.get()+"&sede="+idsede.get()+"&";
         }
 
         model.addAttribute("idobra", idobra);
