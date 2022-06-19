@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pe.edu.pucp.teleticket.dto.FuncionOperadorDto;
 import pe.edu.pucp.teleticket.dto.SedeFiltro;
 import pe.edu.pucp.teleticket.entity.*;
 import pe.edu.pucp.teleticket.repository.*;
@@ -69,83 +70,44 @@ public class OperadorObrasController {
 
     @GetMapping("/gestion/{idPath}")
     public String gestionSede(Model model, @PathVariable("idPath") String idPath, @RequestParam("pag") Optional<Integer> pag,
-                              @RequestParam("ano") Optional<String> anoString, @RequestParam("mes") Optional<String> mesString,
-                              @RequestParam("sede") Optional<String> sedeString){
+                              @RequestParam("mes") Optional<String> optMes,
+                              @RequestParam("sede") Optional<Integer> idsede){
         int id=0;
-        int ano=0;
-        int mes=0;
-        int sede=0;
+        String mes = optMes.orElse("");
         try{
             id= Integer.parseInt(idPath);
-            ano=Integer.parseInt(anoString.isPresent()? anoString.get(): "0");
-            mes=Integer.parseInt(mesString.isPresent()? mesString.get(): "0");
-            sede=Integer.parseInt(sedeString.isPresent()? sedeString.get(): "0");
         } catch (Exception e){
             return "redirect:/operador/obras";
         }
         Optional<Obra> optionalObra =obraRepository.findById(id);
         if(optionalObra.isEmpty()){return "redirect:/operador/obras";}
+
         int pagina = pag.isEmpty()? 1 : pag.get();
         pagina = pagina<1? 1 : pagina;
         int paginas =0;
         Pageable lista;
-        String ruta ="/operador/obras/gestion/"+id+"?";
+        String ruta ="/operador/obras/gestion/"+id+"?mes="+mes+"&";
+
         List<SedeFiltro> listaSedes= obraRepository.listarSedesSegunObra(id);
-        List<Funcion> funcionList = new ArrayList<>();
-        if((ano==0) && (sede==0)) {
-            Obra obra = new Obra();
-            obra.setId(id);
-            paginas = (int) Math.ceil((float) funcionRepository.countAllByObra(obra) / funcionesPaginas);
+        List<String> meses = funcionRepository.listarMesesConFuncionesPorIdobra(id);
+        List<FuncionOperadorDto> funcionList = new ArrayList<>();
+
+        if(idsede.isEmpty()){
+            paginas = (int) Math.ceil((float) funcionRepository.contarFuncionesPorMes(mes) / funcionesPaginas);
             paginas= paginas==0? 1: paginas;
             pagina = pagina > paginas ? paginas : pagina;
             lista = PageRequest.of(pagina-1,funcionesPaginas);
-            funcionList = funcionRepository.findAllByObraOrderByFechaAsc(obra, lista);
-        } else if ((ano==0) && (sede!=0)) {
-            paginas = (int) Math.ceil((float) funcionRepository.contarListaFuncionesPorSede(sede,id) / funcionesPaginas);
+            funcionList = funcionRepository.listarFuncionesPorMes(mes,lista);
+        }else {
+            paginas = (int) Math.ceil((float) funcionRepository.contarFuncionesPorMesAndIdobraAndIdsede(mes, id, idsede.get()) / funcionesPaginas);
             paginas= paginas==0? 1: paginas;
             pagina = pagina > paginas ? paginas : pagina;
             lista = PageRequest.of(pagina-1,funcionesPaginas);
-            funcionList = funcionRepository.listaFuncionesPorSede(sede,id,lista);
-            ruta+= "ano="+ano+"&mes="+mes+"&sede="+sede+"&";
-        } else if ((ano!=0) && (mes==0) && (sede==0)) {
-            paginas = (int) Math.ceil((float) funcionRepository.contarListaFuncionesPorAno(ano,id) / funcionesPaginas);
-            paginas= paginas==0? 1: paginas;
-            pagina = pagina > paginas ? paginas : pagina;
-            lista = PageRequest.of(pagina-1,funcionesPaginas);
-            funcionList = funcionRepository.listaFuncionesPorAno(ano,id,lista);
-            ruta+= "ano="+ano+"&mes="+mes+"&sede="+sede+"&";
-        } else if ((ano!=0) && (mes!=0) && (sede==0)) {
-            paginas = (int) Math.ceil((float) funcionRepository.contarListaFuncionesPorAnoyMes(ano,mes,id) / funcionesPaginas);
-            paginas= paginas==0? 1: paginas;
-            pagina = pagina > paginas ? paginas : pagina;
-            lista = PageRequest.of(pagina-1,funcionesPaginas);
-            funcionList = funcionRepository.listaFuncionesPorAnoyMes(ano,mes,id,lista);
-            ruta+= "ano="+ano+"&mes="+mes+"&sede="+sede+"&";
-        } else if ((ano!=0) && (mes!=0) && (sede!=0)) {
-            paginas = (int) Math.ceil((float) funcionRepository.contarListaFuncionesPorAnoyMesySede(ano,mes,sede,id) / funcionesPaginas);
-            paginas= paginas==0? 1: paginas;
-            pagina = pagina > paginas ? paginas : pagina;
-            lista = PageRequest.of(pagina-1,funcionesPaginas);
-            funcionList = funcionRepository.listaFuncionesPorAnoyMesySede(ano,mes,sede,id,lista);
-            ruta+= "ano="+ano+"&mes="+mes+"&sede="+sede+"&";
-        } else if ((ano!=0) && (mes==0) && (sede!=0)) {
-            paginas = (int) Math.ceil((float) funcionRepository.contarListaFuncionesPorAnoySede(ano,sede,id) / funcionesPaginas);
-            paginas= paginas==0? 1: paginas;
-            pagina = pagina > paginas ? paginas : pagina;
-            lista = PageRequest.of(pagina-1,funcionesPaginas);
-            funcionList = funcionRepository.listaFuncionesPorAnoySede(ano,sede,id,lista);
-            ruta+= "ano="+ano+"&mes="+mes+"&sede="+sede+"&";
+            funcionList = funcionRepository.listarFuncionesPorMesAndIdObraAndIdsede(mes,id,idsede.get(),lista);
+            ruta+="sede="+idsede.get()+"&";
         }
 
-
-        Optional<Integer> optionalMenorAno = obraRepository.obtenerPrimerAnoFuncion(id);
-        Integer menorAno = optionalMenorAno.isEmpty()? 2022:optionalMenorAno.get();
-        model.addAttribute("menorAno", menorAno);
-
-        model.addAttribute("ano", ano);
-        model.addAttribute("mes", mes);
-        model.addAttribute("sedeId", sede);
-
+        model.addAttribute("meses",meses);
         model.addAttribute("listaSedes",listaSedes);
         model.addAttribute("fotos", fotoObraRepository.findAllIdByIdObras(id));
         model.addAttribute("pag", pagina);

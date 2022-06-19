@@ -60,62 +60,6 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
                     "and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW()))")
     public List<Funcion> getVigentesByIdsedes(int idsedes);
 
-    @Query(nativeQuery = true, value = "select * from funciones inner join salas s on funciones.idsalas = s.idsalas\n" +
-            "inner join sedes s2 on s.idsedes = s2.idsedes where s2.idsedes=?1 and funciones.idobras=?2",
-            countQuery = "select count(*) from funciones inner join salas s on funciones.idsalas = s.idsalas\n" +
-                    "inner join sedes s2 on s.idsedes = s2.idsedes where s2.idsedes=?1 and funciones.idobras=?2")
-    public List<Funcion> listaFuncionesPorSede(Integer idSede,Integer idObra, Pageable pageable);
-
-    @Query(nativeQuery = true, value = "select count(*) from funciones inner join salas s on funciones.idsalas = s.idsalas\n" +
-            "inner join sedes s2 on s.idsedes = s2.idsedes where s2.idsedes=?1 and funciones.idobras=?2")
-    public long contarListaFuncionesPorSede(Integer idSede, Integer idObra);
-
-    @Query(nativeQuery = true, value = "select * from funciones inner join salas s on funciones.idsalas = s.idsalas\n" +
-            "inner join sedes s2 on s.idsedes = s2.idsedes where year(funciones.fecha)=?1 and funciones.idobras=?2",
-    countQuery = "select count(*) from funciones inner join salas s on funciones.idsalas = s.idsalas\n" +
-            "inner join sedes s2 on s.idsedes = s2.idsedes where year(funciones.fecha)=?1 and funciones.idobras=?2")
-    public List<Funcion> listaFuncionesPorAno(Integer ano, Integer idObra, Pageable pageable);
-
-    @Query(nativeQuery = true, value = "select count(*) from funciones inner join salas s on funciones.idsalas = s.idsalas\n" +
-            "inner join sedes s2 on s.idsedes = s2.idsedes where year(funciones.fecha)=?1 and funciones.idobras=?2")
-    public long contarListaFuncionesPorAno(Integer ano, Integer idObra);
-
-    @Query(nativeQuery = true, value = "select * from funciones inner join salas s on funciones.idsalas = s.idsalas\n" +
-            "inner join sedes s2 on s.idsedes = s2.idsedes where year(funciones.fecha)=?1 and month(funciones.fecha)=?2 and funciones.idobras=?3",
-    countQuery = "select count(*) from funciones inner join salas s on funciones.idsalas = s.idsalas\n" +
-            "inner join sedes s2 on s.idsedes = s2.idsedes where year(funciones.fecha)=?1 and month(funciones.fecha)=?2 and funciones.idobras=?3")
-    public List<Funcion> listaFuncionesPorAnoyMes(Integer ano,Integer mes, Integer idObra, Pageable pageable);
-
-    @Query(nativeQuery = true, value = "select count(*) from funciones inner join salas s on funciones.idsalas = s.idsalas\n" +
-                    "inner join sedes s2 on s.idsedes = s2.idsedes where year(funciones.fecha)=?1 and month(funciones.fecha)=?2 and funciones.idobras=?3")
-    public long contarListaFuncionesPorAnoyMes(Integer ano,Integer mes, Integer idObra);
-
-    @Query(nativeQuery = true, value = "select * from funciones inner join salas s on funciones.idsalas = s.idsalas\n" +
-            "inner join sedes s2 on s.idsedes = s2.idsedes where year(funciones.fecha)=?1 and month(funciones.fecha)=?2 and\n" +
-            "                            s.idsedes=?3 and funciones.idobras=?4",
-    countQuery = "select count(*) from funciones inner join salas s on funciones.idsalas = s.idsalas\n" +
-            "inner join sedes s2 on s.idsedes = s2.idsedes where year(funciones.fecha)=?1 and month(funciones.fecha)=?2 and\n" +
-            "                            s.idsedes=?3 and funciones.idobras=?4")
-    public List<Funcion> listaFuncionesPorAnoyMesySede(Integer ano,Integer mes,Integer idSede, Integer idObra, Pageable pageable);
-
-    @Query(nativeQuery = true, value = "select count(*) from funciones inner join salas s on funciones.idsalas = s.idsalas\n" +
-                    "inner join sedes s2 on s.idsedes = s2.idsedes where year(funciones.fecha)=?1 and month(funciones.fecha)=?2 and\n" +
-                    "                            s.idsedes=?3 and funciones.idobras=?4")
-    public long contarListaFuncionesPorAnoyMesySede(Integer ano,Integer mes,Integer idSede, Integer idObra);
-
-    @Query(nativeQuery = true, value = "select * from funciones inner join salas s on funciones.idsalas = s.idsalas\n" +
-            "inner join sedes s2 on s.idsedes = s2.idsedes where year(funciones.fecha)=?1 and\n" +
-            "                            s.idsedes=?2 and funciones.idobras=?3",
-    countQuery = "select count(*) from funciones inner join salas s on funciones.idsalas = s.idsalas\n" +
-            "inner join sedes s2 on s.idsedes = s2.idsedes where year(funciones.fecha)=?1 and\n" +
-            "                            s.idsedes=?2 and funciones.idobras=?3")
-    public List<Funcion> listaFuncionesPorAnoySede(Integer ano, Integer sede, Integer idObra, Pageable pageable);
-
-    @Query(nativeQuery = true, value = "select count(*) from funciones inner join salas s on funciones.idsalas = s.idsalas\n" +
-                    "inner join sedes s2 on s.idsedes = s2.idsedes where year(funciones.fecha)=?1 and\n" +
-                    "                            s.idsedes=?2 and funciones.idobras=?3")
-    public long contarListaFuncionesPorAnoySede(Integer ano, Integer sede, Integer idObra);
-
     @Query(nativeQuery = true, value = "select ss.idfunciones as id, f.idobras as idobras, o.fotoprincipal as fotoprincipal, o.duracion as duracion, " +
             "o.titulo as titulo, s.numero as nombresala, se.nombre as nombresede, " +
             "f.fecha as fecha, f.inicio as inicio, f.costo as costo, " +
@@ -287,4 +231,9 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
     @Query(nativeQuery = true, value = "select distinct concat(month(f.fecha),'-',year(f.fecha)) as mes " +
             "from funciones f")
     List<String> listarMesesConFunciones();
+
+    @Query(nativeQuery = true, value = "select distinct concat(month(f.fecha),'-',year(f.fecha)) as mes " +
+            "from funciones f " +
+            "where f.idobras = ?1")
+    List<String> listarMesesConFuncionesPorIdobra(int idobra);
 }

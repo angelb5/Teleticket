@@ -7,6 +7,13 @@
         <link rel="stylesheet" th:href="@{/css/tables.css}">
         <!--Carrousel-->
         <link rel="stylesheet" th:href="@{/css/carrousel.css}">
+        <script th:src="@{/selectize/js/standalone/selectize.js}"></script>
+        <link th:href="@{/selectize/css/selectize.bootstrap5.css}" rel="stylesheet">
+        <style>
+            .selectize-input{
+                padding-right: 2.2rem;
+            }
+        </style>
     </head>
     <body class="bg-lightgrey">
         <script>
@@ -152,62 +159,45 @@
                     </a>
                 </div>
             </div>
-            <div class="row fs-14 text-end">
-                <div class="col-md-4"></div>
-                <div class="col-md-2">
-                    Año&nbsp;&nbsp;
-                </div>
-                <div class="col-md-3">
-                    Mes&nbsp;&nbsp;
-                </div>
-                <div class="col-md-3">
-                    Sede&nbsp;&nbsp;
-                </div>
-            </div>
-            <form method="get" th:action="@{|/operador/obras/gestion/${obra.id}|}">
-                <div class="row">
-                    <div class="col-md-4">
-                        <button class="btn btn-redtele" type="submit">Buscar</button>
-                    </div>
 
-                    <div class="col-md-2">
-                        <div class="input-group">
-                            <select class="form-select fs-13" aria-label="Default select example" name="ano" id="ano">
-                                <option value="0" selected>Todo</option>
-                                <option th:each="i: ${#numbers.sequence( menorAno, 2022)}" th:value="${i}"
-                                        th:text="${i}" th:selected="${ano==i}">2018
+            <form method="get" th:action="@{|/operador/obras/gestion/${obra.id}|}">
+                <div class="row justify-content-end">
+                    <div class="col-auto">
+                        <div class="text-start" style="min-width: 100px">
+                            <label class="form-label">Mes</label>
+                            <select class="demo-default fs-13" aria-label="Default select example" name="mes" id="mes">
+                                <option value="" selected>Todos</option>
+                                <option th:each="mes: ${meses}" th:value="${mes}"
+                                        th:text="${mes}" th:selected="${mes == #httpServletRequest.getParameter('mes')}">
                                 </option>
                             </select>
+                            <script>
+                                $("select[name*='mes']").selectize({
+                                    sortField: 'text'
+                                });
+                            </script>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <select class="form-select fs-13" aria-label="Default select example" name="mes" id="mes">
-                                <option value="0" th:selected="${mes==0}">Todo</option>
-                                <option value="1" th:selected="${mes==1}">Enero</option>
-                                <option value="2" th:selected="${mes==2}">Febrero</option>
-                                <option value="3" th:selected="${mes==3}">Marzo</option>
-                                <option value="4" th:selected="${mes==4}">Abril</option>
-                                <option value="5" th:selected="${mes==5}">Mayo</option>
-                                <option value="6" th:selected="${mes==6}">Junio</option>
-                                <option value="7" th:selected="${mes==7}">Julio</option>
-                                <option value="8" th:selected="${mes==8}">Agosto</option>
-                                <option value="9" th:selected="${mes==9}">Septiembre</option>
-                                <option value="10" th:selected="${mes==10}">Octubre</option>
-                                <option value="11" th:selected="${mes==11}">Noviembre</option>
-                                <option value="12" th:selected="${mes==12}">Diciembre</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <select class="form-select fs-13" aria-label="Default select example" name="sede" id="sede">
-                                <option value="0">Todo</option>
+                    <div class="col-auto">
+                        <div class="text-start" style="min-width: 200px">
+                            <label class="form-label">Sede</label>
+                            <select class="demo-default fs-13" aria-label="Default select example" name="sede" id="sede">
+                                <option value="">Todas</option>
                                 <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.id}"
-                                        th:selected="${sedeId==sede.id}">Miraflores
+                                        th:selected="${sede.id.toString() == #httpServletRequest.getParameter('sede')}">Miraflores
                                 </option>
                             </select>
+                            <script>
+                                $("select[name*='sede']").selectize({
+                                    sortField: 'text'
+                                });
+                            </script>
                         </div>
+                    </div>
+                    <div class="col-auto d-flex align-items-end">
+                        <button type="submit" class="btn btn-light p-2">
+                            <span class="input-group-text border-0"><i class="fas fa-search" id="mdb-5-search-icon"></i></span>
+                        </button>
                     </div>
                 </div>
             </form>
@@ -222,53 +212,59 @@
             </div>
 
 
-            <div th:unless="${funciones.isEmpty()}">
-
-                <table class="table hover-light align-middle mb-0  round-border text-center" th:unless="${paginas==0}"
-                       th:classappend="${paginas<=1?'mb-4': ''}">
-                    <thead class="bg-light">
-                        <tr class="bg-dark">
-                            <th class="text-white fw-bold">Sala</th>
-                            <th class="text-white fw-bold">Sede</th>
-                            <th class="text-white fw-bold">Fecha</th>
-                            <th class="text-white fw-bold">Hora</th>
-                            <th class="text-white fw-bold">Estado</th>
-                            <th class="text-white fw-bold">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each=" funcion : ${funciones}">
-                            <td th:text="${funcion.sala.numero}"></td>
-                            <td th:text="${funcion.sala.sede.nombre}"></td>
-                            <td th:text="${funcion.fecha}"></td>
-                            <td th:text="${funcion.inicio}"></td>
-                            <td>
-                            <span th:if="${funcion.getEstadoRVC() == 'Vigente'}"
-                                  class="badge badge-success rounded-pill d-inline fs-13">Vigente</span>
-                                <span th:if="${funcion.getEstadoRVC() == 'Cancelada'}"
-                                      class="badge badge-danger rounded-pill d-inline fs-13">Cancelada</span>
-                                <span th:if="${funcion.getEstadoRVC() == 'Realizada'}"
-                                      class="badge badge-info rounded-pill d-inline fs-13">Realizada</span>
-                            </td>
-                            <td>
-                                <a th:unless="${funcion.getEstadoRVC() == 'Cancelada' or funcion.getEstadoRVC() == 'Realizada'}"
-                                   type="button" class="btn btn-redtele btn-sm btn-rounded"
-                                   th:href="@{'/operador/funciones/editar?idfuncion=' + ${funcion.id}}"
-                                   data-mdb-ripple-color="dark">Editar</a>
-                                <a th:unless="${funcion.getEstadoRVC() == 'Cancelada'}" type="button"
-                                        style="width: 130px;margin-top: 10px"
-                                        class="btn btn-outline-success fw-bold btn-sm btn-rounded"
-                                        data-mdb-ripple-color="dark"
-                                        th:href="@{'/operador/reporte/'+${funcion.id}}">
-                                    Reporte xsl
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
-
-            </div>
+            <table class="table hover-light align-middle round-border fs-13" th:classappend="${paginas<=1}?'mb-4': ''" th:unless="${funciones.isEmpty()}">
+                <thead class="bg-light">
+                <tr class="bg-dark">
+                    <th class="text-white fw-bold text-center">Sala</th>
+                    <th class="text-white fw-bold text-center">Sede</th>
+                    <th class="text-white fw-bold text-center" width="125px">Fecha</th>
+                    <th class="text-white fw-bold text-center">Hora</th>
+                    <th class="text-white fw-bold text-center">Asistencia</th>
+                    <th class="text-white fw-bold text-center">Estado</th>
+                    <th class="text-white fw-bold text-center">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="funcion : ${funciones}">
+                    <td class="text-center" th:text="${funcion.sala}"></td>
+                    <td class="text-center" th:text="${funcion.sede}"></td>
+                    <td class="text-center" th:text="${funcion.fecha}"></td>
+                    <td class="text-center" th:text="${funcion.hora}"></td>
+                    <td class="text-center">
+                    <span class="fw-bold" th:if="${funcion.estado!='Cancelada' and funcion.pasistencia.isPresent()}"
+                          th:text="${#numbers.formatDecimal(funcion.pasistencia.get(),1,2,'POINT')} +' %'"></span>
+                        <span th:if="${funcion.estado!='Cancelada' and funcion.pasistencia.isEmpty()}" class="badge badge-dark rounded-pill d-inline" style="font-size: 12px">Sin ventas</span>
+                        <span th:if="${funcion.estado=='Cancelada'}" class="badge badge-secondary rounded-pill d-inline" style="font-size: 12px">No publicada</span>
+                    </td>
+                    <td class="text-center">
+                     <span th:if="${funcion.estado == 'Vigente' }"
+                           class="badge badge-success rounded-pill d-inline" style="font-size: 12px">
+                         Vigente
+                     </span>
+                        <span th:if="${funcion.estado == 'Realizada'}"
+                              class="badge badge-info rounded-pill d-inline" style="font-size: 12px">
+                        Realizada
+                    </span>
+                        <span th:if="${funcion.estado == 'Cancelada'}"
+                              class="badge badge-danger rounded-pill d-inline" style="font-size: 12px">
+                        Cancelada
+                    </span>
+                    </td>
+                    <td class="text-center">
+                        <a th:unless="${funcion.estado == 'Cancelada' or funcion.estado == 'Realizada'}"
+                           type="button" class="btn btn-redtele btn-sm btn-rounded my-1" style="font-size: 12px"
+                           th:href="@{'/operador/funciones/editar?idfuncion=' + ${funcion.id}}"
+                           data-mdb-ripple-color="dark">Editar</a>
+                        <a th:unless="${funcion.estado == 'Cancelada'}" type="button"
+                           class="btn btn-success fw-bold btn-sm btn-rounded my-1"
+                           data-mdb-ripple-color="dark" style="font-size: 12px"
+                           th:href="@{'/operador/reporte/'+${funcion.id}}">
+                            Reporte xsl
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
         <footer th:replace="fragmentos/footer.html :: footer"></footer>
         <!-- Modal añadir a destacados -->
