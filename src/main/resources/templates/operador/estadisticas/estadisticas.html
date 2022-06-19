@@ -3,20 +3,55 @@
 <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Estadísticas')">
 </head>
 <head>
-    <link rel="stylesheet" th:href="@{'/css/tables.css'}"/>
+    <script th:src="@{/selectize/js/standalone/selectize.js}"></script>
+    <link th:href="@{/selectize/css/selectize.bootstrap5.css}" rel="stylesheet">
+    <style>
+        .selectize-input{
+            padding-right: 2.2rem;
+        }
+    </style>
 </head>
 <body>
-<!-- Start your project here-->
 
-<!-- Navbar-->
 <nav th:replace="fragmentos/navbar.html :: navbar('funciones')"></nav>
-<!-- Fin de Navbar -->
+
 <!--Contenidos-->
 <div class="container py-3 ">
 
     <div class="title-22 py-4">
         Estadísticas
     </div>
+
+    <section class="mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="title-24">
+                            Estadísticas por obra
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Obra</label>
+                        <select class=" fs-13" aria-label="Default select example" name="obra" id="obra">
+                            <option value="">--Selecciona una obra--</option>
+                            <option th:each="obra : ${listaObras}" th:text="${obra.titulo}" th:value="${obra.id}">
+                            </option>
+                        </select>
+                        <script>
+                            $("select[name*='obra']").selectize({
+                                sortField: 'text'
+                            });
+                        </script>
+                    </div>
+                </div>
+                <div class="row">
+
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!--Seccion: Mejores actores y directores-->
     <section class="mb-4">
         <div class="row row-cols-1 row-cols-md-2">
@@ -108,7 +143,7 @@
                         <div class="d-flex justify-content-between px-md-1">
                             <div>
                                 <h3 class="text-danger" th:text="${totalSedes}"></h3>
-                                <p class="mb-0">Total sedes</p>
+                                <p class="mb-0">Total Sedes Disponibles</p>
                             </div>
                             <div class="align-self-center">
                                 <i class="fas fa-map-marker-alt text-danger fa-3x"></i>
@@ -217,4 +252,16 @@
 
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <script  type="text/javascript" th:src="@{/js/busqueda.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function(){
+        $.ajax({
+            method:"GET",
+            url: "http://" + [[${dominio}]] + "/operador/estadisticas/obra/1"
+        }).done(function (response){
+            console.log(response);
+        })
+    });
+    /*]]>*/
+</script>
 </body>
