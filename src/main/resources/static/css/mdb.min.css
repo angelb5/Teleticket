@@ -19834,6 +19834,7 @@ input[type=number] {
 /*Historial imagen*/
 .historial-img{
   width: 130px;
+  min-width: 130px;
   height: 90px;
   border-radius: 10%;
   overflow: hidden;

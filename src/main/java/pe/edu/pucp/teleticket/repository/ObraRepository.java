@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import pe.edu.pucp.teleticket.dto.ObraFiltro;
 import pe.edu.pucp.teleticket.dto.ObrasListado;
 import pe.edu.pucp.teleticket.entity.Obra;
 import pe.edu.pucp.teleticket.dto.SedeFiltro;
@@ -100,4 +101,8 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
             "where d.idpersona =?1 \n" +
             "group by o.idobras")
     public List<ObrasListado> findDireccionesByIdpersona(int id);
+
+    @Query(nativeQuery = true, value = "select distinct o.idobras as id, o.titulo as titulo from funciones f " +
+            "inner join obras o on o.idobras = f.idobras")
+    public List<ObraFiltro> listarObrasConFunciones();
 }

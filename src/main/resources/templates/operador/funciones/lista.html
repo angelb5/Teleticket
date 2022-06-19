@@ -1,143 +1,189 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head th:insert="fragmentos/cabecera.html :: cabecera( titulo = 'Funciones')">
-        <link rel="stylesheet" th:href="@{'/css/tables.css'}"/>
-    </head>
-    <body>
-        <nav th:replace="fragmentos/navbar.html :: navbar('funciones')"></nav>
-        <!-- Fin de Navbar -->
+<head th:insert="fragmentos/cabecera.html :: cabecera( titulo = 'Funciones')">
+    <link rel="stylesheet" th:href="@{'/css/tables.css'}"/>
+</head>
+<head>
+    <script th:src="@{/selectize/js/standalone/selectize.js}"></script>
+    <link th:href="@{/selectize/css/selectize.bootstrap5.css}" rel="stylesheet">
+    <style>
+        .selectize-input{
+            padding-right: 2.2rem;
+        }
+    </style>
+</head>
+<body>
+<nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
+<!-- Fin de Navbar -->
 
-        <!--Contenidos-->
-        <div class="container py-2 ">
+<!--Contenidos-->
+<div class="container py-2 ">
 
-            <div class="title-22 py-4">
-                Mostrando todas las funciones
+    <div class="title-22 py-4">
+        Mostrando todas las funciones
+    </div>
+
+    <form method="get" th:action="@{|/operador/funciones|}">
+        <div class="row justify-content-end">
+            <div class="col-auto">
+                <div class="text-start" style="min-width: 100px">
+                    <label class="form-label">Mes</label>
+                    <select class="demo-default fs-13" aria-label="Default select example" name="mes" id="mes">
+                        <option value="" selected>Todo</option>
+                        <option th:each="mes: ${meses}" th:value="${mes}"
+                                th:text="${mes}" th:selected="${mes == #httpServletRequest.getParameter('mes')}">
+                        </option>
+                    </select>
+                    <script>
+                        $("select[name*='mes']").selectize({
+                            sortField: 'text'
+                        });
+                    </script>
+                </div>
             </div>
-            <div style="float: right">
-                <a th:href="@{'/operador/funciones/estadisticas/'}">
-                    <div class="row">
-                        <div class="col-3 h-100 d-flex align-items-center"><i  class=""></i>
-                        </div>
-                        <div class="btn btn-redtele btn-sm fw-bold" style="height: 30px;width: 130px" type="button"
-                        aria-expanded="false">Estadísticas</div>
-                    </div>
-                </a>
+            <div class="col-auto">
+                <div class="text-start" style="min-width: 200px">
+                    <label class="form-label">Sede</label>
+                    <select class="demo-default fs-13" aria-label="Default select example" name="sede" id="sede">
+                        <option value="">Todo</option>
+                        <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.id}"
+                                th:selected="${sede.id.toString() == #httpServletRequest.getParameter('sede')}">Miraflores
+                        </option>
+                    </select>
+                    <script>
+                        $("select[name*='sede']").selectize({
+                            sortField: 'text'
+                        });
+                    </script>
+                </div>
             </div>
-            <br>
-
-            <table class="table hover-light align-middle mb-0 round-border" th:unless="${listaFunciones.isEmpty()}">
-                <thead class="bg-light">
-                    <tr class="bg-dark">
-                        <th class="text-white fw-bold">Foto</th>
-                        <th class="text-white fw-bold">Obra</th>
-                        <th class="text-white fw-bold">Fecha</th>
-                        <th class="text-white fw-bold">Hora</th>
-                        <th class="text-white fw-bold">Sede</th>
-                        <th class="text-white fw-bold">Estado</th>
-                        <th class="text-white fw-bold">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="funcion : ${listaFunciones}">
-
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="ms-3">
-                                    <p class="fw-bold mb-1" th:text="${funcion.foto}">1</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="d-flex align-items-center">
-
-                                <div class="ms-3">
-                                    <p class="fw-bold mb-1" th:text="${funcion.obra}">Las Monjas</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="ms-3">
-                                    <p class="fw-bold mb-1" th:text="${funcion.fecha}">2022-06-11</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="ms-3">
-                                    <p class="fw-bold mb-1" th:text="${funcion.hora}">21:00:00</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="ms-3">
-                                    <p class="fw-bold mb-1" th:text="${funcion.sede}">La Cúpula de las Artes</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                             <span th:if="${funcion.estado.equalsIgnoreCase('Activa')}"
-                                   class="badge badge-success rounded-pill d-inline"
-                                   style="font-size: 13px">Vigente</span>
-                            <span th:unless="${funcion.estado.equalsIgnoreCase('Activa')}"
-                                  class="badge badge-danger rounded-pill d-inline"
-                                  style="font-size: 13px">Cancelada</span>
-                        </td>
-                        <td>
-                            <a type="button" class="btn btn-outline-primary fw-bold btn-sm btn-rounded"
-                               data-mdb-ripple-color="dark"
-                               th:href="@{|/operador/funciones/editar?idfuncion=${funcion.id}|}">
-                                Editar
-                            </a>
-                            <a type="button" style="width: 140px;margin-top: 0px"
-                               class="btn btn-outline-success fw-bold btn-sm btn-rounded" data-mdb-ripple-color="dark"
-                               th:href="@{|/operador/funciones/reporte/${funcion.id}|}">
-                                REPORTE XLS
-                            </a>
-                        </td>
-
-                    </tr>
-                </tbody>
-            </table>
-
-            <!--Paginacion-->
-            <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
+            <div class="col-auto">
+                <div class="text-start" style="min-width: 200px">
+                    <label class="form-label">Obra</label>
+                    <select class=" fs-13" aria-label="Default select example" name="obra" id="obra">
+                        <option value="">Todo</option>
+                        <option th:each="obra : ${listaObras}" th:text="${obra.titulo}" th:value="${obra.id}"
+                                th:selected="${obra.id.toString() == #httpServletRequest.getParameter('obra')}">
+                        </option>
+                    </select>
+                    <script>
+                        $("select[name*='obra']").selectize({
+                            sortField: 'text'
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="col-auto d-flex align-items-end">
+                <button type="submit" class="btn btn-light p-2">
+                    <span class="input-group-text border-0"><i class="fas fa-search" id="mdb-5-search-icon"></i></span>
+                </button>
+            </div>
         </div>
+    </form>
 
-        <!-- Modal msg -->
-        <div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal"
-             aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
-            <div class="modal-dialog  ">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="modal-title">
-                            <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo"
-                                 loading="lazy" style="margin-top: 2px;"/>
+    <table class="table hover-light align-middle mb-0 round-border fs-13" th:unless="${listaFunciones.isEmpty()}">
+        <thead class="bg-light">
+            <tr class="bg-dark">
+                <th class="text-white fw-bold">Obra</th>
+                <th class="text-white fw-bold text-center" width="125px">Fecha</th>
+                <th class="text-white fw-bold text-center">Hora</th>
+                <th class="text-white fw-bold text-center">Sala</th>
+                <th class="text-white fw-bold text-center">Sede</th>
+                <th class="text-white fw-bold text-center">Asistencia</th>
+                <th class="text-white fw-bold text-center">Estado</th>
+                <th class="text-white fw-bold text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="funcion : ${listaFunciones}">
+                <td>
+                    <div class="d-flex align-items-center">
+                        <div style="width: 90px; min-width: 90px; height: 65px;border-radius: 10%; overflow: hidden;">
+                            <img th:src="@{'/image/obra/'+${funcion.foto}}" style="width: 100%; height: 100%; object-fit: cover;" />
                         </div>
-                        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                        <div class="ms-3">
+                            <p class="fw-bold mb-1" th:text="${funcion.obra}"></p>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <div class=" w-100 d-flex justify-content-center mb-3">
-                            <i class="fa-solid fa-circle-check" style="font-size: 50px"
-                               th:class="${error==null? 'fa-solid fa-circle-check text-success': 'fa-solid fa-circle-xmark text-danger'  }"></i>
-                        </div>
-                        <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
-                        </div>
-                    </div>
+                </td>
+                <td class="text-center" th:text="${funcion.fecha}"></td>
+                <td class="text-center" th:text="${funcion.hora}"></td>
+                <td class="text-center" th:text="${funcion.sala}"></td>
+                <td class="text-center" th:text="${funcion.sede}"></td>
+                <td class="text-center">
+                    <span class="fw-bold" th:if="${funcion.estado!='Cancelada' and funcion.pasistencia.isPresent()}"
+                          th:text="${#numbers.formatDecimal(funcion.pasistencia.get(),1,2,'POINT')} +' %'"></span>
+                    <span th:if="${funcion.estado!='Cancelada' and funcion.pasistencia.isEmpty()}" class="badge badge-dark rounded-pill d-inline" style="font-size: 12px">Sin ventas</span>
+                    <span th:if="${funcion.estado=='Cancelada'}" class="badge badge-secondary rounded-pill d-inline" style="font-size: 12px">No publicada</span>
+                </td>
+                <td class="text-center">
+                     <span th:if="${funcion.estado == 'Vigente' }"
+                           class="badge badge-success rounded-pill d-inline" style="font-size: 12px">
+                         Vigente
+                     </span>
+                    <span th:if="${funcion.estado == 'Realizada'}"
+                          class="badge badge-info rounded-pill d-inline" style="font-size: 12px">
+                        Realizada
+                    </span>
+                    <span th:if="${funcion.estado == 'Cancelada'}"
+                          class="badge badge-danger rounded-pill d-inline" style="font-size: 12px">
+                        Cancelada
+                    </span>
+                </td>
+                <td class="text-center">
+                    <a th:unless="${funcion.estado == 'Cancelada' or funcion.estado == 'Realizada'}"
+                       type="button" class="btn btn-redtele btn-sm btn-rounded my-1" style="font-size: 12px"
+                       th:href="@{'/operador/funciones/editar?idfuncion=' + ${funcion.id}}"
+                       data-mdb-ripple-color="dark">Editar</a>
+                    <a th:unless="${funcion.estado == 'Cancelada'}" type="button"
+                       class="btn btn-success fw-bold btn-sm btn-rounded my-1"
+                       data-mdb-ripple-color="dark" style="font-size: 12px"
+                       th:href="@{'/operador/reporte/'+${funcion.id}}">
+                        Reporte xsl
+                    </a>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+    <!--Paginacion-->
+    <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
+</div>
+
+<!-- Modal msg -->
+<div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal"
+     aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo"
+                         loading="lazy" style="margin-top: 2px;"/>
+                </div>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class=" w-100 d-flex justify-content-center mb-3">
+                    <i class="fa-solid fa-circle-check" style="font-size: 50px"
+                       th:class="${error==null? 'fa-solid fa-circle-check text-success': 'fa-solid fa-circle-xmark text-danger'  }"></i>
+                </div>
+                <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <footer th:replace="fragmentos/footer.html :: footer"></footer>
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
 
-        <div th:replace="fragmentos/navbar.html :: menu"></div>
-    </body>
-    <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/busqueda.js}"></script>
-    <script type="text/javascript" th:if="${msg != null}">
-        $(window).on('load', function () {
-            $('#msgModal').modal('show');
-        });
-    </script>
+<div th:replace="fragmentos/navbar.html :: menu"></div>
+</body>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/busqueda.js}"></script>
+<script type="text/javascript" th:if="${msg != null}">
+    $(window).on('load', function () {
+        $('#msgModal').modal('show');
+    });
+</script>
 </html>

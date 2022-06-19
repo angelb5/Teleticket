@@ -17,6 +17,10 @@ public interface FuncionOperadorDto {
 
     String getSede();
 
+    String getSala();
+
+    Optional<Float> getPasistencia();
+
     String getEstado();
 
 }

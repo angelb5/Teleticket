@@ -166,28 +166,125 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
             "order by fecha asc")
     public List<String> listaFechasDeObra(int idobras);
 
-    @Query(nativeQuery = true,
-            value = "select f.idfunciones'id', o.titulo as 'obra', o.fotoprincipal as 'foto', f.fecha as 'fecha' ,f.inicio as 'Hora', se.nombre as 'sede' , f.estado as 'estado'\n" +
-                    "            from funciones f\n" +
-                    "                     left join obras o on f.idobras = o.idobras\n" +
-                    "                     left join salas s on f.idsalas = s.idsalas\n" +
-                    "                     left join sedes se on s.idsedes = se.idsedes\n" +
-                    "            where o.titulo like %?1% \n" +
-                    "            group by f.idfunciones",
-            countQuery = "select count(distinct f.idfunciones)\n" +
-                    "            from funciones f\n" +
-                    "                     left join obras o on f.idobras = o.idobras\n" +
-                    "                     left join salas s on f.idsalas = s.idsalas\n" +
-                    "                     left join sedes se on s.idsedes = se.idsedes\n" +
-                    "            where o.titulo like %?1%\n" +
-                    "            group by f.idfunciones")
-    public List<FuncionOperadorDto> listadoOperadorFunciones(String busqueda, Pageable pageable);
+    @Query(nativeQuery = true, value = "select f.idfunciones'id', o.titulo as 'obra', o.fotoprincipal as 'foto', f.fecha as 'fecha'," +
+            "f.inicio as 'hora', se.nombre as 'sede', s.numero as 'sala', a.pasistencia as 'pasistencia', " +
+            "if(f.estado<>'Cancelada',if(f.fecha>current_date() or (f.fecha=current_date() and f.inicio>now()),'Vigente','Realizada'), 'Cancelada') as 'estado' " +
+            "from funciones f " +
+            "inner join obras o on f.idobras = o.idobras " +
+            "inner join salas s on f.idsalas = s.idsalas " +
+            "inner join sedes se on s.idsedes = se.idsedes " +
+            "left join asistencia a on a.idfunciones = f.idfunciones " +
+            "where concat(month(f.fecha),'-',year(f.fecha)) like %?1% " +
+            "order by f.fecha desc, f.inicio desc",
+    countQuery = "select count(*) from funciones f " +
+            "inner join obras o on f.idobras = o.idobras " +
+            "inner join salas s on f.idsalas = s.idsalas " +
+            "inner join sedes se on s.idsedes = se.idsedes " +
+            "left join asistencia a on a.idfunciones = f.idfunciones " +
+            "where concat(month(f.fecha),'-',year(f.fecha)) like %?1% ")
+    List<FuncionOperadorDto> listarFuncionesPorMes(String mes, Pageable pageable);
 
-    @Query(nativeQuery = true, value = "select count(distinct f.idfunciones)\n" +
-            "            from funciones f\n" +
-            "                     left join obras o on f.idobras = o.idobras\n" +
-            "                     left join salas s on f.idsalas = s.idsalas\n" +
-            "                     left join sedes se on s.idsedes = se.idsedes\n" +
-            "            where o.titulo like %?1%\n")
-    public Integer contarlistadoOperadorFunciones(String nombre);
+    @Query(nativeQuery = true, value = "select count(*) from funciones f " +
+            "inner join obras o on f.idobras = o.idobras " +
+            "inner join salas s on f.idsalas = s.idsalas " +
+            "inner join sedes se on s.idsedes = se.idsedes " +
+            "left join asistencia a on a.idfunciones = f.idfunciones " +
+            "where concat(month(f.fecha),'-',year(f.fecha)) like %?1%")
+    Integer contarFuncionesPorMes(String mes);
+
+    @Query(nativeQuery = true, value = "select f.idfunciones'id', o.titulo as 'obra', o.fotoprincipal as 'foto', f.fecha as 'fecha'," +
+            "f.inicio as 'hora', se.nombre as 'sede' , s.numero as 'sala', a.pasistencia as 'pasistencia', " +
+            "if(f.estado<>'Cancelada',if(f.fecha>current_date() or (f.fecha=current_date() and f.inicio>now()),'Vigente','Realizada'), 'Cancelada') as 'estado' " +
+            "from funciones f " +
+            "inner join obras o on f.idobras = o.idobras " +
+            "inner join salas s on f.idsalas = s.idsalas " +
+            "inner join sedes se on s.idsedes = se.idsedes " +
+            "left join asistencia a on a.idfunciones = f.idfunciones " +
+            "where concat(month(f.fecha),'-',year(f.fecha)) like %?1% " +
+            "and se.idsedes=?2 " +
+            "order by f.fecha desc, f.inicio desc",
+    countQuery = "select count(*) from funciones f " +
+            "inner join obras o on f.idobras = o.idobras " +
+            "inner join salas s on f.idsalas = s.idsalas " +
+            "inner join sedes se on s.idsedes = se.idsedes " +
+            "left join asistencia a on a.idfunciones = f.idfunciones " +
+            "where concat(month(f.fecha),'-',year(f.fecha)) like %?1% " +
+            "and se.idsedes=?2 ")
+    List<FuncionOperadorDto> listarFuncionesPorMesAndIdsede(String mes, int idsedes, Pageable pageable);
+
+    @Query(nativeQuery = true, value = "select count(*) " +
+            "from funciones f " +
+            "inner join obras o on f.idobras = o.idobras " +
+            "inner join salas s on f.idsalas = s.idsalas " +
+            "inner join sedes se on s.idsedes = se.idsedes " +
+            "left join asistencia a on a.idfunciones = f.idfunciones " +
+            "where concat(month(f.fecha),'-',year(f.fecha)) like %?1% " +
+            "and se.idsedes=?2 " +
+            "order by f.fecha desc, f.inicio desc")
+    Integer contarFuncionesPorMesAndIdsede(String mes, int idsedes);
+
+    @Query(nativeQuery = true, value = "select f.idfunciones'id', o.titulo as 'obra', o.fotoprincipal as 'foto', f.fecha as 'fecha'," +
+            "f.inicio as 'hora', se.nombre as 'sede' , s.numero as 'sala', a.pasistencia as 'pasistencia', " +
+            "if(f.estado<>'Cancelada',if(f.fecha>current_date() or (f.fecha=current_date() and f.inicio>now()),'Vigente','Realizada'), 'Cancelada') as 'estado' " +
+            "from funciones f " +
+            "inner join obras o on f.idobras = o.idobras " +
+            "inner join salas s on f.idsalas = s.idsalas " +
+            "inner join sedes se on s.idsedes = se.idsedes " +
+            "left join asistencia a on a.idfunciones = f.idfunciones " +
+            "where concat(month(f.fecha),'-',year(f.fecha)) like %?1% " +
+            "and o.idobras=?2 " +
+            "order by f.fecha desc, f.inicio desc",
+            countQuery = "select count(*) from funciones f " +
+                    "inner join obras o on f.idobras = o.idobras " +
+                    "inner join salas s on f.idsalas = s.idsalas " +
+                    "inner join sedes se on s.idsedes = se.idsedes " +
+                    "left join asistencia a on a.idfunciones = f.idfunciones " +
+                    "where concat(month(f.fecha),'-',year(f.fecha)) like %?1% " +
+                    "and o.idobras=?2 ")
+    List<FuncionOperadorDto> listarFuncionesPorMesAndIdobra(String mes, int idobras, Pageable pageable);
+
+    @Query(nativeQuery = true, value = "select count(*) from funciones f " +
+            "inner join obras o on f.idobras = o.idobras " +
+            "inner join salas s on f.idsalas = s.idsalas " +
+            "inner join sedes se on s.idsedes = se.idsedes " +
+            "left join asistencia a on a.idfunciones = f.idfunciones " +
+            "where concat(month(f.fecha),'-',year(f.fecha)) like %?1% " +
+            "and o.idobras=?2 ")
+    Integer contarFuncionesPorMesAndIdobra(String mes, int idobras);
+
+    @Query(nativeQuery = true, value = "select f.idfunciones'id', o.titulo as 'obra', o.fotoprincipal as 'foto', f.fecha as 'fecha'," +
+            "f.inicio as 'hora', se.nombre as 'sede' , s.numero as 'sala', a.pasistencia as 'pasistencia', " +
+            "if(f.estado<>'Cancelada',if(f.fecha>current_date() or (f.fecha=current_date() and f.inicio>now()),'Vigente','Realizada'), 'Cancelada') as 'estado' " +
+            "from funciones f " +
+            "inner join obras o on f.idobras = o.idobras " +
+            "inner join salas s on f.idsalas = s.idsalas " +
+            "inner join sedes se on s.idsedes = se.idsedes " +
+            "left join asistencia a on a.idfunciones = f.idfunciones " +
+            "where concat(month(f.fecha),'-',year(f.fecha)) like %?1% " +
+            "and o.idobras=?2 " +
+            "and se.idsedes=?3 " +
+            "order by f.fecha desc, f.inicio desc",
+            countQuery = "select count(*) from funciones f " +
+                    "inner join obras o on f.idobras = o.idobras " +
+                    "inner join salas s on f.idsalas = s.idsalas " +
+                    "inner join sedes se on s.idsedes = se.idsedes " +
+                    "left join asistencia a on a.idfunciones = f.idfunciones " +
+                    "where concat(month(f.fecha),'-',year(f.fecha)) like %?1% " +
+                    "and o.idobras=?2 " +
+                    "and se.idsedes=?3")
+    List<FuncionOperadorDto> listarFuncionesPorMesAndIdObraAndIdsede(String mes, int idobras, int idesede, Pageable pageable);
+
+    @Query(nativeQuery = true, value = "select count(*) from funciones f " +
+            "inner join obras o on f.idobras = o.idobras " +
+            "inner join salas s on f.idsalas = s.idsalas " +
+            "inner join sedes se on s.idsedes = se.idsedes " +
+            "left join asistencia a on a.idfunciones = f.idfunciones " +
+            "where concat(month(f.fecha),'-',year(f.fecha)) like %?1% " +
+            "and o.idobras=?2 " +
+            "and se.idsedes=?3 ")
+    Integer contarFuncionesPorMesAndIdobraAndIdsede(String mes, int idobras, int idsede);
+
+    @Query(nativeQuery = true, value = "select distinct concat(month(f.fecha),'-',year(f.fecha)) as mes " +
+            "from funciones f")
+    List<String> listarMesesConFunciones();
 }

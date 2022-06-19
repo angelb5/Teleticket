@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import pe.edu.pucp.teleticket.dto.SedeFiltro;
 import pe.edu.pucp.teleticket.entity.Sede;
 
 
@@ -42,4 +43,9 @@ public interface SedeRepository extends JpaRepository<Sede, Integer> {
 
     @Query(nativeQuery = true, value = "select count(*)from sedes where estado = 'Disponible'")
     public int totalSedesDisponibles();
+
+    @Query(nativeQuery = true, value = "select distinct se.idsedes as id, se.nombre as nombre from funciones f " +
+            "inner join salas s on s.idsalas = f.idsalas " +
+            "inner join sedes se on s.idsedes = se.idsedes")
+    public List<SedeFiltro> listarSedesConFunciones();
 }

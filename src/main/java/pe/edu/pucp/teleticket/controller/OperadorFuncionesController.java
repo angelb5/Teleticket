@@ -10,7 +10,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pe.edu.pucp.teleticket.dto.FuncionOperadorDto;
+import pe.edu.pucp.teleticket.dto.ObraFiltro;
 import pe.edu.pucp.teleticket.dto.ObrasListado;
+import pe.edu.pucp.teleticket.dto.SedeFiltro;
 import pe.edu.pucp.teleticket.entity.*;
 import pe.edu.pucp.teleticket.repository.*;
 import pe.edu.pucp.teleticket.service.EmailService;
@@ -18,6 +20,7 @@ import pe.edu.pucp.teleticket.service.EmailService;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,29 +50,57 @@ public class OperadorFuncionesController {
     EmailService emailService;
 
     @GetMapping({"/", "", "/lista"})
-    public String listarFunciones(Model model, @RequestParam("pag") Optional<String> pag,
-                              @RequestParam("busqueda") Optional<String> optionalBusqueda ) {
-        String busqueda = optionalBusqueda.isPresent()? optionalBusqueda.get().trim() : "";
-        String ruta = busqueda.isBlank()? "/operador/funciones?" : "/operador/funciones?busqueda=" +busqueda +"&";
-
-        int pagina=0;
-        try{
-            pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
-        } catch (Exception e){
-            return "redirect:/operador/funciones";
-        }
-        pagina = pagina < 1 ? 1 : pagina;
-        int paginas = (int) Math.ceil((float)funcionRepository.contarlistadoOperadorFunciones(busqueda)/funcionesPaginas);
-        pagina = pagina > paginas ? paginas : pagina;
-
+    public String listarFunciones(Model model, @RequestParam("pag") Optional<Integer> pag,
+                                  @RequestParam("obra") Optional<Integer> idobra, @RequestParam("mes") Optional<String> optMes,
+                                  @RequestParam("sede") Optional<Integer> idsede) {
+        String mes = optMes.orElse("");
+        int pagina = pag.isEmpty()? 1 : pag.get();
+        pagina = pagina<1? 1 : pagina;
+        int paginas =0;
         Pageable lista;
-        if (pagina == 0) {
-            lista = PageRequest.of(0, funcionesPaginas);
-        } else {
-            lista = PageRequest.of(pagina - 1, funcionesPaginas);
+        String ruta = "/operador/funciones?mes="+mes+"&";
 
+        List<SedeFiltro> listaSedes= sedeRepository.listarSedesConFunciones();
+        List<ObraFiltro> listaObras = obraRepository.listarObrasConFunciones();
+        List<String> meses = funcionRepository.listarMesesConFunciones();
+        List<FuncionOperadorDto> listaFunciones = new ArrayList<>();
+
+        if(idobra.isEmpty() && idsede.isEmpty()){
+            paginas = (int) Math.ceil((float) funcionRepository.contarFuncionesPorMes(mes) / funcionesPaginas);
+            paginas= paginas==0? 1: paginas;
+            pagina = pagina > paginas ? paginas : pagina;
+            lista = PageRequest.of(pagina-1,funcionesPaginas);
+            listaFunciones = funcionRepository.listarFuncionesPorMes(mes,lista);
+        }else if(idobra.isPresent() && idsede.isEmpty()){
+            paginas = (int) Math.ceil((float) funcionRepository.contarFuncionesPorMesAndIdobra(mes, idobra.get()) / funcionesPaginas);
+            paginas= paginas==0? 1: paginas;
+            pagina = pagina > paginas ? paginas : pagina;
+            lista = PageRequest.of(pagina-1,funcionesPaginas);
+            listaFunciones = funcionRepository.listarFuncionesPorMesAndIdobra(mes,idobra.get(),lista);
+            ruta+="idobra="+idobra.get()+"&";
+        }else if(idobra.isEmpty()){
+            paginas = (int) Math.ceil((float) funcionRepository.contarFuncionesPorMesAndIdsede(mes, idsede.get()) / funcionesPaginas);
+            paginas= paginas==0? 1: paginas;
+            pagina = pagina > paginas ? paginas : pagina;
+            lista = PageRequest.of(pagina-1,funcionesPaginas);
+            listaFunciones = funcionRepository.listarFuncionesPorMesAndIdsede(mes,idsede.get(),lista);
+            ruta+="idsede="+idsede.get()+"&";
+        }else {
+            paginas = (int) Math.ceil((float) funcionRepository.contarFuncionesPorMesAndIdobraAndIdsede(mes, idobra.get(), idsede.get()) / funcionesPaginas);
+            paginas= paginas==0? 1: paginas;
+            pagina = pagina > paginas ? paginas : pagina;
+            lista = PageRequest.of(pagina-1,funcionesPaginas);
+            listaFunciones = funcionRepository.listarFuncionesPorMesAndIdObraAndIdsede(mes,idobra.get(),idsede.get(),lista);
+            ruta+="idobra="+idobra.get()+"&idsede="+idsede.get()+"&";
         }
-        List<FuncionOperadorDto> listaFunciones = funcionRepository.listadoOperadorFunciones(busqueda, lista);
+
+        model.addAttribute("idobra", idobra);
+        model.addAttribute("idsede", idsede);
+        model.addAttribute("mes", mes);
+
+        model.addAttribute("listaSedes", listaSedes);
+        model.addAttribute("listaObras", listaObras);
+        model.addAttribute("meses", meses);
         model.addAttribute("listaFunciones", listaFunciones);
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
