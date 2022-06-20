@@ -17,7 +17,7 @@ public class ObraEstadisticas {
 
     int fotoprincipal;
 
-    float calificacion;
+    float puntuacion;
 
     float recaudacionTotal;
 

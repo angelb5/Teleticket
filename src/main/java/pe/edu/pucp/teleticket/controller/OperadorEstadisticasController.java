@@ -56,6 +56,8 @@ public class OperadorEstadisticasController {
 
         Integer totalTickets= historialRepository.ticketsTotale();
         float venta=historialRepository.totalVenta();
+
+        model.addAttribute("listaObras", obraRepository.listarObrasConFunciones());
         model.addAttribute("directores",directores);
         model.addAttribute("actores",actores);
         model.addAttribute("totalCliente",clientes);
@@ -78,16 +80,22 @@ public class OperadorEstadisticasController {
             if (optionalObra.isPresent()) {
                 Obra o = optionalObra.get();
 
-                float calificacion = calificacionObraRepository.getPuntajeByIdobra(id).orElse((float) 0);
+                float puntuacion = calificacionObraRepository.getPuntajeByIdobra(id).orElse((float) 0);
                 Optional<FuncionEstadisticas> masVista = funcionRepository.hallarFuncionMasVistaPorIdobra(id);
                 Optional<FuncionEstadisticas> menosVista = funcionRepository.hallarFuncionMenosVistaPorIdobra(id);
                 Optional<FuncionEstadisticas> mejorCalificada = funcionRepository.hallarFuncionMejorCalificadaPorIdobra(id);
+                Optional<Float> recaudacion = obraRepository.obtenerRecaudaciontotalPorIdobra(id);
 
                 ObraEstadisticas oEstadisticas = new ObraEstadisticas();
                 oEstadisticas.setId(id);
                 oEstadisticas.setTitulo(o.getTitulo());
                 oEstadisticas.setFotoprincipal(o.getFotoprincipal());
-                oEstadisticas.setCalificacion(calificacion);
+                oEstadisticas.setPuntuacion(puntuacion);
+                oEstadisticas.setRecaudacionTotal(recaudacion.orElse((float) 0));
+                oEstadisticas.setTotalFunciones(funcionRepository.contarFuncionesPorIdobra(id));
+                oEstadisticas.setRealizadas(funcionRepository.contarRealizadasPorIdobra(id));
+                oEstadisticas.setVigentes(funcionRepository.contarVigentesPorIdobra(id));
+                oEstadisticas.setCanceladas(funcionRepository.contarCanceladasPorIdobra(id));
                 oEstadisticas.setFuncionMasVista(masVista.orElse(null));
                 oEstadisticas.setFuncionMenosVista(menosVista.orElse(null));
                 oEstadisticas.setFuncionMejorCalificada(mejorCalificada.orElse(null));

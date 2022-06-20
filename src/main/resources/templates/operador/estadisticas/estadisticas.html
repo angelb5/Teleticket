@@ -34,7 +34,7 @@
                     <div class="col-md-4">
                         <label class="form-label">Obra</label>
                         <select class=" fs-13" aria-label="Default select example" name="obra" id="obra">
-                            <option value="">--Selecciona una obra--</option>
+                            <option value="">Selecciona una obra</option>
                             <option th:each="obra : ${listaObras}" th:text="${obra.titulo}" th:value="${obra.id}">
                             </option>
                         </select>
@@ -45,8 +45,144 @@
                         </script>
                     </div>
                 </div>
-                <div class="row">
-
+                <div class="row" id="noinfo">
+                    <div class="d-flex align-items-center bg-light rounded-6 fw-bold justify-content-center fs-14" style="min-height: 200px; color: #3c3c3c">
+                        Acá se mostrará información de la obra que selecciones
+                    </div>
+                </div>
+                <div class="row my-3 d-none" id="obrarow">
+                    <div class="col d-flex align-items-center ">
+                        <div style="width: 200px; min-width: 200px; height: 120px;border-radius: 10%; overflow: hidden;">
+                            <img id="fotoobra"  th:src="@{'/'}" style="width: 100%; height: 100%; object-fit: cover;" />
+                        </div>
+                        <div class="ms-3">
+                            <div class="title-24" id="obratitulo"></div>
+                        </div>
+                    </div>
+                    <div class="col justify-content-center d-flex align-items-end flex-column" >
+                        <div class="fs-20" id="puntuaciondiv">
+                            <strong class="fw-bold align-middle" id="puntuacionobra">
+                            </strong>
+                            <strong class="align-middle">
+                                /5
+                            </strong>
+                            <i class="ms-1 fa-solid fa-star fs-22"></i>
+                        </div>
+                        <div class="mt-3">
+                            <a class="text-redtele my-2" id="gestionobra" th:href="@{/}">
+                                <span class="fw-bold"> Gestión de obra</span>
+                                <i class="ms-1 fas fa-chevron-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3 pt-2 row-cols-4 d-none" id="funcionesrow">
+                    <div class="text-center">
+                        <span class="badge rounded-pill badge-light fs-13" id="totalfunciones"></span>
+                    </div>
+                    <div class="text-center">
+                        <span class="badge rounded-pill badge-info fs-13" id="realizadas"></span>
+                    </div>
+                    <div class="text-center">
+                        <span class="badge rounded-pill badge-success fs-13" id="vigentes"></span>
+                    </div>
+                    <div class="text-center">
+                        <span class="badge rounded-pill badge-danger fs-13" id="canceladas"></span>
+                    </div>
+                </div>
+                <div class="my-3 d-none" id="tablerow">
+                    <table class="table hover-light align-middle round-border fs-13">
+                        <thead class="bg-light">
+                        <tr class="bg-dark">
+                            <th></th>
+                            <th class="text-white fw-bold text-center">Sala</th>
+                            <th class="text-white fw-bold text-center">Sede</th>
+                            <th class="text-white fw-bold text-center" width="125px">Fecha</th>
+                            <th class="text-white fw-bold text-center">Hora</th>
+                            <th class="text-white fw-bold text-center">Vendidos</th>
+                            <th class="text-white fw-bold text-center">Recaudación</th>
+                            <th class="text-white fw-bold text-center">Calificaciones</th>
+                            <th class="text-white fw-bold text-center">Puntuación</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="trmas">
+                            <td>Función más vista</td>
+                            <td class="text-center" id="salamas"></td>
+                            <td class="text-center" id="sedemas"></td>
+                            <td class="text-center" id="fechamas"></td>
+                            <td class="text-center" id="horamas"></td>
+                            <td class="text-center" >
+                                <span class="fw-bold" id="vendidosmas"></span>
+                            </td>
+                            <td class="text-center text-success" id="recaudacionmas"></td>
+                            <td class="text-center" id="calificacionesmas"></td>
+                            <td class="text-center">
+                                <span id="puntuacionmasspan">
+                                    <strong class="fw-bold align-middle" id="puntuacionmas">
+                                    </strong>
+                                    <strong class="align-middle">
+                                        /5
+                                    </strong>
+                                    <i class="ms-1 fa-solid fa-star"></i>
+                                </span>
+                                <div id="sinpuntuacionmas">
+                                    <span  class="badge badge-warning rounded-pill d-inline fs-13">Sin Puntuación</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Función menos vista</td>
+                            <td class="text-center" id="salamenos"></td>
+                            <td class="text-center" id="sedemenos"></td>
+                            <td class="text-center" id="fechamenos"></td>
+                            <td class="text-center" id="horamenos"></td>
+                            <td class="text-center" >
+                                <span class="fw-bold" id="vendidosmenos"></span>
+                                <div id="sinventasmenos" >
+                                    <span class="badge badge-dark rounded-pill d-inline"style="font-size: 12px">Sin ventas</span>
+                                </div>
+                            </td>
+                            <td class="text-center text-success" id="recaudacionmenos"></td>
+                            <td class="text-center" id="calificacionesmenos"></td>
+                            <td class="text-center">
+                                <span id="puntuacionmenosspan">
+                                    <strong class="fw-bold align-middle" id="puntuacionmenos">
+                                    </strong>
+                                    <strong class="align-middle">
+                                        /5
+                                    </strong>
+                                    <i class="ms-1 fa-solid fa-star"></i>
+                                </span>
+                                <div id="sinpuntuacionmenos">
+                                    <span class="badge badge-warning rounded-pill d-inline fs-13">Sin Puntuación</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr id="trmejor">
+                            <td>Función mejor calificada</td>
+                            <td class="text-center" id="salamejor"></td>
+                            <td class="text-center" id="sedemejor"></td>
+                            <td class="text-center" id="fechamejor"></td>
+                            <td class="text-center" id="horamejor"></td>
+                            <td class="text-center" >
+                                <span class="fw-bold" id="vendidosmejor"></span>
+                            </td>
+                            <td class="text-center text-success" id="recaudacionmejor"></td>
+                            <td class="text-center" id="calificacionesmejor"></td>
+                            <td class="text-center">
+                                <span id="puntuacionmejorspan">
+                                    <strong class="fw-bold align-middle" id="puntuacionmejor">
+                                    </strong>
+                                    <strong class="align-middle">
+                                        /5
+                                    </strong>
+                                    <i class="ms-1 fa-solid fa-star"></i>
+                                </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -83,7 +219,8 @@
                                             </div>
 
                                         </td>
-                                        <td th:text="${actor.pactuacion}+' / 5'">
+                                        <td class="text-center" >
+                                            <span th:text="${#numbers.formatDecimal(actor.pactuacion.get(),1,2,'POINT')}+' / 5'"></span>
                                             <i class="ms-1 fa-solid fa-star "></i>
                                         </td>
                                     </tr>
@@ -120,7 +257,8 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td th:text="${director.pdireccion}+ ' / 5'">
+                                        <td class="text-center">
+                                            <span th:text="${#numbers.formatDecimal(director.pdireccion.get(),1,2,'POINT')} + ' / 5'"></span>
                                             <i class="ms-1 fa-solid fa-star "></i>
                                         </td>
                                     </tr>
@@ -132,7 +270,6 @@
             </div>
         </div>
     </section>
-
 
     <!--Section: Minimal statistics cards-->
     <section>
@@ -254,14 +391,128 @@
 <script  type="text/javascript" th:src="@{/js/busqueda.js}"></script>
 <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
-    $(document).ready(function(){
-        $.ajax({
-            method:"GET",
-            url: "http://" + [[${dominio}]] + "/operador/estadisticas/obra/1"
-        }).done(function (response){
-            console.log(response);
-        })
+
+    let noinfo = $('#noinfo');
+    let obrarow = $('#obrarow');
+    let funcionesrow = $('#funcionesrow');
+    let tablerow = $('#tablerow');
+
+    $(document).ready(function (){
+        obrarow.removeClass("d-none");
+        funcionesrow.removeClass("d-none");
+        tablerow.removeClass("d-none");
+        hideinfo();
     });
+
+    $("#obra").change(function(){
+        let idobra = $('#obra option:selected').val();
+
+        if(!isNaN(idobra)){
+            $.ajax({
+                method:"GET",
+                url: "http://" + [[${dominio}]] + "/operador/estadisticas/obra/"+idobra
+            }).done(function (response){
+                let o = response.obra;
+                if(o!=null && o.totalFunciones>0){
+                    showinfo();
+                    $('#fotoobra').attr('src','/image/obra/'+o.fotoprincipal);
+                    $('#obratitulo').html(o.titulo);
+                    if(o.puntuacion>0){
+                        $('#puntuaciondiv').show();
+                        $('#puntuacionobra').html((Math.round(o.puntuacion * 100) / 100).toFixed(2));
+                    }else{
+                        $('#puntuaciondiv').hide();
+                    }
+                    $('#gestionobra').attr('href','/operador/obras/gestion'+o.id);
+                    $('#totalfunciones').html('Total de funciones: '+o.totalFunciones);
+                    $('#realizadas').html('Realizadas: '+o.realizadas);
+                    $('#vigentes').html('Vigentes: '+ o.vigentes);
+                    $('#canceladas').html('Canceladas: '+o.canceladas);
+                    let masvista = o.funcionMasVista;
+                    if(masvista.vendidos>0){
+                        $('#trmas').show();
+                        $('#salamas').html(masvista.sala);
+                        $('#sedemas').html(masvista.sede);
+                        $('#fechamas').html(masvista.fecha);
+                        $('#horamas').html(masvista.hora);
+                        $('#vendidosmas').html(masvista.vendidos);
+                        $('#recaudacionmas').html('S/ '+ (Math.round(masvista.recaudacion * 100) / 100).toFixed(2));
+                        $('#calificacionesmas').html(masvista.calificaciones);
+                        if(masvista.puntuacion>0){
+                            $('#puntuacionmasspan').show();
+                            $('#puntuacionmas').html((Math.round(masvista.puntuacion * 100) / 100).toFixed(2));
+                            $('#sinpuntuacionmas').hide();
+                        }else{
+                            $('#puntuacionmasspan').hide();
+                            $('#sinpuntuacionmas').show();
+                        }
+                    }else{
+                        $('#trmas').hide();
+                    }
+
+                    let menosvista = o.funcionMenosVista;
+                    $('#salamenos').html(menosvista.sala);
+                    $('#sedemenos').html(menosvista.sede);
+                    $('#fechamenos').html(menosvista.fecha);
+                    $('#horamenos').html(menosvista.hora);
+                    if(menosvista.vendidos>0){
+                        $('#vendidosmenos').html(menosvista.vendidos);
+                        $('#sinventasmenos').hide();
+                        $('#recaudacionmenos').html('S/ '+ (Math.round(menosvista.recaudacion * 100) / 100).toFixed(2));
+                    }else{
+                        $('#vendidosmenos').html('');
+                        $('#sinventasmenos').show();
+                    }
+                    $('#calificacionesmenos').html(menosvista.calificaciones);
+                    if(menosvista.puntuacion>0){
+                        $('#puntuacionmenosspan').show();
+                        $('#puntuacionmenos').html((Math.round(menosvista.puntuacion * 100) / 100).toFixed(2));
+                        $('#sinpuntuacionmenos').hide();
+                    }else{
+                        $('#puntuacionmenosspan').hide();
+                        $('#sinpuntuacionmenos').show();
+                    }
+
+                    let mejorcal = o.funcionMejorCalificada;
+                    if(mejorcal.puntuacion>0){
+                        $('#trmejor').show();
+                        $('#salamejor').html(mejorcal.sala);
+                        $('#sedemejor').html(mejorcal.sede);
+                        $('#fechamejor').html(mejorcal.fecha);
+                        $('#horamejor').html(mejorcal.hora);
+                        $('#vendidosmejor').html(mejorcal.vendidos);
+                        $('#recaudacionmejor').html('S/ '+ (Math.round(mejorcal.recaudacion * 100) / 100).toFixed(2));
+                        $('#calificacionesmejor').html(mejorcal.calificaciones);
+                        $('#puntuacionmejor').html((Math.round(mejorcal.puntuacion * 100) / 100).toFixed(2));
+                    }else{
+                        $('#trmejor').hide();
+                    }
+
+
+                }else{
+                    hideinfo();
+                }
+
+            })
+        }else{
+            hideinfo();
+        }
+
+    });
+
+    function hideinfo(){
+        obrarow.hide();
+        funcionesrow.hide();
+        tablerow.hide();
+        noinfo.show();
+    }
+
+    function showinfo(){
+        obrarow.show();
+        funcionesrow.show();
+        tablerow.show();
+        noinfo.hide();
+    }
     /*]]>*/
 </script>
 </body>

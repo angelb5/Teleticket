@@ -117,30 +117,20 @@ public interface PersonaRepository extends JpaRepository<Persona,Integer> {
 
 
     @Query(nativeQuery = true,
-            value = "select p.idpersonas as 'id', p.nombre as 'nombre', round(avg(if(c.rol='Actuacion',c.estrellas,null)),1) as 'pactuacion',\n" +
-                    "       round(avg(if(c.rol='Direccion',c.estrellas,null)),1) as 'pdireccion', p.estado, co.actuaciones as 'obrasactor', co.direcciones as 'obrasdirector'\n" +
+            value = "select p.idpersonas as id, p.nombre as nombre, round(avg(if(c.rol='Actuacion',c.estrellas,null)),2) as pactuacion,\n" +
+                    "round(avg(if(c.rol='Direccion',c.estrellas,null)),2) as pdireccion\n" +
                     "from personas p\n" +
-                    "         left join calificacionpersonas c on p.idpersonas = c.idpersonas\n" +
-                    "         inner join (select p.idpersonas as 'id',count(a.idobra) as 'actuaciones', count(d.idobra) as 'direcciones' from personas p\n" +
-                    "        left join directores d on p.idpersonas = d.idpersona\n" +
-                    "        left join actores a on p.idpersonas = a.idpersona\n" +
-                    "                     group by p.idpersonas) co on p.idpersonas = co.id\n" +
-                    "where 'pactuacion' > 0 " +
-                    "group by p.idpersonas " +
-                    "order by 'pactuacion' desc limit 5 ")
+                    "inner join calificacionpersonas c on p.idpersonas = c.idpersonas and c.rol='Actuacion'\n" +
+                    "group by p.idpersonas \n" +
+                    "order by pactuacion desc limit 5")
     public List<PersonasListado> top5Actores();
 
     @Query(nativeQuery = true,
-            value = "select p.idpersonas as 'id', p.nombre as 'nombre', round(avg(if(c.rol='Actuacion',c.estrellas,null)),1) as 'pactuacion',\n" +
-                    "       round(avg(if(c.rol='Direccion',c.estrellas,null)),1) as 'pdireccion', p.estado, co.actuaciones as 'obrasactor', co.direcciones as 'obrasdirector'\n" +
+            value = "select p.idpersonas as id, p.nombre as nombre, round(avg(if(c.rol='Actuacion',c.estrellas,null)),2) as pactuacion,\n" +
+                    "round(avg(if(c.rol='Direccion',c.estrellas,null)),2) as pdireccion\n" +
                     "from personas p\n" +
-                    "         left join calificacionpersonas c on p.idpersonas = c.idpersonas\n" +
-                    "         inner join (select p.idpersonas as 'id',count(a.idobra) as 'actuaciones', count(d.idobra) as 'direcciones' from personas p\n" +
-                    "        left join directores d on p.idpersonas = d.idpersona\n" +
-                    "        left join actores a on p.idpersonas = a.idpersona\n" +
-                    "                     group by p.idpersonas) co on p.idpersonas = co.id\n" +
-                    "where 'pdireccion' > 0 " +
-                    "group by p.idpersonas " +
-                    "order by 'pdireccion' desc limit 5 ")
+                    "inner join calificacionpersonas c on p.idpersonas = c.idpersonas and c.rol='Direccion'\n" +
+                    "group by p.idpersonas \n" +
+                    "order by pdireccion desc limit 5")
     public List<PersonasListado> top5Directores();
 }

@@ -281,4 +281,30 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
             "order by puntuacion desc, fecha desc, hora desc " +
             "limit 1")
     Optional<FuncionEstadisticas> hallarFuncionMejorCalificadaPorIdobra(int idobra);
+
+    @Query(nativeQuery = true, value = "select count(*) " +
+            "from funciones " +
+            "where idobras = ?1 ")
+    public int contarFuncionesPorIdobra(int idobra);
+
+    @Query(nativeQuery = true, value = "select count(*) " +
+            "from funciones f " +
+            "where timestamp(f.fecha,f.inicio)>=NOW() " +
+            "and estado <> 'Cancelada' " +
+            "and idobras = ?1 ")
+    public int contarVigentesPorIdobra(int idobra);
+
+    @Query(nativeQuery = true, value = "select count(*) " +
+            "from funciones f " +
+            "where timestamp(f.fecha,f.inicio)<NOW() " +
+            "and estado <> 'Cancelada' " +
+            "and idobras = ?1 ")
+    public int contarRealizadasPorIdobra(int idobra);
+
+    @Query(nativeQuery = true, value = "select count(*) " +
+            "from funciones f " +
+            "where estado = 'Cancelada' " +
+            "and idobras = ?1 ")
+    public int contarCanceladasPorIdobra(int idobra);
+
 }
