@@ -29,8 +29,10 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
     @Query(nativeQuery = true, value = "select count(*) from obras  where destacado = 1")
     public int obrasDestacadas();
 
-    @Query(nativeQuery = true, value = "select s.idsedes as 'id', s.nombre as 'nombre' from sedes s inner join salas s2 on s.idsedes = s2.idsedes\n" +
-            "inner join funciones f on s2.idsalas = f.idsalas where f.idobras=?1 group by s.idsedes;")
+    @Query(nativeQuery = true, value = "select distinct se.idsedes as 'id', se  .nombre as 'nombre' from funciones f " +
+            "inner join salas s on f.idsalas = s.idsalas " +
+            "inner join sedes se on s.idsedes = se.idsedes " +
+            "where f.idobras=?")
     public List<SedeFiltro> listarSedesSegunObra(Integer idObra);
 
     @Query(nativeQuery = true,

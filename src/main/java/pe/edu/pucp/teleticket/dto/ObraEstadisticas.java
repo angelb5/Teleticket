@@ -10,7 +10,29 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ObraEstadisticas {
+
     int id;
-    String funcionMasVista;
+
+    String titulo;
+
+    int fotoprincipal;
+
+    float calificacion;
+
+    float recaudacionTotal;
+
+    int totalFunciones;
+
+    int vigentes;
+
+    int realizadas;
+
+    int canceladas;
+
+    FuncionEstadisticas funcionMasVista;
+
+    FuncionEstadisticas funcionMenosVista;
+
+    FuncionEstadisticas funcionMejorCalificada;
 
 }

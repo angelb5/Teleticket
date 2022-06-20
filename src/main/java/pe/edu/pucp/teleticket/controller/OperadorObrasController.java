@@ -93,11 +93,11 @@ public class OperadorObrasController {
         List<FuncionOperadorDto> funcionList = new ArrayList<>();
 
         if(idsede.isEmpty()){
-            paginas = (int) Math.ceil((float) funcionRepository.contarFuncionesPorMes(mes) / funcionesPaginas);
+            paginas = (int) Math.ceil((float) funcionRepository.contarFuncionesPorMesAndIdobra(mes,id) / funcionesPaginas);
             paginas= paginas==0? 1: paginas;
             pagina = pagina > paginas ? paginas : pagina;
             lista = PageRequest.of(pagina-1,funcionesPaginas);
-            funcionList = funcionRepository.listarFuncionesPorMes(mes,lista);
+            funcionList = funcionRepository.listarFuncionesPorMesAndIdobra(mes, id, lista);
         }else {
             paginas = (int) Math.ceil((float) funcionRepository.contarFuncionesPorMesAndIdobraAndIdsede(mes, id, idsede.get()) / funcionesPaginas);
             paginas= paginas==0? 1: paginas;
