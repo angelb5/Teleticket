@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import pe.edu.pucp.teleticket.dto.FuncionEstadisticas;
 import pe.edu.pucp.teleticket.dto.ObraEstadisticas;
 import pe.edu.pucp.teleticket.dto.PersonasListado;
+import pe.edu.pucp.teleticket.entity.Obra;
 import pe.edu.pucp.teleticket.repository.*;
 
 import java.util.HashMap;
@@ -36,6 +38,12 @@ public class OperadorEstadisticasController {
     PersonaRepository personaRepository;
     @Autowired
     HistorialRepository historialRepository;
+
+    @Autowired
+    FuncionRepository funcionRepository;
+
+    @Autowired
+    CalificacionObraRepository calificacionObraRepository;
 
     @GetMapping({"/", ""})
     public String  listaActoresConEstrellas(Model model) {
@@ -66,12 +74,25 @@ public class OperadorEstadisticasController {
         HashMap<String, Object> responseJson = new HashMap<>();
         try {
             int id = Integer.parseInt(idStr);
-            ObraEstadisticas obraEstadisticas = new ObraEstadisticas();
-            obraEstadisticas.setId(id);
-            obraEstadisticas.setFuncionMasVista("placeholder");
-            if (true) {
+            Optional<Obra> optionalObra = obraRepository.findById(id);
+            if (optionalObra.isPresent()) {
+                Obra o = optionalObra.get();
+
+                float calificacion = calificacionObraRepository.getPuntajeByIdobra(id).orElse((float) 0);
+                Optional<FuncionEstadisticas> masVista = funcionRepository.hallarFuncionMasVistaPorIdobra(id);
+                Optional<FuncionEstadisticas> menosVista = funcionRepository.hallarFuncionMenosVistaPorIdobra(id);
+                Optional<FuncionEstadisticas> mejorCalificada = funcionRepository.hallarFuncionMejorCalificadaPorIdobra(id);
+
+                ObraEstadisticas oEstadisticas = new ObraEstadisticas();
+                oEstadisticas.setId(id);
+                oEstadisticas.setTitulo(o.getTitulo());
+                oEstadisticas.setFotoprincipal(o.getFotoprincipal());
+                oEstadisticas.setCalificacion(calificacion);
+                oEstadisticas.setFuncionMasVista(masVista.orElse(null));
+                oEstadisticas.setFuncionMenosVista(menosVista.orElse(null));
+                oEstadisticas.setFuncionMejorCalificada(mejorCalificada.orElse(null));
                 responseJson.put("result", "success");
-                responseJson.put("obra", obraEstadisticas);
+                responseJson.put("obra", oEstadisticas);
                 return ResponseEntity.ok(responseJson);
             } else {
                 responseJson.put("msg", "Obra no encontrada");

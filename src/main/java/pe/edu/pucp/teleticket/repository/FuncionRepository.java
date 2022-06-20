@@ -4,10 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import pe.edu.pucp.teleticket.dto.FuncionOperadorDto;
-import pe.edu.pucp.teleticket.dto.FuncionesCompra;
-import pe.edu.pucp.teleticket.dto.ObrasListado;
-import pe.edu.pucp.teleticket.dto.SedesCompra;
+import pe.edu.pucp.teleticket.dto.*;
 import pe.edu.pucp.teleticket.entity.Funcion;
 import pe.edu.pucp.teleticket.entity.Obra;
 import pe.edu.pucp.teleticket.entity.Sala;
@@ -234,6 +231,54 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
 
     @Query(nativeQuery = true, value = "select distinct concat(month(f.fecha),'-',year(f.fecha)) as mes " +
             "from funciones f " +
-            "where f.idobras = ?1")
+            "where f.idobras = ?1 ")
     List<String> listarMesesConFuncionesPorIdobra(int idobra);
+
+    @Query(nativeQuery = true, value = "select f.idfunciones as id, s.numero as sala, se.nombre as sede, f.fecha as fecha, f.inicio as hora, " +
+            "coalesce(sum(h.numtickets),0) as vendidos, " +
+            "coalesce(sum(h.total),0) as recaudacion, " +
+            "coalesce(count(distinct co.idcalificacion),0) as calificaciones, " +
+            "coalesce(avg(co.estrellas),0) as puntuacion " +
+            "from funciones f " +
+            "inner join salas s on s.idsalas = f.idsalas " +
+            "inner join sedes se on se.idsedes = s.idsedes " +
+            "left join historialcompras h on h.idfunciones = f.idfunciones and h.estado='Comprado' " +
+            "left join calificacionobras co on co.idfunciones = f.idfunciones " +
+            "where f.idobras = :idobra " +
+            "group by f.idfunciones " +
+            "order by vendidos desc, fecha desc, hora desc " +
+            "limit 1")
+    Optional<FuncionEstadisticas> hallarFuncionMasVistaPorIdobra(int idobra);
+
+    @Query(nativeQuery = true, value = "select f.idfunciones as id, s.numero as sala, se.nombre as sede, f.fecha as fecha, f.inicio as hora, " +
+            "coalesce(sum(h.numtickets),0) as vendidos, " +
+            "coalesce(sum(h.total),0) as recaudacion, " +
+            "coalesce(count(distinct co.idcalificacion),0) as calificaciones, " +
+            "coalesce(avg(co.estrellas),0) as puntuacion " +
+            "from funciones f " +
+            "inner join salas s on s.idsalas = f.idsalas " +
+            "inner join sedes se on se.idsedes = s.idsedes " +
+            "left join historialcompras h on h.idfunciones = f.idfunciones and h.estado='Comprado' " +
+            "left join calificacionobras co on co.idfunciones = f.idfunciones " +
+            "where f.idobras = :idobra " +
+            "group by f.idfunciones " +
+            "order by vendidos asc, fecha desc, hora desc " +
+            "limit 1")
+    Optional<FuncionEstadisticas> hallarFuncionMenosVistaPorIdobra(int idobra);
+
+    @Query(nativeQuery = true, value = "select f.idfunciones as id, s.numero as sala, se.nombre as sede, f.fecha as fecha, f.inicio as hora, " +
+            "coalesce(sum(h.numtickets),0) as vendidos, " +
+            "coalesce(sum(h.total),0) as recaudacion, " +
+            "coalesce(count(distinct co.idcalificacion),0) as calificaciones, " +
+            "coalesce(avg(co.estrellas),0) as puntuacion " +
+            "from funciones f " +
+            "inner join salas s on s.idsalas = f.idsalas " +
+            "inner join sedes se on se.idsedes = s.idsedes " +
+            "left join historialcompras h on h.idfunciones = f.idfunciones and h.estado='Comprado' " +
+            "left join calificacionobras co on co.idfunciones = f.idfunciones " +
+            "where f.idobras = :idobra " +
+            "group by f.idfunciones " +
+            "order by puntuacion desc, fecha desc, hora desc " +
+            "limit 1")
+    Optional<FuncionEstadisticas> hallarFuncionMejorCalificadaPorIdobra(int idobra);
 }

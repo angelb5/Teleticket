@@ -104,4 +104,10 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
     @Query(nativeQuery = true, value = "select distinct o.idobras as id, o.titulo as titulo from funciones f " +
             "inner join obras o on o.idobras = f.idobras")
     public List<ObraFiltro> listarObrasConFunciones();
+
+    @Query(nativeQuery = true, value = "select count(*) " +
+            "from funciones " +
+            "where idobras = ?1 ")
+    public int contarFuncionesPorIdobra();
+
 }
