@@ -141,7 +141,7 @@ public class OperadorObrasController {
         }
         if(optionalObra.isEmpty()){return "redirect:/operador/obras";}
         model.addAttribute("obra", optionalObra.get());
-        List<Persona> personaList = personaRepository.findAllByEstadoEquals("Disponible");
+        List<Persona> personaList = personaRepository.findAll();
         List<Genero> generoList = generoRepository.findAll();
         model.addAttribute("personaList", personaList);
         model.addAttribute("generoList", generoList);
@@ -223,19 +223,20 @@ public class OperadorObrasController {
     }
 
     @PostMapping("/actualizar")
-    public String actualizarObra(Model model, @ModelAttribute("obra") @Valid Obra obra, BindingResult bindingResult) {
+    public String actualizarObra(Model model, @ModelAttribute("obra") @Valid Obra obra, BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes) {
         Optional<Obra> optionalObra = obraRepository.findById(obra.getId());
         if(optionalObra.isEmpty()){return "redirect:/operador/obras";}
 
         if(bindingResult.hasErrors()){
-            List<Persona> personaList = personaRepository.findAllByEstadoEquals("Disponible");
+            List<Persona> personaList = personaRepository.findAll();
             List<Genero> generoList = generoRepository.findAll();
             model.addAttribute("personaList", personaList);
             model.addAttribute("generoList", generoList);
             return "operador/obras/form";
         }
 
-        List<Persona> personas = new ArrayList<Persona>();
+        List<Persona> personas = new ArrayList<>();
         personas.addAll(obra.getActores());
         personas.addAll(obra.getDirectores());
         List<Integer> ids = new ArrayList<Integer>();
@@ -246,6 +247,9 @@ public class OperadorObrasController {
 
         for(Persona i : revision){
             if(i.getEstado().equals("No disponible")){
+                String msg="No se pueden guardar los cambios, uno de los directores o actores no se encuentra disponible";
+                redirectAttributes.addFlashAttribute("msg",msg);
+                redirectAttributes.addFlashAttribute("error",1);
                 return "redirect:/operador/obras/gestion/"+obra.getId()+"/editar";
             }
         }
