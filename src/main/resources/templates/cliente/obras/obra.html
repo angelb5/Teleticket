@@ -228,8 +228,8 @@
                         </div>
                     </div>
                 </div>
-
-                <form th:action="@{/carrito/anadir}" method="post" class="ticket-panel text-start">
+                <div id="modalbodycompra">
+                <form th:action="@{/carrito/anadir}" method="post" class="ticket-panel text-start" >
                     <div class="mb-2 fs-14 d-flex align-items-center">
                         <input hidden type="text" name="idfunciones" id="funcionid">
                         <div class="col fw-normal">
@@ -254,7 +254,9 @@
                         </div>
 
                     </div>
-
+                    <div style="text-align: right">
+                        <p class="text-danger" id="maximonum" style="margin-right: 85px"></p>
+                    </div>
 
                     <div class="p-3 text-center">
                         <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
@@ -265,6 +267,7 @@
                         </button>
                     </div>
                 </form>
+                </div>
             </div>
 
         </div>
@@ -282,11 +285,23 @@
         fname = button.getAttribute("data-fname");
         var sede = button.getAttribute("data-sede");
         var costo = button.getAttribute("data-price");
+        if(maxnum==0){
+            $('.modal-body #funcion').text(fname);
+            $('.modal-body #sede').text(sede);
+            $('#modalbodycompra').html("<div class='container' style='height: auto; justify-content: center; align-items: center;display: block'>" +
+                "<img class='row' src='/img/agotado.png' style='height: 125px;width:325px; margin-bottom: 20px;margin-left: 60px'>" +
+                "<div>" +
+                "<p style='font-size: 20px;margin-left: 20px'>Las entradas para la función están agotadas </p>" +
+                "</div>" +
+                "</div>");
+        } else{
         $('.modal-body #funcion').text(fname);
         $('.modal-body #sede').text(sede);
         $('.ticket-panel #costo').text(Number(costo).toFixed(2));
         $('.ticket-panel #numtickets').val(1);
         $('.ticket-panel #funcionid').val(id);
+        $('#maximonum').text("Máximo: " + maxnum);
+        }
     }
     function plusTicket(){
         var val = parseInt($('.ticket-panel #numtickets').val());
