@@ -130,6 +130,8 @@ public class HomeController {
         model.addAttribute("listaObras", listaObras);
         model.addAttribute("listaActores", listaActores);
         model.addAttribute("listaSedes", listaSedes);
+        busqueda=busqueda.replaceAll(" ", "+").toLowerCase();
+        model.addAttribute("busqueda",busqueda);
 
 
         return "/cliente/todo";

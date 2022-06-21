@@ -53,7 +53,7 @@
         </div>
     </div>
     <div class="text-center fw-bold pt-2 pb-5" th:unless="${listaObras.size<6}">
-        <a th:href="@{obras}" class="link-sub">
+        <a th:href="@{|obras?busqueda=${busqueda}|}" class="link-sub">
             Ver más resultados en obras
             <i class="ms-1 fa-solid fa-angle-right"></i>
         </a>
@@ -105,7 +105,7 @@
         </div>
     </div>
     <div class="text-center fw-bold pt-2 pb-5" th:unless="${listaActores.size<6}">
-        <a th:href="@{personas}" class="link-sub">
+        <a th:href="@{|personas?busqueda=${busqueda}|}" class="link-sub">
             Ver más resultados en actores y directores
             <i class="ms-1 fa-solid fa-angle-right"></i>
         </a>
@@ -147,7 +147,7 @@
 
     </div>
     <div class="text-center fw-bold pt-2 pb-5" th:unless="${listaSedes.size<6}">
-        <a th:href="@{sedes}" class="link-sub">
+        <a th:href="@{|sedes?busqueda=${busqueda}|}" class="link-sub">
             Ver más resultados en sedes
             <i class="ms-1 fa-solid fa-angle-right"></i>
         </a>
