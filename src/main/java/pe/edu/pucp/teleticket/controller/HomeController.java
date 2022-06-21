@@ -112,4 +112,27 @@ public class HomeController {
 
         return "index";
     }
+
+    @GetMapping("/todo")
+    public String busquedaTodo(
+            Model model,
+            @RequestParam("busqueda") String busqueda
+    ){
+        busqueda = busqueda.trim();
+        int pagina=0;
+        Pageable lista ;
+        lista = PageRequest.of(0, 6);
+
+        List<ObrasListado> listaObras = obraRepository.listadoObrasliente(busqueda, lista);
+        List<PersonasListado> listaActores = personaRepository.listadoPersonascliente(busqueda, lista);
+        List<Sede> listaSedes = sedeRepository.listarSedesCliente(busqueda, lista);
+
+        model.addAttribute("listaObras", listaObras);
+        model.addAttribute("listaActores", listaActores);
+        model.addAttribute("listaSedes", listaSedes);
+
+
+        return "/cliente/todo";
+    }
+
 }
