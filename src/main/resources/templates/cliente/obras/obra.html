@@ -215,7 +215,7 @@
 <div th:if="${session.rol=='cliente'}" class="modal top fade" id="compraModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
     <div class="modal-dialog   modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-body text-start border-0 pb-0">
+            <div class="modal-body text-start border-0 pb-0" id="bodycompra">
                 <div class="mb-3">
                     <div class="fs-20 fw-bold mb-1" th:text="${obra.titulo}">
                     </div>
@@ -228,7 +228,6 @@
                         </div>
                     </div>
                 </div>
-                <div id="modalbodycompra">
                 <form th:action="@{/carrito/anadir}" method="post" class="ticket-panel text-start" >
                     <div class="mb-2 fs-14 d-flex align-items-center">
                         <input hidden type="text" name="idfunciones" id="funcionid">
@@ -254,8 +253,7 @@
                         </div>
 
                     </div>
-                    <div style="text-align: right">
-                        <p class="text-danger" id="maximonum" style="margin-right: 85px"></p>
+                    <div class="text-end me-2" id="maximonum" style="color: #3c3c3c; font-style: italic; font-size: 12px">
                     </div>
 
                     <div class="p-3 text-center">
@@ -267,6 +265,28 @@
                         </button>
                     </div>
                 </form>
+            </div>
+            <div class="modal-body text-center border-0 pb-0" id="bodyagotada">
+                <div class="my-3" >
+                    <img th:src="@{/img/agotado.png}" width="150px">
+                </div>
+
+                <div class="mb-4">
+                    <div class="fs-20 fw-bold mb-1">
+                        Ups, esta función se encuentra agotada
+                    </div>
+                    <div class="mb-1">
+                        Lamentamos los inconvenientes que esto pueda causar
+                    </div>
+                    <div class="mb-3">
+                        Elige otra función u otra obra
+                    </div>
+                    <div class="mb-2">
+                        <a class="text-redtele" id="gestionobra" th:href="@{/obras}">
+                            <span class="fw-bold">Ver obras en cartelera</span>
+                            <i class="ms-1 fas fa-chevron-circle-right"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -286,21 +306,17 @@
         var sede = button.getAttribute("data-sede");
         var costo = button.getAttribute("data-price");
         if(maxnum==0){
+            $('#bodyagotada').show();
+            $('#bodycompra').hide();
+        } else{
+            $('#bodycompra').show();
+            $('#bodyagotada').hide();
             $('.modal-body #funcion').text(fname);
             $('.modal-body #sede').text(sede);
-            $('#modalbodycompra').html("<div class='container' style='height: auto; justify-content: center; align-items: center;display: block'>" +
-                "<img class='row' src='/img/agotado.png' style='height: 125px;width:325px; margin-bottom: 20px;margin-left: 60px'>" +
-                "<div>" +
-                "<p style='font-size: 20px;margin-left: 20px'>Las entradas para la función están agotadas </p>" +
-                "</div>" +
-                "</div>");
-        } else{
-        $('.modal-body #funcion').text(fname);
-        $('.modal-body #sede').text(sede);
-        $('.ticket-panel #costo').text(Number(costo).toFixed(2));
-        $('.ticket-panel #numtickets').val(1);
-        $('.ticket-panel #funcionid').val(id);
-        $('#maximonum').text("Máximo: " + maxnum);
+            $('.ticket-panel #costo').text(Number(costo).toFixed(2));
+            $('.ticket-panel #numtickets').val(1);
+            $('.ticket-panel #funcionid').val(id);
+            $('#maximonum').text("Máximo: " + maxnum);
         }
     }
     function plusTicket(){
