@@ -37,6 +37,7 @@
                     <ul th:if="${session.rol=='cliente' || session.rol == null}" class="dropdown-menu overflow-hidden" role="menu">
                         <span hidden id="rol">cliente</span>
                         <span hidden th:text="${buscaren}" id="buscaren"></span>
+                        <li><a class="dropdown-item" href="#todo">Todo</a></li>
                         <li><a class="dropdown-item" href="#obras">Obras</a></li>
                         <li><a class="dropdown-item" href="#personas">Personas</a></li>
                         <li><a class="dropdown-item" href="#sedes">Sedes</a></li>

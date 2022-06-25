@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 import pe.edu.pucp.teleticket.dto.*;
 import pe.edu.pucp.teleticket.entity.Funcion;
 import pe.edu.pucp.teleticket.entity.Obra;
-import pe.edu.pucp.teleticket.entity.Sala;
-import pe.edu.pucp.teleticket.entity.Sede;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -83,7 +81,28 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
             "MIN(disponible) as disponible from " +
             "(select (f.stock - sum(h.numtickets)) as disponible, f.idfunciones from historialcompras h " +
             "inner join funciones f on f.idfunciones = h.idfunciones " +
-            "where (h.estado = 'Reserva' and h.fechalimite > NOW()) or h.estado = 'Comprado' " +
+            "where ((h.estado = 'Reserva' and h.fechalimite > NOW()) or h.estado = 'Comprado') and h.idclientes<>?4 " +
+            "group by f.idfunciones " +
+            "union " +
+            "select maxreservas as disponible, idfunciones from funciones) " +
+            "as ss " +
+            "inner join funciones f on f.idfunciones = ss.idfunciones " +
+            "inner join obras o on f.idobras = o.idobras " +
+            "inner join salas s on f.idsalas = s.idsalas " +
+            "inner join sedes se on se.idsedes = s.idsedes " +
+            "where f.idobras=?1 and f.fecha=?2 and se.idsedes =?3 and f.estado = 'Activa' " +
+            "group by ss.idfunciones " +
+            "order by se.nombre, inicio")
+    public List<FuncionesCompra> listaFuncionesCompraPorObraFechaSedeIdcliente(int idobra, LocalDate fecha, int idsede, int idcliente);
+
+
+    @Query(nativeQuery = true, value = "select ss.idfunciones as id, f.idobras as idobras, o.fotoprincipal as fotoprincipal, o.duracion as duracion, " +
+            "o.titulo as titulo, s.numero as nombresala, se.nombre as nombresede, " +
+            "f.fecha as fecha, f.inicio as inicio, f.costo as costo, " +
+            "MIN(disponible) as disponible from " +
+            "(select (f.stock - sum(h.numtickets)) as disponible, f.idfunciones from historialcompras h " +
+            "inner join funciones f on f.idfunciones = h.idfunciones " +
+            "where ((h.estado = 'Reserva' and h.fechalimite > NOW()) or h.estado = 'Comprado' ) and h.idclientes<>?2 " +
             "group by f.idfunciones " +
             "union " +
             "select maxreservas as disponible, idfunciones from funciones) " +
@@ -94,7 +113,7 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
             "inner join sedes se on se.idsedes = s.idsedes " +
             "where f.idfunciones=?1  and f.estado = 'Activa' and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW()))" +
             "group by ss.idfunciones")
-    public FuncionesCompra getFuncionesCompraPorId(int idfunciones);
+    public FuncionesCompra getFuncionesCompraPorIdfuncionIdclientes(int idfunciones, int idcliente);
 
     @Query(value = "select distinct new pe.edu.pucp.teleticket.dto.SedesCompra(se.id, se.nombre, se.direccion) from " +
             "Funcion f " +

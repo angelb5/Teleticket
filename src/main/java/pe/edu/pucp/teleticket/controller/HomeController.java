@@ -116,8 +116,9 @@ public class HomeController {
     @GetMapping("/todo")
     public String busquedaTodo(
             Model model,
-            @RequestParam("busqueda") String busqueda
+            @RequestParam("busqueda") Optional<String> optBusqueda
     ){
+        String busqueda = optBusqueda.orElse("");
         busqueda = busqueda.trim();
         int pagina=0;
         Pageable lista ;
@@ -134,7 +135,7 @@ public class HomeController {
         model.addAttribute("busqueda",busqueda);
 
 
-        return "/cliente/todo";
+        return "cliente/todo";
     }
 
 }

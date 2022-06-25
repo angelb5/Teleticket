@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -63,7 +62,7 @@ public class CarritoController {
         int carritoSize = carrito.size();
         carrito = historialRepository.findReservasByIdclientes(clienteSes.getId());
         for (Historial reserva : carrito){
-            FuncionesCompra fc = funcionRepository.getFuncionesCompraPorId(reserva.getIdfunciones());
+            FuncionesCompra fc = funcionRepository.getFuncionesCompraPorIdfuncionIdclientes(reserva.getIdfunciones(), clienteSes.getId());
             funcionesCompras.add(fc);
             total += fc.getCosto()*reserva.getNumtickets();
         }
@@ -83,7 +82,7 @@ public class CarritoController {
         Object object = session.getAttribute("usuario");
         if(!(object instanceof Cliente clienteSes)){return "redirect:/";}
 
-        Optional<FuncionesCompra> optFuncionCompra = Optional.ofNullable(funcionRepository.getFuncionesCompraPorId(historial.getIdfunciones()));
+        Optional<FuncionesCompra> optFuncionCompra = Optional.ofNullable(funcionRepository.getFuncionesCompraPorIdfuncionIdclientes(historial.getIdfunciones(), clienteSes.getId()));
         Optional<Funcion> optFuncion = funcionRepository.findById(historial.getIdfunciones());
         if(optFuncion.isEmpty() || optFuncionCompra.isEmpty()){
             attr.addFlashAttribute("error",1);
@@ -114,7 +113,7 @@ public class CarritoController {
             int carritoSize = carrito.size();
             carrito = historialRepository.findReservasByIdclientes(clienteSes.getId());
             for (Historial reserva : carrito){
-                FuncionesCompra fc = funcionRepository.getFuncionesCompraPorId(reserva.getIdfunciones());
+                FuncionesCompra fc = funcionRepository.getFuncionesCompraPorIdfuncionIdclientes(reserva.getIdfunciones(), clienteSes.getId());
                 funcionesCompras.add(fc);
                 total += fc.getCosto()*reserva.getNumtickets();
             }

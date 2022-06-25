@@ -10,12 +10,10 @@ import pe.edu.pucp.teleticket.dto.FuncionesCompra;
 import pe.edu.pucp.teleticket.dto.ObrasListado;
 import pe.edu.pucp.teleticket.dto.SedeFiltro;
 import pe.edu.pucp.teleticket.dto.SedesCompra;
-import pe.edu.pucp.teleticket.entity.Funcion;
-import pe.edu.pucp.teleticket.entity.Historial;
-import pe.edu.pucp.teleticket.entity.Obra;
-import pe.edu.pucp.teleticket.entity.Sede;
+import pe.edu.pucp.teleticket.entity.*;
 import pe.edu.pucp.teleticket.repository.*;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -23,8 +21,6 @@ import java.util.*;
 @RequestMapping("/obras")
 public class ClienteObrasController {
     private final int obrasPaginas =8;
-    private final int funcionesPaginas = 5;
-    private final int maximoDestacados = 8;
 
     @Autowired
     PersonaRepository personaRepository;
@@ -75,7 +71,7 @@ public class ClienteObrasController {
     }
 
     @GetMapping("/{idPath}")
-    public String gestionSede(Model model, @PathVariable("idPath") String idPath, @RequestParam("fecha") Optional<String> optfecha){
+    public String gestionSede(Model model, @PathVariable("idPath") String idPath, @RequestParam("fecha") Optional<String> optfecha, HttpSession session){
         int id=0;
         LocalDate fecha;
         try{
@@ -102,8 +98,16 @@ public class ClienteObrasController {
         if (!fechas.contains(fecha)){return "redirect:/obras";}
 
         List<SedesCompra> sedesCompraList = funcionRepository.listaSedesPorObraFecha(id,fecha);
-        for(SedesCompra sedeCompra: sedesCompraList){
-            sedeCompra.setFuncionesCompra(funcionRepository.listaFuncionesCompraPorObraFechaSede(id,fecha,sedeCompra.getId()));
+
+        Cliente clienteSes = (Cliente) session.getAttribute("usuario");
+        if (clienteSes!=null){
+            for(SedesCompra sedeCompra: sedesCompraList){
+                sedeCompra.setFuncionesCompra(funcionRepository.listaFuncionesCompraPorObraFechaSedeIdcliente(id,fecha,sedeCompra.getId(),clienteSes.getId()));
+            }
+        }else{
+            for(SedesCompra sedeCompra: sedesCompraList){
+                sedeCompra.setFuncionesCompra(funcionRepository.listaFuncionesCompraPorObraFechaSede(id,fecha,sedeCompra.getId()));
+            }
         }
 
         model.addAttribute("fechas", fechas);
