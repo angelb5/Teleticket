@@ -114,6 +114,6 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
     @Transactional
     @Modifying
     @Query(nativeQuery = true,
-            value ="update funciones set fin=fin + interval ?2 minute where idobras=?1 and fecha>= current_date" )
+            value ="update funciones set fin=fin + interval ?2 minute where idobras=?1 and timestamp(fecha,inicio)>= current_timestamp()" )
     public void actualizarHorarios(int idobra, int timeMinutos);
 }
