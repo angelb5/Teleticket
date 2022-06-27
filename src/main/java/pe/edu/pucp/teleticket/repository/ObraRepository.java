@@ -2,8 +2,10 @@ package pe.edu.pucp.teleticket.repository;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import pe.edu.pucp.teleticket.dto.ObraFiltro;
 import pe.edu.pucp.teleticket.dto.ObrasListado;
 import pe.edu.pucp.teleticket.entity.Obra;
@@ -108,4 +110,10 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
             "inner join funciones f on h.idfunciones = f.idfunciones " +
             "where h.estado='Comprado' and f.idobras = ?1 ")
     public Optional<Float> obtenerRecaudaciontotalPorIdobra(int idobra);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true,
+            value ="update funciones set fin=fin + interval ?2 minute where idobras=?1 and fecha>= current_date" )
+    public void actualizarHorarios(int idobra, int timeMinutos);
 }

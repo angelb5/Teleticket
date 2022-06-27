@@ -254,7 +254,8 @@ public class OperadorObrasController {
             }
         }
 
-
+        int timeDiff= obra.getDuracion()-optionalObra.get().getDuracion();
+        obraRepository.actualizarHorarios(obra.getId(),timeDiff);
         obraRepository.save(obra);
         return "redirect:/operador/obras/gestion/"+obra.getId();
     }
