@@ -59,8 +59,7 @@
                     </ul>
 
                     <input autocomplete="off" type="text" class="form-control rounded-7 fs-14" placeholder="Buscar en Teleticket"
-                           name="busqueda" style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;"
-                    />
+                           name="busqueda" th:value="${param.busqueda!=null? param.busqueda : ''}" style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;"/>
                     <span class="input-group-text border-0 d-none d-lg-flex">
                         <i class="fas fa-search"></i>
                     </span>
