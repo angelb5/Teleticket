@@ -260,6 +260,40 @@ public class OperadorObrasController {
         return "redirect:/operador/obras/gestion/"+obra.getId();
     }
 
+    @GetMapping("/gestion/{idPath}/eliminar")
+    public String eliminarObra(@PathVariable("idPath") String idObraString, RedirectAttributes redirectAttributes){
+        int idObra;
+        Optional<Obra> optionalObra;
+        try{
+            idObra=Integer.parseInt(idObraString);
+            optionalObra = obraRepository.findById(idObra);
+        } catch (Exception e){
+            e.printStackTrace();
+            return "redirect:/operador/obras";
+        }
+
+        int numeroFuncionesPorObra = funcionRepository.contarFuncionesPorIdobra(idObra);
+        List<Integer> fotosObra = fotoObraRepository.findAllIdByIdObras(idObra);
+
+        if(optionalObra.isEmpty()){
+            redirectAttributes.addFlashAttribute("msg", "No se ha encontrado la obra a borrar");
+            return "redirect:/operador/obras";
+        }
+
+        if (numeroFuncionesPorObra != 0){
+            redirectAttributes.addFlashAttribute("msg", "No se ha podido borrar la obra debido a que tiene relación con funciones");
+            return "redirect:/operador/obras";
+        }
+
+        for(int i=0; i < fotosObra.size(); i++){
+            fotoObraRepository.deleteById(fotosObra.get(i));
+        }
+
+        obraRepository.deleteById(idObra);
+        redirectAttributes.addFlashAttribute("msg", "Se ha borrado con éxito la obra");
+        return "redirect:/operador/obras";
+    }
+
     @PostMapping("/gestion/{idObraString}/imagenprincipal")
     public String imagenPrincipal(@PathVariable("idObraString") String idObraString, @RequestParam("fotoid") String fotoidString, RedirectAttributes redirectAttributes) {
         int idObra;
@@ -283,6 +317,7 @@ public class OperadorObrasController {
         redirectAttributes.addFlashAttribute("msg", "Se cambio la imagen principal exitosamente");
         return "redirect:/operador/obras/gestion/"+idObra;
     }
+
     @PostMapping("/gestion/imagenborrar")
     public String borrarImagen(@RequestParam("fotoid") String fotoidString, RedirectAttributes redirectAttributes) {
         int idFoto;

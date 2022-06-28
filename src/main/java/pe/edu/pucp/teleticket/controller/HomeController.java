@@ -13,7 +13,6 @@ import pe.edu.pucp.teleticket.dto.*;
 import pe.edu.pucp.teleticket.entity.*;
 import pe.edu.pucp.teleticket.repository.*;
 
-import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -101,7 +100,7 @@ public class HomeController {
             lista_sedes = PageRequest.of(pagina - 1, sedesPaginas);
         }
 
-        List<ObrasListado> listaObras = obraRepository.listadoObrasliente(busqueda, lista_obras);
+        List<ObrasListado> listaObras = obraRepository.listadoObrasCliente(busqueda, lista_obras);
         List<PersonasListado> listaActores = personaRepository.listadoPersonascliente(busqueda, lista_personas);
         List<Sede> listaSedes = sedeRepository.listarSedesCliente(busqueda, lista_sedes);
 
@@ -124,7 +123,7 @@ public class HomeController {
         Pageable lista ;
         lista = PageRequest.of(0, 6);
 
-        List<ObrasListado> listaObras = obraRepository.listadoObrasliente(busqueda, lista);
+        List<ObrasListado> listaObras = obraRepository.listadoObrasCliente(busqueda, lista);
         List<PersonasListado> listaActores = personaRepository.listadoPersonascliente(busqueda, lista);
         List<Sede> listaSedes = sedeRepository.listarSedesCliente(busqueda, lista);
 

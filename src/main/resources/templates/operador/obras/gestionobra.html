@@ -61,6 +61,16 @@
                             <div class="col-9 h-100 d-flex align-items-center justify-content-center">Editar Obra</div>
                         </div>
                     </a>
+                    <a>&nbsp;</a>
+                    <a th:if="${funciones.isEmpty()}" class="btn rounded-7 btn-black btn-sm h-100" type="button"
+                       th:href="@{'/operador/obras/gestion/'+${obra.id}+ '/eliminar'}">
+                        <div class="row h-100">
+                            <div class="col-3 h-100 d-flex align-items-center"><i
+                                    class="fas fa-solid fa-masks-theater fs-24"></i>
+                            </div>
+                            <div class="col-9 h-100 d-flex align-items-center justify-content-center">Eliminar Obra</div>
+                        </div>
+                    </a>
                 </div>
             </div>
             <div class="row mb-3">
