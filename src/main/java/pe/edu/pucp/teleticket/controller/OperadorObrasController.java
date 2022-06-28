@@ -141,7 +141,6 @@ public class OperadorObrasController {
             return "redirect:/operador/obras";
         }
         if(optionalObra.isEmpty()){return "redirect:/operador/obras";}
-        model.addAttribute("realizadas", new ArrayList<>());
         model.addAttribute("obra", optionalObra.get());
         List<Persona> personaList = personaRepository.findAll();
         List<Genero> generoList = generoRepository.findAll();
@@ -161,7 +160,6 @@ public class OperadorObrasController {
             model.addAttribute("personaList", personaList);
             model.addAttribute("generoList", generoList);
             model.addAttribute("msg", "Debe subir un archivo");
-            model.addAttribute("realizadas", new ArrayList<>());
 
             return "operador/obras/form";
         }
@@ -171,7 +169,6 @@ public class OperadorObrasController {
             model.addAttribute("personaList", personaList);
             model.addAttribute("generoList", generoList);
             model.addAttribute("msg", "Debe subir una imagen, no se acepta otros archivos");
-            model.addAttribute("realizadas", new ArrayList<>());
             return "operador/obras/form";
         }
         String fotoNombre = foto.getOriginalFilename();
@@ -181,8 +178,6 @@ public class OperadorObrasController {
             model.addAttribute("personaList", personaList);
             model.addAttribute("generoList", generoList);
             model.addAttribute("msg", "No se permiten '..' en el archivo");
-            model.addAttribute("realizadas", new ArrayList<>());
-
             return "operador/obras/form";
         }
         if(bindingResult.hasErrors()){
@@ -190,7 +185,6 @@ public class OperadorObrasController {
             List<Genero> generoList = generoRepository.findAll();
             model.addAttribute("personaList", personaList);
             model.addAttribute("generoList", generoList);
-            model.addAttribute("realizadas", new ArrayList<>());
             return "operador/obras/form";
         }
 
@@ -222,7 +216,6 @@ public class OperadorObrasController {
             List<Genero> generoList = generoRepository.findAll();
             e.printStackTrace();
             model.addAttribute("msg", "Ocurrió un error al subir el archivo");
-            model.addAttribute("realizadas", new ArrayList<>());
             model.addAttribute("personaList", personaList);
             model.addAttribute("generoList", generoList);
             fotoObraRepository.deleteById(obraCreada.getId());
@@ -254,7 +247,6 @@ public class OperadorObrasController {
             List<Genero> generoList = generoRepository.findAll();
             model.addAttribute("personaList", personaList);
             model.addAttribute("generoList", generoList);
-            model.addAttribute("realizadas", new ArrayList<>());
             return "operador/obras/form";
         }
 
@@ -275,15 +267,6 @@ public class OperadorObrasController {
                 return "redirect:/operador/obras/gestion/" + obra.getId() + "/editar";
             }
         }
-
-        List<Funcion> realizadas = funcionRepository.listarRealizadasPorIdObra(obra.getId());
-        if(realizadas.size() > 0){
-            model.addAttribute("realizadas", realizadas);
-            return "redirect:/operador/obras/gestion/" + obra.getId() + "/editar";
-        }
-
-
-
 
         obraRepository.actualizarHorarios(obra.getId(), timeDiff);
         obraRepository.save(obra);

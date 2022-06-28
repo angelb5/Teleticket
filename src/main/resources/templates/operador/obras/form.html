@@ -168,49 +168,6 @@
         </div>
     </div>
 </div>
-<!-- Modal conflictos -->
-<div th:if="${!realizadas.isEmpty()}" class="modal top fade" id="modalConflictos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
-    <div class="modal-dialog  ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel" >No se pueden cambiar los datos </h5>
-                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    La obra que intenta editar tiene asociadas las siguientes funciones realizadas
-                </div>
-                <div class="mb-3" th:each="funcion : ${realizadas}">
-                    <div>
-                        <span>Obra:&nbsp</span>
-                        <span class="fw-bold" th:text="${funcion.obra.titulo}"></span>
-                    </div>
-                    <div>
-                        <span>Fecha:&nbsp</span>
-                        <span class="fw-bold" th:text="${funcion.fecha}"></span>
-                    </div>
-                    <div>
-                        <span>Inicio:&nbsp</span>
-                        <span class="fw-bold" th:text="${funcion.inicio}"></span>
-                    </div>
-                    <div>
-                        <span>Fin:&nbsp</span>
-                        <span class="fw-bold" th:text="${funcion.fin}"></span>
-                    </div>
-                    <div>
-                        <span>Sala:&nbsp</span>
-                        <span class="fw-bold" th:text="| ${funcion.sala.numero} - ${funcion.sala.sede.nombre}|"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
-                    Cerrar
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 <script type="text/javascript" th:if="${msg != null}">
     $(window).on('load', function () {
         $('#msgModal').modal('show');
@@ -222,9 +179,4 @@
 </body>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <script type="text/javascript"  th:src="@{/dropify/js/dropify.js}"></script>
-<script type="text/javascript" th:if="${!realizadas.isEmpty()}">
-    $(window).on('load', function() {
-        $('#modalConflictos').modal('show');
-    });
-</script>
 </html>
