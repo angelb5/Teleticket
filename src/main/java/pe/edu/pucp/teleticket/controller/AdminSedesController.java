@@ -205,7 +205,7 @@ public class AdminSedesController {
             return "redirect:/admin/sedes";
         }
         Optional<Sede> optionalSede = sedeRepository.findById(idSede);
-        if (optionalSede.isEmpty()) {
+        if (optionalSede.isEmpty() || !optionalSede.get().getEstado().equals("Disponible")) {
             return "redirect:/admin/sedes";
         }
         sala.setSede(new Sede());
@@ -223,7 +223,7 @@ public class AdminSedesController {
         }
 
         Optional<Sala> optionalSala = salaRepository.findById(idSala);
-        if (optionalSala.isEmpty()) {
+        if (optionalSala.isEmpty() || !optionalSala.get().getSede().getEstado().equals("Disponible")) {
             return "redirect:/admin/sedes";
         }
         model.addAttribute("sala", optionalSala.get());
@@ -233,6 +233,11 @@ public class AdminSedesController {
 
     @PostMapping("/gestion/sala/guardar")
     public String guardarSala(@ModelAttribute("sala") @Valid Sala sala, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+
+        Optional<Sede> optionalSede = sedeRepository.findById(sala.getSede().getId());
+        if (optionalSede.isEmpty() || !optionalSede.get().getEstado().equals("Disponible")) {
+            return "redirect:/admin/sedes";
+        }
 
         if (bindingResult.hasErrors()) {
             return "admin/sedes/salas/form";
