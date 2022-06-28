@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Administrar Sala')"></head>
 <head>
@@ -70,7 +70,7 @@
 </div>
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
 
-<!-- Modal confilctos -->
+<!-- Modal conflictos -->
 <div th:if="${funcionesVigentes != null}" class="modal top fade" id="modalConflictos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
     <div class="modal-dialog  ">
         <div class="modal-content">

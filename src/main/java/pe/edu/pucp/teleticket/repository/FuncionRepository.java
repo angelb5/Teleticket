@@ -326,4 +326,13 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
             "and idobras = ?1 ")
     public int contarCanceladasPorIdobra(int idobra);
 
+    @Query(nativeQuery = true, value = "select distinct f.* \n" +
+            "from funciones f \n" +
+            "inner join obras o on o.idobras = f.idobras\n" +
+            "inner join actores ac on o.idobras = ac.idobra\n" +
+            "inner join directores di on o.idobras = di.idobra\n" +
+            "inner join personas p on ac.idpersona = p.idpersonas or di.idpersona = p.idpersonas\n" +
+            "where timestamp(f.fecha, f.inicio)>=current_timestamp() and p.idpersonas=?1")
+    public List<Funcion> listarVigentesPorIdpersona(int idpersona);
+
 }

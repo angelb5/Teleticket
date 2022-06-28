@@ -84,58 +84,100 @@
         </div>
     </div>
 </div>
-    <!-- Modal Añadir Imagen -->
-    <div class="modal top fade" id="imagenModal" tabindex="-1" aria-labelledby="imagenModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
-        <div class="modal-dialog  ">
-            <form method="post" th:action="@{/admin/personas/cambiarfoto}" enctype="multipart/form-data">
-                <input hidden name="id" th:value="${persona.id}">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Cambiar imagen</h5>
-                        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-flex justify-content-center py-4">
-                        <div style="height: 250px; width: 250px">
-                            <script>
-                                $(function() {
-                                    $('.dropify').dropify();
-                                });
-                            </script>
-                            <input  type="file" name="imagen" id="foto" data-max-file-size="5M" class="dropify" data-height="250"/>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
-                            Cerrar
-                        </button>
-                        <button type="submit" class="btn btn-redtele">Subir</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal msg -->
-    <div th:if="${msg!=null && persona.id!=0}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
-        <div class="modal-dialog  ">
+<!-- Modal Añadir Imagen -->
+<div class="modal top fade" id="imagenModal" tabindex="-1" aria-labelledby="imagenModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <form method="post" th:action="@{/admin/personas/cambiarfoto}" enctype="multipart/form-data">
+            <input hidden name="id" th:value="${persona.id}">
             <div class="modal-content">
                 <div class="modal-header">
-                    <div class="modal-title">
-                        <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
-                    </div>
+                    <h5 class="modal-title" id="exampleModalLabel">Cambiar imagen</h5>
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class=" w-100 d-flex justify-content-center mb-3">
-                        <i class="fa-solid fa-circle-check" style="font-size: 50px" th:class="${error==null? 'fa-solid fa-circle-check text-success': 'fa-solid fa-circle-xmark text-danger'  }"></i>
+                <div class="modal-body d-flex justify-content-center py-4">
+                    <div style="height: 250px; width: 250px">
+                        <script>
+                            $(function() {
+                                $('.dropify').dropify();
+                            });
+                        </script>
+                        <input  type="file" name="imagen" id="foto" data-max-file-size="1M" class="dropify" data-height="250"/>
                     </div>
-                    <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
+                        Cerrar
+                    </button>
+                    <button type="submit" class="btn btn-redtele">Subir</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal msg -->
+<div th:if="${msg!=null && persona.id!=0}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
+                </div>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class=" w-100 d-flex justify-content-center mb-3">
+                    <i class="fa-solid fa-circle-check" style="font-size: 50px" th:class="${error==null? 'fa-solid fa-circle-check text-success': 'fa-solid fa-circle-xmark text-danger'  }"></i>
+                </div>
+                <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
                 </div>
             </div>
         </div>
     </div>
-
+</div>
+<!-- Modal conflictos -->
+<div th:if="${funcionesVigentes != null}" class="modal top fade" id="modalConflictos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" >No se puede cambiar el estado </h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    La persona que intenta editar tiene asociadas las siguientes funciones vigentes
+                </div>
+                <div class="mb-3" th:each="funcion : ${funcionesVigentes}">
+                    <div>
+                        <span>Obra:&nbsp</span>
+                        <span class="fw-bold" th:text="${funcion.obra.titulo}"></span>
+                    </div>
+                    <div>
+                        <span>Fecha:&nbsp</span>
+                        <span class="fw-bold" th:text="${funcion.fecha}"></span>
+                    </div>
+                    <div>
+                        <span>Inicio:&nbsp</span>
+                        <span class="fw-bold" th:text="${funcion.inicio}"></span>
+                    </div>
+                    <div>
+                        <span>Fin:&nbsp</span>
+                        <span class="fw-bold" th:text="${funcion.fin}"></span>
+                    </div>
+                    <div>
+                        <span>Sala:&nbsp</span>
+                        <span class="fw-bold" th:text="| ${funcion.sala.numero} - ${funcion.sala.sede.nombre}|"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
 
@@ -143,11 +185,11 @@
 </body>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <script type="text/javascript" th:src="@{/dropify/js/dropify.js}"></script>
-    <script type="text/javascript" th:if="${msg != null}">
-        $(window).on('load', function() {
-            $('#msgModal').modal('show');
-        });
-    </script>
+<script type="text/javascript" th:if="${msg != null}">
+    $(window).on('load', function() {
+        $('#msgModal').modal('show');
+    });
+</script>
 <script>
     var uploadField = document.getElementById("foto");
 
@@ -157,5 +199,10 @@
             this.value = "";
         };
     };
+</script>
+<script type="text/javascript" th:if="${funcionesVigentes != null}">
+    $(window).on('load', function() {
+        $('#modalConflictos').modal('show');
+    });
 </script>
 </html>

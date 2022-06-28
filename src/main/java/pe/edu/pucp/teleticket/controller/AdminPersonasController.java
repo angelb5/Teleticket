@@ -11,8 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pe.edu.pucp.teleticket.dto.PersonasListado;
 import pe.edu.pucp.teleticket.entity.Fotossede;
+import pe.edu.pucp.teleticket.entity.Funcion;
 import pe.edu.pucp.teleticket.entity.Persona;
 import pe.edu.pucp.teleticket.entity.Sede;
+import pe.edu.pucp.teleticket.repository.FuncionRepository;
 import pe.edu.pucp.teleticket.repository.PersonaRepository;
 
 import javax.servlet.ServletException;
@@ -42,6 +44,9 @@ public class AdminPersonasController {
     }
     @Autowired
     PersonaRepository personaRepository;
+
+    @Autowired
+    FuncionRepository funcionRepository;
 
     @GetMapping({"/","","/lista"})
     public String listarPersonas(@RequestParam("busqueda") Optional<String> optionalBusqueda, Model model,
@@ -158,7 +163,7 @@ public class AdminPersonasController {
     }
 
     @PostMapping("/actualizar")
-    public String actualizarPersona(@ModelAttribute("persona") @Valid Persona persona,BindingResult bindingResult ,RedirectAttributes redirectAttributes){
+    public String actualizarPersona(@ModelAttribute("persona") @Valid Persona persona,BindingResult bindingResult ,RedirectAttributes redirectAttributes, Model model){
         Optional<Persona> optionalPersona = personaRepository.buscarPersona(persona.getId());
         if(optionalPersona.isEmpty()){
             redirectAttributes.addFlashAttribute("error",1);
@@ -168,8 +173,15 @@ public class AdminPersonasController {
         if(bindingResult.hasErrors()){
             return "admin/personas/form";
         }
+
+        List<Funcion> funcionesVigentes = funcionRepository.listarVigentesPorIdpersona(persona.getId());
+        if(funcionesVigentes.size()>0 && persona.getEstado().equals("No disponible")){
+            model.addAttribute("funcionesVigentes", funcionesVigentes);
+            return "admin/personas/form";
+        }
+
         personaRepository.actualizarPersona(persona.getId(),persona.getNombre(),persona.getEstado());
-        redirectAttributes.addFlashAttribute("msg","Se actualizo la persona exitosamente");
+        redirectAttributes.addFlashAttribute("msg","Se actualizó la persona exitosamente");
         return  "redirect:/admin/personas";
     }
 
@@ -217,9 +229,6 @@ public class AdminPersonasController {
         redirectAttributes.addFlashAttribute("msg","Se cambio la imagen exitosamente");
         return "redirect:/admin/personas/editar?id="+id;
     }
-
-
-
 
 
 }
