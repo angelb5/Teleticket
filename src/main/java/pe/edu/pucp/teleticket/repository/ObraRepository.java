@@ -51,7 +51,7 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
                     "                    where lower(o.titulo)  like %?1% " +
                     "                    and f.estado='Activa' " +
                     "                    and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW())) ")
-    public List<ObrasListado> listadoObrasliente(String busqueda, Pageable pageable);
+    public List<ObrasListado> listadoObrasCliente(String busqueda, Pageable pageable);
 
     @Query(nativeQuery = true, value = "select count(distinct o.idobras) " +
             "from obras o " +
@@ -83,7 +83,7 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
                     "where s.idsedes=?1 " +
                     "and f.estado='Activa' " +
                     "and (f.fecha > NOW()  or (f.fecha = current_date() and f.inicio>NOW())) ")
-    public List<ObrasListado> listadoObraslienteByIdsede(int idsede, Pageable pageable);
+    public List<ObrasListado> listadoObrasClienteByIdsede(int idsede, Pageable pageable);
 
     @Query(nativeQuery = true,
     value = "select o.idobras as id,  o.titulo as otitulo, o.fotoprincipal as fotoprincipal, if(timestamp(f.fecha,f.inicio)>=NOW() and f.estado='Activa', min(f.costo),null)  as minprecio from actores a\n" +

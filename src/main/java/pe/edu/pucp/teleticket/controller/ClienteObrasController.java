@@ -6,9 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pe.edu.pucp.teleticket.dto.FuncionesCompra;
 import pe.edu.pucp.teleticket.dto.ObrasListado;
-import pe.edu.pucp.teleticket.dto.SedeFiltro;
 import pe.edu.pucp.teleticket.dto.SedesCompra;
 import pe.edu.pucp.teleticket.entity.*;
 import pe.edu.pucp.teleticket.repository.*;
@@ -62,7 +60,7 @@ public class ClienteObrasController {
             lista = PageRequest.of(pagina - 1, obrasPaginas);
 
         }
-        List<ObrasListado> listaObras = obraRepository.listadoObrasliente(busqueda, lista);
+        List<ObrasListado> listaObras = obraRepository.listadoObrasCliente(busqueda, lista);
         model.addAttribute("listaObras", listaObras);
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);

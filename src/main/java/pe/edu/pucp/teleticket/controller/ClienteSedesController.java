@@ -9,15 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import pe.edu.pucp.teleticket.entity.Sede;
 import pe.edu.pucp.teleticket.repository.FotoSedeRepository;
 import pe.edu.pucp.teleticket.repository.ObraRepository;
 import pe.edu.pucp.teleticket.repository.SedeRepository;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 @Controller
@@ -86,7 +83,7 @@ public class ClienteSedesController {
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
         model.addAttribute("sede", optionalSede.get());
-        model.addAttribute("obras", obraRepository.listadoObraslienteByIdsede(id, lista));
+        model.addAttribute("obras", obraRepository.listadoObrasClienteByIdsede(id, lista));
         model.addAttribute("ruta", "/sedes/" + id+ "?");
         return "cliente/sedes/sede";
     }
