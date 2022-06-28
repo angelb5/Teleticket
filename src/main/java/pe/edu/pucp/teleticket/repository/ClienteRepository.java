@@ -25,8 +25,6 @@ public interface  ClienteRepository extends JpaRepository<Cliente, Integer> {
     public  Cliente findByToken(String token);
 
     List<Cliente> findAllByOrderByIdAsc(Pageable pageable);
-    @Query(value = "select count(*) from clientes",nativeQuery = true)
-    Integer totalCliente();
 
     @Transactional
     @Modifying

@@ -66,7 +66,7 @@ public class Funcion {
 
     public String getEstadoRVC(){
         if (!this.getEstado().equals("Cancelada")){
-            if (this.getFecha().isAfter(LocalDate.now())){
+            if (this.getFecha().isAfter(LocalDate.now()) || (this.getFecha().isEqual(LocalDate.now()) && this.getInicio().isAfter(LocalTime.now()))){
                 return "Vigente";
             }else{
                 return "Realizada";

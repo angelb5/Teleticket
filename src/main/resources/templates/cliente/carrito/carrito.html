@@ -329,10 +329,8 @@
 <script type="text/javascript">
     $(".expire").change(function(){
         let fechastr =  $(".expire").val();
-        console.log(fechastr)
         let fechaarr = fechastr.split('/');
         if(fechaarr.length>1){
-            console.log(fechaarr)
             $("#mes").val(fechaarr[0]);
             $("#ano").val(fechaarr[1]);
         }

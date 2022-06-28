@@ -47,12 +47,9 @@ public class OperadorEstadisticasController {
 
     @GetMapping({"/", ""})
     public String  listaActoresConEstrellas(Model model) {
-        Integer totalSedes= sedeRepository.totalSedesDisponibles();
         List<PersonasListado> directores= personaRepository.top5Directores();
         List<PersonasListado> actores= personaRepository.top5Actores();
-        Integer clientes= clienteRepository.totalCliente();
         Integer obras = obraRepository.contarListaObrasCliente("");
-        Integer totalActoresDirectores= personaRepository.contarPersonas();
 
         Integer totalTickets= historialRepository.ticketsTotale();
         float venta=historialRepository.totalVenta();
@@ -60,12 +57,12 @@ public class OperadorEstadisticasController {
         model.addAttribute("listaObras", obraRepository.listarObrasConFunciones());
         model.addAttribute("directores",directores);
         model.addAttribute("actores",actores);
-        model.addAttribute("totalCliente",clientes);
+        model.addAttribute("totalCliente",clienteRepository.count());
         model.addAttribute("totalObras",obras);
-        model.addAttribute("totalAD",totalActoresDirectores);
+        model.addAttribute("totalAD",personaRepository.count());
         model.addAttribute("totalTickets",totalTickets);
         model.addAttribute("ventas",venta);
-        model.addAttribute("totalSedes", totalSedes);
+        model.addAttribute("totalSedes", sedeRepository.countAllByEstadoEqualsIgnoreCase("Disponible"));
         model.addAttribute("dominio", DOMINIO);
         return "operador/estadisticas/estadisticas";
     }

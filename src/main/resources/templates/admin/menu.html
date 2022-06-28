@@ -3,82 +3,363 @@
 <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')"></head>
 <body>
 <nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
-    <style>
-        .btn-redtele {
-            width: auto; height: 160px; align-content: center ; display: flex;flex-wrap: wrap;justify-content: center;
-        }
-    </style>
 <!--Contenidos-->
-<div class="container justify-content-center">
-    <!--Primera fila-->
-    <div class="row row-cols-md-3 py-4">
-        <!--boton1-->
-        <div class="column">
-            <a class="btn btn-redtele" th:href="@{'/admin/sedes/'}" >
-                <div class="row py-2">
-                    <div class="col-md-2 align-content-center">
-                        <i class="fas fa-edit"
-                           style="font-size: 40px">
-                        </i>
-                    </div>
-                    <div class="col-md-10" style="font-size: 25px">
-                        Gestión de sedes
-                    </div>
-                </div>
-            </a>
-        </div>
-        <!--boton2-->
-        <div class="column">
-            <a class="btn btn-redtele" th:href="@{'/admin/operadores/'}">
-                <div class="row py-2">
-                    <div class="col-md-2 align-content-center">
-                        <i class="fas fa-edit py-3"
-                           style="font-size: 40px">
-                        </i>
-                    </div>
-                    <div class="col-md-10" style="font-size: 25px">
-                        Gestión de operadores
-                    </div>
-                </div>
-            </a>
-        </div>
-        <!--boton3-->
-        <div class="column">
-            <a class="btn btn-redtele" th:href="@{'/admin/personas/'}">
-                <div class="row py-2">
-                    <div class="col-md-2 align-content-center">
-                        <i class="fas fa-edit py-4"
-                           style="font-size: 40px">
-                        </i>
-                    </div>
-                    <div class="col-md-10" style="font-size: 25px">
-                        Gestión de actores y directores
-                    </div>
-                </div>
-            </a>
-        </div>
+<div class="container py-3 ">
+
+    <div class="title-24 py-4">
+        Sedes preferidas por los usuarios
     </div>
-    <!--Segunda fila-->
-    <div class="container">
-        <div style="margin: 0;position: absolute;left: 50% ;-ms-transform: translateX(-50%);transform: translateX(-50%);" >
-        <a class="btn btn-redtele" th:href="@{'/admin/clientes/'}" style="width: 600px" >
-            <div class="row py-2">
-                <div class="col-md-2 align-content-center">
-                    <i class="fas fa-users py-4"
-                       style="font-size: 40px">
-                    </i>
-                </div>
-                <div class="col-md-10 py-4" style="font-size: 25px">
-                    Listado de clientes
+
+    <div class="row row-cols-1 row-cols-md-4 g-4 py-3 mb-4">
+        <!--Card 1-->
+        <div class="col" th:each="sede : ${sedesPreferidas}">
+            <div class="card h-100 position-relative">
+                <a class="card-tele" th:href="@{'/admin/sedes/gestion/'+ ${sede.id}}">
+                    <div class="card-tele-img">
+                        <img th:src="@{'/image/sede/'+${sede.fotoprincipal}}" alt="Sede" class="img-fluid rounded-start img-cover"/>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title fs-16" th:text="${sede.nombre}">Sede San Borja</div>
+                        <div class="d-flex justify-content-between p-md-1">
+                            <div class="d-flex flex-row">
+                                <div class="align-self-start">
+                                    <div class="fw-bold fs-16 mb-0 me-3" th:text="${sede.tickets}">170</div>
+                                </div>
+                                <div>
+                                    <div class="fs-14 fw-bold">Tickets Vendidos</div>
+                                    <p class="fs-13 mb-0">En el Último Mes</p>
+                                </div>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-ticket text-danger fs-18"></i>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between p-md-1">
+                            <div class="d-flex flex-row">
+                                <div class="align-self-start">
+                                    <div class="fw-bold fs-16 mb-0 me-3" th:text="'S/ '+${#numbers.formatDecimal(sede.recaudacion,1,2,'POINT')}">S/ 6000.00</div>
+                                </div>
+                                <div>
+                                    <div class="fs-14 fw-bold">Recaudados</div>
+                                    <p class="fs-13 mb-0">En el Último Mes</p>
+                                </div>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-wallet text-success fs-18"></i>
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+                <div class="card-footer card-tele-footer justify-content-end">
+                    <div class="d-flex align-items-end">
+                        <a class="text-redtele my-2" id="gestionobra" th:href="@{'/admin/sedes/gestion/'+ ${sede.id}}">
+                            <span class="fw-bold"> Gestión de sede</span>
+                            <i class="ms-1 fas fa-chevron-circle-right"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </a>
         </div>
     </div>
 
+    <!--Section: Minimal statistics cards-->
+    <section>
+        <div class="row">
+            <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between px-md-1">
+                            <div>
+                                <h3 th:text="${totalSedes}"></h3>
+                                <p class="mb-0">Total Sedes</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-map-marker-alt text-danger fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between px-md-1">
+                            <div>
+                                <h3 th:text="${sedesDisponibles}"></h3>
+                                <p class="mb-0">Disponibles</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-check-circle fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                <div class="card bg-warning text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between px-md-1">
+                            <div>
+                                <h3 th:text="${sedesMantenimiento}"></h3>
+                                <p class="mb-0">En Mantenimiento</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-tools fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                <div class="card bg-danger text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between px-md-1">
+                            <div>
+                                <h3 th:text="${sedesClausuradas}"></h3>
+                                <p class="mb-0">Clausuradas</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-times-circle fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Seccion: Mejores actores y directores-->
+    <section class="mb-4">
+        <div class="row row-cols-1 row-cols-md-2">
+            <div class="col">
+                <div class="card fs-14">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div class="title-24">
+                                Mejores calificaciones en Actuación
+                            </div>
+                            <table class="table round-border align-middle table-hover text-nowrap"
+                                   style="min-width: 450px">
+                                <thead class="bg-dark text-white">
+                                <tr>
+                                    <th class="fw-bold">Nombre</th>
+                                    <th class="fw-bold text-center">Puntuación</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="actor : ${actores}">
+                                    <td scope="row">
+                                        <div class="d-flex align-items-center">
+                                            <div class="actor-image">
+                                                <img th:src="@{'/image/persona/'+${actor.id}}"/>
+                                            </div>
+                                            <div class="ms-3">
+                                                <p class="fw-bold mb-1 fs-14" th:text="${actor.nombre}"></p>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                    <td class="text-center" >
+                                        <span th:text="${#numbers.formatDecimal(actor.pactuacion.get(),1,2,'POINT')}" class="fs-14 fw-bold"></span>
+                                        <span class="fs-14">/5</span>
+                                        <i class="ms-1 fa-solid fa-star "></i>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card fs-14">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div class="title-24">
+                                Mejores calificaciones en Dirección
+                            </div>
+                            <table class="table align-middle table-hover round-border text-nowrap"
+                                   style="min-width: 450px">
+                                <thead class="bg-dark text-white">
+                                <tr>
+                                    <th class="fw-bold">Nombre</th>
+                                    <th class="fw-bold text-center">Puntuación</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="director : ${directores}">
+                                    <td scope="row">
+                                        <div class="d-flex align-items-center">
+                                            <div class="actor-image">
+                                                <img th:src="@{'/image/persona/'+${director.id}}"/>
+                                            </div>
+                                            <div class="ms-3">
+                                                <p class="fw-bold mb-1 fs-14" th:text="${director.nombre}"></p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <span th:text="${#numbers.formatDecimal(director.pdireccion.get(),1,2,'POINT')}" class="fs-14 fw-bold"></span>
+                                        <span class="fs-14">/5</span>
+                                        <i class="ms-1 fa-solid fa-star "></i>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--Section: Minimal statistics cards-->
+    <section>
+        <div class="row row-cols-1 row-cols-md-3">
+            <div class="col mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between px-md-1">
+                            <div>
+                                <h3 class="text-info" th:text="${totalAD}">44</h3>
+                                <p class="mb-0">Actores y Directores</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-people-group text-info fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col mb-4">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between px-md-1">
+                            <div>
+                                <h3 th:text="${ADDisponibles}"></h3>
+                                <p class="mb-0">Disponibles</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-check-circle fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col mb-4">
+                <div class="card bg-danger text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between px-md-1">
+                            <div>
+                                <h3 th:text="${ADNoDisponles}"></h3>
+                                <p class="mb-0">No Disponibles</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-times-circle fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-4">
+        <div class="row row-cols-1 row-cols-md-3">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between px-md-1">
+                            <div>
+                                <h3 class="text-success" th:text="${totalCliente}">156</h3>
+                                <p class="mb-0">Total Clientes</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-user text-success fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between px-md-1">
+                            <div>
+                                <h3 class="text-warning" th:text="${totalOperadores}">19</h3>
+                                <p class="mb-0">Operadores</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-user-edit text-warning fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between px-md-1">
+                            <div>
+                                <h3 class="text-info" th:text="${totalAD}">44</h3>
+                                <p class="mb-0">Actores y Directores</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-people-group text-info fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Section: Statistics with subtitles-->
+    <section>
+        <div class="row">
+            <div class="col-xl-6 col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between p-md-1">
+                            <div class="d-flex flex-row">
+                                <div class="align-self-center">
+                                    <h2 class="h1 mb-0 me-4" th:text="${totalTickets}">170</h2>
+                                </div>
+                                <div>
+                                    <h4>Tickets Vendidos</h4>
+                                    <p class="mb-0">En el Último Mes</p>
+                                </div>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-ticket text-danger fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between p-md-1">
+                            <div class="d-flex flex-row">
+                                <div class="align-self-center">
+                                    <h2 class="h1 mb-0 me-4" th:text="'S/ '+${#numbers.formatDecimal(ventas,1,2,'POINT')}">S/ 6000.00</h2>
+                                </div>
+                                <div>
+                                    <h4>Total de Ventas</h4>
+                                    <p class="mb-0">Del Último Mes</p>
+                                </div>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-wallet text-success fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 </div>
-
 
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
 
