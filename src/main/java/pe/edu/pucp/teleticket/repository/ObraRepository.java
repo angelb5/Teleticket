@@ -116,4 +116,11 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
     @Query(nativeQuery = true,
             value ="update funciones set fin=fin + interval ?2 minute where idobras=?1 and timestamp(fecha,inicio)>= current_timestamp()" )
     public void actualizarHorarios(int idobra, int timeMinutos);
+
+    @Query(nativeQuery = true,
+            value = "select min(timestampdiff(minute,f1.fin,f2.inicio))\n" +
+                    "from funciones f1\n" +
+                    "    inner join funciones f2 on f1.idsalas=f2.idsalas and f1.fecha=f2.fecha and f2.idfunciones!=f1.idfunciones and f2.inicio>=f1.fin\n" +
+                    "where f1.idobras = ?1" )
+    public Integer maxDiffTiempoHorario(int idobra);
 }

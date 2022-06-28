@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -140,6 +141,7 @@ public class OperadorObrasController {
             return "redirect:/operador/obras";
         }
         if(optionalObra.isEmpty()){return "redirect:/operador/obras";}
+        model.addAttribute("realizadas", new ArrayList<>());
         model.addAttribute("obra", optionalObra.get());
         List<Persona> personaList = personaRepository.findAll();
         List<Genero> generoList = generoRepository.findAll();
@@ -159,6 +161,7 @@ public class OperadorObrasController {
             model.addAttribute("personaList", personaList);
             model.addAttribute("generoList", generoList);
             model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("realizadas", new ArrayList<>());
 
             return "operador/obras/form";
         }
@@ -168,6 +171,7 @@ public class OperadorObrasController {
             model.addAttribute("personaList", personaList);
             model.addAttribute("generoList", generoList);
             model.addAttribute("msg", "Debe subir una imagen, no se acepta otros archivos");
+            model.addAttribute("realizadas", new ArrayList<>());
             return "operador/obras/form";
         }
         String fotoNombre = foto.getOriginalFilename();
@@ -177,6 +181,8 @@ public class OperadorObrasController {
             model.addAttribute("personaList", personaList);
             model.addAttribute("generoList", generoList);
             model.addAttribute("msg", "No se permiten '..' en el archivo");
+            model.addAttribute("realizadas", new ArrayList<>());
+
             return "operador/obras/form";
         }
         if(bindingResult.hasErrors()){
@@ -184,6 +190,7 @@ public class OperadorObrasController {
             List<Genero> generoList = generoRepository.findAll();
             model.addAttribute("personaList", personaList);
             model.addAttribute("generoList", generoList);
+            model.addAttribute("realizadas", new ArrayList<>());
             return "operador/obras/form";
         }
 
@@ -211,8 +218,13 @@ public class OperadorObrasController {
             fotoObra.setIdobras(obraCreada.getId());
             fotoObraRepository.save(fotoObra);
         } catch (IOException e) {
+            List<Persona> personaList = personaRepository.findAllByEstadoEquals("Disponible");
+            List<Genero> generoList = generoRepository.findAll();
             e.printStackTrace();
             model.addAttribute("msg", "Ocurrió un error al subir el archivo");
+            model.addAttribute("realizadas", new ArrayList<>());
+            model.addAttribute("personaList", personaList);
+            model.addAttribute("generoList", generoList);
             fotoObraRepository.deleteById(obraCreada.getId());
             return "operador/obras/form";
         }
@@ -230,11 +242,19 @@ public class OperadorObrasController {
             return "redirect:/operador/obras";
         }
 
+        int timeDiff = obra.getDuracion() - optionalObra.get().getDuracion();
+        Integer maxDiff = obraRepository.maxDiffTiempoHorario(obra.getId());
+        if(maxDiff!=null && timeDiff>maxDiff){
+            String msg = "Este cambio causa conflictos con los horarios de funciones, máxima duración "+ (optionalObra.get().getDuracion()+maxDiff)+ " minutos";
+            bindingResult.rejectValue("duracion","error.horariosconflicto",msg);
+        }
+
         if (bindingResult.hasErrors()) {
             List<Persona> personaList = personaRepository.findAll();
             List<Genero> generoList = generoRepository.findAll();
             model.addAttribute("personaList", personaList);
             model.addAttribute("generoList", generoList);
+            model.addAttribute("realizadas", new ArrayList<>());
             return "operador/obras/form";
         }
 
@@ -262,7 +282,9 @@ public class OperadorObrasController {
             return "redirect:/operador/obras/gestion/" + obra.getId() + "/editar";
         }
 
-        int timeDiff = obra.getDuracion() - optionalObra.get().getDuracion();
+
+
+
         obraRepository.actualizarHorarios(obra.getId(), timeDiff);
         obraRepository.save(obra);
         return "redirect:/operador/obras/gestion/" + obra.getId();
