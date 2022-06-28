@@ -45,7 +45,6 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
             value = "SELECT max(stock) FROM funciones where idsalas = :idsalas and estado = 'Activa' and (fecha > NOW()  or (fecha = current_date()  and inicio>NOW()))")
     public long getMaxStockByIdsala(int idsalas);
 
-
     @Query(nativeQuery = true,
             value = "select * from funciones f " +
                     "inner join salas s on f.idsalas = s.idsalas " +
@@ -334,5 +333,12 @@ public interface FuncionRepository extends JpaRepository<Funcion,Integer > {
             "inner join personas p on ac.idpersona = p.idpersonas or di.idpersona = p.idpersonas\n" +
             "where f.estado='Activa' and timestamp(f.fecha, f.inicio)>=current_timestamp() and p.idpersonas=?1")
     public List<Funcion> listarVigentesPorIdpersona(int idpersona);
+
+    @Query(nativeQuery = true, value = "select * " +
+            "from funciones f " +
+            "where timestamp(f.fecha,f.inicio)<NOW() " +
+            "and estado <> 'Cancelada' " +
+            "and idobras = ?1 ")
+    public List<Funcion> listarRealizadasPorIdObra(int idobra);
 
 }

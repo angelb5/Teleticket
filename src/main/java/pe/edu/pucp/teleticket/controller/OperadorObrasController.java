@@ -226,9 +226,11 @@ public class OperadorObrasController {
     public String actualizarObra(Model model, @ModelAttribute("obra") @Valid Obra obra, BindingResult bindingResult,
                                  RedirectAttributes redirectAttributes) {
         Optional<Obra> optionalObra = obraRepository.findById(obra.getId());
-        if(optionalObra.isEmpty()){return "redirect:/operador/obras";}
+        if (optionalObra.isEmpty()) {
+            return "redirect:/operador/obras";
+        }
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             List<Persona> personaList = personaRepository.findAll();
             List<Genero> generoList = generoRepository.findAll();
             model.addAttribute("personaList", personaList);
@@ -240,24 +242,30 @@ public class OperadorObrasController {
         personas.addAll(obra.getActores());
         personas.addAll(obra.getDirectores());
         List<Integer> ids = new ArrayList<Integer>();
-        for(Persona i : personas){
+        for (Persona i : personas) {
             ids.add(i.getId());
         }
         List<Persona> revision = personaRepository.findAllById(ids);
 
-        for(Persona i : revision){
-            if(i.getEstado().equals("No disponible")){
-                String msg="No se pueden guardar los cambios, uno de los directores o actores no se encuentra disponible";
-                redirectAttributes.addFlashAttribute("msg",msg);
-                redirectAttributes.addFlashAttribute("error",1);
-                return "redirect:/operador/obras/gestion/"+obra.getId()+"/editar";
+        for (Persona i : revision) {
+            if (i.getEstado().equals("No disponible")) {
+                String msg = "No se pueden guardar los cambios, uno de los directores o actores no se encuentra disponible";
+                redirectAttributes.addFlashAttribute("msg", msg);
+                redirectAttributes.addFlashAttribute("error", 1);
+                return "redirect:/operador/obras/gestion/" + obra.getId() + "/editar";
             }
         }
 
-        int timeDiff= obra.getDuracion()-optionalObra.get().getDuracion();
-        obraRepository.actualizarHorarios(obra.getId(),timeDiff);
+        List<Funcion> realizadas = funcionRepository.listarRealizadasPorIdObra(obra.getId());
+        if(realizadas.size() > 0){
+            model.addAttribute("realizadas", realizadas);
+            return "redirect:/operador/obras/gestion/" + obra.getId() + "/editar";
+        }
+
+        int timeDiff = obra.getDuracion() - optionalObra.get().getDuracion();
+        obraRepository.actualizarHorarios(obra.getId(), timeDiff);
         obraRepository.save(obra);
-        return "redirect:/operador/obras/gestion/"+obra.getId();
+        return "redirect:/operador/obras/gestion/" + obra.getId();
     }
 
     @PostMapping("/eliminar/{idPath}")
