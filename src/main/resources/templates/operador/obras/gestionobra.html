@@ -1,498 +1,511 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = ${obra.titulo})"></head>
-    <head>
-        <link rel="stylesheet" th:href="@{/dropify/css/dropify.css}"/>
-        <!--Table-->
-        <link rel="stylesheet" th:href="@{/css/tables.css}">
-        <!--Carrousel-->
-        <link rel="stylesheet" th:href="@{/css/carrousel.css}">
-        <script th:src="@{/selectize/js/standalone/selectize.js}"></script>
-        <link th:href="@{/selectize/css/selectize.bootstrap5.css}" rel="stylesheet">
-        <style>
-            .selectize-input{
-                padding-right: 2.2rem;
-            }
-        </style>
-    </head>
-    <body class="bg-lightgrey">
-        <script>
-            $(document).ready(function () {
-                var docWidth = $('body').width(),
-                    $wrap = $('#wrap'),
-                    $images = $('#wrap .hb'),
-                    slidesWidth = $wrap.width();
+<head th:replace="fragmentos/cabecera.html :: cabecera( titulo = ${obra.titulo})"></head>
+<head>
+    <link rel="stylesheet" th:href="@{/dropify/css/dropify.css}"/>
+    <!--Table-->
+    <link rel="stylesheet" th:href="@{/css/tables.css}">
+    <!--Carrousel-->
+    <link rel="stylesheet" th:href="@{/css/carrousel.css}">
+    <script th:src="@{/selectize/js/standalone/selectize.js}"></script>
+    <link th:href="@{/selectize/css/selectize.bootstrap5.css}" rel="stylesheet">
+    <style>
+        .selectize-input{
+            padding-right: 2.2rem;
+        }
+    </style>
+</head>
+<body class="bg-lightgrey">
+<script>
+    $(document).ready(function () {
+        var docWidth = $('body').width(),
+            $wrap = $('#wrap'),
+            $images = $('#wrap .hb'),
+            slidesWidth = $wrap.width();
 
-                $(window).on('resize', function () {
-                    docWidth = $('body').width();
-                    slidesWidth = $wrap.width();
-                })
+        $(window).on('resize', function () {
+            docWidth = $('body').width();
+            slidesWidth = $wrap.width();
+        })
 
-                $(document).mousemove(function (e) {
-                    var mouseX = e.pageX,
-                        offset = mouseX / docWidth * slidesWidth - mouseX / 2;
+        $(document).mousemove(function (e) {
+            var mouseX = e.pageX,
+                offset = mouseX / docWidth * slidesWidth - mouseX / 2;
 
-                    $images.css({
-                        '-webkit-transform': 'translate3d(' + -offset + 'px,0,0)',
-                        'transform': 'translate3d(' + -offset + 'px,0,0)'
-                    });
-                });
-            })
-        </script>
-        <script>
-            $(function () {
-                $('.dropify').dropify();
+            $images.css({
+                '-webkit-transform': 'translate3d(' + -offset + 'px,0,0)',
+                'transform': 'translate3d(' + -offset + 'px,0,0)'
             });
-        </script>
-        <nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
-        <!-- Headers obra -->
-        <div class="container py-3">
-            <div class="row mb-3">
-                <div class="text-start col-lg-9">
-                    <div class="title-30 py-6" th:text="${obra.titulo}"></div>
+        });
+    })
+</script>
+<script>
+    $(function () {
+        $('.dropify').dropify();
+    });
+</script>
+<nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
+<!-- Headers obra -->
+<div class="container py-3">
+    <div class="row mb-3">
+        <div class="text-start col-lg-9">
+            <div class="title-30 py-6" th:text="${obra.titulo}"></div>
+        </div>
+        <div class="d-flex align-items-center flex-row justify-content-end col-lg-3">
+            <a class="btn rounded-7 btn-redtele btn-sm h-100" type="button"
+               th:href="@{'/operador/obras/gestion/'+${obra.id}+ '/editar'}">
+                <div class="row h-100">
+                    <div class="col-3 h-100 d-flex align-items-center"><i
+                            class="fas fa-solid fa-masks-theater fs-24"></i>
+                    </div>
+                    <div class="col-9 h-100 d-flex align-items-center justify-content-center">Editar Obra</div>
                 </div>
-                <div class="d-flex align-items-center justify-content-end col-lg-3">
-                    <a class="btn rounded-7 btn-redtele btn-sm h-100" type="button"
-                       th:href="@{'/operador/obras/gestion/'+${obra.id}+ '/editar'}">
-                        <div class="row h-100">
-                            <div class="col-3 h-100 d-flex align-items-center"><i
-                                    class="fas fa-solid fa-masks-theater fs-24"></i>
-                            </div>
-                            <div class="col-9 h-100 d-flex align-items-center justify-content-center">Editar Obra</div>
-                        </div>
-                    </a>
-                    <a>&nbsp;</a>
-                    <a th:if="${funciones.isEmpty()}" class="btn rounded-7 btn-black btn-sm h-100" type="button"
-                       th:href="@{'/operador/obras/gestion/'+${obra.id}+ '/eliminar'}">
-                        <div class="row h-100">
-                            <div class="col-3 h-100 d-flex align-items-center"><i
-                                    class="fas fa-solid fa-masks-theater fs-24"></i>
-                            </div>
-                            <div class="col-9 h-100 d-flex align-items-center justify-content-center">Eliminar Obra</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="text-start col-lg-9">
-                    <div class="pill-redtele fs-13 me-2" th:text="${obra.restricciones}"></div>
-                    <div class="pill-white fs-13 me-2" th:text="${obra.duracion} + ' min'"></div>
-                </div>
-                <div class="d-flex align-items-center justify-content-end col-lg-3">
-                    <a class="btn rounded-7 btn-redtele btn-sm " type="button" style="height: 50px;"
-                       data-mdb-toggle="modal" data-mdb-target="#destacados">
-                        <div class="row h-100">
-                            <div class="col-2 h-100 d-flex align-items-center"><i
-                                    class="fas fa-solid fa-star fs-24"></i>
-                            </div>
-                            <div class="col-10 h-100 d-flex align-items-center justify-content-center"
-                                 th:text="${obra.destacado==0? 'Agregar a Destacados':'Quitar Destacado'}">Destacados
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="row mb-5">
-                <div class="fs-16">
-                    <span>Dirección:&nbsp;</span>
-                    <span th:each="director, info : ${obra.directores}">
-                <span class="fw-bold" th:text="${director.nombre}"></span>
-                <span class="fw-bold" th:unless="${info.index +1 == obra.directores.size()}" th:text="', '"></span>
-            </span>
-                </div>
-                <div class="fs-16">
-                    <span>Reparto:&nbsp;</span>
-                    <span th:each="actor, info : ${obra.actores}">
-                <span class="fw-bold" th:text="${actor.nombre}"></span>
-                <span class="fw-bold" th:unless="${info.index +1 == obra.actores.size()}" th:text="', '"></span>
-            </span>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="text-start col-lg-9">
-                    <div class="title-26 py-6">Imágenes</div>
-                </div>
-                <div class="d-flex align-items-center justify-content-end col-lg-3">
-                    <a class="btn btn-redtele btn-sm h-100 rounded-7" type="button"
-                       data-mdb-toggle="modal" data-mdb-target="#anadirModal">
-                        <div class="row h-100">
-                            <div class="col-3 h-100 d-flex align-items-center"><i
-                                    class="fa fa-solid fa-images fs-24"></i>
-                            </div>
-                            <div class="col-9 h-100 d-flex align-items-center justify-content-center">Añadir imagen
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <!-- Imágenes -->
-            <div class="mb-5 overflow-hidden" style="position: relative; ">
-                <div id="wrap" class="carousel">
-                    <div href="#" class="hb" th:each="fotoid : ${fotos}">
-                        <div class="container-borrar">
-                            <img th:src="@{|/image/obra/${fotoid}|}"
-                                 class="image-borrar" style="width:100%">
-                            <div th:unless="${fotoid == obra.fotoprincipal}" class="middle-borrar col">
-                                <button class="btn btn-dark mb-3"
-                                        th:attr="data-fotoid=${fotoid}, data-src='/image/obra/'+${fotoid}"
-                                        th:id="'e'+ ${fotoid}" onclick="setEliminarModal(id)">
-                                    Eliminar
-                                </button>
-                                <button class="btn btn-redtele"
-                                        th:attr="data-fotoid=${fotoid}, data-src='/image/obra/'+${fotoid}"
-                                        th:id="'f'+ ${fotoid}" onclick="setPrincipalModal(id)">
-                                    <i class="fa-solid fa-bookmark"></i> Principal
-                                </button>
-                            </div>
-                            <div th:if="${fotoid == obra.fotoprincipal}" class="middle-borrar col text-white fs-14">
-                                <i class="fa-solid fa-bookmark"></i> Foto principal
-                            </div>
-                        </div>
+            </a>
+            <button th:if="${funciones.isEmpty()}" class="ms-2 btn rounded-7 btn-black btn-sm h-100" type="button" data-mdb-toggle="modal" data-mdb-target="#deleteModal">Eliminar</button>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="text-start col-lg-9">
+            <div class="pill-redtele fs-13 me-2" th:text="${obra.restricciones}"></div>
+            <div class="pill-white fs-13 me-2" th:text="${obra.duracion} + ' min'"></div>
+        </div>
+        <div class="d-flex align-items-center justify-content-end col-lg-3">
+            <a class="btn rounded-7 btn-redtele btn-sm " type="button" style="height: 50px;"
+               data-mdb-toggle="modal" data-mdb-target="#destacados">
+                <div class="row h-100">
+                    <div class="col-2 h-100 d-flex align-items-center"><i
+                            class="fas fa-solid fa-star fs-24"></i>
+                    </div>
+                    <div class="col-10 h-100 d-flex align-items-center justify-content-center"
+                         th:text="${obra.destacado==0? 'Agregar a Destacados':'Quitar Destacado'}">Destacados
                     </div>
                 </div>
-            </div>
+            </a>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="fs-16">
+            <span>Dirección:&nbsp;</span>
+            <span th:each="director, info : ${obra.directores}">
+        <span class="fw-bold" th:text="${director.nombre}"></span>
+        <span class="fw-bold" th:unless="${info.index +1 == obra.directores.size()}" th:text="', '"></span>
+    </span>
+        </div>
+        <div class="fs-16">
+            <span>Reparto:&nbsp;</span>
+            <span th:each="actor, info : ${obra.actores}">
+        <span class="fw-bold" th:text="${actor.nombre}"></span>
+        <span class="fw-bold" th:unless="${info.index +1 == obra.actores.size()}" th:text="', '"></span>
+    </span>
+        </div>
+    </div>
 
-            <div class="row mb-3">
-                <div class="text-start col-lg-9">
-                    <div class="title-26 py-6">Funciones</div>
-                </div>
-                <div class="d-flex align-items-center justify-content-end col-lg-3">
-                    <a class="btn btn-redtele btn-sm h-100 rounded-7" type="button"
-                       th:href="@{'/operador/funciones/nueva?idobra='+ ${obra.id}}">
-                        <div class="row h-100">
-                            <div class="col-3 h-100 d-flex align-items-center"><i class="fa fa-couch col fs-24"></i>
-                            </div>
-                            <div class="col-9 h-100 d-flex align-items-center justify-content-center">Nueva Función
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            <form method="get" th:action="@{|/operador/obras/gestion/${obra.id}|}">
-                <div class="row justify-content-end">
-                    <div class="col-auto">
-                        <div class="text-start" style="min-width: 100px">
-                            <label class="form-label">Mes</label>
-                            <select class="demo-default fs-13" aria-label="Default select example" name="mes" id="mes">
-                                <option value="" selected>Todos</option>
-                                <option th:each="mes: ${meses}" th:value="${mes}"
-                                        th:text="${mes}" th:selected="${mes == #httpServletRequest.getParameter('mes')}">
-                                </option>
-                            </select>
-                            <script>
-                                $("select[name*='mes']").selectize({
-                                    sortField: 'text'
-                                });
-                            </script>
-                        </div>
+    <div class="row mb-3">
+        <div class="text-start col-lg-9">
+            <div class="title-26 py-6">Imágenes</div>
+        </div>
+        <div class="d-flex align-items-center justify-content-end col-lg-3">
+            <a class="btn btn-redtele btn-sm h-100 rounded-7" type="button"
+               data-mdb-toggle="modal" data-mdb-target="#anadirModal">
+                <div class="row h-100">
+                    <div class="col-3 h-100 d-flex align-items-center"><i
+                            class="fa fa-solid fa-images fs-24"></i>
                     </div>
-                    <div class="col-auto">
-                        <div class="text-start" style="min-width: 200px">
-                            <label class="form-label">Sede</label>
-                            <select class="demo-default fs-13" aria-label="Default select example" name="sede" id="sede">
-                                <option value="">Todas</option>
-                                <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.id}"
-                                        th:selected="${sede.id.toString() == #httpServletRequest.getParameter('sede')}">Miraflores
-                                </option>
-                            </select>
-                            <script>
-                                $("select[name*='sede']").selectize({
-                                    sortField: 'text'
-                                });
-                            </script>
-                        </div>
+                    <div class="col-9 h-100 d-flex align-items-center justify-content-center">Añadir imagen
                     </div>
-                    <div class="col-auto d-flex align-items-end">
-                        <button type="submit" class="btn btn-light p-2">
-                            <span class="input-group-text border-0"><i class="fas fa-search" id="mdb-5-search-icon"></i></span>
+                </div>
+            </a>
+        </div>
+    </div>
+    <!-- Imágenes -->
+    <div class="mb-5 overflow-hidden" style="position: relative; ">
+        <div id="wrap" class="carousel">
+            <div href="#" class="hb" th:each="fotoid : ${fotos}">
+                <div class="container-borrar">
+                    <img th:src="@{|/image/obra/${fotoid}|}"
+                         class="image-borrar" style="width:100%">
+                    <div th:unless="${fotoid == obra.fotoprincipal}" class="middle-borrar col">
+                        <button class="btn btn-dark mb-3"
+                                th:attr="data-fotoid=${fotoid}, data-src='/image/obra/'+${fotoid}"
+                                th:id="'e'+ ${fotoid}" onclick="setEliminarModal(id)">
+                            Eliminar
+                        </button>
+                        <button class="btn btn-redtele"
+                                th:attr="data-fotoid=${fotoid}, data-src='/image/obra/'+${fotoid}"
+                                th:id="'f'+ ${fotoid}" onclick="setPrincipalModal(id)">
+                            <i class="fa-solid fa-bookmark"></i> Principal
                         </button>
                     </div>
-                </div>
-            </form>
-
-            <div th:if="${funciones.isEmpty()}" style="border-radius: 20px; background: #e6e6e6;margin-top: 30px">
-                <div class="container py-4" style="display: flex; text-align: center; justify-content: center">
-                    <img th:src="@{/img/salas.jpg}" style="width: 350px; border-radius:20%"/>
-                </div>
-                <div class="container" style="display: flex; text-align: center; justify-content: center">
-                    <h4 class="fw-bold" style="font-size: 19px">No se han encontrado funciones relacionadas</h4>
-                </div>
-            </div>
-
-
-            <table class="table hover-light align-middle round-border fs-13" th:classappend="${paginas<=1}?'mb-4': ''" th:unless="${funciones.isEmpty()}">
-                <thead class="bg-light">
-                <tr class="bg-dark">
-                    <th class="text-white fw-bold text-center">Sala</th>
-                    <th class="text-white fw-bold text-center">Sede</th>
-                    <th class="text-white fw-bold text-center" width="125px">Fecha</th>
-                    <th class="text-white fw-bold text-center">Hora</th>
-                    <th class="text-white fw-bold text-center">Asistencia</th>
-                    <th class="text-white fw-bold text-center">Estado</th>
-                    <th class="text-white fw-bold text-center">Acciones</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="funcion : ${funciones}">
-                    <td class="text-center" th:text="${funcion.sala}"></td>
-                    <td class="text-center" th:text="${funcion.sede}"></td>
-                    <td class="text-center" th:text="${funcion.fecha}"></td>
-                    <td class="text-center" th:text="${funcion.hora}"></td>
-                    <td class="text-center">
-                    <span class="fw-bold" th:if="${funcion.estado!='Cancelada' and funcion.pasistencia.isPresent()}"
-                          th:text="${#numbers.formatDecimal(funcion.pasistencia.get(),1,2,'POINT')} +' %'"></span>
-                        <span th:if="${funcion.estado!='Cancelada' and funcion.pasistencia.isEmpty()}" class="badge badge-dark rounded-pill d-inline" style="font-size: 12px">Sin ventas</span>
-                        <span th:if="${funcion.estado=='Cancelada'}" class="badge badge-secondary rounded-pill d-inline" style="font-size: 12px">No publicada</span>
-                    </td>
-                    <td class="text-center">
-                     <span th:if="${funcion.estado == 'Vigente' }"
-                           class="badge badge-success rounded-pill d-inline" style="font-size: 12px">
-                         Vigente
-                     </span>
-                        <span th:if="${funcion.estado == 'Realizada'}"
-                              class="badge badge-info rounded-pill d-inline" style="font-size: 12px">
-                        Realizada
-                    </span>
-                        <span th:if="${funcion.estado == 'Cancelada'}"
-                              class="badge badge-danger rounded-pill d-inline" style="font-size: 12px">
-                        Cancelada
-                    </span>
-                    </td>
-                    <td class="text-center">
-                        <a th:unless="${funcion.estado == 'Cancelada' or funcion.estado == 'Realizada'}"
-                           type="button" class="btn btn-redtele btn-sm btn-rounded my-1" style="font-size: 12px"
-                           th:href="@{'/operador/funciones/editar?idfuncion=' + ${funcion.id}}"
-                           data-mdb-ripple-color="dark">Editar</a>
-                        <a th:unless="${funcion.estado == 'Cancelada'}" type="button"
-                           class="btn btn-success fw-bold btn-sm btn-rounded my-1"
-                           data-mdb-ripple-color="dark" style="font-size: 12px"
-                           th:href="@{'/operador/reporte/'+${funcion.id}}">
-                            Reporte xls
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <footer th:replace="fragmentos/footer.html :: footer"></footer>
-        <!-- Modal añadir a destacados -->
-        <div class="modal top fade" id="destacados" tabindex="-1" aria-labelledby="anadirModal" aria-hidden="true"
-             data-mdb-backdrop="true" data-mdb-keyboard="true">
-            <div class="modal-dialog  ">
-                <form method="post"
-                      th:action="@{|/operador/obras/destacados/${obra.destacado==0? 'agregar':'quitar'}|}">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="destacadosModalLabel">Añadir a destacados</h5>
-                            <button type="button" class="btn-close" data-mdb-dismiss="modal"
-                                    aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <input hidden name="id" th:value="${obra.id}">
-                            <p th:if="${obra.destacado==0}">¿Está seguro que quiere agregar la obra a la lista de
-                                destacados?</p>
-                            <p th:if="${obra.destacado==1}">¿Está seguro que quiere quitar la obra de la lista de
-                                destacados?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
-                                Cerrar
-                            </button>
-                            <button type="submit" class="btn btn-redtele"
-                                    th:text="${obra.destacado==0?'Agregar':'Quitar'}">Agregar
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <!-- Modal Añadir Imagen -->
-        <div class="modal top fade" id="anadirModal" tabindex="-1" aria-labelledby="anadirModal" aria-hidden="true"
-             data-mdb-backdrop="true" data-mdb-keyboard="true" th:if="${fotos.size()<4}">
-            <div class="modal-dialog  ">
-                <form method="post" th:action="@{|/operador/obras/gestion/${obra.id}/agregarimagen|}"
-                      enctype="multipart/form-data">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Añadir imagen</h5>
-                            <button type="button" class="btn-close" data-mdb-dismiss="modal"
-                                    aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <script>
-                                $(function () {
-                                    $('.dropify').dropify();
-                                });
-                            </script>
-                            <input type="file" name="foto" id="foto" class="dropify" data-max-file-size="1M"/>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
-                                Cerrar
-                            </button>
-                            <button type="submit" class="btn btn-redtele">Subir</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <!-- Modal Añadir Imagen LIMITE-->
-        <div class="modal top fade" id="anadirModal" tabindex="-1" aria-labelledby="anadirModal" aria-hidden="true"
-             data-mdb-backdrop="true" data-mdb-keyboard="true" th:unless="${fotos.size()<4}">
-            <div class="modal-dialog  ">
-                <form>
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Limite de Imagenes</h5>
-                            <button type="button" class="btn-close" data-mdb-dismiss="modal"
-                                    aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div>
-                                <h6>Teleticket tiene como restricción que cada obra tenga como máximo 4 imagenes</h6>
-                            </div>
-                            <div class="fw-bold mb-3">
-                                Disculpe las molestias
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-redtele" data-mdb-dismiss="modal">De acuerdo</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <!-- Modal Eliminar Imagen -->
-        <div class="modal top fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModal" aria-hidden="true"
-             data-mdb-backdrop="true" data-mdb-keyboard="true">
-            <div class="modal-dialog  ">
-                <form method="post" th:action="@{|/operador/obras/gestion/imagenborrar|}">
-                    <input type="hidden" name="fotoid" id="fotoidEliminar" value="0">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="eliminarModalLabel">Eliminar imagen</h5>
-                            <button type="button" class="btn-close" data-mdb-dismiss="modal"
-                                    aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div>
-                                ¿Está seguro que desea eliminar la imagen?
-                            </div>
-                            <div class="fw-bold mb-3">
-                                Este acto es irreversible
-                            </div>
-                            <div class="w-100 d-flex justify-content-center my-2">
-                                <div class="confirmacion-borrar">
-                                    <img id="imagenABorrar">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-redtele">Eliminar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Modal Principal Imagen -->
-        <div class="modal top fade" id="principalModal" tabindex="-1" aria-labelledby="principalModal"
-             aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
-            <div class="modal-dialog  ">
-                <form method="post" th:action="@{|/operador/obras/gestion/${obra.id}/imagenprincipal|}">
-                    <input type="hidden" name="fotoid" id="fotoidPrincipal" value="0">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="principalModalLabel">Elegir imagen principal</h5>
-                            <button type="button" class="btn-close" data-mdb-dismiss="modal"
-                                    aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                ¿Desea elegir esta imagen como la principal?
-                            </div>
-                            <div class="w-100 d-flex justify-content-center my-2">
-                                <div class="confirmacion-borrar">
-                                    <img id="imagenAPrincipal">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-redtele">Confirmar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Modal msg -->
-        <div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal"
-             aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
-            <div class="modal-dialog  ">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="modal-title">
-                            <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo"
-                                 loading="lazy" style="margin-top: 2px;"/>
-                        </div>
-                        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class=" w-100 d-flex justify-content-center mb-3">
-                            <i class="fa-solid fa-circle-check" style="font-size: 50px"
-                               th:class="${error==null? 'fa-solid fa-circle-check text-success': 'fa-solid fa-circle-xmark text-danger'  }"></i>
-                        </div>
-                        <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
-                        </div>
+                    <div th:if="${fotoid == obra.fotoprincipal}" class="middle-borrar col text-white fs-14">
+                        <i class="fa-solid fa-bookmark"></i> Foto principal
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div th:replace="fragmentos/navbar.html :: menu"></div>
+    <div class="row mb-3">
+        <div class="text-start col-lg-9">
+            <div class="title-26 py-6">Funciones</div>
+        </div>
+        <div class="d-flex align-items-center justify-content-end col-lg-3">
+            <a class="btn btn-redtele btn-sm h-100 rounded-7" type="button"
+               th:href="@{'/operador/funciones/nueva?idobra='+ ${obra.id}}">
+                <div class="row h-100">
+                    <div class="col-3 h-100 d-flex align-items-center"><i class="fa fa-couch col fs-24"></i>
+                    </div>
+                    <div class="col-9 h-100 d-flex align-items-center justify-content-center">Nueva Función
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <form method="get" th:action="@{|/operador/obras/gestion/${obra.id}|}">
+        <div class="row justify-content-end">
+            <div class="col-auto">
+                <div class="text-start" style="min-width: 100px">
+                    <label class="form-label">Mes</label>
+                    <select class="demo-default fs-13" aria-label="Default select example" name="mes" id="mes">
+                        <option value="" selected>Todos</option>
+                        <option th:each="mes: ${meses}" th:value="${mes}"
+                                th:text="${mes}" th:selected="${mes == #httpServletRequest.getParameter('mes')}">
+                        </option>
+                    </select>
+                    <script>
+                        $("select[name*='mes']").selectize({
+                            sortField: 'text'
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="text-start" style="min-width: 200px">
+                    <label class="form-label">Sede</label>
+                    <select class="demo-default fs-13" aria-label="Default select example" name="sede" id="sede">
+                        <option value="">Todas</option>
+                        <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.id}"
+                                th:selected="${sede.id.toString() == #httpServletRequest.getParameter('sede')}">Miraflores
+                        </option>
+                    </select>
+                    <script>
+                        $("select[name*='sede']").selectize({
+                            sortField: 'text'
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="col-auto d-flex align-items-end">
+                <button type="submit" class="btn btn-light p-2">
+                    <span class="input-group-text border-0"><i class="fas fa-search" id="mdb-5-search-icon"></i></span>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <div th:if="${funciones.isEmpty()}" style="border-radius: 20px; background: #e6e6e6;margin-top: 30px">
+        <div class="container py-4" style="display: flex; text-align: center; justify-content: center">
+            <img th:src="@{/img/salas.jpg}" style="width: 350px; border-radius:20%"/>
+        </div>
+        <div class="container" style="display: flex; text-align: center; justify-content: center">
+            <h4 class="fw-bold" style="font-size: 19px">No se han encontrado funciones relacionadas</h4>
+        </div>
+    </div>
 
 
-        <script th:src="@{/dropify/js/dropify.js}"></script>
-        <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
-        <script type="text/javascript">
-            function setEliminarModal(id) {
-                var button = document.getElementById(id);
-                fotoid = button.getAttribute("data-fotoid");
-                src = button.getAttribute("data-src");
-                $('#fotoidEliminar').val(fotoid);
-                $('#eliminarModal img').attr('src', src);
-                $('#eliminarModal').modal('toggle');
-            }
+    <table class="table hover-light align-middle round-border fs-13" th:classappend="${paginas<=1}?'mb-4': ''" th:unless="${funciones.isEmpty()}">
+        <thead class="bg-light">
+        <tr class="bg-dark">
+            <th class="text-white fw-bold text-center">Sala</th>
+            <th class="text-white fw-bold text-center">Sede</th>
+            <th class="text-white fw-bold text-center" width="125px">Fecha</th>
+            <th class="text-white fw-bold text-center">Hora</th>
+            <th class="text-white fw-bold text-center">Asistencia</th>
+            <th class="text-white fw-bold text-center">Estado</th>
+            <th class="text-white fw-bold text-center">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="funcion : ${funciones}">
+            <td class="text-center" th:text="${funcion.sala}"></td>
+            <td class="text-center" th:text="${funcion.sede}"></td>
+            <td class="text-center" th:text="${funcion.fecha}"></td>
+            <td class="text-center" th:text="${funcion.hora}"></td>
+            <td class="text-center">
+            <span class="fw-bold" th:if="${funcion.estado!='Cancelada' and funcion.pasistencia.isPresent()}"
+                  th:text="${#numbers.formatDecimal(funcion.pasistencia.get(),1,2,'POINT')} +' %'"></span>
+                <span th:if="${funcion.estado!='Cancelada' and funcion.pasistencia.isEmpty()}" class="badge badge-dark rounded-pill d-inline" style="font-size: 12px">Sin ventas</span>
+                <span th:if="${funcion.estado=='Cancelada'}" class="badge badge-secondary rounded-pill d-inline" style="font-size: 12px">No publicada</span>
+            </td>
+            <td class="text-center">
+             <span th:if="${funcion.estado == 'Vigente' }"
+                   class="badge badge-success rounded-pill d-inline" style="font-size: 12px">
+                 Vigente
+             </span>
+                <span th:if="${funcion.estado == 'Realizada'}"
+                      class="badge badge-info rounded-pill d-inline" style="font-size: 12px">
+                Realizada
+            </span>
+                <span th:if="${funcion.estado == 'Cancelada'}"
+                      class="badge badge-danger rounded-pill d-inline" style="font-size: 12px">
+                Cancelada
+            </span>
+            </td>
+            <td class="text-center">
+                <a th:unless="${funcion.estado == 'Cancelada' or funcion.estado == 'Realizada'}"
+                   type="button" class="btn btn-redtele btn-sm btn-rounded my-1" style="font-size: 12px"
+                   th:href="@{'/operador/funciones/editar?idfuncion=' + ${funcion.id}}"
+                   data-mdb-ripple-color="dark">Editar</a>
+                <a th:unless="${funcion.estado == 'Cancelada'}" type="button"
+                   class="btn btn-success fw-bold btn-sm btn-rounded my-1"
+                   data-mdb-ripple-color="dark" style="font-size: 12px"
+                   th:href="@{'/operador/reporte/'+${funcion.id}}">
+                    Reporte xls
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+<!-- Modal añadir a destacados -->
+<div class="modal top fade" id="destacados" tabindex="-1" aria-labelledby="anadirModal" aria-hidden="true"
+     data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <form method="post"
+              th:action="@{|/operador/obras/destacados/${obra.destacado==0? 'agregar':'quitar'}|}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="destacadosModalLabel">Añadir a destacados</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input hidden name="id" th:value="${obra.id}">
+                    <p th:if="${obra.destacado==0}">¿Está seguro que quiere agregar la obra a la lista de
+                        destacados?</p>
+                    <p th:if="${obra.destacado==1}">¿Está seguro que quiere quitar la obra de la lista de
+                        destacados?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
+                        Cerrar
+                    </button>
+                    <button type="submit" class="btn btn-redtele"
+                            th:text="${obra.destacado==0?'Agregar':'Quitar'}">Agregar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Modal Añadir Imagen -->
+<div class="modal top fade" id="anadirModal" tabindex="-1" aria-labelledby="anadirModal" aria-hidden="true"
+     data-mdb-backdrop="true" data-mdb-keyboard="true" th:if="${fotos.size()<4}">
+    <div class="modal-dialog  ">
+        <form method="post" th:action="@{|/operador/obras/gestion/${obra.id}/agregarimagen|}"
+              enctype="multipart/form-data">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Añadir imagen</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <script>
+                        $(function () {
+                            $('.dropify').dropify();
+                        });
+                    </script>
+                    <input type="file" name="foto" id="foto" class="dropify" data-max-file-size="1M"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">
+                        Cerrar
+                    </button>
+                    <button type="submit" class="btn btn-redtele">Subir</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Modal Añadir Imagen LIMITE-->
+<div class="modal top fade" id="anadirModal" tabindex="-1" aria-labelledby="anadirModal" aria-hidden="true"
+     data-mdb-backdrop="true" data-mdb-keyboard="true" th:unless="${fotos.size()<4}">
+    <div class="modal-dialog  ">
+        <form>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Limite de Imagenes</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <h6>Teleticket tiene como restricción que cada obra tenga como máximo 4 imagenes</h6>
+                    </div>
+                    <div class="fw-bold mb-3">
+                        Disculpe las molestias
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-redtele" data-mdb-dismiss="modal">De acuerdo</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Modal Eliminar Imagen -->
+<div class="modal top fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModal" aria-hidden="true"
+     data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <form method="post" th:action="@{|/operador/obras/gestion/imagenborrar|}">
+            <input type="hidden" name="fotoid" id="fotoidEliminar" value="0">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarModalLabel">Eliminar imagen</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        ¿Está seguro que desea eliminar la imagen?
+                    </div>
+                    <div class="fw-bold mb-3">
+                        Este acto es irreversible
+                    </div>
+                    <div class="w-100 d-flex justify-content-center my-2">
+                        <div class="confirmacion-borrar">
+                            <img id="imagenABorrar">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-redtele">Eliminar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Modal Principal Imagen -->
+<div class="modal top fade" id="principalModal" tabindex="-1" aria-labelledby="principalModal"
+     aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <form method="post" th:action="@{|/operador/obras/gestion/${obra.id}/imagenprincipal|}">
+            <input type="hidden" name="fotoid" id="fotoidPrincipal" value="0">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="principalModalLabel">Elegir imagen principal</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        ¿Desea elegir esta imagen como la principal?
+                    </div>
+                    <div class="w-100 d-flex justify-content-center my-2">
+                        <div class="confirmacion-borrar">
+                            <img id="imagenAPrincipal">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-redtele">Confirmar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Modal msg -->
+<div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal"
+     aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo"
+                         loading="lazy" style="margin-top: 2px;"/>
+                </div>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class=" w-100 d-flex justify-content-center mb-3">
+                    <i class="fa-solid fa-circle-check" style="font-size: 50px"
+                       th:class="${error==null? 'fa-solid fa-circle-check text-success': 'fa-solid fa-circle-xmark text-danger'  }"></i>
+                </div>
+                <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Eliminar obra -->
+<div th:if="${funciones.isEmpty()}" class="modal top fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog ">
+        <form method="post" th:action="@{'/operador/obras/eliminar/'+${obra.id}}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelarModalLabel">Eliminar obra</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        ¿Está seguro que desea eliminar esta obra?
+                    </div>
+                    <div class="fw-bold mb-3">
+                        Esta acción es irreversible
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-redtele">Eliminar obra</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
-            function setPrincipalModal(id) {
-                var button = document.getElementById(id);
-                fotoid = button.getAttribute("data-fotoid");
-                src = button.getAttribute("data-src");
-                $('#fotoidPrincipal').val(fotoid);
-                $('#principalModal img').attr('src', src);
-                $('#principalModal').modal('toggle');
-            }
-        </script>
-        <script type="text/javascript" th:if="${msg != null}">
-            $(window).on('load', function () {
-                $('#msgModal').modal('show');
-            });
-        </script>
-        <script>
-            var uploadField = document.getElementById("foto");
+<div th:replace="fragmentos/navbar.html :: menu"></div>
 
-            uploadField.onchange = function () {
-                if (this.files[0].size > 5248000) {
-                    alert("El archivo es muy grande!");
-                    this.value = "";
-                }
-                ;
-            };
-        </script>
-    </body>
+<script th:src="@{/dropify/js/dropify.js}"></script>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script type="text/javascript">
+    function setEliminarModal(id) {
+        var button = document.getElementById(id);
+        fotoid = button.getAttribute("data-fotoid");
+        src = button.getAttribute("data-src");
+        $('#fotoidEliminar').val(fotoid);
+        $('#eliminarModal img').attr('src', src);
+        $('#eliminarModal').modal('toggle');
+    }
+
+    function setPrincipalModal(id) {
+        var button = document.getElementById(id);
+        fotoid = button.getAttribute("data-fotoid");
+        src = button.getAttribute("data-src");
+        $('#fotoidPrincipal').val(fotoid);
+        $('#principalModal img').attr('src', src);
+        $('#principalModal').modal('toggle');
+    }
+</script>
+<script type="text/javascript" th:if="${msg != null}">
+    $(window).on('load', function () {
+        $('#msgModal').modal('show');
+    });
+</script>
+<script>
+    var uploadField = document.getElementById("foto");
+
+    uploadField.onchange = function () {
+        if (this.files[0].size > 5248000) {
+            alert("El archivo es muy grande!");
+            this.value = "";
+        }
+        ;
+    };
+</script>
+</body>
 </html>

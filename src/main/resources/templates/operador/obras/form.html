@@ -118,7 +118,7 @@
                                     $('.dropify').dropify();
                                 });
                             </script>
-                            <input  type="file" class="dropify" name="foto" id="foto"/>
+                            <input data-max-file-size-preview="2M" data-max-file-size="1M"  type="file" class="dropify" name="foto" id="foto"/>
                             <div class="text-danger" th:text="${msg}"></div>
                         </div>
                         <div class="mb-3" th:unless="${obra.id==0}">

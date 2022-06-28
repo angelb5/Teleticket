@@ -260,7 +260,7 @@ public class OperadorObrasController {
         return "redirect:/operador/obras/gestion/"+obra.getId();
     }
 
-    @GetMapping("/gestion/{idPath}/eliminar")
+    @PostMapping("/eliminar/{idPath}")
     public String eliminarObra(@PathVariable("idPath") String idObraString, RedirectAttributes redirectAttributes){
         int idObra;
         Optional<Obra> optionalObra;
