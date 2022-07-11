@@ -87,7 +87,7 @@
                     </div>
                     <div class="col">
                         <div class="mb-3">
-                            <label class="form-label">Duración</label>
+                            <label class="form-label">Duración (minutos)</label>
                             <input th:field="*{duracion}" type="text" class="form-control"
                                    th:classappend="${#fields.hasErrors('duracion')?'is-invalid':''}"/>
                             <div class="text-danger" th:if="${#fields.hasErrors('duracion')}"

@@ -2,13 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = ${sede.nombre})"></head>
 <body>
-<nav th:replace="fragmentos/navbar.html :: navbar('Todo')"></nav>
+<nav th:replace="fragmentos/navbar.html :: navbar('sedes')"></nav>
 <!--Contenidos-->
 <div class="position-relative">
     <!--Fondo-->
     <div class="w-100 overflow-hidden position-absolute d-table" style="height: -webkit-fill-available;">
         <div class="blur-head d-table-row" style="height: 450px;">
-            <img src="../img/sanborja.jpg" alt="Sede San Borja">
+            <img th:src="'/image/sede/'+${sede.fotoprincipal}" th:alt="${sede.nombre}">
         </div>
     </div>
 
@@ -53,7 +53,7 @@
             </div>
         </div>
 
-        <div class="title-24">
+        <div class="title-24" th:unless="${obras.isEmpty()}">
             Obras en esta sede
         </div>
 

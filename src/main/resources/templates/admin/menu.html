@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Menú Administrador')"></head>
-<body>
+<body class="bg-lightgrey">
 <nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
 <!--Contenidos-->
 <div class="container py-3 ">
@@ -265,7 +265,7 @@
     </section>
 
     <section class="mb-4">
-        <div class="row row-cols-1 row-cols-md-3">
+        <div class="row row-cols-1 row-cols-md-2">
             <div class="col">
                 <div class="card">
                     <div class="card-body">
@@ -287,25 +287,10 @@
                         <div class="d-flex justify-content-between px-md-1">
                             <div>
                                 <h3 class="text-warning" th:text="${totalOperadores}">19</h3>
-                                <p class="mb-0">Operadores</p>
+                                <p class="mb-0">Total Operadores</p>
                             </div>
                             <div class="align-self-center">
                                 <i class="fas fa-user-edit text-warning fa-3x"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between px-md-1">
-                            <div>
-                                <h3 class="text-info" th:text="${totalAD}">44</h3>
-                                <p class="mb-0">Actores y Directores</p>
-                            </div>
-                            <div class="align-self-center">
-                                <i class="fas fa-people-group text-info fa-3x"></i>
                             </div>
                         </div>
                     </div>
