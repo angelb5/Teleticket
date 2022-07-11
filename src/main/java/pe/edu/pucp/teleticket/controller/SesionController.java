@@ -39,7 +39,6 @@ import javax.validation.Valid;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -75,13 +74,16 @@ public class SesionController {
     private final LocalDate NACIMIENTO_MIN = LocalDate.parse("1903-01-01");
 
     @GetMapping("/login")
-    public String loginForm(){
+    public String loginForm(HttpSession session){
+        if(session.getAttribute("usuario")!=null){return "redirect:/";}
+        if(session.getAttribute("proveedor")!=null){return "redirect:/oauth2/completaregistro";}
         return "sesion/login";
     }
 
     @GetMapping("registro")
     public String registroForm(@ModelAttribute("cliente") Cliente cliente, HttpSession session){
         if(session.getAttribute("usuario")!=null){return "redirect:/";}
+        if(session.getAttribute("proveedor")!=null){return "redirect:/oauth2/completaregistro";}
         return "sesion/registro";
     }
 
