@@ -65,8 +65,10 @@
                     <button class="btn btn-redtele" type="submit" form="guardarForm">
                         Guardar
                     </button>
-                    <!--<a class="btn btn-dark" th:href="@{'/operador/obras/gestion/' + ${funcion.obra.id}}">-->
-                    <a class="btn btn-dark" th:href="@{'/operador/funciones/lista'}">
+                    <a class="btn btn-dark" th:unless="${param.redirectlista!=null}" th:href="@{'/operador/obras/gestion/' + ${funcion.obra.id}}">
+                        Cancelar
+                    </a>
+                    <a class="btn btn-dark" th:if="${param.redirectlista!=null}" th:href="@{'/operador/funciones/lista'}">
                         Cancelar
                     </a>
                 </div>

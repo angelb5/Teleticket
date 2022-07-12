@@ -143,7 +143,7 @@
                 <td class="text-center">
                     <a th:unless="${funcion.estado == 'Cancelada' or funcion.estado == 'Realizada'}"
                        type="button" class="btn btn-redtele btn-sm btn-rounded my-1" style="font-size: 12px"
-                       th:href="@{'/operador/funciones/editar?idfuncion=' + ${funcion.id}}"
+                       th:href="@{'/operador/funciones/editar?idfuncion=' + ${funcion.id}+'&redirectlista=true'}"
                        data-mdb-ripple-color="dark">Editar</a>
                     <a th:unless="${funcion.estado == 'Cancelada'}" type="button"
                        class="btn btn-success fw-bold btn-sm btn-rounded my-1"

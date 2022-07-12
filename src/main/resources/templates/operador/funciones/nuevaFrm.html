@@ -35,7 +35,8 @@
                     </div>
                     <script>
                         $("select[name*='sala']").selectize({
-                            sortField: 'text'
+                            sortField: 'optgroup',
+                            searchField: ['text', 'optgroup']
                         });
                     </script>
                     <div class="col">
