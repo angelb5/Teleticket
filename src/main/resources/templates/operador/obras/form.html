@@ -23,16 +23,18 @@
                         <div class="mb-3">
                             <input hidden th:field="*{id}">
                             <label class="form-label">Nombre de la obra</label>
-                            <input th:field="*{titulo}" type="text" class="form-control"
+                            <input th:field="*{titulo}" type="text" class="form-control mb-0"
                                    th:classappend="${#fields.hasErrors('titulo')?'is-invalid':''}"/>
+                            <div class="text-end form-label" id="conttitulo">0/45</div>
                             <div class="text-danger" th:if="${#fields.hasErrors('titulo')}"
                                  th:errors="*{titulo}"></div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Descripción</label>
-                            <textarea th:field="*{resumen}" type="text" class="form-control"
+                            <textarea th:field="*{resumen}" type="text" class="form-control mb-0"
                                       th:classappend="${#fields.hasErrors('resumen')?'is-invalid':''}"
                                       style="height: 150px;"></textarea>
+                            <div class="text-end form-label" id="contresumen">0/600</div>
                             <div class="text-danger" th:if="${#fields.hasErrors('resumen')}"
                                  th:errors="*{resumen}"></div>
                         </div>
@@ -171,6 +173,24 @@
 <script type="text/javascript" th:if="${msg != null}">
     $(window).on('load', function () {
         $('#msgModal').modal('show');
+    });
+</script>
+<script type="text/javascript" >
+    $(function() {
+        var contresumen = $("#contresumen");
+        var conttitulo = $("#conttitulo");
+        var titulo = $("#titulo");
+        var resumen = $("#resumen");
+        conttitulo.html(titulo.val().length+'/45');
+        contresumen.html(resumen.val().length+'/600');
+
+        resumen.keyup(function() {
+            contresumen.html($(this).val().length+'/600');
+        });
+
+        titulo.keyup(function() {
+            conttitulo.html($(this).val().length+'/45');
+        });
     });
 </script>
 <footer th:replace="fragmentos/footer.html :: footer"></footer>

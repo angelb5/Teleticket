@@ -160,6 +160,7 @@ public class OperadorObrasController {
             model.addAttribute("personaList", personaList);
             model.addAttribute("generoList", generoList);
             model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("error", 1);
 
             return "operador/obras/form";
         }
@@ -216,6 +217,7 @@ public class OperadorObrasController {
             List<Genero> generoList = generoRepository.findAll();
             e.printStackTrace();
             model.addAttribute("msg", "Ocurrió un error al subir el archivo");
+            model.addAttribute("error", 1);
             model.addAttribute("personaList", personaList);
             model.addAttribute("generoList", generoList);
             fotoObraRepository.deleteById(obraCreada.getId());
