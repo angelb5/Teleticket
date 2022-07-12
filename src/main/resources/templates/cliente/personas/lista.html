@@ -6,8 +6,11 @@
 <!--Contenidos-->
 <div class="container py-3 ">
 
-    <div class="title-24">
-        Actores y Directores
+    <div class="title-24" th:unless="${param.busqueda!=null && param.busqueda[0].toString()!=''}" >
+        Mostrando todos los Actores y Directores
+    </div>
+
+    <div class="title-24" th:if="${param.busqueda!=null && param.busqueda[0].toString()!=''}" th:text="${'Mostrando resultados para &quot;'+ param.busqueda + '&quot;' }">
     </div>
 
     <div th:if="${listaActores.isEmpty()}"  style="border-radius: 20px; background: #e6e6e6;margin-top: 30px;height: 450px;">

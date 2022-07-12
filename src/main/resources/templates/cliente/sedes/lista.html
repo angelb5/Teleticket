@@ -6,10 +6,11 @@
 <!-- Fin de Navbar -->
 <div class="container py-3" >
     <!-- Lista sedes -->
-    <div class="row mb-3">
-        <div class="text-start col-lg-9">
-            <div class="title-24 py-6">Lista de sedes</div>
-        </div>
+    <div class="title-24" th:unless="${param.busqueda!=null && param.busqueda[0].toString()!=''}" >
+        Mostrando todas las Sedes
+    </div>
+
+    <div class="title-24" th:if="${param.busqueda!=null && param.busqueda[0].toString()!=''}" th:text="${'Mostrando resultados para &quot;'+ param.busqueda + '&quot;' }">
     </div>
 
     <div th:if="${listaSedes.isEmpty()}"  style="border-radius: 20px; background: #e6e6e6;margin-top: 30px;height: 450px;">
