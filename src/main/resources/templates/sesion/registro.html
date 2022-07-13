@@ -9,18 +9,18 @@
         <form autocomplete="off" th:action="@{/registrar}" method="post" th:object="${cliente}">
             <input th:field="*{id}" type="hidden"/>
             <div class="title-24 mb-3 text-white text-center">
-                <img th:src="@{/img/logo-teleticket.png}" height="60" alt="Teleticket logo" loading="lazy" style="margin-top: 2px;"/>
+                <img th:src="@{/img/logo-teleticket.png}" height="60" alt="Teleticket logo" loading="lazy" />
             </div>
 
             <div th:unless="${session.proveedor!=null}" class="title-24 mb-4 text-white text-center ">Regístrate y empieza a disfrutar del teatro</div>
             <div th:if="${session.proveedor!=null}" class="title-24 mb-4 text-white text-center ">Completa el registro y empieza a disfrutar del teatro</div>
 
             <div>
-                <div class="mb-4 align-items-center d-flex" style="min-width: 500px;">
+                <div class="mb-4 align-items-center d-flex">
                     <div class="w-100" >
                         <div class="form-outline form-white mb-4">
-                            <div class="row row-cols-md-2 mb-4">
-                                <div class="col" >
+                            <div class="row row-cols-1 row-cols-lg-2">
+                                <div class="col mb-4" >
                                     <div class="form-outline form-white">
                                         <input th:field="*{nombre}" type="text" id="nombre" class="form-control"
                                                th:classappend="${#fields.hasErrors('nombre')?'is-invalid':''}"/>
@@ -29,7 +29,7 @@
                                     <div class="text-danger" th:if="${#fields.hasErrors('nombre')}"
                                          th:errors="*{nombre}"></div>
                                 </div>
-                                <div class="col">
+                                <div class="col mb-4">
                                     <div class="form-outline form-white">
                                         <input th:field="*{apellido}" type="text" id="apellido" class="form-control"
                                                th:classappend="${#fields.hasErrors('apellido')?'is-invalid':''}"/>
@@ -40,8 +40,8 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-4">
-                                <div class="col">
+                            <div class="row row-cols-1 row-cols-lg-2">
+                                <div class="col mb-4">
                                     <div class="form-outline form-white">
                                         <input th:field="*{dni}" type="text" id="dni" class="form-control"
                                                th:classappend="${#fields.hasErrors('dni')?'is-invalid':''}"/>
@@ -50,7 +50,7 @@
                                     <div class="text-danger" th:if="${#fields.hasErrors('dni')}"
                                          th:errors="*{dni}"></div>
                                 </div>
-                                <div class="col">
+                                <div class="col mb-4">
                                     <div class="form-outline form-white">
                                         <input th:field="*{celular}" type="text" id="celular" class="form-control"
                                                th:classappend="${#fields.hasErrors('celular')?'is-invalid':''}"/>
@@ -101,7 +101,8 @@
 
                             <div class="row mb-4">
                                 <div class="col">
-                                    <div class="form-outline form-white">
+                                    <div class="form-outline form-white" id="contrasenadiv">
+                                        <i class="fas fa-eye-slash trailing showpass"></i>
                                         <input name="contrasena" type="password" id="contrasena" class="form-control"
                                                th:classappend="${#fields.hasErrors('global')?'is-invalid':''}"/>
                                         <label class="form-label" for="contrasena">Contraseña</label>
@@ -113,7 +114,8 @@
 
                             <div class="row mb-4">
                                 <div class="col">
-                                    <div class="form-outline form-white">
+                                    <div class="form-outline form-white" id="ccontrasenadiv">
+                                        <i class="fas fa-eye-slash trailing showpass"></i>
                                         <input name="confcontrasena" type="password" id="confcontrasena" class="form-control"
                                                th:classappend="${#fields.hasErrors('global')?'is-invalid':''}"/>
                                         <label class="form-label" for="confcontrasena">Confirmar contraseña</label>
@@ -132,7 +134,7 @@
                         <!-- Register buttons -->
                         <div th:if="${session.proveedor==null}" class="text-center" style="border-top-color: white; border-top: 2px solid white; padding-top: 20px">
                             <div class="pb-3">
-                                <span>¿Ya tienes cuenta? </span>
+                                <span>¿Ya tienes una cuenta? </span>
                                 <a th:href="@{/login}" class=" mx-2 text-redtele mb-4" >Ingresa</a>
                             </div>
                             <a type="button" th:href="@{/oauth2/authorization/google}"  class="my-2 btn btn-redtele">
@@ -148,9 +150,6 @@
 
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
 <div th:replace="fragmentos/navbar.html :: menu"></div>
-
-</body>
-
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <script type="text/javascript">
     $(document).ready(function() {
@@ -160,4 +159,67 @@
         });
     });
 </script>
+<script type="text/javascript">
+    $(function() {
+        var contrasena = $("#contrasena");
+        var cdiv = $("#contrasenadiv");
+        var ccontrasena = $("#confcontrasena");
+        var ccdiv = $("#ccontrasenadiv");
+        var showpass = cdiv.find(".showpass");
+        var cshowpass = ccdiv.find(".showpass");
+
+        function changeType(){
+            if(contrasena.prop('type')==='password'){
+                contrasena.prop('type','text');
+                ccontrasena.prop('type','text');
+                showpass.removeClass('fa-eye-slash');
+                showpass.addClass('fa-eye');
+                cshowpass.removeClass('fa-eye-slash');
+                cshowpass.addClass('fa-eye');
+            }else{
+                contrasena.prop('type','password');
+                ccontrasena.prop('type','password');
+                showpass.removeClass('fa-eye');
+                showpass.addClass('fa-eye-slash');
+                cshowpass.removeClass('fa-eye');
+                cshowpass.addClass('fa-eye-slash');
+            }
+        }
+
+        cdiv.mousemove(function(e) {
+            let posX = showpass.offset().left
+            if( e.clientX > posX && e.clientX < posX + 15 ){
+                contrasena.css('cursor', 'pointer');
+            }else{
+                contrasena.css('cursor', 'text');
+            }
+        });
+
+        ccdiv.mousemove(function(e) {
+            let posX = cshowpass.offset().left
+            if( e.clientX > posX && e.clientX < posX + 15 ){
+                ccontrasena.css('cursor', 'pointer');
+            }else{
+                ccontrasena.css('cursor', 'text');
+            }
+        });
+
+        cdiv.click(function(e) {
+            let posX = showpass.offset().left
+            if( e.clientX > posX && e.clientX < posX + 15 ){
+                changeType();
+            }
+        });
+
+        ccdiv.click(function(e) {
+            let posX = cshowpass.offset().left
+            if( e.clientX > posX && e.clientX < posX + 15 ){
+                changeType();
+            }
+        });
+    });
+</script>
+</body>
+
+
 </html>

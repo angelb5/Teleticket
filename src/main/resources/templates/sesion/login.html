@@ -40,7 +40,7 @@
                         <!-- Register buttons -->
                         <div class="text-center" style="border-top-color: white; border-top: 2px solid white; padding-top: 20px">
                             <div class="pb-3">
-                                    <span>¿Aún no tienes cuenta? </span>
+                                    <span>¿Aún no tienes una cuenta? </span>
                                     <a th:href="@{/registro}" class=" mx-2 text-redtele mb-4" >Regístrate</a>
                             </div>
                             <a type="button" th:href="@{/oauth2/authorization/google}"  class="my-2 btn btn-redtele">
@@ -65,15 +65,14 @@
     $(function() {
         var contrasena = $("#contrasena");
         var cdiv = $("#contrasenadiv");
-        let showpass = cdiv.find(".showpass");
-
+        var showpass = cdiv.find(".showpass");
 
         cdiv.mousemove(function(e) {
             let posX = showpass.offset().left
             if( e.clientX > posX && e.clientX < posX + 15 ){
                 contrasena.css('cursor', 'pointer');
             }else{
-                contrasena.css('cursor', 'default');
+                contrasena.css('cursor', 'text');
             }
         });
 
