@@ -21,10 +21,11 @@
                 <input  hidden type="text" class="form-control"  th:field="*{id}"/>
                 <input  hidden type="text" class="form-control"  th:field="*{sede.id}"/>
                 <div class="row">
-                    <div class="col-10">
+                    <div class="col">
                         <div class="mb-3">
                             <label class="form-label">Número de la sala</label>
-                            <input  type="text" class="form-control" th:field="*{numero}" th:classappend="${#fields.hasErrors('numero')?'is-invalid':''}"/>
+                            <input  type="text" class="form-control mb-0" th:field="*{numero}" th:classappend="${#fields.hasErrors('numero')?'is-invalid':''}"/>
+                            <div class="text-end form-label" id="contnumero">0/20</div>
                             <div class="text-danger mt-3" th:if="${#fields.hasErrors('numero')}"
                                  th:errors="*{numero}"></div>
                         </div>
@@ -119,6 +120,18 @@
 </body>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <script type="text/javascript"  th:src="@{/dropify/js/dropify.js}"></script>
+<script type="text/javascript" >
+    $(function() {
+        var contnumero = $("#contnumero");
+        var numero = $("#numero");
+
+        contnumero.html(numero.val().length+'/20');
+
+        numero.keyup(function() {
+            contnumero.html($(this).val().length+'/20');
+        });
+    });
+</script>
 <script type="text/javascript" th:if="${funcionesVigentes != null}">
     $(window).on('load', function() {
         $('#modalConflictos').modal('show');
