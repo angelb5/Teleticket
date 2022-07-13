@@ -20,7 +20,7 @@ public class Persona {
     private int id;
 
     @NotEmpty(message = "Tiene que llenar el nombre")
-    @Length(message = "No puede exceder de los 70 caracteres", max = 70)
+    @Length(message = "No puede exceder de los 45 caracteres", max = 45)
     @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
 

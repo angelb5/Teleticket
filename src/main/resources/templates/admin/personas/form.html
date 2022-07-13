@@ -13,7 +13,7 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="card-title text-redtele fs-22" th:text="${persona.id==0? 'Crear Persona' : 'Editar Persona'}">
+                <div class="card-title text-redtele fs-22" th:text="${persona.id==0? 'Añadir Persona' : 'Editar Persona'}">
                     Persona
                 </div>
             </div>
@@ -23,15 +23,12 @@
                         <input hidden th:field="*{id}">
                         <div class="mb-3">
                             <label class="form-label">Nombre de la Persona</label>
-                            <input type="text" class="form-control" th:field="*{nombre}"  th:classappend="${#fields.hasErrors('nombre')?'is-invalid':''}"/>
+                            <input type="text" class="form-control mb-0" th:field="*{nombre}"  th:classappend="${#fields.hasErrors('nombre')?'is-invalid':''}"/>
+                            <div class="text-end form-label" id="contnombre">0/45</div>
                             <div class="text-danger mt-3" th:if="${#fields.hasErrors('nombre')}"
                                  th:errors="*{nombre}"></div>
                         </div>
-                        <label class="form-label">Estado</label>
-                        <div class="row" th:if="${persona.id==0}">
-                            <p class="fw-bold" >Disponible</p>
-                        </div>
-
+                        <label class="form-label" th:unless="${persona.id==0}">Estado</label>
                         <div class="d-flex align-items-center" th:unless="${persona.id==0}">
                             <div class="form-check d-flex align-items-center me-3">
                                 <input class="form-check-input" type="radio" name="estado"  value="Disponible" th:field="*{estado}"/>
@@ -85,13 +82,13 @@
     </div>
 </div>
 <!-- Modal Añadir Imagen -->
-<div class="modal top fade" id="imagenModal" tabindex="-1" aria-labelledby="imagenModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
-    <div class="modal-dialog  ">
+<div th:unless="${persona.id==0}" class="modal top fade" id="imagenModal" tabindex="-1" aria-labelledby="imagenModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog">
         <form method="post" th:action="@{/admin/personas/cambiarfoto}" enctype="multipart/form-data">
             <input hidden name="id" th:value="${persona.id}">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Cambiar imagen</h5>
+                    <h5 class="modal-title" id="imagenModalLabel">Cambiar imagen</h5>
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex justify-content-center py-4">
@@ -114,7 +111,6 @@
         </form>
     </div>
 </div>
-
 <!-- Modal msg -->
 <div th:if="${msg!=null && persona.id!=0}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
     <div class="modal-dialog  ">
@@ -188,6 +184,17 @@
 <script type="text/javascript" th:if="${msg != null}">
     $(window).on('load', function() {
         $('#msgModal').modal('show');
+    });
+</script>
+<script type="text/javascript" >
+    $(function() {
+        var contnombre = $("#contnombre");
+        var nombre = $("#nombre");
+        contnombre.html(nombre.val().length+'/45');
+
+        nombre.keyup(function() {
+            contnombre.html($(this).val().length+'/45');
+        });
     });
 </script>
 <script>

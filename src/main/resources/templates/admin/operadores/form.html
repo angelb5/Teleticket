@@ -20,17 +20,18 @@
             <form method="post" th:action="@{'/admin/operadores/guardar'}"  th:object="${operador}">
                 <input  hidden type="text" class="form-control"  th:field="*{id}"/>
                 <div class="row">
-                    <div class="col-10">
+                    <div class="col">
                         <div class="mb-3">
                             <label class="form-label">Nombre</label>
-                            <input  type="text" class="form-control" th:field="*{nombre}" th:classappend="${#fields.hasErrors('nombre')?'is-invalid':''}"/>
-                            <div class="text-danger mt-3" th:if="${#fields.hasErrors('nombre')}"
+                            <input type="text" class="form-control mb-0" th:field="*{nombre}" th:classappend="${#fields.hasErrors('nombre')?'is-invalid':''}"/>
+                            <div class="text-end form-label" id="contnombre">0/60</div>
+                            <div class="text-danger mt-2" th:if="${#fields.hasErrors('nombre')}"
                                  th:errors="*{nombre}"></div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Correo</label>
                             <input  type="text" class="form-control" th:field="*{correo}" th:classappend="${#fields.hasErrors('correo')?'is-invalid':''}">
-                            <div class="text-danger mt-3" th:if="${#fields.hasErrors('correo')}"
+                            <div class="text-danger mt-2" th:if="${#fields.hasErrors('correo')}"
                                  th:errors="*{correo}"></div>
                         </div>
 
@@ -53,6 +54,17 @@
 </body>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <script type="text/javascript"  th:src="@{/dropify/js/dropify.js}"></script>
+<script type="text/javascript" >
+    $(function() {
+        var contnombre = $("#contnombre");
+        var nombre = $("#nombre");
+        contnombre.html(nombre.val().length+'/60');
+
+        nombre.keyup(function() {
+            contnombre.html($(this).val().length+'/60');
+        });
+    });
+</script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('button[type="submit"]').click(function() {

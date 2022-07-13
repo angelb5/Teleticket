@@ -158,7 +158,7 @@ public class AdminPersonasController {
             return "admin/personas/form";
         }
 
-        redirectAttributes.addFlashAttribute("msg","Se creo la persona exitosamente");
+        redirectAttributes.addFlashAttribute("msg","Se añadió la persona exitosamente");
         return "redirect:/admin/personas";
     }
 
