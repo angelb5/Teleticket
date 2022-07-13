@@ -15128,8 +15128,7 @@ i.flag-zw:before {
 }
 
 .form-outline .form-control.disabled,
-.form-outline .form-control:disabled,
-.form-outline .form-control[readonly] {
+.form-outline .form-control:disabled{
   background-color: #e9ecef
 }
 
@@ -15204,8 +15203,7 @@ i.flag-zw:before {
 }
 
 .form-outline.form-white .form-control.disabled,
-.form-outline.form-white .form-control:disabled,
-.form-outline.form-white .form-control[readonly] {
+.form-outline.form-white .form-control:disabled {
   background-color: hsla(0, 0%, 100%, .45)
 }
 

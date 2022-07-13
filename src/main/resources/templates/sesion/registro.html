@@ -90,6 +90,7 @@
                                 <div class="col">
                                     <div class="form-outline form-white">
                                         <input th:field="*{correo}" type="text" id="correo" class="form-control"
+                                               th:readonly="${session.proveedor!=null}"
                                                th:classappend="${#fields.hasErrors('correo')?'is-invalid':''}"/>
                                         <label class="form-label" for="correo">Correo</label>
                                     </div>

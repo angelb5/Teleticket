@@ -282,6 +282,10 @@ public class SesionController {
         if(bindingResult.hasErrors() || contrasenaHasErrors || correoHasErrors || dniHasErrors || nacimientoHasErrors){
             return "sesion/registro";
         }else{
+            if(session.getAttribute("proveedor")!=null){
+                Cliente gCliente = (Cliente) session.getAttribute("googleCliente");
+                cliente.setCorreo(gCliente.getCorreo());
+            }
             cliente.setNombre(cliente.getNombre().trim());
             cliente.setApellido(cliente.getApellido().trim());
             cliente.setDireccion(cliente.getDireccion().trim());
