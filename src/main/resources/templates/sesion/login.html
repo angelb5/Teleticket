@@ -16,13 +16,14 @@
 
                 <div class=" text-center mb-4 align-items-center d-flex" style="min-width: 200px;">
                     <div  style="padding-left: 90px; padding-right: 90px" class="w-100" >
-                        <div class="form-outline form-white mb-4">
+                        <div class="form-white mb-4">
                             <div class="form-outline form-white mb-4">
                                 <input type="text" name="correo" id="correo" class="form-control" />
                                 <label class="form-label" for="correo">Correo</label>
                             </div>
 
-                            <div class="form-outline form-white mb-4">
+                            <div class="form-outline form-white mb-4" id="contrasenadiv">
+                                <i class="fas fa-eye-slash trailing showpass"></i>
                                 <input type="password" name="contrasena" id="contrasena" class="form-control" />
                                 <label class="form-label" for="contrasena">Contraseña</label>
                             </div>
@@ -59,8 +60,38 @@
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
 
 <div th:replace="fragmentos/navbar.html :: menu"></div>
-
-</body>
-
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script type="text/javascript">
+    $(function() {
+        var contrasena = $("#contrasena");
+        var cdiv = $("#contrasenadiv");
+        let showpass = cdiv.find(".showpass");
+
+
+        cdiv.mousemove(function(e) {
+            let posX = showpass.offset().left
+            if( e.clientX > posX && e.clientX < posX + 15 ){
+                contrasena.css('cursor', 'pointer');
+            }else{
+                contrasena.css('cursor', 'default');
+            }
+        });
+
+        cdiv.click(function(e) {
+            let posX = showpass.offset().left
+            if( e.clientX > posX && e.clientX < posX + 15 ){
+                if(contrasena.prop('type')==='password'){
+                    contrasena.prop('type','text');
+                    showpass.removeClass('fa-eye-slash');
+                    showpass.addClass('fa-eye');
+                }else{
+                    contrasena.prop('type','password');
+                    showpass.removeClass('fa-eye');
+                    showpass.addClass('fa-eye-slash');
+                }
+            }
+        });
+    });
+</script>
+</body>
 </html>

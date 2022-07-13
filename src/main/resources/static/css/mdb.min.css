@@ -20058,3 +20058,7 @@ input[type=number] {
 img.loading {
   background: transparent url(https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif) no-repeat scroll center center;
 }
+
+.showpass{
+  cursor:pointer;
+}
