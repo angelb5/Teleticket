@@ -17,6 +17,7 @@ import java.util.Optional;
 
 @Repository
 public interface PersonaRepository extends JpaRepository<Persona,Integer> {
+
     public List<Persona> findAllByEstadoEquals(String estado);
 
     public Optional<Persona> findById(Integer id);
@@ -130,4 +131,10 @@ public interface PersonaRepository extends JpaRepository<Persona,Integer> {
     public List<PersonasListado> top5Directores();
 
     public int countAllByEstadoEqualsIgnoreCase(String estado);
+
+    @Query(value = "select p.* from personas p " +
+            "inner join (select * from directores union select * from actores) ad on ad.idpersona = p.idpersonas and ad.idobra = ?1 " +
+            "where p.estado = 'No disponible'", nativeQuery = true)
+    public List<Persona> listarPersonalNoDisponiblePorIdobra(int idobra);
+
 }

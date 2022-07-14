@@ -1,6 +1,8 @@
 package pe.edu.pucp.teleticket.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
@@ -10,8 +12,10 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @Entity
 @Table(name = "personas")
+@NoArgsConstructor
 public class Persona {
 
     @Id
@@ -31,4 +35,10 @@ public class Persona {
     @Lob
     @Column(name = "estado")
     private String estado;
+
+    public Persona(int id, String nombre, String estado) {
+        this.id = id;
+        this.nombre = nombre;
+        this.estado = estado;
+    }
 }

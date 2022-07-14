@@ -47,6 +47,9 @@ public class OperadorFuncionesController {
     HistorialRepository historialRepository;
 
     @Autowired
+    PersonaRepository personaRepository;
+
+    @Autowired
     EmailService emailService;
 
     @GetMapping({"/", "", "/lista"})
@@ -112,14 +115,13 @@ public class OperadorFuncionesController {
     @GetMapping("/nueva")
     public String nuevaFuncion(@RequestParam("idobra") int idobra, Model model, @ModelAttribute("funcion") Funcion funcion) {
         Optional<Obra> optionalObra = obraRepository.findById(idobra);
-        if(optionalObra.isPresent()){
-            List<Sede> sedeList = sedeRepository.findSedesDisponibles();
-            funcion.setObra(optionalObra.get());
-            model.addAttribute("sedeList", sedeList);
-            return "operador/funciones/nuevaFrm";
-        }else{
+        if(optionalObra.isEmpty() || !personaRepository.listarPersonalNoDisponiblePorIdobra(idobra).isEmpty()){
             return "redirect:/operador/";
         }
+        List<Sede> sedeList = sedeRepository.findSedesDisponibles();
+        funcion.setObra(optionalObra.get());
+        model.addAttribute("sedeList", sedeList);
+        return "operador/funciones/nuevaFrm";
     }
 
     @GetMapping("/editar")
@@ -139,7 +141,7 @@ public class OperadorFuncionesController {
         int idobra = funcion.getObra().getId();
         Optional<Obra> optionalObra = obraRepository.findById(idobra);
 
-        if(idobra==0 || optionalObra.isEmpty() ) {
+        if(idobra==0 || optionalObra.isEmpty() || !personaRepository.listarPersonalNoDisponiblePorIdobra(idobra).isEmpty()) {
             return "redirect:/operador/";
         }
 

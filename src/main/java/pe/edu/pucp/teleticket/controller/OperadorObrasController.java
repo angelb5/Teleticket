@@ -115,6 +115,7 @@ public class OperadorObrasController {
         model.addAttribute("paginas", paginas);
         model.addAttribute("obra",optionalObra.get());
         model.addAttribute("funciones", funcionList);
+        model.addAttribute("personalNoDisponible", personaRepository.listarPersonalNoDisponiblePorIdobra(id));
         model.addAttribute("ruta", ruta);
         return "operador/obras/gestionobra";
     }
@@ -152,7 +153,6 @@ public class OperadorObrasController {
     @PostMapping(value = "/guardar")
     public String guardarObra(Model model, @ModelAttribute("obra") @Valid Obra obra, BindingResult bindingResult,
                               @RequestParam("foto") MultipartFile foto) {
-
 
         if (foto.isEmpty()) {
             List<Persona> personaList = personaRepository.findAllByEstadoEquals("Disponible");
@@ -203,8 +203,6 @@ public class OperadorObrasController {
                 return "redirect:/operador/obras/nueva";
             }
         }
-
-
 
         Fotosobra fotoObra = new Fotosobra();
         Obra obraCreada =obraRepository.save(obra);
