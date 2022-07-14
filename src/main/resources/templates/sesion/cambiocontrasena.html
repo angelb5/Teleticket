@@ -25,7 +25,8 @@
                     <div  style="padding-left: 90px; padding-right: 90px" class="w-100" >
                         <div class="row mb-4">
                             <div class="col">
-                                <div class="form-outline form-white">
+                                <div class="form-outline form-white" id="contrasenadiv">
+                                    <i class="fas fa-eye-slash trailing showpass"></i>
                                     <input name="contrasena" type="password" id="contrasena" class="form-control"
                                            th:classappend="${error!=null?'is-invalid':''}"/>
                                     <label class="form-label" for="contrasena">Contraseña</label>
@@ -36,7 +37,8 @@
 
                         <div class="row mb-4">
                             <div class="col">
-                                <div class="form-outline form-white">
+                                <div class="form-outline form-white" id="ccontrasenadiv">
+                                    <i class="fas fa-eye-slash trailing showpass"></i>
                                     <input name="confcontrasena" type="password" id="confcontrasena" class="form-control"
                                            th:classappend="${error!=null?'is-invalid':''}"/>
                                     <label class="form-label" for="confcontrasena">Confirmar contraseña</label>
@@ -75,6 +77,66 @@
         $('button[type="submit"]').click(function() {
             $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ' +
                 '  Cargando...')
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(function() {
+        var contrasena = $("#contrasena");
+        var cdiv = $("#contrasenadiv");
+        var ccontrasena = $("#confcontrasena");
+        var ccdiv = $("#ccontrasenadiv");
+        var showpass = cdiv.find(".showpass");
+        var cshowpass = ccdiv.find(".showpass");
+
+        function changeType(){
+            if(contrasena.prop('type')==='password'){
+                contrasena.prop('type','text');
+                ccontrasena.prop('type','text');
+                showpass.removeClass('fa-eye-slash');
+                showpass.addClass('fa-eye');
+                cshowpass.removeClass('fa-eye-slash');
+                cshowpass.addClass('fa-eye');
+            }else{
+                contrasena.prop('type','password');
+                ccontrasena.prop('type','password');
+                showpass.removeClass('fa-eye');
+                showpass.addClass('fa-eye-slash');
+                cshowpass.removeClass('fa-eye');
+                cshowpass.addClass('fa-eye-slash');
+            }
+        }
+
+        cdiv.mousemove(function(e) {
+            let posX = showpass.offset().left
+            if( e.clientX > posX && e.clientX < posX + 15 ){
+                contrasena.css('cursor', 'pointer');
+            }else{
+                contrasena.css('cursor', 'text');
+            }
+        });
+
+        ccdiv.mousemove(function(e) {
+            let posX = cshowpass.offset().left
+            if( e.clientX > posX && e.clientX < posX + 15 ){
+                ccontrasena.css('cursor', 'pointer');
+            }else{
+                ccontrasena.css('cursor', 'text');
+            }
+        });
+
+        cdiv.click(function(e) {
+            let posX = showpass.offset().left
+            if( e.clientX > posX && e.clientX < posX + 15 ){
+                changeType();
+            }
+        });
+
+        ccdiv.click(function(e) {
+            let posX = cshowpass.offset().left
+            if( e.clientX > posX && e.clientX < posX + 15 ){
+                changeType();
+            }
         });
     });
 </script>
