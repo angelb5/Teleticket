@@ -69,7 +69,7 @@ public class OperadorEstadisticasController {
 
     @ResponseBody
     @GetMapping("/obra/{id}")
-    public ResponseEntity<HashMap<String, Object>> obtenerProductoPorId(@PathVariable("id") String idStr) {
+    public ResponseEntity<HashMap<String, Object>> estadisticasPorId(@PathVariable("id") String idStr) {
         HashMap<String, Object> responseJson = new HashMap<>();
         try {
             int id = Integer.parseInt(idStr);
@@ -107,5 +107,5 @@ public class OperadorEstadisticasController {
         }
         responseJson.put("result", "failure");
         return ResponseEntity.badRequest().body(responseJson);
-    }
+        }
 }

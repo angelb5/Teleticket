@@ -7,7 +7,7 @@
 </head>
 <body class="bg-lightgrey">
 <nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
-<div class="container py-3">
+<div class="container py-3 w-75">
     <div class="card">
         <div class="card-body">
             <div class="row">
@@ -17,10 +17,10 @@
             </div>
             <form method="post" th:action="@{'/operador/funciones/registrar'}" th:object="${funcion}">
                 <input hidden th:field="*{obra}">
-                <div class="row mb-3">
-                    <div class="col control-group">
+                <div class="row">
+                    <div class="col control-group mb-2">
                         <label class="form-label">Sala</label>
-                        <select class="demo-default" th:field="*{sala}"
+                        <select class="demo-default" th:field="*{sala}" id="sala"
                                 th:classappend="${#fields.hasErrors('sala')?'is-invalid':''}">
                             <option value="" hidden>Selecciona una sala</option>
                             <optgroup th:each="sede : ${sedeList}" th:label="${sede.nombre}">
@@ -39,43 +39,46 @@
                             searchField: ['text', 'optgroup']
                         });
                     </script>
-                    <div class="col">
+                    <div class="col mb-2">
                         <label class="form-label">Aforo</label>
-                        <input th:field="*{stock}" type="text" class="form-control"
+                        <input th:field="*{stock}" type="text" class="form-control mb-0"
                                th:classappend="${#fields.hasErrors('stock')?'is-invalid':''}"/>
+                        <label class="form-label text-end font-italic    w-100" id="maxAforo">máx ---</label>
                         <div class="text-danger" th:if="${#fields.hasErrors('stock')}"
                              th:errors="*{stock}"></div>
                     </div>
 
                 </div>
-                <div class="row mb-3">
-                    <div class="col">
+                <div class="row">
+                    <div class="col mb-2">
                         <label class="form-label">Fecha</label>
                         <input th:field="*{fecha}" type="date" class="form-control"
                                th:classappend="${#fields.hasErrors('fecha')?'is-invalid':''}"/>
                         <div class="text-danger" th:if="${#fields.hasErrors('fecha')}"
                              th:errors="*{fecha}"></div>
                     </div>
-                    <div class="col">
+                    <div class="col mb-2">
                         <label class="form-label">Límite de compra</label>
                         <input th:field="*{maxreservas}" type="text" class="form-control"
                                th:classappend="${#fields.hasErrors('maxreservas')?'is-invalid':''}"/>
+                        <label class="form-label text-end font-italic w-100" >máx 10</label>
                         <div class="text-danger" th:if="${#fields.hasErrors('maxreservas')}"
                              th:errors="*{maxreservas}"></div>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col">
+                <div class="row">
+                    <div class="col mb-3">
                         <label class="form-label">Hora de inicio</label>
                         <input th:field="*{inicio}" type="time" class="form-control"
                                th:classappend="${#fields.hasErrors('inicio')?'is-invalid':''}"/>
                         <div class="text-danger" th:if="${#fields.hasErrors('inicio')}"
                              th:errors="*{inicio}"></div>
                     </div>
-                    <div class="col">
+                    <div class="col mb-3">
                         <label class="form-label">Costo por ticket</label>
                         <input th:field="*{costo}" type="text" class="form-control"
                                th:classappend="${#fields.hasErrors('costo')?'is-invalid':''}"/>
+                        <label class="form-label text-end font-italic w-100" >máx 500.00</label>
                         <div class="text-danger" th:if="${#fields.hasErrors('costo')}"
                              th:errors="*{costo}"></div>
                     </div>
@@ -136,11 +139,38 @@
 </div>
 
 <div th:replace="fragmentos/navbar.html :: menu"></div>
-</body>
+
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <script type="text/javascript" th:if="${funcionesConflictoList != null}">
     $(window).on('load', function() {
         $('#modalConflictos').modal('show');
     });
 </script>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function (){
+        let maxaforo = $('#maxAforo');
+
+        $("#sala").change(function(){
+            let idsala = $('#sala option:selected').val();
+
+            if(!isNaN(idsala)){
+                $('#fotoobra').attr('src','/');
+                $.ajax({
+                    method:"GET",
+                    url: "http://" + [[${dominio}]] + "/operador/funciones/sala/"+idsala
+                }).done(function (response){
+                    let aforo = response.aforo;
+                    if(aforo!=null){
+                        maxaforo.html('máx '+aforo);
+                    }
+                })
+            }
+
+        });
+    });
+
+    /*]]>*/
+</script>
+</body>
 </html>

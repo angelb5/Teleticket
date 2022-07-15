@@ -1,18 +1,17 @@
 package pe.edu.pucp.teleticket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pe.edu.pucp.teleticket.dto.FuncionOperadorDto;
-import pe.edu.pucp.teleticket.dto.ObraFiltro;
-import pe.edu.pucp.teleticket.dto.ObrasListado;
-import pe.edu.pucp.teleticket.dto.SedeFiltro;
+import pe.edu.pucp.teleticket.dto.*;
 import pe.edu.pucp.teleticket.entity.*;
 import pe.edu.pucp.teleticket.repository.*;
 import pe.edu.pucp.teleticket.service.EmailService;
@@ -21,6 +20,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,8 +28,10 @@ import java.util.Optional;
 @RequestMapping("/operador/funciones")
 public class OperadorFuncionesController {
 
-    private final int funcionesPaginas =6;
+    @Value("${aplication.domain}")
+    private String DOMINIO;
 
+    private final int funcionesPaginas =6;
 
     @Autowired
     ObraRepository obraRepository;
@@ -121,6 +123,7 @@ public class OperadorFuncionesController {
         List<Sede> sedeList = sedeRepository.findSedesDisponibles();
         funcion.setObra(optionalObra.get());
         model.addAttribute("sedeList", sedeList);
+        model.addAttribute("dominio", DOMINIO);
         return "operador/funciones/nuevaFrm";
     }
 
@@ -285,5 +288,26 @@ public class OperadorFuncionesController {
 
         attr.addFlashAttribute("msg", "La función ha sido cancelada");
         return "redirect:/operador/obras/gestion/" + funcion.getObra().getId();
+    }
+
+    @ResponseBody
+    @GetMapping("/sala/{id}")
+    public ResponseEntity<HashMap<String, Object>> aforoSalaPorId(@PathVariable("id") String idStr) {
+        HashMap<String, Object> responseJson = new HashMap<>();
+        try {
+            int id = Integer.parseInt(idStr);
+            Optional<Sala> optionalSala = salaRepository.findById(id);
+            if (optionalSala.isPresent() && optionalSala.get().getEstado().equals("Disponible")) {
+                responseJson.put("result", "success");
+                responseJson.put("aforo", optionalSala.get().getAforo());
+                return ResponseEntity.ok(responseJson);
+            } else {
+                responseJson.put("msg", "Sala no encontrada");
+            }
+        } catch (NumberFormatException e) {
+            responseJson.put("msg", "El ID debe ser un número entero positivo");
+        }
+        responseJson.put("result", "failure");
+        return ResponseEntity.badRequest().body(responseJson);
     }
 }
