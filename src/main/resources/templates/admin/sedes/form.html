@@ -72,7 +72,11 @@
                                      th:errors="*{longitud}"></div>
                             </div>
                         </div>
-                        <div class="mb-3" style="margin-top: 15px">
+                        <div class="mb-4">
+                            <div id="map" class="map"> </div>
+                        </div>
+
+                        <div class="my-3" style="margin-top: 15px">
                             <button class="btn btn-redtele" type="submit"> Guardar</button>
                             <a class="btn btn-dark text-white" th:href="@{|/admin/sedes|}" th:if="${sede.id==0}">Cancelar</a>
                             <a class="btn btn-dark text-white" th:href="@{|/admin/sedes/gestion/${sede.id}|}" th:unless="${sede.id==0}">Cancelar</a>
@@ -149,33 +153,100 @@
 </body>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <script type="text/javascript" th:src="@{/dropify/js/dropify.js}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCa7QaMmHwSgiO9dPXBqlz29Xj6OfqzmkQ" defer></script>
 <script type="text/javascript" >
     $(function() {
         var contnombre = $("#contnombre");
         var nombre = $("#nombre");
         var contdir = $("#contdir");
-        var dir = $("#direccion");
+        var direccion = $("#direccion");
+        var latitud = $('#latitud');
+        var longitud = $('#longitud');
+        var latlngInputs;
+        var marker = new google.maps.Marker;
+        var geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(-12.0433256, -77.0508418);
+        var mapOptions = {
+            zoom: 4,
+            center: latlng,
+            zoomControl: true,
+            mapTypeControl: true,
+            scaleControl: true,
+            streetViewControl: false,
+            rotateControl: true,
+            fullscreenControl: true,
+        }
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
         contnombre.html(nombre.val().length+'/70');
-        contdir.html(dir.val().length+'/255');
+        contdir.html(direccion.val().length+'/255');
+        updateMap();
 
         nombre.keyup(function() {
             contnombre.html($(this).val().length+'/70');
         });
-        dir.keyup(function() {
+        direccion.keyup(function() {
             contdir.html($(this).val().length+'/255');
+            let self = this;
+            var address = $(this).val();
+            if (self.timer)
+                clearTimeout(self.timer);
+
+            self.timer = setTimeout(function() {
+                self.timer = null;
+                console.log('executing');
+                geocoder.geocode( { 'address': address}, function(results, status) {
+                    if (status == 'OK') {
+                        latitud.val(results[0].geometry.location.lat);
+                        longitud.val(results[0].geometry.location.lng);
+                        updateMap();
+                    }
+                });
+            }, 1000);
+        });
+
+        function updateMap(){
+            if( latitud.val()!=null && longitud.val()!=null && !isNaN(latitud.val()) && !isNaN(longitud.val())){
+                latlngInputs = {
+                    lat: parseFloat(latitud.val()),
+                    lng: parseFloat(longitud.val()),
+                };
+                marker.setMap(null);
+                map.setCenter(latlngInputs);
+                map.setZoom(14);
+                marker = new google.maps.Marker({
+                    map: map,
+                    position: latlngInputs,
+                });
+            }
+        }
+
+        longitud.change(()=>{
+            let self = this;
+            if (self.timer)
+                clearTimeout(self.timer);
+
+            self.timer = setTimeout(function ()
+            {
+                self.timer = null;
+                console.log('executing lat');
+                updateMap();
+            }, 1000);
+
+        });
+        latitud.change(()=>{
+            let self = this;
+            if (self.timer)
+                clearTimeout(self.timer);
+
+            self.timer = setTimeout(function ()
+            {
+                self.timer = null;
+                console.log('executing long');
+                updateMap();
+            }, 1000);
         });
     });
-</script>
-<script>
-    var uploadField = document.getElementById("foto");
-
-    uploadField.onchange = function() {
-        if(this.files[0].size > 5248000){
-            alert("El archivo es muy grande!");
-            this.value = "";
-        };
-    };
 </script>
 <script type="text/javascript" th:if="${funcionesVigentes != null}">
     $(window).on('load', function() {
