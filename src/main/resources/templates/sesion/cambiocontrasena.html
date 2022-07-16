@@ -4,7 +4,7 @@
 <head>
     <nav th:replace="fragmentos/navbar-basica.html :: navbar"></nav>
 <body>
-<div class="container py-5 d-flex justify-content-center align-items-center" style="height: -webkit-fill-available;">
+<div class="container py-5 d-flex justify-content-center align-items-center" style="min-height: 300px; height: -webkit-fill-available;">
     <div class="p-4 bg-dark text-white rounded-7 w-50" >
         <div th:unless="${noencontrado==null}">
             <div class=" title-24 mb-3 text-white text-center">
@@ -23,24 +23,26 @@
 
                 <div class=" text-center mb-4 align-items-center d-flex" style="min-width: 200px;">
                     <div  style="padding-left: 90px; padding-right: 90px" class="w-100" >
-                        <div class="row mb-4">
-                            <div class="col">
+                        <div class="row">
+                            <div class="col mb-5">
                                 <div class="form-outline form-white" id="contrasenadiv">
                                     <i class="fas fa-eye-slash trailing showpass"></i>
                                     <input name="contrasena" type="password" id="contrasena" class="form-control"
                                            th:classappend="${error!=null?'is-invalid':''}"/>
+                                    <div class="text-start form-helper">Debe tener entre 8 y 72 caracteres, incluir mayúsculas, minúsculas y números</div>
                                     <label class="form-label" for="contrasena">Contraseña</label>
                                 </div>
                                 <div class="text-start text-danger" th:text="${error}" th:unless="${error != null and error.contains('coinciden')}"></div>
                             </div>
                         </div>
 
-                        <div class="row mb-4">
-                            <div class="col">
+                        <div class="row">
+                            <div class="col mb-5">
                                 <div class="form-outline form-white" id="ccontrasenadiv">
                                     <i class="fas fa-eye-slash trailing showpass"></i>
                                     <input name="confcontrasena" type="password" id="confcontrasena" class="form-control"
                                            th:classappend="${error!=null?'is-invalid':''}"/>
+                                    <div class="text-start form-helper"></div>
                                     <label class="form-label" for="confcontrasena">Confirmar contraseña</label>
                                 </div>
                                 <div class="text-start text-danger" th:text="${error}" th:if="${error !=null and error.contains('coinciden')}"></div>
@@ -88,6 +90,35 @@
         var ccdiv = $("#ccontrasenadiv");
         var showpass = cdiv.find(".showpass");
         var cshowpass = ccdiv.find(".showpass");
+        var ctimer;
+        var cctimer;
+        var expr = '^(?=.*[0-9])(?=.*[a-zÀ-ȕ])(?=.*[A-Z])(?=\\S+$).{8,72}$';
+
+        contrasena.keyup(function() {
+            clearTimeout(ctimer);
+            ctimer = setTimeout(function() {
+                if(contrasena.val().match(expr)){
+                    contrasena.parent().find('.form-helper').html('');
+                    contrasena.parent().parent().removeClass('mb-5');
+                    contrasena.parent().parent().addClass('mb-4');
+                }else{
+                    contrasena.parent().find('.form-helper').html('Debe tener entre 8 y 72 caracteres, incluir mayúsculas, minúsculas y números');
+                    contrasena.parent().parent().removeClass('mb-4');
+                    contrasena.parent().parent().addClass('mb-5');
+                }
+            }, 800);
+        });
+
+        ccontrasena.keyup(function() {
+            clearTimeout(cctimer);
+            cctimer = setTimeout(function() {
+                if(contrasena.val() === ccontrasena.val()){
+                    ccontrasena.parent().find('.form-helper').html('');
+                }else{
+                    ccontrasena.parent().find('.form-helper').html('Las contraseñas no coinciden');
+                }
+            }, 800);
+        });
 
         function changeType(){
             if(contrasena.prop('type')==='password'){

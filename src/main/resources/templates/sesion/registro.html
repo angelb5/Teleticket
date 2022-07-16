@@ -105,6 +105,7 @@
                                         <i class="fas fa-eye-slash trailing showpass"></i>
                                         <input name="contrasena" type="password" id="contrasena" class="form-control"
                                                th:classappend="${#fields.hasErrors('global')?'is-invalid':''}"/>
+                                        <div class="form-helper">Debe tener entre 8 y 72 caracteres, incluir mayúsculas, minúsculas y números</div>
                                         <label class="form-label" for="contrasena">Contraseña</label>
                                     </div>
                                     <div class="text-danger" th:each="err : ${#fields.errors('global')}"
@@ -118,6 +119,7 @@
                                         <i class="fas fa-eye-slash trailing showpass"></i>
                                         <input name="confcontrasena" type="password" id="confcontrasena" class="form-control"
                                                th:classappend="${#fields.hasErrors('global')?'is-invalid':''}"/>
+                                        <div class="form-helper"></div>
                                         <label class="form-label" for="confcontrasena">Confirmar contraseña</label>
                                     </div>
                                     <div class="text-danger" th:each="err : ${#fields.errors('global')}"
@@ -167,6 +169,31 @@
         var ccdiv = $("#ccontrasenadiv");
         var showpass = cdiv.find(".showpass");
         var cshowpass = ccdiv.find(".showpass");
+        var ctimer;
+        var cctimer;
+        var expr = '^(?=.*[0-9])(?=.*[a-zÀ-ȕ])(?=.*[A-Z])(?=\\S+$).{8,72}$';
+
+        contrasena.keyup(function() {
+            clearTimeout(ctimer);
+            ctimer = setTimeout(function() {
+                if(contrasena.val().match(expr)){
+                    contrasena.parent().find('.form-helper').html('');
+                }else{
+                    contrasena.parent().find('.form-helper').html('Debe tener entre 8 y 72 caracteres, incluir mayúsculas, minúsculas y números');
+                }
+            }, 800);
+        });
+
+        ccontrasena.keyup(function() {
+            clearTimeout(cctimer);
+            cctimer = setTimeout(function() {
+                if(contrasena.val() === ccontrasena.val()){
+                    ccontrasena.parent().find('.form-helper').html('');
+                }else{
+                    ccontrasena.parent().find('.form-helper').html('Las contraseñas no coinciden');
+                }
+            }, 800);
+        });
 
         function changeType(){
             if(contrasena.prop('type')==='password'){

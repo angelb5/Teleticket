@@ -146,22 +146,31 @@
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body py-4">
-                    <label class="form-label">Contraseña Actual</label>
-                    <div class="form-outline mb-3" id="actualdiv">
-                        <i class="fas fa-eye-slash trailing showpass"></i>
-                        <input type="password" name="pwactual" class="form-control"/>
+                    <div class="mb-3">
+                        <label class="form-label">Contraseña Actual</label>
+                        <div class="form-outline" id="actualdiv">
+                            <i class="fas fa-eye-slash trailing showpass"></i>
+                            <input type="password" name="pwactual" class="form-control"/>
+                        </div>
                     </div>
-                    <label class="form-label">Nueva Contraseña</label>
-                    <div class="form-outline mb-3" id="contrasenadiv">
-                        <i class="fas fa-eye-slash trailing showpass"></i>
-                        <input type="password" name="contrasena" id="contrasena" class="form-control mb-3"/>
+                    <div class="mb-4">
+                        <label class="form-label">Nueva Contraseña</label>
+                        <div class="form-outline" id="contrasenadiv">
+                            <i class="fas fa-eye-slash trailing showpass"></i>
+                            <input type="password" name="contrasena" id="contrasena" class="form-control"/>
+                            <div class="text-start form-helper">Debe tener entre 8 y 72 caracteres, incluir mayúsculas, minúsculas y números</div>
+                        </div>
                     </div>
-                    <label class="form-label">Confirmar Contraseña</label>
-                    <div class="form-outline mb-3" id="ccontrasenadiv">
-                        <i class="fas fa-eye-slash trailing showpass"></i>
-                        <input type="password" name="confcontrasena" id="confcontrasena" class="form-control mb-3"/>
+                    <div class="mb-3">
+                        <label class="form-label">Confirmar Contraseña</label>
+                        <div class="form-outline mb-3" id="ccontrasenadiv">
+                            <i class="fas fa-eye-slash trailing showpass"></i>
+                            <input type="password" name="confcontrasena" id="confcontrasena" class="form-control"/>
+                            <div class="text-start form-helper"></div>
+                        </div>
                     </div>
-                    <div class="text-danger mb-3" th:if="${contrasenaerrores!=null}" th:text="${contrasenaerrores}">
+                    <div class="mb-3">
+                        <div class="text-danger" th:if="${contrasenaerrores!=null}" th:text="${contrasenaerrores}"></div>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center border-0">
@@ -217,6 +226,35 @@
         var ccdiv = $("#ccontrasenadiv");
         var showpass = cdiv.find(".showpass");
         var cshowpass = ccdiv.find(".showpass");
+        var ctimer;
+        var cctimer;
+        var expr = '^(?=.*[0-9])(?=.*[a-zÀ-ȕ])(?=.*[A-Z])(?=\\S+$).{8,72}$';
+
+        contrasena.keyup(function() {
+            clearTimeout(ctimer);
+            ctimer = setTimeout(function() {
+                if(contrasena.val().match(expr)){
+                    contrasena.parent().find('.form-helper').html('');
+                    contrasena.parent().parent().removeClass('mb-4');
+                    contrasena.parent().parent().addClass('mb-3');
+                }else{
+                    contrasena.parent().find('.form-helper').html('Debe tener entre 8 y 72 caracteres, incluir mayúsculas, minúsculas y números');
+                    contrasena.parent().parent().removeClass('mb-3');
+                    contrasena.parent().parent().addClass('mb-4');
+                }
+            }, 800);
+        });
+
+        ccontrasena.keyup(function() {
+            clearTimeout(cctimer);
+            cctimer = setTimeout(function() {
+                if(contrasena.val() === ccontrasena.val()){
+                    ccontrasena.parent().find('.form-helper').html('');
+                }else{
+                    ccontrasena.parent().find('.form-helper').html('Las contraseñas no coinciden');
+                }
+            }, 800);
+        });
 
         function changeType(){
             if(contrasena.prop('type')==='password'){
