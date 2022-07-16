@@ -98,7 +98,7 @@ public class OperadorEstadisticasController {
                 oEstadisticas.setFuncionMejorCalificada(mejorCalificada.orElse(null));
                 responseJson.put("result", "success");
                 responseJson.put("obra", oEstadisticas);
-                return ResponseEntity.ok(responseJson);
+            return ResponseEntity.ok(responseJson);
             } else {
                 responseJson.put("msg", "Obra no encontrada");
             }
@@ -107,5 +107,5 @@ public class OperadorEstadisticasController {
         }
         responseJson.put("result", "failure");
         return ResponseEntity.badRequest().body(responseJson);
-        }
+    }
 }

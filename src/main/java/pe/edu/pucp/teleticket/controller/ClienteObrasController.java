@@ -1,6 +1,7 @@
 package pe.edu.pucp.teleticket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,10 @@ import java.util.*;
 @Controller
 @RequestMapping("/obras")
 public class ClienteObrasController {
+
+    @Value("${aplication.domain}")
+    private String DOMINIO;
+
     private final int obrasPaginas =8;
 
     @Autowired
@@ -113,7 +118,7 @@ public class ClienteObrasController {
         model.addAttribute("obra", optionalObra.get());
         model.addAttribute("fotos", fotoObraRepository.findAllIdByIdObras(id));
         model.addAttribute("puntaje", calificacionObraRepository.getPuntajeByIdobra(id));
-
+        model.addAttribute("dominio", DOMINIO);
         return "cliente/obras/obra";
     }
 

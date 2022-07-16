@@ -2,6 +2,7 @@ package pe.edu.pucp.teleticket.controller;
 
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -255,6 +257,37 @@ public class CarritoController {
     }
 
 
+    @ResponseBody
+    @GetMapping("/getnumtickets/{idfuncion}")
+    public ResponseEntity<HashMap<String, Object>> anadirCarrito(@PathVariable("idfuncion") int idfuncion, RedirectAttributes attr, HttpSession session, Model model){
+        HashMap<String, Object> responseJson = new HashMap<>();
+        Object object = session.getAttribute("usuario");
+        if(!(object instanceof Cliente clienteSes)){
+            responseJson.put("result", "failure");
+            responseJson.put("msg", "No es un cliente");
+            return ResponseEntity.badRequest().body(responseJson);
+        }
+
+        if(historialRepository.findCompraByIdclientesAndIdfunciones(clienteSes.getId(),idfuncion).isPresent()){
+            responseJson.put("result", "success");
+            responseJson.put("estado", "Comprado");
+            responseJson.put("msg", "Ya tienes tickets para esta función");
+            return ResponseEntity.ok(responseJson);
+        }
+
+        Optional<Historial> optReserva = historialRepository.findReservaByIdclientesAndIdfunciones(clienteSes.getId(), idfuncion);
+        if(optReserva.isPresent()){
+            Historial reserva = optReserva.get();
+            responseJson.put("result", "success");
+            responseJson.put("estado", "Reserva");
+            responseJson.put("numtickets", reserva.getNumtickets());
+            return ResponseEntity.ok(responseJson);
+        }
+
+        responseJson.put("result", "success");
+        responseJson.put("msg", "No hay compras ni reservas para ");
+        return ResponseEntity.ok(responseJson);
+    }
 
 
 }

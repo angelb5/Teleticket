@@ -282,21 +282,41 @@
                         Elige otra función u otra obra
                     </div>
                     <div class="mb-2">
-                        <a class="text-redtele" id="gestionobra" th:href="@{/obras}">
+                        <a class="text-redtele" th:href="@{/obras}">
                             <span class="fw-bold">Ver obras en cartelera</span>
                             <i class="ms-1 fas fa-chevron-circle-right"></i>
                         </a>
                     </div>
                 </div>
             </div>
+            <div class="modal-body text-center border-0 pb-0" id="bodycompramsg">
+                <div class="my-3" >
+                    <img th:src="@{/img/logo-teleticket-alt.png}" width="150px">
+                </div>
 
+                <div class="mb-4">
+                    <div class="fs-20 fw-bold mb-1">
+                        ¡Ya tienes tickets para esta función!
+                    </div>
+                    <div class="mb-1">
+                        Puedes ver tus tickets comprados en tu perfil
+                    </div>
+                    <div class="mb-2">
+                        <a class="text-redtele" th:href="@{/cliente/tickets}">
+                            <span class="fw-bold">Mis tickets</span>
+                            <i class="ms-1 fas fa-chevron-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <div th:replace="fragmentos/navbar.html :: menu"></div>
 </body>
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
     var maxnum;
     var fname;
     function setFuncion(id){
@@ -305,22 +325,38 @@
         fname = button.getAttribute("data-fname");
         var sede = button.getAttribute("data-sede");
         var costo = button.getAttribute("data-price");
+        var numtickets = 1;
         if(maxnum==0){
             $('#bodyagotada').show();
+            $('#bodycompramsg').hide();
             $('#bodycompra').hide();
         } else{
             $('#bodycompra').show();
+            $('#bodycompramsg').hide();
             $('#bodyagotada').hide();
             $('.modal-body #funcion').text(fname);
             $('.modal-body #sede').text(sede);
             $('.ticket-panel #costo').text(Number(costo).toFixed(2));
-            $('.ticket-panel #numtickets').val(1);
+            $('.ticket-panel #numtickets').val(numtickets);
             $('.ticket-panel #funcionid').val(id);
             $('#maximonum').text("Máximo: " + maxnum);
         }
+        $.ajax({
+            method:"GET",
+            url: "http://" + [[${dominio}]] + "/carrito/getnumtickets/"+id
+        }).done(function (response){
+            if(response.estado==='Comprado'){
+                $('#bodycompramsg').show();
+                $('#bodyagotada').hide();
+                $('#bodycompra').hide();
+            }else if(response.estado==='Reserva'){
+                $('.ticket-panel #numtickets').val(response.numtickets);
+            }
+
+        })
     }
     function plusTicket(){
-        var val = parseInt($('.ticket-panel #numtickets').val());
+        let val = parseInt($('.ticket-panel #numtickets').val());
 
         if(val<maxnum){
             $('.ticket-panel #numtickets').val(val+1);
@@ -328,11 +364,12 @@
     }
 
     function minusTicket(){
-        var val = parseInt($('.ticket-panel #numtickets').val());
+        let val = parseInt($('.ticket-panel #numtickets').val());
         if(val>1){
             $('.ticket-panel #numtickets').val(val-1);
         }
     }
+    /*]]>*/
 </script>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <script  type="text/javascript" th:src="@{/js/busqueda.js}"></script>
