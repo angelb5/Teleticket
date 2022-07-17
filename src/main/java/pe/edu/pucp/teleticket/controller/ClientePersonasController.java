@@ -22,9 +22,7 @@ import java.util.*;
 @Controller
 @RequestMapping("/personas")
 public class ClientePersonasController {
-    private final int personasPaginas =6;
-    private final int funcionesPaginas = 5;
-    private final int maximoDestacados = 8;
+    private final int personasPaginas =10;
 
     @Autowired
     PersonaRepository personaRepository;
