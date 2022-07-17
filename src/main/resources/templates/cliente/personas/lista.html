@@ -52,6 +52,9 @@
                                 <div class="card-tele-subtitle" th:if="${personas.ptitulo!=null}">
                                     Actúa en <i class=" fw-bold " th:text="${personas.ptitulo}"></i>
                                 </div>
+                                <div class="card-tele-subtitle" th:if="${personas.ptitulo==null}">
+                                    Esta persona no tiene obras asociadas
+                                </div>
                             </div>
 
                             <div class="text-end justify-content-end d-flex align-items-end">
