@@ -23,7 +23,7 @@ import java.util.*;
 @RequestMapping("/operador/obras")
 public class OperadorObrasController {
 
-    private final int obrasPaginas = 8;
+    private final int obrasPaginas = 12;
     private final int funcionesPaginas = 5;
     private final int maximoDestacados = 8;
 

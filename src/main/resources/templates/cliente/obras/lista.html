@@ -9,7 +9,7 @@
     <!-- Lista obras -->
 
     <div class="title-24" th:unless="${param.busqueda!=null && param.busqueda[0].toString()!=''}" >
-        Mostrando todas las Obras en cartelera
+        Mostrando todas las obras en cartelera
     </div>
 
     <div class="title-24" th:if="${param.busqueda!=null && param.busqueda[0].toString()!=''}" th:text="${'Mostrando resultados para &quot;'+ param.busqueda + '&quot;' }">
@@ -26,32 +26,34 @@
 
     <div class="row row-cols-1 row-cols-md-4 g-4 py-3" th:unless="${listaObras.isEmpty()}">
         <div class="col" th:each="obras : ${listaObras}">
-            <!--Card-->
-            <div class="col">
-                <div class="card h-100 position-relative">
-                    <a class="card-tele" href="#">
-                        <div class="card-tele-img">
-                            <img th:src="@{'/image/obra/'+${obras.fotoprincipal}}" alt="Obras"
-                                 class="img-fluid rounded-start img-cover"/>
+            <div class="h-100 position-relative">
+                <div class=" card card-tele" th:href="@{'/obras/' + ${obras.id}}">
+                    <div class="card-tele-img">
+                        <img th:src="@{'/image/obra/'+${obras.fotoprincipal}}" th:alt="${obras.otitulo}"
+                             class="img-fluid img-cover"/>
+
+                        <div class="middle-content col">
+                            <a class="btn btn-redtele" th:href="@{'/obras/'+ ${obras.id}}">
+                                <i class="fas fa-ticket-alt"></i>
+                                Comprar
+                            </a>
                         </div>
-                        <div class="card-tele-body">
-                            <div class="card-tele-title" th:text="${obras.otitulo}">Antes de decirte adiós
-                            </div>
+                    </div>
+                    <div class="card-tele-body">
+                        <div class="card-tele-title" th:text="${obras.otitulo}">
                         </div>
-                    </a>
-                    <div class="card-footer card-tele-footer">
+                    </div>
+                    <div class="card-tele-footer">
                         <div class="d-flex align-items-end">
                             <span>Desde&nbsp;&nbsp;</span>
                             <span class="fw-bold fs-14" th:text="'S/ '+${#numbers.formatDecimal(obras.minprecio,1,2,'POINT')}">S/ 35.00</span>
                         </div>
-
-                        <a class="btn btn-redtele" th:href="@{'/obras/'+ ${obras.id}}">
+                        <a class="btn btn-redtele btn-comprar" th:href="@{'/obras/'+ ${obras.id}}">
                             Comprar
                         </a>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
