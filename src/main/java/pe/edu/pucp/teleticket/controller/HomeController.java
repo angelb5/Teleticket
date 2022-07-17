@@ -77,15 +77,17 @@ public class HomeController {
         busqueda = busqueda.trim();
         //corregir listas
         Pageable lista ;
-        lista = PageRequest.of(0, 6);
-
+        lista = PageRequest.of(0, 8);
         List<ObrasListado> listaObras = obraRepository.listadoObrasCliente(busqueda, lista);
-        List<PersonasListado> listaActores = personaRepository.listadoPersonascliente(busqueda, lista);
         List<Sede> listaSedes = sedeRepository.listarSedesCliente(busqueda, lista);
+        lista = PageRequest.of(0, 4);
+        List<PersonasListado> listaActores = personaRepository.listadoPersonascliente(busqueda, lista);
 
         model.addAttribute("listaObras", listaObras);
         model.addAttribute("listaActores", listaActores);
         model.addAttribute("listaSedes", listaSedes);
+        busqueda=busqueda.replaceAll(" ", "+").toLowerCase();
+        model.addAttribute("busqueda",busqueda);
 
         return "cliente/todo";
     }

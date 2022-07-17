@@ -20099,3 +20099,20 @@ img.loading {
 .showpass{
   cursor:pointer;
 }
+
+.actor-image-card{
+  min-width: 120px;
+  width: 120px;
+  height: 120px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.actor-image-card img {
+  display: inline;
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}

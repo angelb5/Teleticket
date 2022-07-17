@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Personas')"></head>
-<body>
+<body class="bg-lightgrey">
 <nav th:replace="fragmentos/navbar.html :: navbar('personas')"></nav>
 <!--Contenidos-->
 <div class="container py-3 ">
@@ -22,41 +22,28 @@
         </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4 py-3" th:unless="${listaActores.isEmpty()}">
+    <div class="row row-cols-1 row-cols-lg-2 g-4 py-3" th:unless="${listaActores.isEmpty()}">
         <div class="col" th:each="personas : ${listaActores}">
-            <!--Card 1-->
-
-                <div class="card h-210 position-relative">
-                    <div class="row h-100">
-                        <div class="col-md-5 h-100 pe-0">
-                                <img th:src="@{'/image/persona/'+${personas.id}}"
-                                     alt="Persona" class="img-fluid rounded-start img-cover"/>
+                <div class="card card-tele position-relative" style="height: max-content">
+                    <div class="row py-2 h-100 card-tele-body">
+                        <div class="col-auto h-100 pe-0 align-self-center">
+                            <div class="actor-image-card">
+                                <a class="link-actor" th:href="@{'/personas/'+${personas.id}}" >
+                                    <img th:src="@{'/image/persona/'+${personas.id}}" alt="Persona" class="img-fluid"/>
+                                </a>
+                            </div>
                         </div>
 
-                        <div class="col-md-7 py-3 px-4">
-                            <div class="card-tele-title " th:text="${personas.nombre}">
-                            </div>
+                        <div class="col px-4 align-self-center">
+                            <div class="card-tele-title " th:text="${personas.nombre}"></div>
 
-                            <div style="height: 100px">
-                                <div class="mb-2" th:if="${personas.pactuacion.isPresent()}">
-                                <span th:if="${personas.pactuacion.isPresent()}" th:text="'Actuación: '+${personas.pactuacion.get()}+'/5'">
+                            <div class="card-tele-subtitle" th:if="${personas.ptitulo!=null}">
+                                <span >
+                                    Actúa en <i class="fs-14 fw-bold " th:text="${personas.ptitulo}"></i>
                                 </span>
-                                    <i class="ms-1 fa-solid fa-star "></i>
-                                </div>
-                                <div class="mb-2" th:if="${personas.pdireccion.isPresent()}" >
-                                <span th:if="${personas.pdireccion.isPresent()}" th:text="'Dirección: '+${personas.pdireccion.get()}+'/5'">
-                                </span>
-                                    <i class="ms-1 fa-solid fa-star "></i>
-                                </div>
-
-                                <div class="card-tele-subtitle" th:if="${personas.ptitulo!=null}">
-                                    Actúa en <i class=" fw-bold " th:text="${personas.ptitulo}"></i>
-                                </div>
-                                <div class="card-tele-subtitle" th:if="${personas.ptitulo==null}">
-                                    Esta persona no tiene obras asociadas
-                                </div>
                             </div>
-
+                        </div>
+                        <div class="col-auto align-self-center">
                             <div class="text-end justify-content-end d-flex align-items-end">
                                 <a class="btn btn-redtele" th:href="@{'/personas/'+${personas.id}}">Ver más</a>
                             </div>
