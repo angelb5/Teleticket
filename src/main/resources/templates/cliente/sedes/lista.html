@@ -22,34 +22,29 @@
         </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 g-4 py-3" th:unless="${listaSedes.isEmpty()}">
-        <!--Card 1-->
+    <div class="row row-cols-1 row-cols-md-4 g-4 py-3 mb-4" th:unless="${listaSedes.isEmpty()}">
         <div class="col" th:each="sede : ${listaSedes}">
             <div class="card h-100 position-relative">
-                <div class="row h-100">
-
-                    <div class="col-md-6 pe-0">
-                        <div style="width: 100%; height: 210px">
+                <div class="card-tele">
+                    <div class="card-tele-img">
+                        <a th:href="@{'/sedes/'+ ${sede.id}}" >
                             <img th:src="@{'/image/sede/'+${sede.fotoprincipal}}" alt="Sede" class="img-fluid rounded-start img-cover"/>
-                        </div>
+                        </a>
+
                     </div>
-
-                    <div class="col-md-6 p-4 d-flex flex-column justify-content-between">
-                        <div>
-                            <div class="fw-bold mb-2 fs-14 card-tele-title" th:text="${sede.nombre}">Sede San Borja</div>
-                            <div class="mb-2 card-tele-subtitle" th:text="${sede.direccion}">
-                                Av. Javier Prado Este 2225, San Borja 15021
-                            </div>
-                        </div>
-
-                        <div class="text-end ">
+                    <div class="card-tele-body pb-2">
+                        <div class="card-tele-title" th:text="${sede.nombre}"></div>
+                        <div class="card-tele-subtitle" th:text="${sede.direccion}"></div>
+                    </div>
+                    <div class="card-tele-footer justify-content-end">
+                        <div class="d-flex align-items-end">
                             <a class="btn btn-redtele" th:href="@{'/sedes/'+ ${sede.id}}">Ver más</a>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
-
     </div>
 
     <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>

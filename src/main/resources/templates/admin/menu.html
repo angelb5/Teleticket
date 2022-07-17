@@ -11,15 +11,17 @@
     </div>
 
     <div class="row row-cols-1 row-cols-md-4 g-4 py-3 mb-4">
-        <!--Card 1-->
         <div class="col" th:each="sede : ${sedesPreferidas}">
             <div class="card h-100 position-relative">
-                <a class="card-tele" th:href="@{'/admin/sedes/gestion/'+ ${sede.id}}">
+                <div class="card-tele">
                     <div class="card-tele-img">
-                        <img th:src="@{'/image/sede/'+${sede.fotoprincipal}}" alt="Sede" class="img-fluid rounded-start img-cover"/>
+                        <a th:href="@{'/admin/sedes/gestion/'+ ${sede.id}}" >
+                            <img th:src="@{'/image/sede/'+${sede.fotoprincipal}}" alt="Sede" class="img-fluid rounded-start img-cover"/>
+                        </a>
+
                     </div>
                     <div class="card-tele-body">
-                        <div class="card-tele-title fs-16" th:text="${sede.nombre}">Sede San Borja</div>
+                        <div class="card-tele-title" th:text="${sede.nombre}"></div>
                         <div class="d-flex justify-content-between p-md-1">
                             <div class="d-flex flex-row">
                                 <div class="align-self-start">
@@ -50,15 +52,16 @@
                         </div>
 
                     </div>
-                </a>
-                <div class="card-footer card-tele-footer justify-content-end">
-                    <div class="d-flex align-items-end">
-                        <a class="text-redtele my-2" id="gestionobra" th:href="@{'/admin/sedes/gestion/'+ ${sede.id}}">
-                            <span class="fw-bold"> Gestión de sede</span>
-                            <i class="ms-1 fas fa-chevron-circle-right"></i>
-                        </a>
+                    <div class="card-tele-footer justify-content-end">
+                        <div class="d-flex align-items-end">
+                            <a class="text-redtele my-2 fs-13" id="gestionobra" th:href="@{'/admin/sedes/gestion/'+ ${sede.id}}">
+                                <span class="fw-bold"> Gestión de sede</span>
+                                <i class="ms-1 fas fa-chevron-circle-right"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

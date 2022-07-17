@@ -31,7 +31,7 @@ import java.util.Optional;
 @RequestMapping("/admin/sedes")
 public class AdminSedesController {
 
-    private final int sedesPaginas = 6;
+    private final int sedesPaginas = 12;
     private final int salasPaginas = 5;
     private final List<String> formatos= Arrays.asList("media/png","media/jpeg", "image/jpeg", "image/png");
 

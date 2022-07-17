@@ -19284,6 +19284,10 @@ a{
   justify-content: space-between;
 }
 
+.card-tele-footer a{
+  z-index: 10
+}
+
 .btn-comprar{
   z-index: 10;
   box-shadow: none;
