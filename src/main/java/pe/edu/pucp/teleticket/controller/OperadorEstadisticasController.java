@@ -51,17 +51,14 @@ public class OperadorEstadisticasController {
         List<PersonasListado> actores= personaRepository.top5Actores();
         Integer obras = obraRepository.contarListaObrasCliente("");
 
-        Integer totalTickets= historialRepository.ticketsTotale();
-        float venta=historialRepository.totalVenta();
-
         model.addAttribute("listaObras", obraRepository.listarObrasConFunciones());
         model.addAttribute("directores",directores);
         model.addAttribute("actores",actores);
         model.addAttribute("totalCliente",clienteRepository.count());
         model.addAttribute("totalObras",obras);
         model.addAttribute("totalAD",personaRepository.count());
-        model.addAttribute("totalTickets",totalTickets);
-        model.addAttribute("ventas",venta);
+        model.addAttribute("totalTickets",historialRepository.ticketsTotale());
+        model.addAttribute("ventas",historialRepository.totalVenta());
         model.addAttribute("totalSedes", sedeRepository.countAllByEstadoEqualsIgnoreCase("Disponible"));
         model.addAttribute("dominio", DOMINIO);
         return "operador/estadisticas/estadisticas";
