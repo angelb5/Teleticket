@@ -125,13 +125,13 @@ public interface HistorialRepository extends JpaRepository<Historial, Integer> {
 
     @Query(value = "select sum(numtickets) as tickets " +
             "from historialcompras h " +
-            "where TIMESTAMPDIFF(DAY,current_timestamp(), h.fechacompra)<=30 " +
+            "where TIMESTAMPDIFF(DAY, h.fechacompra, current_timestamp())<=30 " +
             "and estado='Comprado'",nativeQuery = true)
     Integer ticketsTotale();
 
     @Query(value = "select sum(total) as tickets " +
             "from historialcompras h " +
-            "where TIMESTAMPDIFF(DAY,current_timestamp(), h.fechacompra)<=30 " +
+            "where TIMESTAMPDIFF(DAY, h.fechacompra, current_timestamp())<=30 " +
             "and estado='Comprado'",nativeQuery = true)
     Float totalVenta();
 }
