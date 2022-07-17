@@ -133,5 +133,5 @@ public interface HistorialRepository extends JpaRepository<Historial, Integer> {
             "from historialcompras " +
             "where timestampdiff(DAY,date(fechacompra),date(now()))<=30 " +
             "and estado='Comprado'",nativeQuery = true)
-    float totalVenta();
+    Float totalVenta();
 }

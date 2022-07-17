@@ -19,67 +19,72 @@
 <!--Contenidos-->
 <div class="container py-2 ">
 
-    <div class="title-22 py-4">
-        Gestión de funciones
-    </div>
-
-    <form method="get" th:action="@{|/operador/funciones|}">
-        <div class="row justify-content-end">
-            <div class="col-auto">
-                <div class="text-start" style="min-width: 100px">
-                    <label class="form-label">Mes</label>
-                    <select class="demo-default fs-13" aria-label="Default select example" name="mes" id="mes">
-                        <option value="" selected>Todos</option>
-                        <option th:each="mes: ${meses}" th:value="${mes}"
-                                th:text="${mes}" th:selected="${mes == #httpServletRequest.getParameter('mes')}">
-                        </option>
-                    </select>
-                    <script>
-                        $("select[name*='mes']").selectize({
-                            sortField: 'text'
-                        });
-                    </script>
-                </div>
-            </div>
-            <div class="col-auto">
-                <div class="text-start" style="min-width: 200px">
-                    <label class="form-label">Sede</label>
-                    <select class="demo-default fs-13" aria-label="Default select example" name="sede" id="sede">
-                        <option value="">Todas</option>
-                        <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.id}"
-                                th:selected="${sede.id.toString() == #httpServletRequest.getParameter('sede')}">Miraflores
-                        </option>
-                    </select>
-                    <script>
-                        $("select[name*='sede']").selectize({
-                            sortField: 'text'
-                        });
-                    </script>
-                </div>
-            </div>
-            <div class="col-auto">
-                <div class="text-start" style="min-width: 200px">
-                    <label class="form-label">Obra</label>
-                    <select class=" fs-13" aria-label="Default select example" name="obra" id="obra">
-                        <option value="">Todas</option>
-                        <option th:each="obra : ${listaObras}" th:text="${obra.titulo}" th:value="${obra.id}"
-                                th:selected="${obra.id.toString() == #httpServletRequest.getParameter('obra')}">
-                        </option>
-                    </select>
-                    <script>
-                        $("select[name*='obra']").selectize({
-                            sortField: 'text'
-                        });
-                    </script>
-                </div>
-            </div>
-            <div class="col-auto d-flex align-items-end">
-                <button type="submit" class="btn btn-light p-2">
-                    <span class="input-group-text border-0"><i class="fas fa-search" id="mdb-5-search-icon"></i></span>
-                </button>
+    <div class="row mt-4 mb-5">
+        <div class="col">
+            <div class="title-26 ">
+                Gestión de funciones
             </div>
         </div>
-    </form>
+        <div class="col-auto">
+            <form method="get" th:action="@{|/operador/funciones|}">
+                <div class="row justify-content-end">
+                    <div class="col-auto">
+                        <div class="text-start" style="min-width: 100px">
+                            <label class="form-label">Mes</label>
+                            <select class="demo-default fs-13" aria-label="Default select example" name="mes" id="mes">
+                                <option value="" selected>Todos</option>
+                                <option th:each="mes: ${meses}" th:value="${mes}"
+                                        th:text="${mes}" th:selected="${mes == #httpServletRequest.getParameter('mes')}">
+                                </option>
+                            </select>
+                            <script>
+                                $("select[name*='mes']").selectize({
+                                    sortField: 'text'
+                                });
+                            </script>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="text-start" style="min-width: 200px">
+                            <label class="form-label">Sede</label>
+                            <select class="demo-default fs-13" aria-label="Default select example" name="sede" id="sede">
+                                <option value="">Todas</option>
+                                <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.id}"
+                                        th:selected="${sede.id.toString() == #httpServletRequest.getParameter('sede')}">Miraflores
+                                </option>
+                            </select>
+                            <script>
+                                $("select[name*='sede']").selectize({
+                                    sortField: 'text'
+                                });
+                            </script>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="text-start" style="min-width: 200px">
+                            <label class="form-label">Obra</label>
+                            <select class=" fs-13" aria-label="Default select example" name="obra" id="obra">
+                                <option value="">Todas</option>
+                                <option th:each="obra : ${listaObras}" th:text="${obra.titulo}" th:value="${obra.id}"
+                                        th:selected="${obra.id.toString() == #httpServletRequest.getParameter('obra')}">
+                                </option>
+                            </select>
+                            <script>
+                                $("select[name*='obra']").selectize({
+                                    sortField: 'text'
+                                });
+                            </script>
+                        </div>
+                    </div>
+                    <div class="col-auto d-flex align-items-end">
+                        <button type="submit" class="btn btn-light p-2">
+                            <span class="input-group-text border-0"><i class="fas fa-search" id="mdb-5-search-icon"></i></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <div th:if="${listaFunciones.isEmpty()}" style="border-radius: 20px; background: #e6e6e6;margin-top: 30px">
         <div class="container py-4" style="display: flex; text-align: center; justify-content: center">

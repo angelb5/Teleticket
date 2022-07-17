@@ -35,9 +35,6 @@ public class AdminHomeController {
         List<PersonasListado> directores= personaRepository.top5Directores();
         List<PersonasListado> actores= personaRepository.top5Actores();
 
-        Integer totalTickets= historialRepository.ticketsTotale();
-        float venta=historialRepository.totalVenta();
-
         model.addAttribute("directores",directores);
         model.addAttribute("actores",actores);
         model.addAttribute("totalOperadores", operadorRepository.count());
@@ -45,8 +42,8 @@ public class AdminHomeController {
         model.addAttribute("totalAD",personaRepository.count());
         model.addAttribute("ADDisponibles",personaRepository.countAllByEstadoEqualsIgnoreCase("Disponible"));
         model.addAttribute("ADNoDisponles", personaRepository.countAllByEstadoEqualsIgnoreCase("No disponible"));
-        model.addAttribute("totalTickets",totalTickets);
-        model.addAttribute("ventas",venta);
+        model.addAttribute("totalTickets",historialRepository.ticketsTotale());
+        model.addAttribute("ventas",historialRepository.totalVenta());
         model.addAttribute("totalSedes", sedeRepository.count());
         model.addAttribute("sedesDisponibles", sedeRepository.countAllByEstadoEqualsIgnoreCase("Disponible"));
         model.addAttribute("sedesMantenimiento", sedeRepository.countAllByEstadoEqualsIgnoreCase("Mantenimiento"));
