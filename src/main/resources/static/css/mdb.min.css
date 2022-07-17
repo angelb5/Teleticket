@@ -259,7 +259,8 @@ blockquote {
 
 b,
 strong {
-  font-weight: bolder
+  font-weight: bolder;
+  padding: 0px 0px;
 }
 
 .small,
@@ -290,12 +291,12 @@ sup {
 }
 
 a {
-  color: #1266f1;
+  color: whitesmoke;
   text-decoration: underline
 }
 
 a:hover {
-  color: #0e52c1
+  color: darkgrey;
 }
 
 a:not([href]):not([class]),
@@ -844,7 +845,7 @@ progress {
 
 .col-6 {
   flex: 0 0 auto;
-  width: 50%
+  width: 50%;
 }
 
 .col-7 {
@@ -1043,7 +1044,10 @@ progress {
 
   .col-sm-4 {
     flex: 0 0 auto;
-    width: 33.33333333%
+    width: 33.33333333%;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 200px;
   }
 
   .col-sm-5 {
@@ -18622,7 +18626,10 @@ fieldset:disabled .btn-group-vertical {
 
 .navbar {
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, .07), 0 2px 4px rgba(0, 0, 0, .05);
-  padding-top: .5625rem
+  padding-top: .5625rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
 }
 
 .navbar-toggler {
@@ -19138,7 +19145,13 @@ fieldset:disabled .btn-group-vertical {
 
 
 a{
+  gap: 80px;
   text-decoration: none;
+  font-weight: 100;
+  font-size: 1rem;
+  display: block;
+  color: #fff;
+  padding: 0.5rem 10;
 }
 
 /*Card tele*/

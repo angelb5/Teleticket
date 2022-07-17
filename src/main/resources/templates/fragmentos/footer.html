@@ -2,37 +2,61 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+    <link rel="stylesheet" th:href="@{/css/footerstyle.css}"/>
 </head>
 <body>
 <!-- Footer -->
 <footer th:fragment="footer" class="bg-dark text-white text-start">
     <!-- Grid container -->
     <div class="container p-3">
-        <!-- Section: Social media -->
-        <section class="text-center" >
-            <!-- Facebook -->
-            <a class="btn btn-dark btn-floating btn-lg text-white m-1" href="#" role="button" data-mdb-ripple-color="dark">
-                <i class="fab fa-facebook-f"></i>
-            </a>
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark fs-14 p-3">
+            <div class="container-fluid container justify-content-between">
+                <a class="navbar-brand me-3 mb-1 d-flex align-items-center" href="/">
+                    <img src="../img/logo-teleticket.png" height="40" alt="Teleticket logo" loading="lazy">
+                </a>
+                <div class="col d-flex justify-content-end">
+                    <!-- Facebook -->
+                    <a class="btn btn-dark btn-floating btn-lg text-white m-1" href="#" role="button" data-mdb-ripple-color="dark">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
 
-            <!-- Twitter -->
-            <a class="btn btn-dark btn-floating btn-lg text-white m-1" href="#" role="button" data-mdb-ripple-color="dark">
-                <i class="fab fa-twitter"></i>
-            </a>
+                    <!-- Twitter -->
+                    <a class="btn btn-dark btn-floating btn-lg text-white m-1" href="#" role="button" data-mdb-ripple-color="dark">
+                        <i class="fab fa-twitter"></i>
+                    </a>
 
-            <!-- Instagram -->
-            <a class="btn btn-dark btn-floating btn-lg text-white m-1" href="#!" role="button" data-mdb-ripple-color="dark">
-                <i class="fab fa-instagram"></i>
-            </a>
-        </section>
-        <!-- Section: Social media -->
+                    <!-- Instagram -->
+                    <a class="btn btn-dark btn-floating btn-lg text-white m-1" href="#!" role="button" data-mdb-ripple-color="dark">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        <div class="col-6 col-sm-4">
+                <nav class="navbar navbar-expand-lg bg-dark navbar-dark fs-14 p-3">
+                    <h6 class="col-12 col-sm-6 col-lg-3">
+                        <b>Conócenos</b>
+                    </h6>
+                    <a href="#">Acerca de nosotros</a>
+                    <a href="#">Preguntas frecuentes</a>
+                    <a href="#">Términos y condiciones</a>
+                </nav>
+            <nav class="navbar navbar-expand-lg bg-dark navbar-dark fs-14 p-3">
+                <h6 class="col-12 col-sm-6 col-lg-3">
+                    <b>Explora</b>
+                </h6>
+                <a href="/sedes">Sedes</a>
+                <a href="/obras">Obras</a>
+                <a href="/personas">Actores y directores</a>
+            </nav>
+        </div>
     </div>
     <!-- Grid container -->
 
     <!-- Copyright -->
-    <div class="text-start p-2" style="background-color: rgba(0, 0, 0, 0.2);">
+    <div class="text-center p-4" size="" style="background-color: rgba(0, 0, 0, 0.2);">
         <div class="container">
-            © 2022 Teleticket
+            © 2022 Teleticket. Todos los derechos reservados.
         </div>
     </div>
     <!-- Copyright -->
