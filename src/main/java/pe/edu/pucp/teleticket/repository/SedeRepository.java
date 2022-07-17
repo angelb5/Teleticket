@@ -54,7 +54,7 @@ public interface SedeRepository extends JpaRepository<Sede, Integer> {
             "inner join funciones f on h.idfunciones = f.idfunciones and h.estado='Comprado' " +
             "inner join salas s on s.idsalas = f.idsalas " +
             "inner join sedes se on se.idsedes = s.idsedes " +
-            "where TIMESTAMPDIFF(DAY, h.fechacompra, current_timestamp()) " +
+            "where TIMESTAMPDIFF(DAY, h.fechacompra, current_timestamp())<=30 " +
             "group by se.idsedes " +
             "order by tickets desc limit 4")
     public List<SedeEstadisticas> listarSedesPreferidas();
