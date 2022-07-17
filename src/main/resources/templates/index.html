@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Teleticket')"></head>
 
-<body>
+<body class="bg-lightgrey">
 <nav th:replace="fragmentos/navbar.html :: navbar('todo')"></nav>
 
 <!--Contenidos-->
@@ -27,22 +27,22 @@
             <div class="carousel-inner">
                 <!-- Single item -->
                 <div class="carousel-item active">
-                    <img src="../img/slide1.jpg" class="d-block w-100" alt="Slide1"/>
+                    <img th:src="@{/img/slide1.jpg}" class="d-block w-100" alt="Slide1"/>
                 </div>
 
                 <!-- Single item -->
                 <div class="carousel-item">
-                    <img src="../img/slide2.jpg" class="d-block w-100" alt="Slide2"/>
+                    <img th:src="@{/img/slide2.jpg}" class="d-block w-100" alt="Slide2"/>
                 </div>
 
                 <!-- Single item -->
                 <div class="carousel-item">
-                    <img src="../img/slide3.jpg" class="d-block w-100" alt="Slide3"/>
+                    <img th:src="@{/img/slide3.jpg}" class="d-block w-100" alt="Slide3"/>
                 </div>
 
                 <!-- Single item -->
                 <div class="carousel-item">
-                    <img src="../img/slide4.jpg" class="d-block w-100" alt="Slide4"/>
+                    <img th:src="@{/img/slide4.jpg}" class="d-block w-100" alt="Slide4"/>
                 </div>
             </div>
             <!-- Inner -->
@@ -63,167 +63,132 @@
     </div>
 
     <!-- Obras destacadas -->
-    <div class="title-24" th:text="'La fecha y hora es '+${#temporals.format(ldt, 'dd/MM/yyyy HH:mm')}"></div>
-    <div class="title-24">
-        <i class="fas fa-solid fa-star text-redtele"></i>
-        Obras destacadas
-    </div>
+    <div class="title-24" th:text="'La fecha y hora es '+${#temporals.format(ldt, 'dd MMMM HH:mm')}"></div>
 
-    <!--- Obras --->
-    <div class="row row-cols-1 row-cols-md-4 g-4 py-3">
-        <div class="col" th:each="obras : ${listaObras}">
-            <!--Card-->
-            <div class="col">
-                <div class="card h-100 position-relative">
-                    <a class="card-tele" th:href="@{'/obras/' + ${obras.id}}">
-                        <div class="card-tele-img">
-                            <img th:src="@{'/image/obra/'+${obras.fotoprincipal}}" alt="Obras"
-                                 class="img-fluid rounded-start img-cover"/>
-                        </div>
-                        <div class="card-tele-body">
-                            <div class="card-tele-title" th:text="${obras.otitulo}">
+    <div th:unless="${listaObrasDestacadas.isEmpty()}" class="mb-4">
+        <div class="title-24">
+            <i class="fas fa-solid fa-star text-redtele"></i>
+            Obras destacadas
+        </div>
+        <!--- Obras --->
+        <div class="row row-cols-1 row-cols-md-4 g-4 py-3">
+            <div class="col" th:each="obras : ${listaObrasDestacadas}">
+                <!--Card-->
+                <div class="col">
+                    <div class="h-100 position-relative">
+                        <div class=" card card-tele" th:href="@{'/obras/' + ${obras.id}}">
+                            <span class="card-tele-star">
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <div class="card-tele-img">
+                                <img th:src="@{'/image/obra/'+${obras.fotoprincipal}}" th:alt="${obras.otitulo}"
+                                     class="img-fluid img-cover"/>
+
+                                <div class="middle-content col">
+                                    <a class="btn btn-redtele" th:href="@{'/obras/'+ ${obras.id}}">
+                                        <i class="fas fa-ticket-alt"></i>
+                                        Comprar
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-tele-body">
+                                <div class="card-tele-title" th:text="${obras.otitulo}">
+                                </div>
+                            </div>
+                            <div class="card-tele-footer">
+                                <div class="d-flex align-items-end">
+                                    <span>Desde&nbsp;&nbsp;</span>
+                                    <span class="fw-bold fs-14" th:text="'S/ '+${#numbers.formatDecimal(obras.minprecio,1,2,'POINT')}">S/ 35.00</span>
+                                </div>
+                                <a class="btn btn-redtele btn-comprar" th:href="@{'/obras/'+ ${obras.id}}">
+                                    Comprar
+                                </a>
                             </div>
                         </div>
-                    </a>
-                    <div class="card-footer card-tele-footer">
-                        <div class="d-flex align-items-end">
-                            <span>Desde&nbsp;&nbsp;</span>
-                            <span class="fw-bold fs-14" th:text="'S/ '+${#numbers.formatDecimal(obras.minprecio,1,2,'POINT')}">S/ 35.00</span>
-                        </div>
-
-                        <a class="btn btn-redtele" th:href="@{'/obras/'+ ${obras.id}}">
-                            Comprar
-                        </a>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
-    </div>
-    <div class="text-center fw-bold pt-2 pb-5">
-        <a th:href="@{obras}" class="link-sub">
-            Ver más obras
-            <i class="ms-1 fa-solid fa-angle-right"></i>
-        </a>
     </div>
     <!--Banners exploracion-->
+    <section>
+        <div class="row row-cols-1 row-cols-md-3 g-4 py-5">
+            <div class="col">
+                <div class="card bg-dark text-white">
+                    <a th:href="@{/sedes}">
+                        <img th:src="@{/img/sedesbanner.jpg}" class="card-img" alt="Explora sedes"/>
+                    </a>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4 py-5">
-        <div class="col">
-            <div class="card bg-dark text-white">
-                <a th:href="@{sedes}">
-                    <img src="../img/sedesbanner.jpg" class="card-img" alt="Exlora sedes"/>
-                </a>
-
+                </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="card bg-dark text-white">
-                <a th:href="@{obras}">
-                    <img src="../img/teatrobanner.jpg" class="card-img" alt="Lo mejor del teatro"/>
-                </a>
+            <div class="col">
+                <div class="card bg-dark text-white">
+                    <a th:href="@{/obras}">
+                        <img th:src="@{/img/teatrobanner.jpg}" class="card-img" alt="Lo mejor del teatro"/>
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="card bg-dark text-white">
-                <a th:href="@{personas}">
-                    <img src="../img/personasbanner.jpg" class="card-img" alt="Descubre actores"/>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!--- Actores y directores --->
-    <div class="title-24">
-        <i class="fas fa-solid fa-star text-redtele"></i>
-        Actores y directores
-    </div>
-    <div class="row row-cols-1 row-cols-md-3 g-4 py-3">
-        <div class="col" th:each="personas : ${listaActores}">
-            <!--Card 1-->
-            <div class="card h-210 position-relative">
-                <div class="row h-100">
-                    <div class="col-md-5 h-100 pe-0">
-                        <img th:src="@{'/image/persona/'+${personas.id}}"
-                             alt="Persona" class="img-fluid rounded-start img-cover"/>
-                    </div>
-
-                    <div class="col-md-7 py-3 px-4">
-                        <div class="card-tele-title " th:text="${personas.nombre}">
-                        </div>
-
-                        <div style="height: 100px">
-                            <div class="mb-2" th:if="${personas.pactuacion.isPresent()}">
-                                <span th:if="${personas.pactuacion.isPresent()}" th:text="'Actuación: '+${personas.pactuacion.get()}+'/5'">
-                                </span>
-                                <i class="ms-1 fa-solid fa-star "></i>
-                            </div>
-                            <div class="mb-2" th:if="${personas.pdireccion.isPresent()}" >
-                                <span th:if="${personas.pdireccion.isPresent()}" th:text="'Dirección: '+${personas.pdireccion.get()}+'/5'">
-                                </span>
-                                <i class="ms-1 fa-solid fa-star "></i>
-                            </div>
-
-                            <div class="card-tele-subtitle" th:if="${personas.ptitulo!=null}">
-                                Actúa en <i class=" fw-bold " th:text="${personas.ptitulo}"></i>
-                            </div>
-                        </div>
-
-                        <div class="text-end justify-content-end d-flex align-items-end">
-                            <a class="btn btn-redtele" th:href="@{'/personas/'+${personas.id}}">Ver más</a>
-                        </div>
-                    </div>
+            <div class="col">
+                <div class="card bg-dark text-white">
+                    <a th:href="@{/personas}">
+                        <img th:src="@{/img/personasbanner.jpg}" class="card-img" alt="Descubre actores"/>
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="text-center fw-bold pt-2 pb-5">
-        <a th:href="@{personas}" class="link-sub">
-            Ver más actores y directores
-            <i class="ms-1 fa-solid fa-angle-right"></i>
-        </a>
-    </div>
+    </section>
 
-    <!--- Sedes --->
-    <div class="title-24">
-        <i class="fas fa-solid fa-star text-redtele"></i>
-            Sedes
-    </div>
-    <div class="row row-cols-1 row-cols-md-2 g-4 py-3">
-        <!--Card 1-->
-        <div class="col" th:each="sede : ${listaSedes}">
-            <div class="card h-100 position-relative">
-                <div class="row h-100">
+    <div th:unless="${listaObras.isEmpty()}" class="mb-5">
+        <div class="title-24">
+            Obras en Cartelera
+        </div>
+        <!--- Obras --->
+        <div class="row row-cols-1 row-cols-md-4 g-4 py-3">
+            <div class="col" th:each="obras : ${listaObras}">
+                <!--Card-->
+                <div class="col">
+                    <div class="h-100 position-relative">
+                        <div class=" card card-tele" th:href="@{'/obras/' + ${obras.id}}">
+                            <div class="card-tele-img">
+                                <img th:src="@{'/image/obra/'+${obras.fotoprincipal}}" th:alt="${obras.otitulo}"
+                                     class="img-fluid img-cover"/>
 
-                    <div class="col-md-6 pe-0">
-                        <div style="width: 100%; height: 210px">
-                            <img th:src="@{'/image/sede/'+${sede.fotoprincipal}}" alt="Sede" class="img-fluid rounded-start img-cover"/>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 p-4 d-flex flex-column justify-content-between">
-                        <div>
-                            <div class="fw-bold mb-2 fs-14 card-tele-title" th:text="${sede.nombre}">Sede San Borja</div>
-                            <div class="mb-2 card-tele-subtitle" th:text="${sede.direccion}">
-                                Av. Javier Prado Este 2225, San Borja 15021
+                                <div class="middle-content col">
+                                    <a class="btn btn-redtele" th:href="@{'/obras/'+ ${obras.id}}">
+                                        <i class="fas fa-ticket-alt"></i>
+                                        Comprar
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="text-end ">
-                            <a class="btn btn-redtele" th:href="@{'/sedes/'+ ${sede.id}}">Ver más</a>
+                            <div class="card-tele-body">
+                                <div class="card-tele-title" th:text="${obras.otitulo}">
+                                </div>
+                            </div>
+                            <div class="card-tele-footer">
+                                <div class="d-flex align-items-end">
+                                    <span>Desde&nbsp;&nbsp;</span>
+                                    <span class="fw-bold fs-14" th:text="'S/ '+${#numbers.formatDecimal(obras.minprecio,1,2,'POINT')}">S/ 35.00</span>
+                                </div>
+                                <a class="btn btn-redtele btn-comprar" th:href="@{'/obras/'+ ${obras.id}}">
+                                    Comprar
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
 
+        <div class="text-center fw-bold pt-2">
+            <a th:href="@{/obras}" class="link-sub">
+                Ver más obras
+                <i class="ms-1 fa-solid fa-angle-right"></i>
+            </a>
+        </div>
     </div>
-    <div class="text-center fw-bold pt-2 pb-5">
-        <a th:href="@{sedes}" class="link-sub">
-            Ver más sedes
-            <i class="ms-1 fa-solid fa-angle-right"></i>
-        </a>
-    </div>
+
 
 </div>
 <!--Fin de contenidos-->

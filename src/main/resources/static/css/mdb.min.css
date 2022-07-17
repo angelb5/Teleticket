@@ -19151,6 +19151,7 @@ a{
   position: relative;
   color: var(--mdb-dark);
   transition: 0.5s all;
+  z-index:8;
 }
 
 .card-tele:before {
@@ -19168,6 +19169,7 @@ a{
 
 .card-tele:hover{
   color: inherit;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 20%), 0 4px 6px -2px rgb(0 0 0 / 15%);
 }
 
 .card-tele-star{
@@ -19179,7 +19181,7 @@ a{
     position: absolute;
     left: 0px;
     top: 0px;
-    z-index: 9;
+    z-index: 10;
 }
 
 .card-tele-star i{
@@ -19201,6 +19203,7 @@ a{
 .card-tele-img{
   position: relative;
   height: 190px;
+  z-index: 9;
 }
 
 .card-tele-img img{
@@ -19215,6 +19218,30 @@ a{
   height: 100%;
 }
 
+.card-tele-img:hover img{
+  -webkit-filter: brightness(50%);
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  -ms-transition: all 1s ease;
+  transition: all 1s ease;
+}
+
+.card-tele-img .middle-content{
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.card-tele-img:hover .middle-content{
+  opacity: 1;
+}
+
 
 .card-tele-body{
   padding: 0.9rem;
@@ -19223,7 +19250,7 @@ a{
 }
 
 .card-tele-title{
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   transition: 0.4s all;
   line-height: 1.4;
@@ -19256,6 +19283,12 @@ a{
   display: flex;
   justify-content: space-between;
 }
+
+.btn-comprar{
+  z-index: 10;
+  box-shadow: none;
+}
+
 
 /* Nombre de usuario en navbar */
 

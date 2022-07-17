@@ -14,148 +14,149 @@
             <h4 class="fw-bold" style="font-size: 19px">Lo sentimos, no se han encontrado resultados con su busqueda</h4>
         </div>
     </div>
+    <div class="mb-3" th:if="${!listaSedes.isEmpty() or !listaActores.isEmpty() or !listaObras.isEmpty()}">
+        <div class="title-26" th:unless="${param.busqueda!=null && param.busqueda[0].toString()!=''}" >
+            Explora en Teleticket
+        </div>
 
+        <div class="title-26" th:if="${param.busqueda!=null && param.busqueda[0].toString()!=''}" th:text="${'Mostrando resultados para &quot;'+ param.busqueda + '&quot;' }">
+        </div>
+    </div>
 
     <!--- Obras --->
-    <div th:unless="${listaObras.size()==0}">
-    <div class="title-24">
-        <i class="fas fa-solid fa-star text-redtele"></i>
-        Obras
-    </div>
-    <div class="row row-cols-1 row-cols-md-4 g-4 py-3">
-        <div class="col" th:each="obras : ${listaObras}">
-            <!--Card-->
-            <div class="col">
-                <div class="card h-100 position-relative">
-                    <a class="card-tele" th:href="@{'/obras/' + ${obras.id}}">
-                        <div class="card-tele-img">
-                            <img th:src="@{'/image/obra/'+${obras.fotoprincipal}}" alt="Obras"
-                                 class="img-fluid rounded-start img-cover"/>
-                        </div>
-                        <div class="card-tele-body">
-                            <div class="card-tele-title" th:text="${obras.otitulo}">
+    <div th:unless="${listaObras.size()==0}" class="mb-5">
+        <div class="title-24">
+            Obras en Cartelera
+        </div>
+        <div class="row row-cols-1 row-cols-md-4 g-4 py-3">
+            <div class="col" th:each="obras : ${listaObras}">
+                <!--Card-->
+                <div class="col">
+                    <div class="card h-100 position-relative">
+                        <a class="card-tele" th:href="@{'/obras/' + ${obras.id}}">
+                            <div class="card-tele-img">
+                                <img th:src="@{'/image/obra/'+${obras.fotoprincipal}}" alt="Obras"
+                                     class="img-fluid rounded-start img-cover"/>
                             </div>
-                        </div>
-                    </a>
-                    <div class="card-footer card-tele-footer">
-                        <div class="d-flex align-items-end">
-                            <span>Desde&nbsp;&nbsp;</span>
-                            <span class="fw-bold fs-14" th:text="'S/ '+${#numbers.formatDecimal(obras.minprecio,1,2,'POINT')}">S/ 35.00</span>
-                        </div>
-
-                        <a class="btn btn-redtele" th:href="@{'/obras/'+ ${obras.id}}">
-                            Comprar
+                            <div class="card-tele-body">
+                                <div class="card-tele-title" th:text="${obras.otitulo}">
+                                </div>
+                            </div>
                         </a>
+                        <div class="card-footer card-tele-footer">
+                            <div class="d-flex align-items-end">
+                                <span>Desde&nbsp;&nbsp;</span>
+                                <span class="fw-bold fs-14" th:text="'S/ '+${#numbers.formatDecimal(obras.minprecio,1,2,'POINT')}">S/ 35.00</span>
+                            </div>
+
+                            <a class="btn btn-redtele" th:href="@{'/obras/'+ ${obras.id}}">
+                                Comprar
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
-    </div>
-    <div class="text-center fw-bold pt-2 pb-5" th:unless="${listaObras.size<6}">
-        <a th:href="@{|obras?busqueda=${busqueda}|}" class="link-sub">
-            Ver más resultados en obras
-            <i class="ms-1 fa-solid fa-angle-right"></i>
-        </a>
-    </div>
+        <div class="text-center fw-bold pt-2" th:unless="${listaObras.size<8}">
+            <a th:href="@{|/obras?busqueda=${param.busqueda}|}" class="link-sub">
+                Ver más resultados en obras
+                <i class="ms-1 fa-solid fa-angle-right"></i>
+            </a>
+        </div>
     </div>
     <!--- Actores y directores --->
-    <div th:unless="${listaActores.size()==0}">
-    <div class="title-24">
-        <i class="fas fa-solid fa-star text-redtele"></i>
-        Actores y directores
-    </div>
-    <div class="row row-cols-1 row-cols-md-3 g-4 py-3">
-        <div class="col" th:each="personas : ${listaActores}">
-            <!--Card 1-->
-            <div class="card h-210 position-relative">
-                <div class="row h-100">
-                    <div class="col-md-5 h-100 pe-0">
-                        <img th:src="@{'/image/persona/'+${personas.id}}"
-                             alt="Persona" class="img-fluid rounded-start img-cover"/>
-                    </div>
-
-                    <div class="col-md-7 py-3 px-4">
-                        <div class="card-tele-title " th:text="${personas.nombre}">
+    <div th:unless="${listaActores.size()==0}" class="mb-5">
+        <div class="title-24">
+            Actores y directores
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 g-4 py-3">
+            <div class="col" th:each="personas : ${listaActores}">
+                <!--Card 1-->
+                <div class="card h-210 position-relative">
+                    <div class="row h-100">
+                        <div class="col-md-5 h-100 pe-0">
+                            <img th:src="@{'/image/persona/'+${personas.id}}"
+                                 alt="Persona" class="img-fluid rounded-start img-cover"/>
                         </div>
 
-                        <div style="height: 100px">
-                            <div class="mb-2" th:if="${personas.pactuacion.isPresent()}">
-                                <span th:if="${personas.pactuacion.isPresent()}" th:text="'Actuación: '+${personas.pactuacion.get()}+'/5'">
-                                </span>
-                                <i class="ms-1 fa-solid fa-star "></i>
-                            </div>
-                            <div class="mb-2" th:if="${personas.pdireccion.isPresent()}" >
-                                <span th:if="${personas.pdireccion.isPresent()}" th:text="'Dirección: '+${personas.pdireccion.get()}+'/5'">
-                                </span>
-                                <i class="ms-1 fa-solid fa-star "></i>
+                        <div class="col-md-7 py-3 px-4">
+                            <div class="card-tele-title " th:text="${personas.nombre}">
                             </div>
 
-                            <div class="card-tele-subtitle" th:if="${personas.ptitulo!=null}">
-                                Actúa en <i class=" fw-bold " th:text="${personas.ptitulo}"></i>
-                            </div>
-                        </div>
+                            <div style="height: 100px">
+                                <div class="mb-2" th:if="${personas.pactuacion.isPresent()}">
+                                    <span th:if="${personas.pactuacion.isPresent()}" th:text="'Actuación: '+${personas.pactuacion.get()}+'/5'">
+                                    </span>
+                                    <i class="ms-1 fa-solid fa-star "></i>
+                                </div>
+                                <div class="mb-2" th:if="${personas.pdireccion.isPresent()}" >
+                                    <span th:if="${personas.pdireccion.isPresent()}" th:text="'Dirección: '+${personas.pdireccion.get()}+'/5'">
+                                    </span>
+                                    <i class="ms-1 fa-solid fa-star "></i>
+                                </div>
 
-                        <div class="text-end justify-content-end d-flex align-items-end">
-                            <a class="btn btn-redtele" th:href="@{'/personas/'+${personas.id}}">Ver más</a>
+                                <div class="card-tele-subtitle" th:if="${personas.ptitulo!=null}">
+                                    Actúa en <i class=" fw-bold " th:text="${personas.ptitulo}"></i>
+                                </div>
+                            </div>
+
+                            <div class="text-end justify-content-end d-flex align-items-end">
+                                <a class="btn btn-redtele" th:href="@{'/personas/'+${personas.id}}">Ver más</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="text-center fw-bold pt-2 pb-5" th:unless="${listaActores.size<6}">
-        <a th:href="@{|personas?busqueda=${busqueda}|}" class="link-sub">
-            Ver más resultados en actores y directores
-            <i class="ms-1 fa-solid fa-angle-right"></i>
-        </a>
-    </div>
+        <div class="text-center fw-bold pt-2" th:unless="${listaActores.size<6}">
+            <a th:href="@{|/personas?busqueda=${param.busqueda}|}" class="link-sub">
+                Ver más resultados en actores y directores
+                <i class="ms-1 fa-solid fa-angle-right"></i>
+            </a>
+        </div>
     </div>
     <!--- Sedes --->
-    <div th:unless="${listaSedes.size==0}">
-    <div class="title-24">
-        <i class="fas fa-solid fa-star text-redtele"></i>
-        Sedes
-    </div>
-    <div class="row row-cols-1 row-cols-md-2 g-4 py-3">
-        <!--Card 1-->
-        <div class="col" th:each="sede : ${listaSedes}">
-            <div class="card h-100 position-relative">
-                <div class="row h-100">
+    <div th:unless="${listaSedes.size==0}" class="mb-5">
+        <div class="title-24">
+            Sedes
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 g-4 py-3">
+            <!--Card 1-->
+            <div class="col" th:each="sede : ${listaSedes}">
+                <div class="card h-100 position-relative">
+                    <div class="row h-100">
 
-                    <div class="col-md-6 pe-0">
-                        <div style="width: 100%; height: 210px">
-                            <img th:src="@{'/image/sede/'+${sede.fotoprincipal}}" alt="Sede" class="img-fluid rounded-start img-cover"/>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 p-4 d-flex flex-column justify-content-between">
-                        <div>
-                            <div class="fw-bold mb-2 fs-14 card-tele-title" th:text="${sede.nombre}">Sede San Borja</div>
-                            <div class="mb-2 card-tele-subtitle" th:text="${sede.direccion}">
-                                Av. Javier Prado Este 2225, San Borja 15021
+                        <div class="col-md-6 pe-0">
+                            <div style="width: 100%; height: 210px">
+                                <img th:src="@{'/image/sede/'+${sede.fotoprincipal}}" alt="Sede" class="img-fluid rounded-start img-cover"/>
                             </div>
                         </div>
 
-                        <div class="text-end ">
-                            <a class="btn btn-redtele" th:href="@{'/sedes/'+ ${sede.id}}">Ver más</a>
+                        <div class="col-md-6 p-4 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="fw-bold mb-2 fs-14 card-tele-title" th:text="${sede.nombre}">Sede San Borja</div>
+                                <div class="mb-2 card-tele-subtitle" th:text="${sede.direccion}">
+                                    Av. Javier Prado Este 2225, San Borja 15021
+                                </div>
+                            </div>
+
+                            <div class="text-end ">
+                                <a class="btn btn-redtele" th:href="@{'/sedes/'+ ${sede.id}}">Ver más</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
-
+        <div class="text-center fw-bold pt-2" th:unless="${listaSedes.size<4}">
+            <a th:href="@{|/sedes?busqueda=${param.busqueda}|}" class="link-sub">
+                Ver más resultados en sedes
+                <i class="ms-1 fa-solid fa-angle-right"></i>
+            </a>
+        </div>
     </div>
-    <div class="text-center fw-bold pt-2 pb-5" th:unless="${listaSedes.size<6}">
-        <a th:href="@{|sedes?busqueda=${busqueda}|}" class="link-sub">
-            Ver más resultados en sedes
-            <i class="ms-1 fa-solid fa-angle-right"></i>
-        </a>
-    </div>
-    </div>
-    </div>
-
-    <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
 </div>
 
 <!-- Footer -->

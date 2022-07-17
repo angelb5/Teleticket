@@ -44,7 +44,7 @@ public class HomeController {
     FotoSedeRepository fotoSedeRepository;
 
     @GetMapping({"/",""})
-    public String mostrarIndex(Authentication auth, Model model, @RequestParam("pag") Optional<String> pag, @RequestParam("busqueda") Optional<String> optionalBusqueda){
+    public String mostrarIndex(Authentication auth, Model model){
         String rol = "";
         if(auth!=null) {
             for (GrantedAuthority role : auth.getAuthorities()) {
@@ -59,55 +59,11 @@ public class HomeController {
             return "redirect:/operador";
         }
         model.addAttribute("ldt", LocalDateTime.now());
+        Pageable lista = PageRequest.of(0, 8);
+        List<ObrasListado> listaObras = obraRepository.listadoObrasCliente("", lista);
 
-        String busqueda = optionalBusqueda.isPresent()? optionalBusqueda.get().trim() : "";
-        String ruta =  busqueda.isBlank()? "/?" : "/?busqueda=" +busqueda +"&";
-
-        int pagina=0;
-        try{
-            pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
-        } catch (Exception e){
-            return "index";
-        }
-        pagina = pagina<1? 1 : pagina;
-
-        Integer cantidadObrasCliente = obraRepository.contarListaObrasCliente(busqueda)==null? 0: obraRepository.contarListaObrasCliente(busqueda);
-        int paginas_obras = (int) Math.ceil((float) cantidadObrasCliente / obrasPaginas);
-        pagina = pagina > paginas_obras ? paginas_obras : pagina;
-        pagina = pagina < 1 ? 1 : pagina;
-        Pageable lista_obras;
-        if (pagina == 0) {
-            lista_obras = PageRequest.of(0, obrasPaginas);
-        } else {
-            lista_obras = PageRequest.of(pagina - 1, obrasPaginas);
-        }
-
-        int paginas_personas = (int) Math.ceil((float)personaRepository.countPersonasListadoCliente(busqueda)/personasPaginas);
-        pagina = pagina>paginas_personas? paginas_personas : pagina;
-        Pageable lista_personas ;
-        if (pagina == 0) {
-            lista_personas = PageRequest.of(0, personasPaginas);
-        } else {
-            lista_personas = PageRequest.of(pagina - 1, personasPaginas);
-        }
-
-        int paginas_sedes = (int) Math.ceil((float) sedeRepository.contarListarSedesCliente(busqueda) / sedesPaginas);
-        pagina = pagina > paginas_sedes ? paginas_sedes : pagina;
-        Pageable lista_sedes;
-        if (pagina == 0) {
-            lista_sedes = PageRequest.of(0, sedesPaginas);
-        } else {
-            lista_sedes = PageRequest.of(pagina - 1, sedesPaginas);
-        }
-
-        List<ObrasListado> listaObras = obraRepository.listadoObrasCliente(busqueda, lista_obras);
-        List<PersonasListado> listaActores = personaRepository.listadoPersonascliente(busqueda, lista_personas);
-        List<Sede> listaSedes = sedeRepository.listarSedesCliente(busqueda, lista_sedes);
-
-        model.addAttribute("listaObras", listaObras);
-        model.addAttribute("listaActores", listaActores);
-        model.addAttribute("listaSedes", listaSedes);
-        model.addAttribute("ruta", ruta);
+        model.addAttribute("listaObrasDestacadas", obraRepository.listarObrasDestacadas());
+        model.addAttribute("listaObras",listaObras);
 
         return "index";
     }
@@ -119,7 +75,7 @@ public class HomeController {
     ){
         String busqueda = optBusqueda.orElse("");
         busqueda = busqueda.trim();
-        int pagina=0;
+        //corregir listas
         Pageable lista ;
         lista = PageRequest.of(0, 6);
 
@@ -130,9 +86,6 @@ public class HomeController {
         model.addAttribute("listaObras", listaObras);
         model.addAttribute("listaActores", listaActores);
         model.addAttribute("listaSedes", listaSedes);
-        busqueda=busqueda.replaceAll(" ", "+").toLowerCase();
-        model.addAttribute("busqueda",busqueda);
-
 
         return "cliente/todo";
     }
