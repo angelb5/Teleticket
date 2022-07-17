@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequestMapping("/admin/clientes")
 public class AdminClientesController {
 
-    private final int clientePaginas = 5;
+    private final int clientePaginas = 12;
 
     @Autowired
     ClienteRepository clienteRepository;

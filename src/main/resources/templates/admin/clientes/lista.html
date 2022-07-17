@@ -10,30 +10,32 @@
 
 <!--Contenidos-->
 <div class="container py-2 ">
-
-    <div class="title-22 py-4">
-        Listado de clientes
-    </div>
     <!-- Small button groups (default and split) -->
-
-    <div class="container">
-        <div class=" dropstart w-100 text-end" >
-            <button class="btn btn-redtele btn-sm dropdown-toggle" type="button" data-mdb-toggle="dropdown"
-                    aria-expanded="false" th:text="${filtro==null? 'Filtros': filtro}">
-                Filtros
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" th:href="@{|/admin/clientes/concompras|}">Cuentas con historial de compras</a></li>
-                <li><a class="dropdown-item" th:href="@{|/admin/clientes/concriticas|}">Cuentas con historial de críticas</a></li>
-                <li><a class="dropdown-item" th:href="@{|/admin/clientes/sinhistorial|}">Cuentas sin historial</a></li>
-                <li>
-                    <hr class="dropdown-divider"/>
-                </li>
-                <li><a class="dropdown-item" th:href="@{|/admin/clientes|}">Limpiar filtro</a></li>
-            </ul>
+    <div class="row mb-3">
+        <div class="col">
+            <div class="title-26 py-4">
+                Listado de clientes
+            </div>
+        </div>
+        <div class="col-auto align-self-center">
+            <div class=" dropstart text-end" >
+                <button class="btn btn-redtele btn-sm dropdown-toggle" type="button" data-mdb-toggle="dropdown"
+                        aria-expanded="false" th:text="${filtro==null? 'Filtros': filtro}">
+                    Filtros
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" th:href="@{|/admin/clientes/concompras|}">Cuentas con historial de compras</a></li>
+                    <li><a class="dropdown-item" th:href="@{|/admin/clientes/concriticas|}">Cuentas con historial de críticas</a></li>
+                    <li><a class="dropdown-item" th:href="@{|/admin/clientes/sinhistorial|}">Cuentas sin historial</a></li>
+                    <li>
+                        <hr class="dropdown-divider"/>
+                    </li>
+                    <li><a class="dropdown-item" th:href="@{|/admin/clientes|}">Limpiar filtro</a></li>
+                </ul>
+            </div>
         </div>
     </div>
-    <br>
+
     <div class="container badge-danger  border round-border" style="height: 70px;display: flex;justify-content: center;align-items: center;" th:if="${listaClientes.isEmpty()}" >
         <h3>No se han encontrado clientes que coincidan con la busqueda</h3>
     </div>
