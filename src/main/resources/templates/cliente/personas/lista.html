@@ -42,6 +42,9 @@
                                     Actúa en <i class="fs-14 fw-bold " th:text="${personas.ptitulo}"></i>
                                 </span>
                             </div>
+                            <div class="card-tele-subtitle" th:if="${personas.ptitulo==null}">
+                                <span>Esta persona no tiene obras asociadas</span>
+                            </div>
                         </div>
                         <div class="col-auto align-self-center">
                             <div class="text-end justify-content-end d-flex align-items-end">
