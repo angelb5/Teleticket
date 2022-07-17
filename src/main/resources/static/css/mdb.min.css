@@ -19464,7 +19464,7 @@ a{
   height: 250px;
   position: relative;
   overflow: hidden;
-  border-radius: 5%;
+  border-radius: 50%;
 }
 
 .actor-page img {

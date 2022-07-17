@@ -16,7 +16,7 @@
     <div class="container py-3 position-relative">
         <!--Información-->
         <div class="mt-5 text-center mb-3">
-            <div class="rounded-7 overflow-hidden text-center">
+            <div class="overflow-hidden text-center">
                 <div class="actor-page d-inline-block">
                     <img th:src="@{'/image/persona/'+${persona.id}}">
                 </div>
@@ -145,6 +145,15 @@
 
             </div>
 
+        </div>
+
+        <div th:if="${actuaciones.isEmpty() and direcciones.isEmpty()}" class="my-3 d-flex align-items-center"  style="border-radius: 20px; background: #e6e6e6; height: 350px;">
+            <div class="container p-4 text-center row">
+                <div class="col-12">
+                    <img th:src="@{/img/sorry.png}" style="width: 150px"/>
+                </div>
+                <div class="col-12 fw-bold" style="font-size: 19px">Esta persona aun no ha sido añadida a una obra</div>
+            </div>
         </div>
     </div>
     <!--Footer-->

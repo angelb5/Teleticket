@@ -27,11 +27,11 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="carousel-control-prev" data-mdb-target="#carouselExampleInterval" type="button" data-mdb-slide="prev">
+                        <button th:if="${fotos.size()>1}" class="carousel-control-prev" data-mdb-target="#carouselExampleInterval" type="button" data-mdb-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
-                        <button class="carousel-control-next" data-mdb-target="#carouselExampleInterval" type="button" data-mdb-slide="next">
+                        <button th:if="${fotos.size()>1}"  class="carousel-control-next" data-mdb-target="#carouselExampleInterval" type="button" data-mdb-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
@@ -41,8 +41,17 @@
                 <!--Informacion de la obra-->
                 <div class="card fs-14">
                     <div class="card-body pt-4">
-                        <div class="card-title fw-bold fs-24" th:text="${obra.titulo}">
+                        <div class="mb-4 row">
+                            <div class="col align-self-center fw-bold fs-24" th:text="${obra.titulo}"></div>
+                            <div class="col-auto align-self-center text-end ">
+                                <a class=" fw-bold text-redtele" href="#" data-mdb-toggle="tooltip"
+                                   title="¡Esta obra ha sido destacada y recomenandada por nuestro staff!">
+                                    <i class="fas fa-star"></i>
+                                    Obra destacada
+                                </a>
+                            </div>
                         </div>
+
                         <div class="mb-4 row">
                             <div class="col text-start">
                                 <div class="pill-redtele fs-13 me-2" th:text="${obra.restricciones}"></div>

@@ -24,8 +24,7 @@
                             data-mdb-target="#carouselBasicExample"
                             th:attr="data-mdb-slide-to=${info.index}, aria-label='Slide '+${info.index +1},
                             aria-current=${info.index==0}? 'true':'false'"
-                            th:class="${info.index==0}? 'active':''"
-                    ></button>
+                            th:class="${info.index==0}? 'active':''"></button>
                 </div>
                 <div class="carousel-inner rounded-5">
                     <div class="carousel-item" data-mdb-interval="3000" th:each="fotoid : ${fotos}" th:classappend="${fotoid==sede.fotoprincipal}? 'active':'' ">
@@ -34,11 +33,11 @@
                         </div>
                     </div>
                 </div>
-                <button class="carousel-control-prev" data-mdb-target="#carouselExampleInterval" type="button" data-mdb-slide="prev">
+                <button th:if="${fotos.size()>1}" class="carousel-control-prev" data-mdb-target="#carouselExampleInterval" type="button" data-mdb-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" data-mdb-target="#carouselExampleInterval" type="button" data-mdb-slide="next">
+                <button th:if="${fotos.size()>1}" class="carousel-control-next" data-mdb-target="#carouselExampleInterval" type="button" data-mdb-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
@@ -47,9 +46,16 @@
 
 
         <div class="title-30 mb-4">
-            <div th:text="${sede.nombre}">
-            </div>
-            <div class="fs-20 fw-light" th:text="${sede.direccion}">
+            <div th:text="${sede.nombre}"></div>
+            <div class="fs-20 fw-light" th:text="${sede.direccion}"></div>
+        </div>
+
+        <div th:if="${obras.isEmpty()}" class="my-3 d-flex align-items-center"  style="border-radius: 20px; background: #e6e6e6; height: 350px;">
+            <div class="container p-4 text-center row">
+                <div class="col-12">
+                    <img th:src="@{/img/sorry.png}" style="width: 150px"/>
+                </div>
+                <div class="col-12 fw-bold" style="font-size: 19px">Lo sentimos, esta sede no tiene obras en cartelera</div>
             </div>
         </div>
 
@@ -57,41 +63,43 @@
             Obras en esta sede
         </div>
 
-        <div class="row row-cols-1 row-cols-md-4 g-4 py-3">
+        <div class="row row-cols-1 row-cols-md-4 g-4 py-3" th:unless="${obras.isEmpty()}">
             <div class="col" th:each="obra : ${obras}">
-                <!--Card-->
-                <div class="col">
-                    <div class="card h-100 position-relative">
-                        <a class="card-tele" href="#">
-                            <div class="card-tele-img">
-                                <img th:src="@{'/image/obra/'+${obra.fotoprincipal}}" alt="Obras"
-                                     class="img-fluid rounded-start img-cover"/>
+                <div class="h-100 position-relative">
+                    <div class=" card card-tele" th:href="@{'/obras/' + ${obra.id}}">
+                        <div class="card-tele-img">
+                            <img th:src="@{'/image/obra/'+${obra.fotoprincipal}}" th:alt="${obra.otitulo}"
+                                 class="img-fluid img-cover"/>
+
+                            <div class="middle-content col">
+                                <a class="btn btn-redtele" th:href="@{'/obras/'+ ${obra.id}}">
+                                    <i class="fas fa-ticket-alt"></i>
+                                    Comprar
+                                </a>
                             </div>
-                            <div class="card-tele-body">
-                                <div class="card-tele-title" th:text="${obra.otitulo}">Antes de decirte adiós
-                                </div>
+                        </div>
+                        <div class="card-tele-body">
+                            <div class="card-tele-title" th:text="${obra.otitulo}">
                             </div>
-                        </a>
-                        <div class="card-footer card-tele-footer">
+                        </div>
+                        <div class="card-tele-footer">
                             <div class="d-flex align-items-end">
                                 <span>Desde&nbsp;&nbsp;</span>
                                 <span class="fw-bold fs-14" th:text="'S/ '+${#numbers.formatDecimal(obra.minprecio,1,2,'POINT')}">S/ 35.00</span>
                             </div>
-
-                            <a class="btn btn-redtele" th:href="@{'/obras/'+ ${obra.id}}">
+                            <a class="btn btn-redtele btn-comprar" th:href="@{'/obras/'+ ${obra.id}}">
                                 Comprar
                             </a>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
         <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
 
         <!--Seccion informacion mapa-->
-        <div class="py-3" >
+        <div class="mt-3 py-3" >
             <div class="row g-0">
                 <div class="col-md-5 rounded-6 overflow-hidden">
                     <div id="map" class="map"> </div>
