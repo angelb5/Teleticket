@@ -108,6 +108,19 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
             "inner join obras o on o.idobras = f.idobras")
     public List<ObraFiltro> listarObrasConFunciones();
 
+    @Query(nativeQuery = true, value = "select distinct o.* from funciones f " +
+            "inner join obras o on o.idobras = f.idobras " +
+            "where f.estado='Activa' " +
+            "and timestamp(f.fecha,f.inicio)>= current_timestamp() ")
+    public List<Obra> listarObrasConFuncionesVigentes();
+
+    @Query(nativeQuery = true, value = "select distinct o.* from funciones f " +
+            "inner join obras o on o.idobras = f.idobras " +
+            "where f.estado='Activa' " +
+            "and timestamp(f.fecha,f.inicio)>= current_timestamp()" +
+            "and o.destacado=0 ")
+    public List<Obra> listarObrasConFuncionesVigentesNoDestacadas();
+
     @Query(nativeQuery = true, value = "select sum(h.total) " +
             "from historialcompras h " +
             "inner join funciones f on h.idfunciones = f.idfunciones " +
@@ -119,6 +132,15 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
     @Query(nativeQuery = true,
             value ="update funciones set fin=fin + interval ?2 minute where idobras=?1 and timestamp(fecha,inicio)>= current_timestamp()" )
     public void actualizarHorarios(int idobra, int timeMinutos);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "update obras o " +
+            "set o.destacado=0 " +
+            "where o.idobras not in (select distinct idobras from funciones f " +
+            "where f.estado = 'Activa' " +
+            "and timestamp(f.fecha,f.inicio)>=current_timestamp())")
+    public void actualizarDestacadas();
 
     @Query(nativeQuery = true,
             value = "select min(timestampdiff(minute,f1.fin,f2.inicio))\n" +
@@ -137,4 +159,15 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
                     "group by o.idobras " +
                     "limit 8")
     public List<ObrasListado> listarObrasDestacadas();
+
+    @Query(nativeQuery = true,
+            value = "select o.* " +
+                    "from obras o " +
+                    "inner join funciones f on o.idobras = f.idobras " +
+                    "where f.estado='Activa' " +
+                    "and timestamp(f.fecha,f.inicio)>= current_timestamp() " +
+                    "and o.destacado=1 " +
+                    "group by o.idobras " +
+                    "limit 8")
+    public List<Obra> listarObrasDestacadasOperador();
 }

@@ -405,8 +405,16 @@ public class OperadorObrasController {
         return "redirect:/operador/obras/gestion/" + idObra;
     }
 
+    @GetMapping("/destacados")
+    public String listaDestacados(Model model){
+
+        model.addAttribute("listaObrasDestacadas",obraRepository.listarObrasDestacadasOperador());
+        model.addAttribute("listaObrasVigentes",obraRepository.listarObrasConFuncionesVigentesNoDestacadas());
+        return "operador/obras/destacados";
+    }
+
     @PostMapping("/destacados/agregar")
-    public String anadirDestacados(@RequestParam("id") String idString, RedirectAttributes redirectAttributes){
+    public String anadirDestacados(@RequestParam("id") String idString, RedirectAttributes redirectAttributes, @RequestParam("redirectlista") Optional<String> redirectlista){
         int id;
         try{
             id= Integer.parseInt(idString);
@@ -414,31 +422,37 @@ public class OperadorObrasController {
             e.printStackTrace();
             return "redirect:/operador/obras";
         }
+
         Optional<Obra> optionalObra = obraRepository.findById(id);
         long funcionesVigentes= obraRepository.funcionesVigentes(id);
         int obrasDestacadas = obraRepository.obrasDestacadas();
         if(optionalObra.isEmpty()){
             return "redirect:/operador/obras";
         }
+
+        String  redirecturl = "/operador/obras/gestion/"+id;
+        if(redirectlista.isPresent() && redirectlista.get().equalsIgnoreCase("true")){
+            redirecturl = "/operador/obras/destacados";
+        }
         if(funcionesVigentes<1){
             redirectAttributes.addFlashAttribute("msg", "La obra no cuenta con ninguna función vigente para ser destacada");
             redirectAttributes.addFlashAttribute("error",1);
-            return "redirect:/operador/obras/gestion/"+id;
+            return "redirect:"+redirecturl;
         }
         if(obrasDestacadas>maximoDestacados){
             redirectAttributes.addFlashAttribute("msg", "No se puede colocar más de 8 obras como destacadas");
             redirectAttributes.addFlashAttribute("error",1);
-            return "redirect:/operador/obras/gestion/"+id;
+            return "redirect:"+redirecturl;
         }
         Obra obra = optionalObra.get();
         obra.setDestacado(1);
         obraRepository.save(obra);
         redirectAttributes.addFlashAttribute("msg", "Se ha agregado correctamente la obra a las destacadas");
-        return "redirect:/operador/obras/gestion/" + id;
+        return "redirect:"+redirecturl;
     }
 
     @PostMapping("/destacados/quitar")
-    public String quitarDestacados(@RequestParam("id") String idString, RedirectAttributes redirectAttributes){
+    public String quitarDestacados(@RequestParam("id") String idString, RedirectAttributes redirectAttributes, @RequestParam("redirectlista") Optional<String> redirectlista){
         int id;
         try{
             id=Integer.parseInt(idString);
@@ -451,12 +465,15 @@ public class OperadorObrasController {
         if(optionalObra.isEmpty()){
             return "redirect:/operador/obras";
         }
-
+        String  redirecturl = "/operador/obras/gestion/"+id;
+        if(redirectlista.isPresent() && redirectlista.get().equalsIgnoreCase("true")){
+            redirecturl = "/operador/obras/destacados";
+        }
         Obra obra = optionalObra.get();
         obra.setDestacado(0);
         obraRepository.save(obra);
         redirectAttributes.addFlashAttribute("msg","Se ha quitado la obra de destacados");
-        return "redirect:/operador/obras/gestion/"+ id;
+        return "redirect:"+redirecturl;
     }
 
 }

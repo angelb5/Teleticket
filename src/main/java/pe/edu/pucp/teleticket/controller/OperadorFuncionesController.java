@@ -261,6 +261,7 @@ public class OperadorFuncionesController {
                     return "operador/funciones/editaFrm";
                 }else{
                     funcionRepository.save(funcion);
+                    obraRepository.actualizarDestacadas();
                     attr.addFlashAttribute("msg", "Se ha modificado la función con éxito");
                     return "redirect:/operador/obras/gestion/" + funcion.getObra().getId();
                 }
@@ -283,6 +284,7 @@ public class OperadorFuncionesController {
                 e.printStackTrace();
             }
         }
+        obraRepository.actualizarDestacadas();
         //PENDIENTE
         //Al momento de cancelar una función se debe realizar la devolucion del dinero
 

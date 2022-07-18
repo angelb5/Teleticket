@@ -227,22 +227,44 @@
 
             <div th:if="${session.rol=='operador'}" class="modal-body px-7 pt-5">
                 <div class="row row-cols-1 row-cols-md-3">
-                    <div class="col">
-                        <a class="link-white fs-26 fw-bold" th:href="@{/operador/obras}">
-                            <i class="fa-solid fa-masks-theater me-2 text-redtele"></i>
-                            Gestión de Obras
+                    <div class="col mb-3">
+                        <a class="row link-white fs-26 fw-bold" th:href="@{/operador/obras}">
+                            <div class="col-auto pe-0">
+                                <i class="fa-solid fa-masks-theater me-2 text-redtele"></i>
+                            </div>
+                            <div class="col">
+                                Gestión de Obras
+                            </div>
                         </a>
                     </div>
-                    <div class="col">
-                        <a class="link-white fs-26 fw-bold" th:href="@{/operador/funciones}">
-                            <i class="fas fa-clipboard-list me-2 text-redtele"></i>
-                            Gestión de Funciones
+                    <div class="col mb-3">
+                        <a class="row link-white fs-26 fw-bold" th:href="@{/operador/funciones}">
+                            <div class="col-auto pe-0">
+                                <i class="fas fa-clipboard-list me-2 text-redtele"></i>
+                            </div>
+                            <div class="col">
+                                Gestión de Funciones
+                            </div>
                         </a>
                     </div>
-                    <div class="col">
-                        <a class="link-white fs-26 fw-bold" th:href="@{/operador/estadisticas}">
-                            <i class="fas fa-chart-pie me-2 text-redtele"></i>
-                            Estadísticas
+                    <div class="col mb-3">
+                        <a class="row link-white fs-26 fw-bold" th:href="@{/operador/estadisticas}">
+                            <div class="col-auto pe-0">
+                                <i class="fas fa-chart-pie me-2 text-redtele"></i>
+                            </div>
+                            <div class="col">
+                                Estadísticas
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col mb-3">
+                        <a class="row link-white fs-26 fw-bold" th:href="@{/operador/obras/destacados}">
+                            <div class="col-auto pe-0">
+                                <i class="fas fa-star me-2 text-redtele"></i>
+                            </div>
+                            <div class="col">
+                                Gestión de Obras Destacadas
+                            </div>
                         </a>
                     </div>
                 </div>
