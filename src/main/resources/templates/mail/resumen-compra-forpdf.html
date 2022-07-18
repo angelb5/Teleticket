@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"></meta>
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"></meta>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"></meta>
     <title>Resumen de compra</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" ></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
     <!-- use the font -->
     <style type="text/css">
 
@@ -187,10 +183,10 @@
                         <table border="0" align="center" width="100%" cellpadding="0" bgcolor="000000" cellspacing="0">
                             <tr>
                                 <td align="center" height="100" style="height:100px">
-                                    <a data-th-attr="href='http://'+${dominio}+'/'" style="display: block; border-style: none !important; border: 0 !important;">
-                                        <img height="50" border="0" style="display: block; height: 50px;"
-                                             src="../../static/img/logo-teleticket.png" data-th-src="|cid:logo|" />
-                                    </a>
+                                    <div style="text-align: center; width: 100%;">
+                                        <img height="50" border="0" style="height: 50px;"
+                                             src="https://res.cloudinary.com/dnbkvoh9p/image/upload/v1658182638/logo-teleticket_bmqxx1.png"></img>
+                                    </div>
                                 </td>
                             </tr>
                         </table>
@@ -243,29 +239,29 @@
                                     <p style="line-height: 24px; margin-bottom:15px;color: #888888;" th:text="'Hola '+${cliente.nombre} + ', a continuación verás el detalle de tu compra'">
                                     </p>
                                     <div style="text-align: center; margin-bottom: 10px">
-                                        <img height="250" data-th-src="${qrcode}">
+                                        <img height="250" data-th-src="${qrcode}"></img>
                                     </div>
                                     <p style="line-height: 24px;margin-bottom:15px; text-align: center">
                                         <span style="font-size: 18px; color: #4d4d4d"> CÓDIGO DE VALIDACIÓN</span>
                                         <span th:text="${ticket.idcompra}" style="font-size:22px; color: #DA251D; font-weight: 700"></span>
                                     </p>
                                     <p style="line-height: 24px;margin-bottom:10px;">
-                                        <img width="16" src="https://www.kindpng.com/picc/m/30-300787_musical-theatre-mask-drama-computer-icons-theater-mask.png">
+                                        <img width="16" src="https://www.kindpng.com/picc/m/30-300787_musical-theatre-mask-drama-computer-icons-theater-mask.png"></img>
                                         <span style="font-weight: 700; color: black">Obra:&nbsp; </span>
                                         <span th:text="${ticket.funcion.obra.titulo}"></span>
                                     </p>
                                     <p style="line-height: 24px;margin-bottom:10px;">
-                                        <img width="16" src="https://i.pinimg.com/originals/70/8f/04/708f04dc59840d0b6e92ef4f4ed967f8.png">
+                                        <img width="16" src="https://i.pinimg.com/originals/70/8f/04/708f04dc59840d0b6e92ef4f4ed967f8.png"></img>
                                         <span style="font-weight: 700; color: black">Sede:&nbsp; </span>
                                         <span th:text="${ticket.funcion.sala.sede.nombre} + ' - Sala '+${ticket.funcion.sala.numero}"></span>
                                     </p>
                                     <p style="line-height: 24px;margin-bottom:10px;">
-                                        <img width="16" src="https://uxwing.com/wp-content/themes/uxwing/download/13-time-date/clock.png">
+                                        <img width="16" src="https://uxwing.com/wp-content/themes/uxwing/download/13-time-date/clock.png"></img>
                                         <span style="font-weight: 700; color: black">Horario:&nbsp; </span>
                                         <span th:text="${#temporals.format(ticket.funcion.fecha, 'dd MMMM, yyyy')}+ ' - '+${ticket.funcion.inicio}" ></span>
                                     </p>
                                     <p style="line-height: 24px;margin-bottom:20px;">
-                                        <img width="16" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_io15fklpXjMTvp59wLEZA7y_MnRTjGrqK0ZuyHc8hhz3MHWh25kyrny0ckdBsRLxL5o&usqp=CAU">
+                                        <img width="16" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_io15fklpXjMTvp59wLEZA7y_MnRTjGrqK0ZuyHc8hhz3MHWh25kyrny0ckdBsRLxL5o"></img>
                                         <span style="font-weight: 700; color: black">Tickets:&nbsp; </span>
                                         <span th:text="${ticket.numtickets}"></span>
                                     </p>
@@ -277,36 +273,6 @@
                                         <span style="color: #DA251D; font-weight: 700">TOTAL:&nbsp;</span>
                                         <span th:text="'S/ '+${#numbers.formatDecimal(ticket.total,1,2,'POINT')}"></span>
                                     </p>
-                                    <p style="line-height: 24px; margin-bottom:20px; text-align: center; color: #888888;">
-                                        PASOS PARA CANJEAR TUS <span style="color: #DA251D">TICKETS</span>
-                                    </p>
-                                    <table border="0" align="center" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
-                                        <tr>
-                                            <td width="50%">
-                                                <div style="text-align: center">
-                                                    <img height="100" src="http://assets.stickpng.com/images/6122617910aa310004f3981b.png">
-                                                </div>
-                                                <p style="font-weight: 700; color: #DA251D; text-align: center">
-                                                    PASO N°1
-                                                </p>
-                                                <p style="text-align: center; color: #888888;">
-                                                    Te recomendamos llegar 30 minutos antes de iniciar la función.
-                                                </p>
-                                            </td>
-                                            <td width="50%">
-                                                <div style="text-align: center; color: #888888;">
-                                                    <img height="100" src="https://cdn2.iconfinder.com/data/icons/qr-codes-and-bitcoins-innovicons-black-and-white/128/button-QR_code-scanner-mobile-hand-512.png">
-                                                </div>
-                                                <p style="font-weight: 700; color: #DA251D; text-align: center">
-                                                    PASO N°2
-                                                </p>
-                                                <p style="text-align: center; color: #888888;">
-                                                    Presenta tu código QR junto a tu carnet de vacunación y tu DNI en los podios de validación y disfruta de la función
-                                                </p>
-                                            </td>
-                                        </tr>
-
-                                    </table>
                                 </td>
                             </tr>
                         </table>

@@ -29,12 +29,8 @@
                         </div>
                         <div class="container" style="display: flex; text-align: center; justify-content: center">
                             <h4 class="fw-bold" style="font-size: 19px">Aquí se mostrarán todos tus tickets comprados y vigentes</h4>
-
                         </div>
                     </div>
-
-
-
                     <table class="table content-table hover-light align-middle mb-0  text-center " th:unless="${comprasVigentes.isEmpty()}">
                         <thead class="bg-light">
                         <tr class="bg-dark">
@@ -44,6 +40,7 @@
                             <th class="text-white fw-bold">Cantidad</th>
                             <th class="text-white fw-bold">Total</th>
                             <th class="text-white fw-bold">Detalles</th>
+                            <th class="text-white fw-bold">Descargar</th>
                         </tr>
                         </thead>
                         <tbody >
@@ -70,6 +67,11 @@
                             <td>
                                 <a th:href="@{'/cliente/tickets/vigentes/'+${compra.idcompra}}" class="btn btn-redtele fw-bold btn-sm btn-rounded">
                                     Ver detalles
+                                </a>
+                            </td>
+                            <td>
+                                <a th:href="@{'/cliente/tickets/descargar/'+${compra.idcompra}}" class="btn btn-dark fw-bold btn-sm btn-rounded">
+                                    <i class="fas fa-file-pdf"></i>
                                 </a>
                             </td>
                         </tr>
