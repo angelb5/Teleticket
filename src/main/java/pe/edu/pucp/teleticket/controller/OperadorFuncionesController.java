@@ -148,6 +148,7 @@ public class OperadorFuncionesController {
             return "redirect:/operador/";
         }
 
+        obraRepository.actualizarDestacadas();
         List<Sede> sedeList = sedeRepository.findSedesDisponibles();
 
         boolean horaHasErrors = false;
@@ -202,7 +203,6 @@ public class OperadorFuncionesController {
                 return "operador/funciones/nuevaFrm";
             }else{
                 funcion.setEstado("Activa");
-                obraRepository.actualizarDestacadas();
                 funcionRepository.save(funcion);
                 attr.addFlashAttribute("msg", "Se ha creado la función con éxito");
                 return "redirect:/operador/obras/gestion/" + funcion.getObra().getId();
