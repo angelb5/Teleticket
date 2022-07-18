@@ -253,6 +253,7 @@ public class CarritoController {
             }
         }
         session.setAttribute("carrito", historialRepository.findReservasByIdclientes(clienteSes.getId()));
+        attr.addFlashAttribute("compraexitosa","true");
         return "redirect:/cliente/tickets";
     }
 
