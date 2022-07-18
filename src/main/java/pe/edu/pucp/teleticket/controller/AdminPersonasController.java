@@ -99,7 +99,7 @@ public class AdminPersonasController {
         }
 
         personaRepository.deleteById(id);
-        redirectAttributes.addFlashAttribute("msg", "Se ha borrado con exito la persona");
+        redirectAttributes.addFlashAttribute("msg", "Se ha borrado con éxito la persona");
 
         return "redirect:/admin/personas";
     }
