@@ -202,6 +202,7 @@ public class OperadorFuncionesController {
                 return "operador/funciones/nuevaFrm";
             }else{
                 funcion.setEstado("Activa");
+                obraRepository.actualizarDestacadas();
                 funcionRepository.save(funcion);
                 attr.addFlashAttribute("msg", "Se ha creado la función con éxito");
                 return "redirect:/operador/obras/gestion/" + funcion.getObra().getId();
@@ -261,7 +262,6 @@ public class OperadorFuncionesController {
                     return "operador/funciones/editaFrm";
                 }else{
                     funcionRepository.save(funcion);
-                    obraRepository.actualizarDestacadas();
                     attr.addFlashAttribute("msg", "Se ha modificado la función con éxito");
                     return "redirect:/operador/obras/gestion/" + funcion.getObra().getId();
                 }
