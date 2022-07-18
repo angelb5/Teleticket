@@ -1,9 +1,11 @@
 package pe.edu.pucp.teleticket.service;
 
+import com.lowagie.text.DocumentException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -19,6 +21,7 @@ import pe.edu.pucp.teleticket.repository.ClienteRepository;
 import pe.edu.pucp.teleticket.repository.HistorialRepository;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 @EnableAsync
@@ -38,6 +41,9 @@ public class EmailService {
 
     @Autowired
     ClienteRepository clienteRepository;
+
+    @Autowired
+    PdfService pdfService;
 
     private static final String FROM = "Teleticket Perú <teleticket2022@gmail.com>";
 
@@ -103,7 +109,7 @@ public class EmailService {
     }
 
     @Async
-    public void correoResumenCompra(Cliente cliente, String idcompra) throws MessagingException {
+    public void correoResumenCompra(Cliente cliente, String idcompra) throws MessagingException, DocumentException, IOException {
         Historial ticket = historialRepository.findVigenteById(cliente.getId(), idcompra);
         Context context = new Context();
         context.setVariable("dominio", DOMINIO);
@@ -121,6 +127,8 @@ public class EmailService {
         helper.setTo(cliente.getCorreo());
         ClassPathResource clr = new ClassPathResource(LOGO_IMAGE);
         helper.addInline("logo", clr, PNG_MIME);
+        ByteArrayResource br = new ByteArrayResource(org.springframework.util.FileCopyUtils.copyToByteArray(pdfService.exportarPdfPorId(cliente,ticket)));
+        helper.addAttachment(idcompra+".pdf", br);
         javaMailSender.send(mimeMessage);
     }
 
