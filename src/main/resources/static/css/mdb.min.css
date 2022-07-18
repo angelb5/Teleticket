@@ -20116,3 +20116,7 @@ img.loading {
   width: 100%;
   object-fit: cover;
 }
+
+.bg-people{
+  background-image: url("https://res.cloudinary.com/dnbkvoh9p/image/upload/v1658125463/footer_opjhed.png");
+}
