@@ -6,14 +6,14 @@
 <!-- Fin de Navbar -->
 <div class="container py-3" >
     <!-- Lista sedes -->
-    <div class="title-24" th:unless="${param.busqueda!=null && param.busqueda[0].toString()!=''}" >
+    <div class="title-26" th:unless="${param.busqueda!=null && param.busqueda[0].toString()!=''}" >
         Mostrando todas las Sedes
     </div>
 
-    <div class="title-24" th:if="${param.busqueda!=null && param.busqueda[0].toString()!=''}" th:text="${'Mostrando resultados para &quot;'+ param.busqueda + '&quot;' }">
+    <div class="title-26" th:if="${param.busqueda!=null && param.busqueda[0].toString()!=''}" th:text="${'Mostrando resultados para &quot;'+ param.busqueda + '&quot;' }">
     </div>
 
-    <div th:if="${listaSedes.isEmpty()}"  style="border-radius: 20px; background: #e6e6e6;margin-top: 30px;height: 450px;">
+    <div th:if="${listaSedes.isEmpty()}"  style="border-radius: 20px; background: #e6e6e6;margin-top: 30px;height: 450px;margin-bottom: 30px;">
         <div class="container py-4" style="display: flex; text-align: center; justify-content: center">
             <img th:src="@{/img/sorry.png}" style="width: 150px; border-radius:20%; margin-top: 80px"/>
         </div>

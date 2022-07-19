@@ -1,9 +1,11 @@
 package pe.edu.pucp.teleticket.service;
 
+import com.lowagie.text.DocumentException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -19,7 +21,11 @@ import pe.edu.pucp.teleticket.repository.ClienteRepository;
 import pe.edu.pucp.teleticket.repository.HistorialRepository;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Locale;
 
 @EnableAsync
 @Service
@@ -30,6 +36,8 @@ public class EmailService {
 
     private final JavaMailSender javaMailSender;
 
+    private final DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern("dd MMMM, yyyy").toFormatter(new Locale("es", "ES"));
+
     @Value("${aplication.domain}")
     private String DOMINIO;
 
@@ -38,6 +46,9 @@ public class EmailService {
 
     @Autowired
     ClienteRepository clienteRepository;
+
+    @Autowired
+    PdfService pdfService;
 
     private static final String FROM = "Teleticket Perú <teleticket2022@gmail.com>";
 
@@ -103,12 +114,14 @@ public class EmailService {
     }
 
     @Async
-    public void correoResumenCompra(Cliente cliente, String idcompra) throws MessagingException {
+    public void correoResumenCompra(Cliente cliente, String idcompra) throws MessagingException, DocumentException, IOException {
         Historial ticket = historialRepository.findVigenteById(cliente.getId(), idcompra);
+
         Context context = new Context();
         context.setVariable("dominio", DOMINIO);
         context.setVariable("cliente", cliente);
         context.setVariable("ticket",ticket);
+        context.setVariable("fecha",formatter.format(ticket.getFuncion().getFecha()));
         context.setVariable("logo", LOGO_IMAGE);
         context.setVariable("qrcode", qrurl+idcompra);
 
@@ -121,6 +134,8 @@ public class EmailService {
         helper.setTo(cliente.getCorreo());
         ClassPathResource clr = new ClassPathResource(LOGO_IMAGE);
         helper.addInline("logo", clr, PNG_MIME);
+        ByteArrayResource br = new ByteArrayResource(org.springframework.util.FileCopyUtils.copyToByteArray(pdfService.exportarPdfPorId(cliente,ticket)));
+        helper.addAttachment(idcompra+".pdf", br);
         javaMailSender.send(mimeMessage);
     }
 
@@ -131,6 +146,7 @@ public class EmailService {
         context.setVariable("dominio", DOMINIO);
         context.setVariable("cliente", cliente);
         context.setVariable("ticket",ticket);
+        context.setVariable("fecha",formatter.format(ticket.getFuncion().getFecha()));
         context.setVariable("logo", LOGO_IMAGE);
 
         String process = templateEngine.process("mail/compra-cancelada", context);
@@ -152,6 +168,7 @@ public class EmailService {
         context.setVariable("dominio", DOMINIO);
         context.setVariable("cliente", cliente);
         context.setVariable("ticket",ticket);
+        context.setVariable("fecha",formatter.format(ticket.getFuncion().getFecha()));
         context.setVariable("logo", LOGO_IMAGE);
 
         String process = templateEngine.process("mail/func-cancelada-op", context);

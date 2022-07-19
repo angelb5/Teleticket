@@ -29,12 +29,8 @@
                         </div>
                         <div class="container" style="display: flex; text-align: center; justify-content: center">
                             <h4 class="fw-bold" style="font-size: 19px">Aquí se mostrarán todos tus tickets comprados y vigentes</h4>
-
                         </div>
                     </div>
-
-
-
                     <table class="table content-table hover-light align-middle mb-0  text-center " th:unless="${comprasVigentes.isEmpty()}">
                         <thead class="bg-light">
                         <tr class="bg-dark">
@@ -44,6 +40,7 @@
                             <th class="text-white fw-bold">Cantidad</th>
                             <th class="text-white fw-bold">Total</th>
                             <th class="text-white fw-bold">Detalles</th>
+                            <th class="text-white fw-bold">Descargar</th>
                         </tr>
                         </thead>
                         <tbody >
@@ -70,6 +67,11 @@
                             <td>
                                 <a th:href="@{'/cliente/tickets/vigentes/'+${compra.idcompra}}" class="btn btn-redtele fw-bold btn-sm btn-rounded">
                                     Ver detalles
+                                </a>
+                            </td>
+                            <td>
+                                <a th:href="@{'/cliente/tickets/descargar/'+${compra.idcompra}}" class="btn btn-dark fw-bold btn-sm btn-rounded">
+                                    <i class="fas fa-file-pdf"></i>
                                 </a>
                             </td>
                         </tr>
@@ -104,11 +106,40 @@
     </div>
 </div>
 
+<!-- Modal compraexitosa -->
+<div th:if="${compraexitosa != null}" class="modal top fade" id="exitoModal" tabindex="-1" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class=" w-100 d-flex justify-content-center my-3">
+                    <i class="fa-solid fa-circle-check text-success" style="font-size: 50px"></i>
+                </div>
+                <div class="w-100 my-2 text-center">
+                    <div class="title-24 w-100">
+                        ¡Compra exitosa!
+                    </div>
+                    <p class="w-100 text-center">
+                        ¡Gracias por tu compra!
+                    </p>
+                    <p class="w-100 text-center">
+                        En esta página podrás ver los tickets que hayas comprado. Una vez terminen tus funciones podrás calificarlas.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <script type="text/javascript" th:if="${msg != null}">
     $(window).on('load', function() {
         $('#msgModal').modal('show');
+    });
+</script>
+<script type="text/javascript" th:if="${compraexitosa != null}">
+    $(window).on('load', function() {
+        $('#exitoModal').modal('show');
     });
 </script>
 </html>

@@ -148,6 +148,7 @@ public class OperadorFuncionesController {
             return "redirect:/operador/";
         }
 
+        obraRepository.actualizarDestacadas();
         List<Sede> sedeList = sedeRepository.findSedesDisponibles();
 
         boolean horaHasErrors = false;
@@ -283,6 +284,7 @@ public class OperadorFuncionesController {
                 e.printStackTrace();
             }
         }
+        obraRepository.actualizarDestacadas();
         //PENDIENTE
         //Al momento de cancelar una función se debe realizar la devolucion del dinero
 

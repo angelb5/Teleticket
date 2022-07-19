@@ -31,7 +31,7 @@
                     <div class="col-auto">
                         <div class="text-start" style="min-width: 100px">
                             <label class="form-label">Mes</label>
-                            <select class="demo-default fs-13" aria-label="Default select example" name="mes" id="mes">
+                            <select class="demo-default fs-13" aria-label="Select Mes" name="mes" id="mes">
                                 <option value="" selected>Todos</option>
                                 <option th:each="mes: ${meses}" th:value="${mes}"
                                         th:text="${mes}" th:selected="${mes == #httpServletRequest.getParameter('mes')}">
@@ -47,7 +47,7 @@
                     <div class="col-auto">
                         <div class="text-start" style="min-width: 200px">
                             <label class="form-label">Sede</label>
-                            <select class="demo-default fs-13" aria-label="Default select example" name="sede" id="sede">
+                            <select class="demo-default fs-13" aria-label="Select Sede" name="sede" id="sede">
                                 <option value="">Todas</option>
                                 <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.id}"
                                         th:selected="${sede.id.toString() == #httpServletRequest.getParameter('sede')}">Miraflores
@@ -63,7 +63,7 @@
                     <div class="col-auto">
                         <div class="text-start" style="min-width: 200px">
                             <label class="form-label">Obra</label>
-                            <select class=" fs-13" aria-label="Default select example" name="obra" id="obra">
+                            <select class=" fs-13" aria-label="Select obra" name="obra" id="obra">
                                 <option value="">Todas</option>
                                 <option th:each="obra : ${listaObras}" th:text="${obra.titulo}" th:value="${obra.id}"
                                         th:selected="${obra.id.toString() == #httpServletRequest.getParameter('obra')}">

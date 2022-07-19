@@ -1,21 +1,34 @@
 package pe.edu.pucp.teleticket.controller;
 
+import com.lowagie.text.DocumentException;
+import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 import pe.edu.pucp.teleticket.dto.PersonasListado;
 import pe.edu.pucp.teleticket.entity.*;
 import pe.edu.pucp.teleticket.repository.CalificacionObraRepository;
 import pe.edu.pucp.teleticket.repository.CalificacionPersonaRepository;
 import pe.edu.pucp.teleticket.repository.HistorialRepository;
 import pe.edu.pucp.teleticket.service.EmailService;
+import pe.edu.pucp.teleticket.service.PdfService;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +50,9 @@ public class ClienteTicketsController {
 
     @Autowired
     CalificacionObraRepository coRepository;
+
+    @Autowired
+    PdfService pdfService;
 
     @Autowired
     EmailService emailService;
@@ -262,5 +278,27 @@ public class ClienteTicketsController {
             cpRepository.deleteById(cpDB.getId());
         }
         return "redirect:/cliente/tickets/califica/"+compra.getIdcompra();
+    }
+
+    @GetMapping("/descargar/{idPath}")
+    public void descargarTicketVigente(Model model, @PathVariable("idPath") String idcompra, HttpSession session, HttpServletResponse response) throws IOException, DocumentException {
+
+        Cliente clienteSes = (Cliente) session.getAttribute("usuario");
+
+        Optional<Historial> optionalHistorial = Optional.ofNullable(historialRepository.findVigenteById(clienteSes.getId(),idcompra));
+        if(optionalHistorial.isEmpty()){
+            response.sendRedirect("/cliente/tickets");
+            return;
+        }
+        Historial ticket = optionalHistorial.get();
+
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename="+idcompra+".pdf");
+        ByteArrayInputStream stream = pdfService.exportarPdfPorId(clienteSes,ticket);
+        if(stream !=null){
+            IOUtils.copy(stream, response.getOutputStream());
+        }else{
+            response.sendRedirect("/cliente/tickets");
+        }
     }
 }

@@ -14,7 +14,10 @@ import pe.edu.pucp.teleticket.entity.*;
 import pe.edu.pucp.teleticket.repository.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Controller
@@ -58,12 +61,14 @@ public class HomeController {
         if (rol.equals("operador")) {
             return "redirect:/operador";
         }
-        model.addAttribute("ldt", LocalDateTime.now());
+
         Pageable lista = PageRequest.of(0, 8);
         List<ObrasListado> listaObras = obraRepository.listadoObrasCliente("", lista);
 
         model.addAttribute("listaObrasDestacadas", obraRepository.listarObrasDestacadas());
         model.addAttribute("listaObras",listaObras);
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern("dd MMMM, yyyy HH:mm").toFormatter(new Locale("es", "ES"));
+        model.addAttribute("ldt", formatter.format(LocalDateTime.now()));
 
         return "index";
     }

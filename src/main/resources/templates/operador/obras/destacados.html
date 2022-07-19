@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragmentos/cabecera.html :: cabecera( titulo = 'Obras Destacadas')">
+    <link rel="stylesheet" th:href="@{'/css/tables.css'}"/>
+</head>
+<head>
+    <script th:src="@{/selectize/js/standalone/selectize.js}"></script>
+    <link th:href="@{/selectize/css/selectize.bootstrap5.css}" rel="stylesheet">
+    <style>
+        .selectize-input{
+            padding-right: 2.2rem;
+        }
+    </style>
+</head>
+<body class="bg-lightgrey">
+<nav th:replace="fragmentos/navbar.html :: navbar('obras')"></nav>
+<!-- Fin de Navbar -->
+<!--Contenidos-->
+<div class="container py-2 ">
+
+    <div class="row mt-3 mb-4">
+        <div class="text-start col-lg-9">
+            <div class="title-26 py-6">Gestión de Obras Destacadas</div>
+        </div>
+        <div class="d-flex align-items-center justify-content-end col-lg-3" th:unless="${listaObrasVigentes.isEmpty() or listaObrasDestacadas.size()>=8}">
+            <button class="btn rounded-7 btn-redtele" id="anadirbtn">
+                Añadir obra a destacadas
+            </button>
+        </div>
+    </div>
+
+    <div th:if="${listaObrasDestacadas.isEmpty()}" style="border-radius: 20px; background: #e6e6e6;margin-top: 30px;margin-bottom: 30px">
+        <div class="container py-4" style="display: flex; text-align: center; justify-content: center">
+            <img th:src="@{/img/sorry.png}" style="width: 150px; border-radius:20%"/>
+        </div>
+        <div class="container pb-4" style="display: flex; text-align: center; justify-content: center">
+            <h4 class="fw-bold" style="font-size: 19px">Aun no hay ninguna obra destacada</h4>
+        </div>
+    </div>
+
+    <table class="table hover-light align-middle round-border fs-13 mb-5" th:unless="${listaObrasDestacadas.isEmpty()}">
+        <thead class="bg-light">
+        <tr class="bg-dark">
+            <th class="text-white fw-bold">Obra</th>
+            <th class="text-white text-center fw-bold">Duración</th>
+            <th class="text-white text-center fw-bold">Restricciones</th>
+            <th class="text-white text-center fw-bold text-center">Acciones
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="obra : ${listaObrasDestacadas}">
+            <td>
+                <div class="d-flex align-items-center">
+                    <div style="width: 90px; min-width: 90px; height: 65px;border-radius: 10%; overflow: hidden;">
+                        <img th:src="@{'/image/obra/'+${obra.fotoprincipal}}" style="width: 100%; height: 100%; object-fit: cover;" />
+                    </div>
+                    <div class="ms-3">
+                        <p class="fw-bold mb-1 fs-14" th:text="${obra.titulo}"></p>
+                    </div>
+                </div>
+            </td>
+            <td class="text-center">
+                <div class="fs-13 me-2" th:text="${obra.duracion} + ' min'"></div>
+            </td>
+            <td class="text-center">
+                <div class="pill-redtele fs-13 me-2" th:text="${obra.restricciones}"></div>
+            </td>
+            <td class="text-center">
+                <button class="btn btn-redtele eliminar"  data-th-attr="data-obraid=${obra.id}">Eliminar de destacadas</button>
+            </td>
+            <td>
+                <a class="text-redtele my-2 fs-13" th:href="@{'/operador/obras/gestion/'+ ${obra.id}}">
+                    <span class="fw-bold"> Gestión de obra</span>
+                    <i class="ms-1 fas fa-chevron-circle-right"></i>
+                </a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<!-- Modal msg -->
+<div th:if="${msg!=null}" class="modal top fade" id="msgModal" tabindex="-1" aria-labelledby="msgModal"
+     aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <img th:src="@{/img/logo-teleticket-alt.png}" height="40" alt="Teleticket logo"
+                         loading="lazy" style="margin-top: 2px;"/>
+                </div>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class=" w-100 d-flex justify-content-center mb-3">
+                    <i class="fa-solid fa-circle-check" style="font-size: 50px"
+                       th:class="${error==null? 'fa-solid fa-circle-check text-success': 'fa-solid fa-circle-xmark text-danger'  }"></i>
+                </div>
+                <div class="w-100 d-flex justify-content-center my-2" th:text="${msg}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="fragmentos/footer.html :: footer"></footer>
+
+<div th:replace="fragmentos/navbar.html :: menu"></div>
+
+<!-- Modal contraseña -->
+<div class="modal top fade" id="anadirModal" tabindex="-1" aria-labelledby="anadirModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+        <form method="post" th:action="@{'/operador/obras/destacados/agregar?redirectlista=true'}" enctype="multipart/form-data">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="anadirModalLabel">Añadir a Destacadas</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-4">
+                    <div class="mb-3">
+                        <label class="form-label">Selecciona una obra</label>
+                        <select class=" fs-13" aria-label="Select obra" name="id" id="obra">
+                            <option th:each="obra : ${listaObrasVigentes}" th:text="${obra.titulo}" th:value="${obra.id}">
+                            </option>
+                        </select>
+                        <script>
+                            $("select[name*='id']").selectize({
+                                sortField: 'text'
+                            });
+                        </script>
+                    </div>
+                    <p class="mb-2 fs-13">
+                        *Las obras destacadas serán mostradas a los clientes como obras recomendadas por nuestro staff
+                    </p>
+                </div>
+                <div class="modal-footer justify-content-center border-0">
+                    <button type="submit" class="btn btn-redtele">Añadir</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Eliminar de destacadas -->
+<div class="modal top fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog ">
+        <form method="post" th:action="@{'/operador/obras/destacados/quitar?redirectlista=true'}">
+            <input hidden name="id" id="deleteinput">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Eliminar de Destacadas</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        ¿Está seguro que desea eliminar esta obra de destacadas?
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-redtele">Eliminar de destacadas</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/busqueda.js}"></script>
+<script type="text/javascript" th:if="${msg != null}">
+    $(window).on('load', function () {
+        $('#msgModal').modal('show');
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready( ()=>{
+        var eliminarModal = $('#deleteModal');
+        var eliminarInput = eliminarModal.find('#deleteinput')
+
+        $('#anadirbtn').click( () =>{
+           $('#anadirModal').modal('show');
+        });
+        $('.eliminar').click( function(){
+            eliminarModal.modal('show');
+            eliminarInput.val($(this).data("obraid"));
+        });
+    })
+</script>
+</body>
+
+
+</html>

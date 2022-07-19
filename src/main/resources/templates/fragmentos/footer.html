@@ -7,39 +7,127 @@
 <body>
 <!-- Footer -->
 <footer th:fragment="footer" class="bg-dark text-white text-start">
-    <!-- Grid container -->
-    <div class="container p-3">
-        <nav class="navbar navbar-expand-lg bg-dark navbar-dark fs-14 p-3">
-            <div class="container-fluid container justify-content-between">
-                <a class="navbar-brand me-3 mb-1 d-flex align-items-center" href="/">
-                    <img src="../img/logo-teleticket.png" height="40" alt="Teleticket logo" loading="lazy">
-                </a>
-                <div class="col d-flex justify-content-end">
-                    <!-- Facebook -->
-                    <a class="btn btn-dark btn-floating btn-lg text-white m-1" href="#" role="button" data-mdb-ripple-color="dark">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
+    <section class="bg-people" style="height: 320px;">
+        <div class="container text-center text-md-start pt-4">
+            <!-- Grid row -->
+            <div class="row mt-3">
+                <!-- Grid column -->
+                <div class="col-md-3 mx-auto mb-4">
+                    <!-- Content -->
+                    <div class="w-100 mb-2">
+                        <a th:href="@{/}" class="w-100" >
+                            <img th:src="@{/img/logo-teleticket.png}" class="w-75" alt="Teleticket logo" loading="lazy" />
+                        </a>
+                    </div>
 
-                    <!-- Twitter -->
-                    <a class="btn btn-dark btn-floating btn-lg text-white m-1" href="#" role="button" data-mdb-ripple-color="dark">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-
-                    <!-- Instagram -->
-                    <a class="btn btn-dark btn-floating btn-lg text-white m-1" href="#!" role="button" data-mdb-ripple-color="dark">
-                        <i class="fab fa-instagram"></i>
-                    </a>
+                    <p class="fs-16 mb-4">
+                        ¡Ir al teatro nunca fue tan fácil
+                    </p>
+                    <div class="mb-4">
+                        <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/angelb5/Teleticket.git" role="button">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
                 </div>
+                <!-- Grid column -->
+                <div class="col-md-5 mb-md-0 mb-4">
+                    <!-- Links -->
+                    <div class="w-75">
+                        <h6 class="text-redtele fw-bold mb-4">
+                            Conócenos
+                        </h6>
+                        <p class="mb-4 fs-13 ">
+                            Teleticket es una plataforma para la venta de entradas en línea. Elige una de nuestras obras en cartelera, selecciona una función y compra tus boletos.
+                        </p>
+                        <div class="mb-4" th:if="${session.usuario==null and session.proveedor==null}">
+                            ¿Te interesa?
+                            <a th:href="@{/registro}" class="text-redtele link-sub ms-1">
+                                Regístrate
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Grid column -->
+                <div class="col-md-4 mx-auto mb-4">
+                    <!-- Links -->
+                    <h6 class="text-redtele fw-bold mb-4">
+                        Explora
+                    </h6>
+
+                    <section th:if="${session.rol==null || session.rol=='cliente'}">
+                        <p>
+                            <a class="text-white link-sub text-reset" th:href="@{/sedes}">
+                                Sedes
+                            </a>
+                        </p>
+                        <p>
+                            <a class="text-white link-sub text-reset" th:href="@{/obras}">
+                                Obras en Cartelera
+                            </a>
+                        </p>
+                        <p>
+                            <a class="text-white link-sub text-reset" th:href="@{/personas}">
+                                Actores y Directores
+                            </a>
+                        </p>
+                    </section>
+
+                    <section th:if="${session.rol=='administrador'}">
+                        <p>
+                            <a class="text-white link-sub text-reset" th:href="@{/admin/sedes}">
+                                Gestión de Sedes
+                            </a>
+                        </p>
+                        <p>
+                            <a class="text-white link-sub text-reset" th:href="@{/admin/operadores}">
+                                Gestión de Operadores
+                            </a>
+                        </p>
+                        <p>
+                            <a class="text-white link-sub text-reset" th:href="@{/admin/personas}">
+                                Gestión de Actores y Directores
+                            </a>
+                        </p>
+                        <p>
+                            <a class="text-white link-sub text-reset" th:href="@{/admin/clientes}">
+                                Listado de Clientes
+                            </a>
+                        </p>
+                        <p>
+                            <a class="text-white link-sub text-reset" th:href="@{/admin}">
+                                Estadísticas
+                            </a>
+                        </p>
+                    </section>
+                    <section th:if="${session.rol=='operador'}">
+                        <p>
+                            <a class="text-white link-sub text-reset" th:href="@{/operador/obras}">
+                                Gestión de Obras
+                            </a>
+                        </p>
+                        <p>
+                            <a class="text-white link-sub text-reset" th:href="@{/operador/funciones}">
+                                Gestión de Funciones
+                            </a>
+                        </p>
+                        <p>
+                            <a class="text-white link-sub text-reset" th:href="@{/operador/estadisticas}">
+                                Estadísticas
+                            </a>
+                        </p>
+                        <p>
+                            <a class="text-white link-sub text-reset" th:href="@{/operador/obras/destacados}">
+                                Gestión de Obras Destacadas
+                            </a>
+                        </p>
+                    </section>
+                </div>
+                <!-- Grid column -->
             </div>
-        </nav>
-        <br>
-        <div class="col-6 col-sm-4 text-left">
-            <div></div>
-            <div><a href="/sedes">Sedes</a></div>
-            <div><a href="/obras">Obras</a></div>
-            <div><a href="/personas">Actores y directores</a></div>
+            <!-- Grid row -->
         </div>
-    </div>
+    </section>
     <!-- Grid container -->
 
     <!-- Copyright -->

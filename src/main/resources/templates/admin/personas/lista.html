@@ -81,11 +81,11 @@
                        data-mdb-ripple-color="dark" th:href="@{|/admin/personas/editar?id=${persona.id}|}">
                         Editar
                     </a>
-                    <a th:if="${(persona.obrasactor+persona.obrasdirector)==0}"
-                       type="button" class="btn btn-black fw-bold btn-sm btn-rounded"
-                       data-mdb-ripple-color="dark" th:href="@{|/admin/personas/borrar?id=${persona.id}|}">
+                    <button th:if="${(persona.obrasactor+persona.obrasdirector)==0}"
+                       type="button" class="btn btn-black fw-bold btn-sm btn-rounded eliminar"
+                       data-mdb-ripple-color="dark" data-th-attr="data-personaid=${persona.id}, data-personanombre=${persona.nombre}">
                         Eliminar
-                    </a>
+                    </button>
                 </td>
             </tr>
         </tbody>
@@ -123,7 +123,32 @@
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
 
 <div th:replace="fragmentos/navbar.html :: menu"></div>
-</body>
+
+<!-- Modal Eliminar -->
+<div class="modal top fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog ">
+        <form method="get" th:action="@{/admin/personas/borrar}">
+            <input hidden name="id" id="deleteinput">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Eliminar Persona</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="msg">
+                    </div>
+                    <div class="fw-bold mb-3">
+                        Esta acción es irreversible
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-redtele">Eliminar persona</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/busqueda.js}"></script>
 <script type="text/javascript" th:if="${msg != null}">
@@ -131,4 +156,18 @@
         $('#msgModal').modal('show');
     });
 </script>
+<script type="text/javascript">
+    $(document).ready( ()=>{
+        var eliminarModal = $('#deleteModal');
+        var eliminarInput = eliminarModal.find('#deleteinput');
+        var eliminarMsg = eliminarModal.find('.msg');
+
+        $('.eliminar').click( function(){
+            eliminarModal.modal('show');
+            eliminarInput.val($(this).data("personaid"));
+            eliminarMsg.html('¿Está seguro que desea eliminar a '+$(this).data("personanombre") + '?')
+        });
+    })
+</script>
+</body>
 </html>
