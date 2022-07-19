@@ -89,18 +89,18 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
     public List<ObrasListado> listadoObrasClienteByIdsede(int idsede, Pageable pageable);
 
     @Query(nativeQuery = true,
-    value = "select o.idobras as id,  o.titulo as otitulo, o.fotoprincipal as fotoprincipal, if(timestamp(f.fecha,f.inicio)>=NOW() and f.estado='Activa', min(f.costo),null)  as minprecio from actores a\n" +
-            "inner join obras o on a.idobra = o.idobras\n" +
-            "left join funciones f on f.idobras = o.idobras\n" +
-            "where a.idpersona =?1 \n" +
+    value = "select o.idobras as id,  o.titulo as otitulo, o.fotoprincipal as fotoprincipal, min(f.costo) as minprecio\n" +
+            "from obras o\n" +
+            "inner join actores a on a.idobra = o.idobras and a.idpersona = ?1 \n" +
+            "left join funciones f on f.idobras = o.idobras and timestamp(f.fecha,f.inicio)>=current_timestamp() and f.estado='Activa'\n" +
             "group by o.idobras")
     public List<ObrasListado> findActuacionesByIdpersona(int id);
 
     @Query(nativeQuery = true,
-    value = "select o.idobras as id,  o.titulo as otitulo, o.fotoprincipal as fotoprincipal, if(timestamp(f.fecha,f.inicio)>=NOW() and f.estado='Activa', min(f.costo),null) as minprecio from directores d\n" +
-            "inner join obras o on d.idobra = o.idobras\n" +
-            "left join funciones f on f.idobras = o.idobras\n" +
-            "where d.idpersona =?1 \n" +
+    value = "select o.idobras as id,  o.titulo as otitulo, o.fotoprincipal as fotoprincipal, min(f.costo) as minprecio\n" +
+            "from obras o\n" +
+            "inner join directores d on d.idobra = o.idobras and d.idpersona = ?1 \n" +
+            "left join funciones f on f.idobras = o.idobras and timestamp(f.fecha,f.inicio)>=current_timestamp() and f.estado='Activa'\n" +
             "group by o.idobras")
     public List<ObrasListado> findDireccionesByIdpersona(int id);
 

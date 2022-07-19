@@ -64,7 +64,7 @@ public class ClientePersonasController {
     }
 
     @GetMapping("/{idPath}")
-    public String gestionSede(Model model, @PathVariable("idPath") String idPath){
+    public String paginaPersona(Model model, @PathVariable("idPath") String idPath){
         int id=0;
         try{
             id= Integer.parseInt(idPath);

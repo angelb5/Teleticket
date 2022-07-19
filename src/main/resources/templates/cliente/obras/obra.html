@@ -58,7 +58,7 @@
                                 <div class="pill-white fs-13 me-2" th:text="${obra.duracion} + ' min'"></div>
                             </div>
                             <div class="col text-end fs-20 align-items-end" th:if="${puntaje.isPresent()}">
-                                <strong class="fw-bold align-middle" th:text="${puntaje.get()}">
+                                <strong class="fw-bold align-middle" th:text="${#numbers.formatDecimal(puntaje.get(),1,2,'POINT')}">
                                 </strong>
                                 <strong class="align-middle">
                                     /5

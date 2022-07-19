@@ -151,6 +151,20 @@
     $(document).ready(function (){
         let maxaforo = $('#maxAforo');
 
+        let idsala = $('#sala option:selected').val();
+
+        if(!isNaN(idsala)){
+            $('#fotoobra').attr('src','/');
+            $.ajax({
+                method:"GET",
+                url: "http://" + [[${dominio}]] + "/operador/funciones/sala/"+idsala
+            }).done(function (response){
+                let aforo = response.aforo;
+                if(aforo!=null){
+                    maxaforo.html('máx '+aforo);
+                }
+            });
+
         $("#sala").change(function(){
             let idsala = $('#sala option:selected').val();
 
