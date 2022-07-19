@@ -13,6 +13,9 @@ import pe.edu.pucp.teleticket.entity.Historial;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Locale;
 
 @RequiredArgsConstructor
 @Service
@@ -23,6 +26,8 @@ public class PdfService {
 
     private static final String LOGO_IMAGE = "static/img/logo-teleticket.png";
 
+    private final DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern("dd MMMM, yyyy").toFormatter(new Locale("es", "ES"));
+
     private final String url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&margin=7&data=";
 
     private final TemplateEngine templateEngine;
@@ -32,6 +37,7 @@ public class PdfService {
         context.setVariable("dominio", DOMINIO);
         context.setVariable("cliente", cliente);
         context.setVariable("ticket",ticket);
+        context.setVariable("fecha",formatter.format(ticket.getFuncion().getFecha()));
         context.setVariable("logo", LOGO_IMAGE);
         context.setVariable("qrcode", url+ticket.getIdcompra());
         String process = templateEngine.process("mail/resumen-compra-forpdf", context);

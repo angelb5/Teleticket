@@ -21,7 +21,7 @@ import java.util.Optional;
 @RequestMapping("/sedes")
 public class ClienteSedesController {
 
-    private final int sedesPaginas = 8;
+    private final int sedesPaginas = 12;
 
     private final int obrasPaginas = 8;
 

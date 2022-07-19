@@ -255,7 +255,7 @@
                   <p style="line-height: 24px;margin-bottom:10px;">
                     <img width="16" src="https://uxwing.com/wp-content/themes/uxwing/download/13-time-date/clock.png">
                     <span style="font-weight: 700; color: black">Horario:&nbsp; </span>
-                    <span th:text="${#temporals.format(ticket.funcion.fecha, 'dd MMMM, yyyy')}+ ' - '+${ticket.funcion.inicio}" ></span>
+                    <span th:text="${fecha}+ ' - '+${ticket.funcion.inicio}" ></span>
                   </p>
                   <p style="line-height: 24px;margin-bottom:20px;">
                     <img width="16" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_io15fklpXjMTvp59wLEZA7y_MnRTjGrqK0ZuyHc8hhz3MHWh25kyrny0ckdBsRLxL5o&usqp=CAU">

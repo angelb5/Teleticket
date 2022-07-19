@@ -23,6 +23,9 @@ import pe.edu.pucp.teleticket.repository.HistorialRepository;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Locale;
 
 @EnableAsync
 @Service
@@ -32,6 +35,8 @@ public class EmailService {
     private final TemplateEngine templateEngine;
 
     private final JavaMailSender javaMailSender;
+
+    private final DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern("dd MMMM, yyyy").toFormatter(new Locale("es", "ES"));
 
     @Value("${aplication.domain}")
     private String DOMINIO;
@@ -111,10 +116,12 @@ public class EmailService {
     @Async
     public void correoResumenCompra(Cliente cliente, String idcompra) throws MessagingException, DocumentException, IOException {
         Historial ticket = historialRepository.findVigenteById(cliente.getId(), idcompra);
+
         Context context = new Context();
         context.setVariable("dominio", DOMINIO);
         context.setVariable("cliente", cliente);
         context.setVariable("ticket",ticket);
+        context.setVariable("fecha",formatter.format(ticket.getFuncion().getFecha()));
         context.setVariable("logo", LOGO_IMAGE);
         context.setVariable("qrcode", qrurl+idcompra);
 
@@ -139,6 +146,7 @@ public class EmailService {
         context.setVariable("dominio", DOMINIO);
         context.setVariable("cliente", cliente);
         context.setVariable("ticket",ticket);
+        context.setVariable("fecha",formatter.format(ticket.getFuncion().getFecha()));
         context.setVariable("logo", LOGO_IMAGE);
 
         String process = templateEngine.process("mail/compra-cancelada", context);
@@ -160,6 +168,7 @@ public class EmailService {
         context.setVariable("dominio", DOMINIO);
         context.setVariable("cliente", cliente);
         context.setVariable("ticket",ticket);
+        context.setVariable("fecha",formatter.format(ticket.getFuncion().getFecha()));
         context.setVariable("logo", LOGO_IMAGE);
 
         String process = templateEngine.process("mail/func-cancelada-op", context);

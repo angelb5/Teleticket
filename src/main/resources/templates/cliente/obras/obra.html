@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = ${obra.titulo})"></head>
 <body>
-<nav th:replace="fragmentos/navbar.html :: navbar('Todo')"></nav>
+<nav th:replace="fragmentos/navbar.html :: navbar('obras')"></nav>
 <!--Contenidos-->
 <div class="position-relative">
     <!--Fondo-->
@@ -43,7 +43,7 @@
                     <div class="card-body pt-4">
                         <div class="mb-4 row">
                             <div class="col align-self-center fw-bold fs-24" th:text="${obra.titulo}"></div>
-                            <div class="col-auto align-self-center text-end ">
+                            <div class="col-auto align-self-center text-end" th:if="${obra.destacado==1}">
                                 <a class=" fw-bold text-redtele" href="#" data-mdb-toggle="tooltip"
                                    title="¡Esta obra ha sido destacada y recomenandada por nuestro staff!">
                                     <i class="fas fa-star"></i>
