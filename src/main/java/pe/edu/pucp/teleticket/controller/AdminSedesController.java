@@ -270,6 +270,33 @@ public class AdminSedesController {
         return "redirect:/admin/sedes/gestion/" + sala.getSede().getId();
     }
 
+    @PostMapping("/gestion/{idSedeString}/eliminar")
+    public String eliminarSede(@PathVariable("idSedeString") String idSedeString, RedirectAttributes redirectAttributes){
+        int sedeId;
+        try {
+            sedeId = Integer.parseInt(idSedeString);
+
+        } catch (Exception e) {
+            return "redirect:/admin/sedes";
+        }
+        Optional<Sede> optionalSede = sedeRepository.findById(sedeId);
+        if (optionalSede.isEmpty()) {
+            return "redirect:/admin/sedes";
+        }
+
+        List<Sala> listaSalas = salaRepository.findAllBySede(optionalSede.get());
+        if(listaSalas.isEmpty()){
+            fotoSedeRepository.deleteAllById(fotoSedeRepository.findAllIdByIdSedes(sedeId));
+            sedeRepository.deleteById(sedeId);
+            redirectAttributes.addFlashAttribute("msg","Se ha eliminado la sede exitosamente");
+            return "redirect:/admin/sedes";
+        } else{
+            return "redirect:/admin/sedes/gestion/" + sedeId;
+        }
+
+    }
+
+
     @PostMapping("/gestion/{idSedeString}/imagenprincipal")
     public String imagenPrincipal(@PathVariable("idSedeString") String idSedeString, @RequestParam("fotoid") String fotoidString, RedirectAttributes redirectAttributes) {
         int sedeId;

@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface SalaRepository extends JpaRepository<Sala,Integer> {
     List<Sala> findAllBySede(Sede sede, Pageable pageable);
 
+    List<Sala> findAllBySede(Sede sede);
     public Optional<Sala> findById(Integer id);
 
     long countAllBySede(Sede Sede);

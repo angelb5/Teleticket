@@ -53,6 +53,7 @@
                     <div class="col-9 h-100 d-flex align-items-center justify-content-center">Editar Sede</div>
                 </div>
             </a>
+            <button th:if="${salas.isEmpty()}" class="ms-2 btn rounded-7 btn-black btn-sm h-100" type="button" data-mdb-toggle="modal" data-mdb-target="#deleteModal">Eliminar</button>
         </div>
     </div>
     <div class="row mb-5">
@@ -301,6 +302,33 @@
     </div>
 </div>
 
+    <!-- Modal Eliminar Sede -->
+    <div th:if="${salas.isEmpty()}" class="modal top fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+        <div class="modal-dialog ">
+            <form method="post" th:action="@{'/admin/sedes/gestion/'+${sede.id}+'/eliminar'}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cancelarModalLabel">Eliminar sede</h5>
+                        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            ¿Está seguro que desea eliminar la sede?
+                        </div>
+                        <div class="fw-bold mb-3">
+                            Esta acción es irreversible
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-mdb-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-redtele">Eliminar sede</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
 <div th:replace="fragmentos/navbar.html :: menu"></div>
 
 </body>
@@ -308,6 +336,10 @@
 <script type="text/javascript" th:src="@{/js/busqueda.js}"></script>
 <script type="text/javascript"  th:src="@{/dropify/js/dropify.js}"></script>
 <script type="text/javascript">
+
+
+
+
     function setEliminarModal(id){
         var button = document.getElementById(id);
         fotoid = button.getAttribute("data-fotoid");
