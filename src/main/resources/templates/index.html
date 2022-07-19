@@ -105,6 +105,51 @@
             </div>
         </div>
     </div>
+
+    <!-- Obras ultimas -->
+    <div th:unless="${ultimasObras.isEmpty()}" class="mb-4">
+        <div class="title-24">
+            <i class="fas fa-solid fa-star text-redtele"></i>
+            Últimas Entradas
+        </div>
+        <!--- Obras --->
+        <div class="row row-cols-1 row-cols-md-4 g-4 py-3">
+            <div class="col" th:each="obras : ${ultimasObras}">
+                <div class="h-100 position-relative">
+                    <div class=" card card-tele" th:href="@{'/obras/' + ${obras.id}}">
+                        <span class="card-tele-star">
+                            <i class="fas fa-star"></i>
+                        </span>
+                        <div class="card-tele-img">
+                            <img th:src="@{'/image/obra/'+${obras.fotoprincipal}}" th:alt="${obras.titulo}"
+                                 class="img-fluid img-cover"/>
+
+                            <div class="middle-content col">
+                                <a class="btn btn-redtele" th:href="@{'/obras/'+ ${obras.id}}">
+                                    <i class="fas fa-ticket-alt"></i>
+                                    Comprar
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-tele-body">
+                            <div class="card-tele-title" th:text="${obras.titulo}">
+                            </div>
+                        </div>
+                        <div class="card-tele-footer">
+                            <div class="d-flex align-items-end">
+                                <span>&nbsp;&nbsp;</span>
+                            </div>
+                            <a class="btn btn-redtele btn-comprar" th:href="@{'/obras/'+ ${obras.id}}">
+                                Comprar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!--Banners exploracion-->
     <section>
         <div class="row row-cols-1 row-cols-md-3 g-4 py-5">

@@ -66,9 +66,10 @@ public class HomeController {
         List<ObrasListado> listaObras = obraRepository.listadoObrasCliente("", lista);
         lista = PageRequest.of(0, 4);
         List<Sede> listaSedes = sedeRepository.listarSedesCliente("", lista);
-
+        List<Obra> ultimasObras = obraRepository.listarUltimasObras();
         model.addAttribute("listaObrasDestacadas", obraRepository.listarObrasDestacadas());
         model.addAttribute("listaObras",listaObras);
+        model.addAttribute("ultimasObras",ultimasObras);
         model.addAttribute("listaSedes", listaSedes);
         DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern("dd MMMM, yyyy HH:mm").toFormatter(new Locale("es", "ES"));
         model.addAttribute("ldt", formatter.format(LocalDateTime.now()));
