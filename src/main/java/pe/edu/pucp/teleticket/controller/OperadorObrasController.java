@@ -24,7 +24,7 @@ import java.util.*;
 public class OperadorObrasController {
 
     private final int obrasPaginas = 12;
-    private final int funcionesPaginas = 5;
+    private final int funcionesPaginas = 6;
     private final int maximoDestacados = 8;
 
     private final List<String> formatos= Arrays.asList("media/png","media/jpeg", "image/jpeg", "image/png");

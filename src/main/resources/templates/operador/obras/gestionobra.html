@@ -276,6 +276,10 @@
         </tr>
         </tbody>
     </table>
+
+    <!--Paginacion-->
+    <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
+
 </div>
 <footer th:replace="fragmentos/footer.html :: footer"></footer>
 <!-- Modal añadir a destacados -->
