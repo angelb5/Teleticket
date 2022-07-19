@@ -23,7 +23,7 @@ public class ClienteObrasController {
     @Value("${aplication.domain}")
     private String DOMINIO;
 
-    private final int obrasPaginas =8;
+    private final int obrasPaginas =12;
 
     @Autowired
     PersonaRepository personaRepository;
