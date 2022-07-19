@@ -62,11 +62,14 @@ public class HomeController {
             return "redirect:/operador";
         }
 
-        Pageable lista = PageRequest.of(0, 8);
+        Pageable lista = PageRequest.of(0, 12);
         List<ObrasListado> listaObras = obraRepository.listadoObrasCliente("", lista);
+        lista = PageRequest.of(0, 4);
+        List<Sede> listaSedes = sedeRepository.listarSedesCliente("", lista);
 
         model.addAttribute("listaObrasDestacadas", obraRepository.listarObrasDestacadas());
         model.addAttribute("listaObras",listaObras);
+        model.addAttribute("listaSedes", listaSedes);
         DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern("dd MMMM, yyyy HH:mm").toFormatter(new Locale("es", "ES"));
         model.addAttribute("ldt", formatter.format(LocalDateTime.now()));
 

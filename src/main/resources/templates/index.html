@@ -177,6 +177,43 @@
                 <i class="ms-1 fa-solid fa-angle-right"></i>
             </a>
         </div>
+
+        <div th:unless="${listaSedes.size==0}" class="mb-5">
+            <div class="title-24">
+                Nuestras Sedes
+            </div>
+            <div class="row row-cols-1 row-cols-md-4 g-4 py-3" th:unless="${listaSedes.isEmpty()}">
+                <div class="col" th:each="sede : ${listaSedes}">
+                    <div class="card h-100 position-relative">
+                        <div class="card-tele">
+                            <div class="card-tele-img">
+                                <a th:href="@{'/sedes/'+ ${sede.id}}" >
+                                    <img th:src="@{'/image/sede/'+${sede.fotoprincipal}}" alt="Sede" class="img-fluid rounded-start img-cover"/>
+                                </a>
+
+                            </div>
+                            <div class="card-tele-body pb-2">
+                                <div class="card-tele-title" th:text="${sede.nombre}"></div>
+                                <div class="card-tele-subtitle" th:text="${sede.direccion}"></div>
+                            </div>
+                            <div class="card-tele-footer justify-content-end">
+                                <div class="d-flex align-items-end">
+                                    <a class="btn btn-redtele" th:href="@{'/sedes/'+ ${sede.id}}">Ver más</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="text-center fw-bold pt-2">
+                <a th:href="@{/sedes}" class="link-sub">
+                    Ver más sedes
+                    <i class="ms-1 fa-solid fa-angle-right"></i>
+                </a>
+            </div>
+        </div>
+
     </div>
 
 
