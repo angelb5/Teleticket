@@ -170,4 +170,15 @@ public interface ObraRepository extends JpaRepository<Obra, Integer> {
                     "group by o.idobras " +
                     "limit 8")
     public List<Obra> listarObrasDestacadasOperador();
+
+    @Query(nativeQuery = true,value = "select o.*\n" +
+            "from obras o\n" +
+            "         inner join funciones f on o.idobras = f.idobras and timestamp(f.fecha,f.inicio)>= current_timestamp()\n" +
+            "inner join (select idfunciones, sum(numtickets) as 'vendidos'\n" +
+            "            from historialcompras\n" +
+            "            where estado = 'Comprado'\n" +
+            "            group by idfunciones) f2 on f.idfunciones=f2.idfunciones\n" +
+            "where f2.vendidos/f.stock >= 0.85\n" +
+            "group by f.idobras limit 0,4;")
+    public List<Obra> listarUltimasObras();
 }
