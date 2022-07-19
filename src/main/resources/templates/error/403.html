@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:replace="fragmentos/cabecera.html :: cabecera( titulo = 'Ups!')"></head>
+  <style>
+    .center {
+      margin: auto;
+      width: 60%;
+      padding: 10px;
+    }
+  </style>
+  <body class="bg-black">
+    <div class="center py-3">
+      <img th:src="@{/img/logo-teleticket.png}" style="width: 550px; margin-bottom: 30px">
+      <h1 class="text-white">¿Te has perdido?</h1>
+      <h3 class="text-white">No tienes autorización para acceder a la dirección indicada</h3>
+      <a th:href="@{/}" class="btn btn-redtele"
+         style="margin-top: 20px; width: 290px; height: 45px ; font-size: 17px">Ir a la pagina principal</a>
+    </div>
+  </body>
+</html>
