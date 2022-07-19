@@ -28,8 +28,7 @@
                     <div class="fs-20 align-items-end" th:if="${persona.obrasdirector>0}">
                         Dirección&nbsp;&nbsp;
                         <span th:if="${persona.pdireccion.isPresent()}">
-                            <strong class="fw-bold align-middle" th:text="${persona.pdireccion.get()}">
-                            4.3
+                            <strong class="fw-bold align-middle" th:text="${#numbers.formatDecimal(persona.pdireccion.get(),1,2,'POINT')}">
                             </strong>
                             <strong class="align-middle">
                                 / 5
@@ -44,7 +43,7 @@
                     <div class="fs-20 align-items-end" th:if="${persona.obrasactor>0}">
                         Actuación&nbsp;&nbsp;
                         <span th:if="${persona.pactuacion.isPresent()}">
-                            <strong class="fw-bold align-middle" th:text="${persona.pactuacion.get()}">
+                            <strong class="fw-bold align-middle" th:text="${#numbers.formatDecimal(persona.pactuacion.get(),1,2,'POINT')}">
                             4.3
                             </strong>
                             <strong class="align-middle">
