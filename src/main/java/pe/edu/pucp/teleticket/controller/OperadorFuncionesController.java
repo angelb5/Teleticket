@@ -192,6 +192,7 @@ public class OperadorFuncionesController {
 
         if(bindingResult.hasErrors() || horaHasErrors || fechaHasErrors || salaHasErrors){
             model.addAttribute("sedeList", sedeList);
+            model.addAttribute("dominio", DOMINIO);
             return "operador/funciones/nuevaFrm";
         }else{
             LocalTime fin = funcion.getInicio().plusMinutes(optionalObra.get().getDuracion());
@@ -200,6 +201,7 @@ public class OperadorFuncionesController {
             if(funcionesConflictoList.size()>0){
                 model.addAttribute("funcionesConflictoList", funcionesConflictoList);
                 model.addAttribute("sedeList", sedeList);
+                model.addAttribute("dominio", DOMINIO);
                 return "operador/funciones/nuevaFrm";
             }else{
                 funcion.setEstado("Activa");

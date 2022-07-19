@@ -38,9 +38,10 @@
                             <div class="text-danger" th:if="${#fields.hasErrors('resumen')}"
                                  th:errors="*{resumen}"></div>
                         </div>
-                        <div class="control-group mb-3">
+                        <div class="control-group mb-3" th:classappend="${funcionesRealizadas!=null and funcionesRealizadas>0}?'d-none':''">
                             <label for="directores" class="form-label">Directores </label>
                             <select class="demo-default" name="directores" id="directores" th:field="*{directores}"
+                                    th:readonly="${funcionesRealizadas!=null and funcionesRealizadas>0}"
                                     th:classappend="${#fields.hasErrors('directores')?'is-invalid':''}" multiple>
                                 <option value="">Selecciona directores</option>
                                 <option th:each="director : ${personaList}"
@@ -51,12 +52,13 @@
                             <div class="text-danger" th:if="${#fields.hasErrors('directores')}"
                                  th:errors="*{directores}"></div>
                         </div>
-                        <script>
+                        <script th:unless="${funcionesRealizadas!=null and funcionesRealizadas>0}">
                             $('#directores').selectize();
                         </script>
-                        <div class="control-group mb-3">
+                        <div class="control-group mb-3" th:classappend="${funcionesRealizadas!=null and funcionesRealizadas>0}?'d-none':''">
                             <label for="actores" class="form-label">Actores </label>
                             <select class="demo-default" name="actores" id="actores" th:field="*{actores}"
+                                    th:readonly="${funcionesRealizadas!=null and funcionesRealizadas>0}"
                                     th:classappend="${#fields.hasErrors('actores')?'is-invalid':''}" multiple>
                                 <option value="">Selecciona actores</option>
                                 <option th:each="actor : ${personaList}"
@@ -68,7 +70,7 @@
                                  th:errors="*{actores}">
                             </div>
                         </div>
-                        <script>
+                        <script th:unless="${funcionesRealizadas!=null and funcionesRealizadas>0}">
                             $('#actores').selectize();
                         </script>
                         <div class="control-group mb-3">
@@ -78,7 +80,8 @@
                                 <option value="">Selecciona generos</option>
                                 <option th:each="genero : ${generoList}"
                                         th:text="${genero.nombre}"
-                                        th:value="${genero.id}"></option>
+                                        th:value="${genero.id}">
+                                </option>
                             </select>
                             <div class="text-danger" th:if="${#fields.hasErrors('generos')}"
                                  th:errors="*{generos}"></div>

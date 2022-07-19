@@ -145,6 +145,7 @@ public class OperadorObrasController {
         model.addAttribute("obra", optionalObra.get());
         List<Persona> personaList = personaRepository.findAll();
         List<Genero> generoList = generoRepository.findAll();
+        model.addAttribute("funcionesRealizadas", funcionRepository.contarRealizadasPorIdobra(idObra));
         model.addAttribute("personaList", personaList);
         model.addAttribute("generoList", generoList);
         return "operador/obras/form";
@@ -241,10 +242,11 @@ public class OperadorObrasController {
             String msg = "Este cambio causa conflictos con los horarios de funciones, máxima duración "+ (optionalObra.get().getDuracion()+maxDiff)+ " minutos";
             bindingResult.rejectValue("duracion","error.horariosconflicto",msg);
         }
-
+        int funcionesRealizadas = funcionRepository.contarRealizadasPorIdobra(obra.getId());
         if (bindingResult.hasErrors()) {
             List<Persona> personaList = personaRepository.findAll();
             List<Genero> generoList = generoRepository.findAll();
+            model.addAttribute("funcionesRealizadas", funcionesRealizadas);
             model.addAttribute("personaList", personaList);
             model.addAttribute("generoList", generoList);
             return "operador/obras/form";
@@ -269,6 +271,10 @@ public class OperadorObrasController {
         }
 
         obraRepository.actualizarHorarios(obra.getId(), timeDiff);
+        if(funcionesRealizadas>0){
+            obra.setActores(optionalObra.get().getActores());
+            obra.setDirectores(optionalObra.get().getDirectores());
+        }
         obraRepository.save(obra);
         return "redirect:/operador/obras/gestion/" + obra.getId();
     }

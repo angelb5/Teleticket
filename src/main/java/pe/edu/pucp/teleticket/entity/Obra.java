@@ -61,7 +61,7 @@ public class Obra {
             inverseJoinColumns = @JoinColumn(name = "idpersona", referencedColumnName = "idpersonas"))
     private List<Persona> actores = new ArrayList<>();
 
-    @Size(message = "Tiene que seleccionar al menos 1 director", min = 1)
+    @Size(message = "Tiene que seleccionar al menos un director", min = 1)
     @NotNull
     @ManyToMany
     @JoinTable(name = "directores",
